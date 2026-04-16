@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>T01 Quiz — Do Mito ao Logos · Pré-Socráticos · Sócrates | Filosofia SJR 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b0d10;--bg2:#111318;--bg3:#181c22;--bg4:#1e232b;
+  --border:#252b35;--border2:#2d3443;
+  --text:#cdd5e0;--text2:#8a96a8;--text3:#4d5a6e;
+  --gold:#c8a44a;--gold2:#e2c070;--gold3:#f0d490;
+  --blue:#3d8fd1;--green:#3d9e72;--green2:#5ec090;
+  --red:#c05050;--red2:#e07070;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:'Lato',sans-serif;font-size:15px;line-height:1.7;min-height:100vh}
+
+/* HEADER */
+.quiz-header{
+  background:var(--bg2);border-bottom:1px solid var(--border);
+  padding:16px 24px;display:flex;align-items:center;gap:16px;
+  position:sticky;top:0;z-index:50;flex-wrap:wrap;
+}
+.qh-back{
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  color:var(--text3);text-decoration:none;transition:color .2s;white-space:nowrap;
+}
+.qh-back:hover{color:var(--gold)}
+.qh-title{
+  font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:700;color:var(--gold2);
+  flex:1;
+}
+.qh-badge{
+  font-family:'JetBrains Mono',monospace;font-size:10px;
+  color:var(--gold);background:rgba(200,164,74,.12);
+  padding:3px 10px;border-radius:4px;white-space:nowrap;
+}
+.qh-stats{
+  display:flex;gap:16px;flex-wrap:wrap;
+}
+.qh-stat{
+  font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3);
+  white-space:nowrap;
+}
+.qh-stat strong{color:var(--text);font-size:14px}
+
+/* PROGRESS BAR */
+.progress-bar{height:3px;background:var(--border);overflow:hidden}
+.progress-fill{height:100%;background:var(--gold);transition:width .4s ease}
+
+/* FILTERS */
+.filter-bar{
+  padding:14px 24px;background:var(--bg2);border-bottom:1px solid var(--border);
+  display:flex;gap:8px;align-items:center;flex-wrap:wrap;
+}
+.filter-label{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3);margin-right:4px}
+.filter-btn{
+  padding:5px 14px;border-radius:4px;border:1px solid var(--border);
+  background:var(--bg3);color:var(--text2);font-family:'JetBrains Mono',monospace;
+  font-size:11px;cursor:pointer;transition:all .15s;
+}
+.filter-btn:hover{border-color:var(--gold);color:var(--gold)}
+.filter-btn.active{background:rgba(200,164,74,.15);border-color:var(--gold);color:var(--gold)}
+.filter-sep{width:1px;height:20px;background:var(--border);margin:0 4px}
+.toggle-btn{
+  margin-left:auto;padding:5px 14px;border-radius:4px;border:1px solid var(--border2);
+  background:var(--bg3);color:var(--text2);font-family:'JetBrains Mono',monospace;
+  font-size:11px;cursor:pointer;transition:all .15s;
+}
+.toggle-btn:hover{border-color:var(--blue);color:var(--blue)}
+
+/* CONTENT */
+.quiz-content{padding:24px;max-width:860px;margin:0 auto}
+
+/* QUESTION BLOCK */
+.q-block{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:8px;padding:24px;margin-bottom:18px;
+  transition:border-color .2s;
+}
+.q-block.answered{border-color:var(--border2)}
+.q-meta{display:flex;gap:8px;align-items:center;margin-bottom:12px}
+.q-num{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3)}
+.q-diff{
+  font-family:'JetBrains Mono',monospace;font-size:10px;
+  padding:2px 7px;border-radius:3px;
+}
+.diff-easy{background:rgba(61,158,114,.15);color:var(--green2)}
+.diff-med{background:rgba(61,143,209,.12);color:var(--blue)}
+.diff-hard{background:rgba(192,80,80,.12);color:var(--red2)}
+.q-text{font-size:14.5px;line-height:1.75;margin-bottom:16px;color:var(--text)}
+.q-opts{display:flex;flex-direction:column;gap:8px}
+.q-opt{
+  display:flex;align-items:flex-start;gap:10px;
+  padding:10px 14px;border:1px solid var(--border);
+  border-radius:6px;cursor:pointer;background:var(--bg3);
+  transition:all .15s;
+}
+.q-opt:hover:not(.done){border-color:var(--gold);background:rgba(200,164,74,.05)}
+.q-opt.done{cursor:default}
+.q-opt.sel{border-color:var(--blue)!important;background:rgba(61,143,209,.08)!important}
+.q-opt.correct{border-color:var(--green)!important;background:rgba(61,158,114,.12)!important}
+.q-opt.wrong{border-color:var(--red)!important;background:rgba(192,80,80,.08)!important}
+.opt-letter{
+  font-family:'JetBrains Mono',monospace;font-size:12px;
+  font-weight:500;color:var(--gold);min-width:18px;margin-top:2px;
+}
+.opt-text{font-size:13.5px;color:var(--text);line-height:1.6}
+.q-feedback{
+  margin-top:12px;padding:12px 16px;border-radius:6px;
+  font-size:13px;line-height:1.7;display:none;
+}
+.q-feedback.show{display:block;animation:fadeIn .2s ease}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.fb-correct{background:rgba(61,158,114,.1);border:1px solid rgba(61,158,114,.3);color:var(--green2)}
+.fb-wrong{background:rgba(192,80,80,.08);border:1px solid rgba(192,80,80,.25);color:var(--red2)}
+.fb-label{
+  font-family:'JetBrains Mono',monospace;font-size:10px;
+  text-transform:uppercase;letter-spacing:.8px;display:block;margin-bottom:5px;
+}
+.fb-correct .fb-label{color:var(--green)}
+.fb-wrong .fb-label{color:var(--red)}
+.fb-body{color:var(--text);font-style:italic}
+
+/* SCORE PANEL */
+#score-panel{
+  display:none;background:var(--bg2);border:1px solid var(--border);
+  border-radius:12px;padding:40px;text-align:center;margin:24px;
+}
+#score-panel.show{display:block;animation:fadeIn .4s ease}
+.sc-title{
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;
+}
+.sc-number{
+  font-family:'Cormorant Garamond',serif;font-size:72px;font-weight:700;line-height:1;margin-bottom:8px;
+}
+.sc-approved{color:var(--green2)}
+.sc-failed{color:var(--red2)}
+.sc-pct{font-size:20px;color:var(--text2);margin-bottom:24px}
+.sc-breakdown{display:flex;gap:24px;justify-content:center;flex-wrap:wrap;margin:20px 0}
+.sc-item{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text3)}
+.sc-item strong{color:var(--text);display:block;font-size:18px}
+.sc-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:24px}
+.sc-btn{
+  padding:11px 24px;border-radius:6px;font-family:'JetBrains Mono',monospace;
+  font-size:12px;cursor:pointer;transition:all .2s;border:none;
+}
+.sc-btn-primary{background:var(--gold);color:var(--bg)}
+.sc-btn-primary:hover{opacity:.85}
+.sc-btn-secondary{background:var(--bg3);border:1px solid var(--border);color:var(--text2)}
+.sc-btn-secondary:hover{border-color:var(--gold);color:var(--gold)}
+
+/* BOTTOM NAV */
+.bottom-nav{
+  padding:20px 24px;border-top:1px solid var(--border);
+  display:flex;gap:10px;align-items:center;flex-wrap:wrap;
+}
+.nav-btn{
+  padding:9px 18px;border-radius:6px;
+  background:var(--bg3);border:1px solid var(--border);
+  color:var(--text2);font-family:'JetBrains Mono',monospace;
+  font-size:11px;cursor:pointer;transition:all .2s;text-decoration:none;
+  display:inline-block;
+}
+.nav-btn:hover{border-color:var(--gold);color:var(--gold)}
+.nav-theory{margin-left:auto}
+
+/* STICKY SCORE */
+#sticky{
+  position:fixed;bottom:0;left:0;right:0;
+  background:rgba(17,19,24,.95);border-top:1px solid var(--border);
+  backdrop-filter:blur(8px);
+  padding:10px 24px;display:flex;align-items:center;gap:16px;
+  z-index:50;
+}
+#sticky .ss-txt{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3)}
+#sticky .ss-txt strong{color:var(--gold)}
+.ss-bar{flex:1;height:3px;background:var(--border);border-radius:2px;overflow:hidden}
+.ss-fill{height:100%;background:var(--gold);transition:width .3s}
+
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+</style>
+</head>
+<body>
+
+<header class="quiz-header">
+  <a href="D1_Filosofia.html" class="qh-back">← Teoria D1</a>
+  <div class="qh-title">T01 — Do Mito ao Logos · Pré-Socráticos · Sócrates</div>
+  <span class="qh-badge">50 questões</span>
+  <div class="qh-stats">
+    <span class="qh-stat"><strong id="hdr-answered">0</strong> respondidas</span>
+    <span class="qh-stat"><strong id="hdr-correct">0</strong> corretas</span>
+    <span class="qh-stat"><strong id="hdr-pct">0%</strong></span>
+  </div>
+</header>
+<div class="progress-bar"><div class="progress-fill" id="prog-bar" style="width:0%"></div></div>
+
+<div class="filter-bar">
+  <span class="filter-label">Dificuldade:</span>
+  <button class="filter-btn active" data-filter="all" onclick="setFilter('all',this)">Todas</button>
+  <button class="filter-btn" data-filter="Fácil" onclick="setFilter('Fácil',this)">Fácil</button>
+  <button class="filter-btn" data-filter="Média" onclick="setFilter('Média',this)">Média</button>
+  <button class="filter-btn" data-filter="Difícil" onclick="setFilter('Difícil',this)">Difícil</button>
+  <div class="filter-sep"></div>
+  <button class="toggle-btn" onclick="toggleErrors()" id="err-btn" style="display:none">↺ Só erros</button>
+</div>
+
+<div class="quiz-content" id="quiz-content"></div>
+<div id="score-panel">
+  <p class="sc-title">Resultado Final — T01</p>
+  <div class="sc-number" id="sc-num"></div>
+  <p class="sc-pct" id="sc-pct"></p>
+  <div class="sc-breakdown" id="sc-breakdown"></div>
+  <div class="sc-actions">
+    <button class="sc-btn sc-btn-primary" onclick="resetQuiz()">↺ Refazer</button>
+    <button class="sc-btn sc-btn-secondary" onclick="reviewErrors()" id="sc-review-btn">Revisar erros</button>
+    <a href="D1_Filosofia.html" class="sc-btn sc-btn-secondary">← Teoria</a>
+  </div>
+</div>
+
+<div class="bottom-nav">
+  
+  <a href="D1_Filosofia.html" class="nav-btn nav-theory">📖 Conteúdo T01</a>
+  <a href="D1_T02_Quiz.html" class="nav-btn">T02 →</a>
+</div>
+
+<div id="sticky">
+  <span class="ss-txt">Acertos: <strong id="st-pts">0</strong> / 50</span>
+  <div class="ss-bar"><div class="ss-fill" id="st-fill" style="width:0%"></div></div>
+  <span class="ss-txt"><strong id="st-pct">0%</strong></span>
+</div>
+
+<script>
+const QUESTIONS = [{n:1,t:"A palavra \"filosofia\" tem origem grega e significa, literalmente:",o:["Ciência da verdade","Amor à sabedoria","Conhecimento dos deuses","Arte do discurso"],a:1,c:"*Philosophia* = *philos* (amor/amizade) + *sophia* (sabedoria). Não se confunda com \"ciência\" (*episteme*) ou \"discurso\" (*logos*), que são termos distintos. A distinção entre filosofia e ciência é clássica: o filósofo ama a sabedoria, não a possui.",d:"Fácil"},{n:2,t:"A Filosofia ocidental surgiu, aproximadamente, no:",o:["Século III a.C., em Atenas","Século VI a.C., na Jônia (Ásia Menor)","Século IV a.C., em Alexandria","Século VIII a.C., em Esparta"],a:1,c:"O erro clássico é situar o nascimento da Filosofia em Atenas — que só se tornou o centro filosófico no período clássico (séc. V–IV a.C.), com Sócrates, Platão e Aristóteles. O berço da Filosofia foi a Jônia, especialmente Mileto, no século VI a.C.",d:"Fácil"},{n:3,t:"O pensamento mítico explica os fenômenos naturais e a origem do mundo recorrendo a:",o:["Leis físicas e princípios matemáticos","Narrativas que envolvem deuses e forças sobrenaturais","Argumentos lógicos verificáveis pela razão","Observações empíricas sistemáticas"],a:1,c:"O mito é uma narrativa sagrada que atribui causas sobrenaturais — divindades — aos fenômenos. As alternativas A e D descrevem o pensamento científico moderno; C descreve o *logos* filosófico.",d:"Fácil"},{n:4,t:"O termo grego *arché* utilizado pelos primeiros filósofos significa:",o:["Sabedoria divina","Narrativa sagrada","Princípio ou fundamento da realidade","Método de ensino"],a:2,c:"*Arché* (ἀρχή) = princípio, origem, fundamento. Era a questão central dos pré-socráticos: de que é feita a realidade em sua base mais fundamental? Não confundir com *mythos* (narrativa) nem com *logos* (razão/discurso).",d:"Fácil"},{n:5,t:"Tales de Mileto propôs que o princípio (*arché*) de todas as coisas era:",o:["O fogo","O ar","O número","A água"],a:3,c:"Tales → água. É a resposta mais direta e frequentemente cobrada. Anaxímenes propôs o ar; Heráclito, o fogo; Pitágoras, o número. Essa sequência de filósofos e seus *archés* é essencial para qualquer concurso de Filosofia.",d:"Fácil"},{n:6,t:"O filósofo que propôs o *ápeiron* (o indeterminado, o ilimitado) como princípio da realidade foi:",o:["Tales de Mileto","Anaxímenes","Anaximandro","Heráclito"],a:2,c:"Anaximandro percebeu que nenhum elemento determinado (água, ar, fogo) poderia ser o *arché*, pois qualquer elemento determinado excluiria os outros. O *ápeiron* — o indeterminado — poderia gerar todos os contrários. Essa é uma das ideias mais sofisticadas do período pré-socrático.",d:"Fácil"},{n:7,t:"A passagem do *mythos* ao *logos* representa, na história da Filosofia:",o:["A substituição total do pensamento religioso pelo científico","A transição de explicações sobrenaturais para explicações racionais da realidade","O abandono completo da narrativa como forma de conhecimento","A criação da escrita como instrumento de registro do saber"],a:1,c:"A pegadinha está nas alternativas A e C. A passagem do *mythos* ao *logos* não foi uma ruptura total — Platão ainda usava mitos filosóficos; o pensamento religioso não desapareceu. O que mudou foi o critério de explicação: de sobrenatural para racional/natural.",d:"Fácil"},{n:8,t:"Sócrates ficou conhecido por um método filosófico composto de dois momentos: a ironia e a:",o:["Dialética hegeliana","Maiêutica","Catarse aristotélica","Contemplação platônica"],a:1,c:"*Maiêutica* vem de *maieutiké* (arte da parteira). Sócrates comparava seu método ao da parturição: assim como a parteira ajuda a trazer o filho ao mundo, ele ajudava o interlocutor a \"parir\" o conhecimento latente. Dialética hegeliana (Hegel, séc. XIX) e contemplação platônica são conceitos distintos.",d:"Fácil"},{n:9,t:"Segundo Aristóteles, a Filosofia nasce de uma atitude fundamental do ser humano diante do mundo, chamada de:",o:["*Logos* (razão)","*Thaumazein* (espanto, admiração)","*Aporia* (impasse)","*Techné* (técnica)"],a:1,c:"Aristóteles afirma na *Metafísica*: \"Os homens começaram a filosofar, agora como na origem, por causa do espanto (*thaumazein*).\" O espanto filosófico é a admiração diante do óbvio — a capacidade de transformar o cotidiano em problema.",d:"Fácil"},{n:10,t:"Os filósofos denominados \"pré-socráticos\" recebem essa designação porque:",o:["Eram considerados inferiores a Sócrates em profundidade filosófica","Viveram antes de Sócrates ou não compartilhavam seu método","Estudavam exclusivamente questões políticas, ao contrário de Sócrates","Escreveram obras antes de Sócrates inventar a escrita filosófica"],a:1,c:"A alternativa A é armadilha: \"pré-socrático\" é uma designação cronológica e metodológica, não hierárquica — Demócrito, por exemplo, foi contemporâneo de Sócrates, mas não é classificado como socrático. A alternativa D é absurda: Sócrates não \"inventou\" a escrita filosófica — e, aliás, não deixou escritos.",d:"Fácil"},{n:11,t:"O filósofo Heráclito de Éfeso é associado à ideia de que:",o:["A realidade é una e imutável, sendo a mudança uma ilusão","O número é o princípio de todas as coisas","Tudo está em constante mudança e fluxo","O ar é o elemento primordial do cosmos"],a:2,c:"Heráclito é o filósofo do devir (*panta rhei* — \"tudo flui\"). Sua frase mais célebre: \"Não se pode entrar duas vezes no mesmo rio.\" A alternativa A descreve Parmênides (seu antagonista); B descreve Pitágoras; D descreve Anaxímenes.",d:"Fácil"},{n:12,t:"Parmênides de Eleia afirmava que a mudança percebida pelos sentidos é:",o:["O princípio fundamental da realidade","Uma ilusão, pois a verdadeira realidade é o Ser, uno e imutável","Resultado do movimento dos átomos no vazio","Explicada pela alternância entre amor e ódio"],a:1,c:"Para Parmênides, os sentidos enganam — mostram mudança onde há apenas o Ser eterno e imutável. O pensamento racional (*logos*) revela que \"o ser é, e o não-ser não é.\" Alternativa C é Demócrito; D é Empédocles.",d:"Fácil"},{n:13,t:"A divisa \"Conhece-te a ti mesmo\" (*gnôthi seautón*), adotada por Sócrates, representa:",o:["O interesse socrático pela cosmologia e pela natureza","A virada da Filosofia das questões da natureza para o ser humano","A afirmação de que Sócrates possuía pleno conhecimento de si","O método de observação empírica defendido pelos atomistas"],a:1,c:"Esta é a \"virada antropológica\" de Sócrates: enquanto os pré-socráticos perguntavam \"o que é a natureza?\", Sócrates pergunta \"o que é o ser humano? O que é a virtude? O que é o bem?\". A alternativa C é armadilha — Sócrates dizia exatamente o contrário: \"Só sei que nada sei.\"",d:"Fácil"},{n:14,t:"A obra *Teogonia*, de Hesíodo, é um exemplo de:",o:["Pensamento filosófico racional pré-socrático","Pensamento mítico que narra a origem dos deuses e do cosmos","Método socrático aplicado à cosmologia","Primeiro texto filosófico ocidental"],a:1,c:"*Teogonia* (séc. VIII a.C.) é uma obra mítica — narra o nascimento dos deuses e a criação do mundo por relações entre divindades. Não é filosofia racional; é o tipo de explicação que a Filosofia vai questionar e superar ao propor explicações naturais para os mesmos fenômenos.",d:"Fácil"},{n:15,t:"Demócrito é considerado um precursor da física moderna por ter proposto que a realidade é composta de:",o:["Quatro elementos: fogo, ar, água e terra","Uma substância indeterminada e ilimitada","Partículas indivisíveis (átomos) em movimento no vazio","Números que estruturam matematicamente o cosmos"],a:2,c:"O atomismo de Demócrito (séc. V–IV a.C.) antecipa a física atômica moderna: tudo é composto de átomos (do grego *átomos* = indivisível) em movimento no vazio. Alternativa A é Empédocles; B é Anaximandro; D é Pitágoras.",d:"Fácil"},{n:16,t:"Anaximandro propôs o *ápeiron* como *arché* em vez de um elemento determinado como a água. A principal razão filosófica para essa escolha era:",o:["Porque a água era um elemento comum demais para ser o princípio de tudo","Porque um elemento determinado não poderia gerar seus opostos sem destruir-se","Porque o *ápeiron* era um conceito mais próximo das narrativas míticas gregas","Porque Tales havia demonstrado que a água não era o elemento fundamental"],a:1,c:"O raciocínio de Anaximandro é sofisticado: se a água fosse o *arché*, como explicar o fogo (seu oposto)? Um elemento determinado destruiria seu contrário. O *ápeiron* — indeterminado — pode gerar todos os opostos sem se esgotar. Esta questão exige compreensão do raciocínio, não apenas da resposta.",d:"Média"},{n:17,t:"A ironia socrática (*eironeia*) consiste em:",o:["Usar metáforas e alegorias para ensinar conceitos filosóficos","Fingir ignorância para conduzir o interlocutor à percepção de sua própria ignorância","Criticar publicamente os costumes e crenças da pólis ateniense","Apresentar argumentos em favor de teses que o próprio Sócrates não acreditava"],a:1,c:"A ironia socrática é uma estratégia pedagógica e filosófica: Sócrates fingia não saber para fazer perguntas progressivamente mais precisas, levando o interlocutor ao *aporia* — a percepção de que não sabia o que pensava saber. Não é hipocrisia nem crítica direta (alternativas C e D).",d:"Média"},{n:18,t:"A afirmação \"O ser é, e o não-ser não é\" é atribuída a Parmênides e significa que:",o:["A existência e o nada são realidades complementares e equivalentes","Apenas o que existe pode ser pensado; o nada não tem realidade nem pode ser pensado","A mudança é real porque o ser transita para o não-ser continuamente","O ser humano é o único ente capaz de conhecer o ser em sua totalidade"],a:1,c:"Para Parmênides, pensar o não-ser é contraditório: se você pensa \"o nada\", já está pensando em algo — logo, o nada não existe como objeto de pensamento. Só o ser pode ser pensado e existe verdadeiramente. A mudança (alternativa C) implica que algo deixa de ser o que era — passa ao não-ser — o que Parmênides considera impossível.",d:"Média"},{n:19,t:"A passagem do *mythos* ao *logos* não foi uma ruptura total, mas um processo gradual. Qual afirmação abaixo ilustra melhor essa continuidade?",o:["Tales de Mileto afirmava que o *arché* era a água e, ao mesmo tempo, que \"tudo está cheio de deuses\"","Sócrates abandonou completamente qualquer forma de narrativa mítica em seu método","Parmênides utilizou os mitos homéricos para justificar sua teoria do Ser","Os sofistas desenvolveram o pensamento mítico a partir das ideias de Hesíodo"],a:0,c:"Tales é o exemplo clássico de transição: propõe a água como *arché* (explicação natural) mas mantém a linguagem mítica (\"tudo está cheio de deuses\"). Quanto à alternativa B, Platão — discípulo de Sócrates — usou intensamente os mitos em seus diálogos, o que mostra que o próprio círculo socrático não rompeu totalmente com o *mythos*.",d:"Média"},{n:20,t:"A democracia ateniense contribuiu para o surgimento da Filosofia porque:",o:["Estabeleceu leis que obrigavam todos os cidadãos a estudar os filósofos","Criou uma cultura de debate público e argumentação racional nas assembleias","Eliminou as diferenças sociais e permitiu que escravos estudassem filosofia","Proibiu o pensamento mítico e instituiu a razão como religião oficial"],a:1,c:"A democracia ateniense criou um espaço de *debate público* — na ágora, cidadãos argumentavam sobre leis e decisões. Esse hábito de dar razões e contra-argumentar transferiu-se para o campo filosófico. Atenção: a democracia ateniense era restrita — escravos e mulheres não participavam (alternativa C é falsa). A alternativa D é absurda historicamente.",d:"Média"},{n:21,t:"Qual dos seguintes filósofos pré-socráticos introduziu um princípio organizador não material — uma *inteligência* (*Nous*) — como responsável pela ordenação do cosmos?",o:["Heráclito","Empédocles","Anaxágoras","Demócrito"],a:2,c:"Anaxágoras foi o primeiro a propor que o *Nous* (Inteligência) — uma realidade distinta da matéria — organizou o cosmos. Isso o distingue dos outros pré-socráticos que buscavam *archés* materiais. Aristóteles criticou Anaxágoras por usar o *Nous* apenas como \"deus ex machina\" quando não encontrava outra explicação.",d:"Média"},{n:22,t:"O conceito de *aporia*, no método socrático, refere-se a:",o:["A resposta definitiva que Sócrates oferecia ao final do diálogo","O estado de impasse e perplexidade gerado pela percepção da própria ignorância","O conjunto de regras formais do silogismo aristotélico","A narrativa mítica usada por Sócrates para ilustrar seus ensinamentos"],a:1,c:"*Aporia* (sem saída, impasse) é o momento em que o interlocutor percebe que não sabe o que pensava saber — resultado da ironia socrática. Longe de ser negativo, o *aporia* é o ponto de partida necessário para a busca genuína do conhecimento. Sócrates raramente oferecia respostas definitivas (alternativa A é falsa).",d:"Média"},{n:23,t:"A frase \"Não se pode entrar duas vezes no mesmo rio\", atribuída a Heráclito, expressa a ideia de que:",o:["Os rios são realidades ilusórias, como toda a matéria","A realidade está em constante mudança e fluxo, nunca sendo idêntica a si mesma","O conhecimento sensível é mais confiável que o conhecimento racional","O ser humano não pode conhecer a natureza com precisão"],a:1,c:"Esta é a expressão mais famosa do *devir* heraclitiano: quando você entra no rio pela segunda vez, tanto o rio (novas águas correndo) quanto você (novo estado corporal e mental) já mudaram. A realidade não é estática — é puro movimento. Essa ideia é a antítese do Ser imutável de Parmênides.",d:"Média"},{n:24,t:"Pitágoras distingue-se dos demais pré-socráticos porque seu *arché* — o número — não é um elemento material, mas:",o:["Uma divindade suprema responsável pela ordem do cosmos","Uma estrutura matemática que organiza e explica a realidade","Um princípio indeterminado semelhante ao *ápeiron* de Anaximandro","Uma força espiritual presente em todos os seres vivos"],a:1,c:"Pitágoras propõe que o número é a estrutura da realidade — não uma substância física, mas uma relação matemática. Isso o torna único entre os pré-socráticos: enquanto os demais buscavam uma *substância* primordial, Pitágoras buscava uma *estrutura formal*. Essa ideia influenciará profundamente Platão.",d:"Média"},{n:25,t:"O espanto filosófico (*thaumazein*), mencionado por Aristóteles como origem da Filosofia, diferencia-se do espanto cotidiano porque:",o:["É uma reação emocional instintiva diante do desconhecido","É uma admiração racional que transforma o óbvio e cotidiano em problema filosófico","Ocorre exclusivamente diante de fenômenos sobrenaturais e inexplicáveis","É exclusivo de pessoas com formação acadêmica especializada"],a:1,c:"O *thaumazein* filosófico não é o susto ou o medo do desconhecido — é a capacidade de estranhar o que todos aceitam sem questionar. Por que existe algo em vez de nada? O que é o tempo? Essas perguntas transformam o \"óbvio\" em problema. Qualquer pessoa é capaz desse espanto — por isso a Filosofia não é privilégio de especialistas (alternativa D é falsa).",d:"Média"},{n:26,t:"Qual a diferença fundamental entre o método de Sócrates e os mitos como instrumento de transmissão de conhecimento?",o:["Sócrates usava narrativas simbólicas enquanto o mito usava argumentos lógicos","O mito transmite o conhecimento por autoridade e tradição; Sócrates busca o conhecimento pelo diálogo racional e questionamento","Sócrates ensinava nas escolas formais enquanto o mito era transmitido nas ruas","O mito era uma forma de filosofia popular e Sócrates a transformou em filosofia erudita"],a:1,c:"A distinção essencial está no *critério de validade*: o mito é válido porque é sagrado e tradicional (autoridade); o método socrático é válido porque o interlocutor chega à conclusão por si mesmo, através do diálogo racional. A alternativa A inverte as características. As alternativas C e D são históricamente incorretas.",d:"Média"},{n:27,t:"A *scholé* grega, da qual deriva a palavra \"escola\", referia-se originalmente a:",o:["Um lugar físico dedicado ao ensino filosófico","Tempo livre para contemplação e atividade intelectual","Um conjunto de textos filosóficos obrigatórios","A reunião periódica de cidadãos para debater leis"],a:1,c:"*Scholé* = tempo livre (ócio no sentido clássico — não preguiça, mas afastamento das necessidades imediatas para dedicar-se ao pensamento). É a condição social que permitia aos cidadãos gregos livres filosofar. A alternativa D descreve a *ekklesia* (assembleia). A alternativa A é uma derivação posterior do termo.",d:"Média"},{n:28,t:"Empédocles propôs que a realidade é composta de quatro raízes (fogo, ar, água e terra) e que dois princípios são responsáveis por suas combinações. Quais são esses princípios?",o:["Razão e paixão","Forma e matéria","Amor e Ódio","Ser e não-ser"],a:2,c:"Para Empédocles, Amor (*Philotes*) une as quatro raízes formando compostos; Ódio (*Neikos*) as separa. Esse ciclo eterno de união e separação explica toda a mudança na natureza. Alternativa B (forma e matéria) é aristotélica; D (ser e não-ser) é parmêndiana.",d:"Média"},{n:29,t:"O fato de Sócrates não ter deixado escritos e ser conhecido apenas pelos relatos de seus discípulos representa:",o:["Uma limitação que invalida parcialmente seu pensamento filosófico","Um problema historiográfico: o que conhecemos é \"Sócrates\" filtrado pela perspectiva de Platão e outros","Evidência de que Sócrates não tinha um método sistemático de Filosofia","Uma característica comum a todos os filósofos da Antiguidade"],a:1,c:"O \"problema socrático\" é um desafio real na história da Filosofia: o Sócrates que conhecemos é mediado principalmente por Platão — e é difícil separar o pensamento histórico de Sócrates das elaborações platônicas. Xenofonte apresenta um Sócrates diferente do de Platão. Alternativa D é falsa: a maioria dos filósofos antigos deixou escritos (Heráclito, Parmênides, Aristóteles).",d:"Média"},{n:30,t:"A Escola Eleática, representada por Parmênides, ficou conhecida pela defesa de qual tese central?",o:["O cosmos é resultado do movimento eterno dos átomos no vazio","A realidade verdadeira é o Ser, uno, eterno e imutável, sendo a mudança uma ilusão sensorial","Quatro elementos primordiais são combinados por forças opostas de atração e repulsão","O *Nous* (Inteligência) é o princípio ordenador do cosmos"],a:1,c:"A Escola Eleática (Eleia, sul da Itália) tem em Parmênides seu fundador e maior representante. Seu discípulo Zenão de Eleia elaborou paradoxos para demonstrar a impossibilidade do movimento. A alternativa A é o atomismo (Demócrito); C é Empédocles; D é Anaxágoras.",d:"Média"},{n:31,t:"Por que a Jônia, e não Atenas, foi o berço da Filosofia ocidental?",o:["Porque Atenas era governada por tiranos que proibiam o pensamento racional","Porque a Jônia era uma região de intenso intercâmbio cultural com Egito, Pérsia e Babilônia, favorecendo o questionamento das tradições","Porque a Jônia possuía as melhores bibliotecas da antiguidade mediterrânea","Porque os jônios eram geneticamente mais inteligentes que os atenienses"],a:1,c:"A Jônia era uma encruzilhada cultural: os jônios tinham contato com a matemática egípcia, a astronomia babilônica e o pensamento persa. Esse contato multicultural estimulava a comparação e o questionamento das tradições locais — condição favorável ao surgimento da Filosofia. A alternativa D é obviamente absurda e carregada de preconceito.",d:"Média"},{n:32,t:"Qual das seguintes características do mito o diferencia mais claramente do discurso filosófico racional?",o:["O mito usa metáforas; a Filosofia usa conceitos abstratos","O mito é transmitido oralmente; a Filosofia é sempre escrita","O mito não exige justificação racional de suas afirmações, aceitando-as por fé e autoridade","O mito é universal; a Filosofia é sempre particular e local"],a:2,c:"A diferença fundamental é epistemológica: o mito não precisa se justificar — sua autoridade vem da tradição e do sagrado. A Filosofia exige que qualquer afirmação seja sustentada por argumentos verificáveis e abertos à crítica. A alternativa B é falsa (Sócrates não escreveu nada; muitos mitos foram registrados por escrito). A alternativa D é o inverso do correto.",d:"Média"},{n:33,t:"A \"virada antropológica\" promovida por Sócrates consistiu em:",o:["Transformar a Filosofia em uma disciplina exclusivamente política","Deslocar a pergunta filosófica da natureza (*physis*) para questões sobre o ser humano, a ética e o conhecimento","Introduzir o método experimental na investigação filosófica","Substituir o diálogo pela escrita como principal instrumento filosófico"],a:1,c:"Os pré-socráticos perguntavam sobre a *physis* (natureza, cosmos). Sócrates deslocou o foco para o ser humano: O que é a virtude? O que é o bem? O que é o justo? Como devo viver? Esse deslocamento é chamado de \"virada antropológica\" e representa uma ruptura com a tradição cosmológica pré-socrática.",d:"Média"},{n:34,t:"O *logos* heraclítico (diferente do *logos* como simples razão) representa:",o:["O princípio físico do fogo que gera todos os elementos","A lei universal de proporcionalidade que governa o devir e a unidade dos opostos","A faculdade mental humana de produzir raciocínios lógicos","O discurso político próprio das assembleias gregas"],a:1,c:"Para Heráclito, o *Logos* não é apenas \"razão humana\" — é a lei universal que governa a realidade, o princípio de ordem imanente no caos do devir. A unidade dos opostos (frio/quente, dia/noite, vivo/morto) é governada pelo *Logos*. O fogo é o *arché* material; o *Logos* é o princípio estrutural.",d:"Média"},{n:35,t:"A condenação de Sócrates à morte em Atenas (399 a.C.) foi motivada, oficialmente, pelas acusações de:",o:["Ensinar filosofia estrangeira e praticar comércio ilegal","Impiedade em relação aos deuses e corrupção da juventude","Organizar um golpe político contra a democracia ateniense","Plagiar as ideias dos sofistas e vendê-las como próprias"],a:1,c:"As acusações formais contra Sócrates foram: *asébeia* (impiedade — introduzir novos deuses e não reconhecer os deuses da cidade) e *diaphtheirein tous neous* (corromper a juventude). O contexto político (derrota de Atenas na Guerra do Peloponeso, instabilidade política) também pesou, mas as acusações formais eram as mencionadas. O julgamento está registrado na *Apologia de Sócrates*, de Platão.",d:"Média"},{n:36,t:"Considere as seguintes afirmações sobre a passagem do *mythos* ao *logos*:  I. O mito e o logos são formas mutuamente excludentes de acesso à realidade. II. Platão, filósofo racionalista, utilizou narrativas míticas em seus diálogos. III. Tales de Mileto representa uma figura de transição entre o pensamento mítico e o filosófico.  Estão corretas:",o:["Apenas I e II","Apenas II e III","Apenas I e III","I, II e III"],a:1,c:"A afirmação I é **falsa**: mito e logos não são mutuamente excludentes — Platão demonstra isso ao usar mitos filosóficos (Mito da Caverna, Mito de Er, Mito do Andrógino no *Banquete*). II é **verdadeira**. III é **verdadeira**: Tales propõe a água como *arché* (logos) mas afirma que \"tudo está cheio de deuses\" (mythos). Portanto, corretas são II e III.",d:"Difícil"},{n:37,t:"A oposição entre Heráclito e Parmênides constitui um dos eixos centrais da Filosofia pré-socrática. Platão tentou superar essa oposição por meio de:",o:["A proposta de que o *Nous* (Inteligência) governa tanto o devir quanto o ser","A teoria das Formas (ou Ideias), que distingue o mundo sensível (mutável) do mundo inteligível (imutável)","O atomismo, que explicaria tanto a mudança quanto a permanência pelos átomos","O método socrático, que dissolvia as oposições por meio do diálogo"],a:1,c:"Platão herda o problema: Heráclito tem razão sobre o mundo sensível (tudo muda); Parmênides tem razão sobre a realidade verdadeira (o ser é imutável). A solução platônica é **dualismo ontológico**: o mundo sensível é mutável e imperfeito (Heráclito tinha razão *aqui*); o mundo das Formas/Ideias é eterno e imutável (Parmênides tinha razão *sobre esse nível*). A alternativa A descreve Anaxágoras; C descreve Demócrito.",d:"Difícil"},{n:38,t:"Um professor de Filosofia afirma: \"O mito não é uma forma primitiva e inferior de conhecimento — é uma forma diferente de apreensão da realidade, com sua própria lógica interna.\" Essa afirmação é:",o:["Incorreta, pois o surgimento da Filosofia demonstrou a superioridade absoluta da razão sobre o mito","Parcialmente correta, pois o mito tem lógica interna mas é superior ao logos por ser mais abrangente","Correta, pois o mito possui coerência narrativa própria e respondia às questões de seu tempo, embora com critérios diferentes da racionalidade filosófica","Incorreta, pois toda narrativa mítica é simplesmente uma mentira coletiva sem fundamento racional"],a:2,c:"Esta questão exige postura epistemológica madura. O mito não é simplesmente uma \"mentira\" ou \"ignorância primitiva\" — ele tem sua própria coerência e cumpria funções cognitivas, sociais e psicológicas fundamentais. A Filosofia não \"provou\" que o mito estava errado — ela propôs um critério diferente de validade (argumento racional vs. autoridade sagrada). A antropologia e a história das religiões contemporâneas reforçam essa visão.",d:"Difícil"},{n:39,t:"O paradoxo de Zenão de Eleia — \"Aquiles nunca alcança a tartaruga\" — foi elaborado para:",o:["Demonstrar que os animais são mais rápidos do que os heróis míticos","Provar matematicamente que o infinito não existe na natureza","Defender a tese de Parmênides de que o movimento é uma ilusão dos sentidos","Criticar a teoria atômica de Demócrito sobre o movimento no vazio"],a:2,c:"Zenão era discípulo de Parmênides. Seus paradoxos (Aquiles e a Tartaruga, a Flecha Imóvel) foram elaborados para demonstrar que o movimento é logicamente contraditório — portanto, uma ilusão. Se o movimento é impossível, Parmênides tem razão: o ser é imutável. Zenão não conhecia Demócrito (os dois eram contemporâneos, mas de locais diferentes) — a alternativa D é anacronismo.",d:"Difícil"},{n:40,t:"Qual dos seguintes pares de conceitos é melhor utilizado para distinguir o pensamento de Heráclito do de Parmênides?",o:["*Arché* e *logos*","Devir e Ser","*Physis* e *nomos*","*Mythos* e *sophia*"],a:1,c:"**Devir** (realidade como movimento/mudança constante) = Heráclito; **Ser** (realidade como entidade una, imóvel e eterna) = Parmênides. Esta é a oposição central. A alternativa C (*physis* = natureza; *nomos* = lei/convenção) é a oposição sofística. A alternativa A (arché/logos) não distingue os dois.",d:"Difícil"},{n:41,t:"A maiêutica socrática pressupõe uma teoria do conhecimento que afirma:",o:["O conhecimento é adquirido exclusivamente pela experiência sensorial","O conhecimento verdadeiro já está presente na alma do ser humano e precisa ser \"despertado\"","O conhecimento é construído socialmente e não pertence ao indivíduo","O conhecimento é impossível, pois tudo muda constantemente"],a:1,c:"A maiêutica pressupõe a **teoria da reminiscência** (*anamnese*): a alma já conhece a verdade (aprendida antes do nascimento, segundo Platão em *Mênon* e *Fédon*) e precisa apenas ser \"lembrada\" por meio do diálogo. Por isso Sócrates \"não ensina\" — ele apenas ajuda o interlocutor a *recordar* o que já sabe. Alternativa A descreve o empirismo (Locke, Hume). Alternativa D é o ceticismo radical.",d:"Difícil"},{n:42,t:"Considere a seguinte situação: um professor afirma em sala que \"Os pré-socráticos eram filósofos inferiores porque não chegaram às grandes ideias de Platão e Aristóteles.\" Essa afirmação é:",o:["Correta, pois o desenvolvimento histórico da filosofia é progressivo e cumulativo","Incorreta, pois os pré-socráticos desenvolveram ideias originais que influenciaram toda a filosofia posterior, incluindo Platão e Aristóteles","Parcialmente correta, pois os pré-socráticos abordaram apenas questões cosmoló-gicas sem relevância para a ética e a política","Correta, pois a Filosofia só atingiu sua maturidade com a lógica formal aristotélica"],a:1,c:"Esta questão avalia a compreensão historiográfica. Os pré-socráticos não são \"tentativas fracassadas\" de chegar a Platão — são pensadores originais cujas ideias Platão e Aristóteles explicitamente discutem e respondem. O atomismo de Demócrito influencia Epicuro e a física moderna; o *logos* de Heráclito influencia os estoicos e o Evangelho de João; o Ser de Parmênides é o problema central da ontologia ocidental.",d:"Difícil"},{n:43,t:"A diferença entre *doxa* e *episteme*, introduzida pela tradição filosófica grega, refere-se a:",o:["A distinção entre conhecimento divino e conhecimento humano","A oposição entre opinião (crença não fundamentada) e conhecimento verdadeiro (fundamentado racionalmente)","A distinção entre o pensamento mítico e o pensamento científico moderno","A diferença entre a filosofia prática e a filosofia teórica"],a:1,c:"*Doxa* = opinião, crença, aparência; *episteme* = conhecimento verdadeiro, ciência, saber fundamentado. Esta distinção aparece em Parmênides (que chama de *doxa* o mundo sensível mutável) e é central em Platão (a *República* distingue os graus de conhecimento da *doxa* à *episteme*). Para a prova, é importante saber que *episteme* não é \"ciência\" no sentido moderno, mas \"conhecimento justificado\".",d:"Difícil"},{n:44,t:"A condenação de Sócrates evidencia uma tensão fundamental entre:",o:["Filosofia e religião, demonstrando que todo pensamento racional é incompatível com crenças religiosas","O pensamento individual crítico e os valores conservadores da comunidade política","A democracia ateniense e o conhecimento filosófico, provando que democracia é sempre tirânica","Os sofistas e os filósofos, mostrando que o relativismo moral inevitavelmente destrói a comunidade"],a:1,c:"A condenação de Sócrates expõe uma tensão real: o pensamento crítico individual pode chocar-se com os valores e interesses da comunidade política. Sócrates questionava crenças sagradas e modos de vida estabelecidos — e foi condenado *democraticamente* por uma assembleia. Isso não prova que democracia é tirânica (alternativa C) — mas evidencia seus riscos quando a maioria persegue a dissidência intelectual.",d:"Difícil"},{n:45,t:"Qual é o significado filosófico preciso da afirmação socrática \"Só sei que nada sei\"?",o:["Sócrates afirmava a impossibilidade absoluta de qualquer conhecimento","Sócrates reconhecia que seu saber era limitado e que a consciência da ignorância é o ponto de partida do conhecimento genuíno","Sócrates defendia o relativismo moral, segundo o qual nada pode ser afirmado como verdadeiro","Sócrates comparava-se humildemente aos deuses, que possuiriam o conhecimento absoluto"],a:1,c:"Esta é uma das questões mais cheias de pegadinhas em provas. A frase não é ceticismo absoluto (alternativa A) nem relativismo (alternativa C). Sócrates *sabe* que não sabe — e essa consciência da própria ignorância já é um tipo de saber superior ao de quem pensa saber sem saber. É a diferença entre o *aporia* produtivo (que abre para a busca) e a ignorância satisfeita (que fecha o caminho).",d:"Difícil"},{n:46,t:"A tese de que \"o ser é uno\" (*hen*), defendida por Parmênides, implica necessariamente que:",o:["Existem muitos seres diferentes que formam uma unidade harmônica","A multiplicidade e a diversidade do mundo são aparências ilusórias produzidas pelos sentidos","O Uno é uma divindade criadora do cosmos material","O ser humano é a medida de todas as coisas e define o que é uno"],a:1,c:"Se o ser é *uno* e *indivisível*, então a multiplicidade que percebemos (muitos objetos, muitas pessoas, muitos eventos) é ilusória — produto enganoso dos sentidos. A verdade está no pensamento racional (*logos*), não na percepção sensorial. A alternativa C lembra Plotino (neoplatonismo, séc. III d.C.) — posterior e distinto. A alternativa D é a tese de Protágoras (sofista).",d:"Difícil"},{n:47,t:"O atomismo de Demócrito representou uma solução original para o problema levantado por Parmênides sobre o não-ser. Como Demócrito resolveu esse problema?",o:["Aceitou que o não-ser não existe e que, portanto, o movimento é impossível","Afirmou que o vazio (não-ser) existe e é condição necessária para o movimento dos átomos","Propôs que o não-ser é idêntico ao ser, tornando a distinção sem sentido","Rejeitou a questão do ser como irrelevante para a física natural"],a:1,c:"Parmênides dizia: \"O não-ser não é\" — logo, o vazio não existe — logo, o movimento é impossível. Demócrito respondeu: o vazio (não-ser) *existe*, sim — como espaço onde os átomos se movem. É uma ruptura audaciosa com o princípio parmêndiano. Essa solução permite explicar o movimento sem abandonar a ideia de que a realidade última (os átomos) é indivisível e imutável — conciliando Parmênides e Heráclito de outro modo.",d:"Difícil"},{n:48,t:"O filósofo Anaxágoras foi julgado por impiedade em Atenas. Qual característica de seu pensamento pode ter motivado essa acusação?",o:["Sua defesa do politeísmo em detrimento dos deuses olímpicos tradicionais","Sua afirmação de que o Sol era uma pedra incandescente e não um deus","Sua proposta de que o *Nous* era a única divindade verdadeira do cosmos","Sua defesa do ateísmo explícito e da inexistência de qualquer princípio divino"],a:1,c:"Anaxágoras afirmou que o Sol era um corpo físico incandescente — o que contrariava a crença popular de que Hélio (o Sol) era um deus. Isso foi considerado impiedade (*asébeia*). O mesmo tipo de acusação atingiria Sócrates décadas depois. Essa é uma questão que exige conhecimento específico do filósofo, não apenas do conceito de *Nous*.",d:"Difícil"},{n:49,t:"Em termos historiográficos, afirmar que \"a Filosofia nasceu na Grécia\" pode ser questionado porque:",o:["Existiam tradições de pensamento racional e sistemático na Índia, China e Egito anteriores ao século VI a.C.","O pensamento mítico grego era mais sofisticado do que qualquer produção intelectual oriental","A Filosofia nunca teve um \"nascimento\" — ela é uma capacidade inata em todos os seres humanos","Os gregos copiaram integralmente seu sistema filosófico dos egípcios sem fazer contribuições originais"],a:0,c:"Esta é uma questão de nível superior. A afirmação de que a Filosofia \"nasceu na Grécia\" é a perspectiva da tradição filosófica ocidental, mas é eurocêntrica: existiam tradições de pensamento sistemático na China (Confúcio, Laozi), na Índia (Upanishads, Buda) e no Egito que são contemporâneas ou anteriores aos pré-socráticos. O debate sobre o que conta como \"Filosofia\" é ele mesmo um problema filosófico. Para concursos, o enunciado \"nasceu na Gréc",d:"Difícil"},{n:50,t:"Um estudante do EF Anos Finais pergunta ao professor: \"Se Sócrates era tão sábio, por que dizia que não sabia nada? Não é contraditório?\" A resposta filosófica mais adequada seria:",o:["\"Sócrates estava sendo modesto — na verdade, ele sabia muito mais do que seus contemporâneos.\"","\"Não é contraditório: saber que não se sabe é um tipo de saber sobre os limites do próprio conhecimento, e é superior à ignorância satisfeita de quem pensa saber sem saber.\"","\"Tem razão — é uma contradição, e por isso Sócrates foi condenado: seus contemporâneos perceberam que ele era desonesto.\"","\"Sócrates usava essa frase apenas como estratégia retórica para humilhar seus adversários em debates.\""],a:1,c:"Esta questão simula exatamente o contexto do EF Anos Finais e testa se o candidato sabe transpor o conceito para a linguagem pedagógica. A resposta B captura a essência filosófica: a *consciência da ignorância* é um nível de reflexividade superior à *ignorância irrefletida*. Quem sabe que não sabe abre-se para a busca; quem pensa saber fecha-se para ela. As alternativas A e D reduzem Sócrates a retórica ou modéstia superficial; a alternativa C é ",d:"Difícil"}];
+const TOTAL = 50;
+let answers = {};
+let currentFilter = 'all';
+let errorsMode = false;
+
+function getVisible(){
+  if(errorsMode){
+    return QUESTIONS.filter(q=>answers[q.n]!==undefined && answers[q.n]!==q.a);
+  }
+  if(currentFilter==='all') return QUESTIONS;
+  return QUESTIONS.filter(q=>q.d===currentFilter);
+}
+
+function renderQuiz(){
+  const visible = getVisible();
+  const container = document.getElementById('quiz-content');
+  container.innerHTML = '';
+  if(!visible.length){
+    container.innerHTML = '<p style="text-align:center;color:var(--text3);padding:40px;font-family:JetBrains Mono,monospace;font-size:13px;">Nenhuma questão neste filtro.</p>';
+    return;
+  }
+  visible.forEach((q,i)=>{
+    const block = document.createElement('div');
+    block.className = 'q-block' + (answers[q.n]!==undefined?' answered':'');
+    block.id = 'qb-'+q.n;
+    const diffClass = q.d==='Fácil'?'diff-easy':q.d==='Média'?'diff-med':'diff-hard';
+    const done = answers[q.n]!==undefined;
+    block.innerHTML = `
+      <div class="q-meta">
+        <span class="q-num">Q${String(q.n).padStart(2,'0')}</span>
+        <span class="q-diff ${diffClass}">${q.d}</span>
+      </div>
+      <div class="q-text">${q.t}</div>
+      <div class="q-opts" id="opts-${q.n}">
+        ${q.o.map((o,j)=>{
+          let cls='q-opt'+(done?' done':'');
+          if(done){
+            if(j===q.a) cls+=' correct';
+            else if(j===answers[q.n]) cls+=' wrong';
+          }
+          return `<div class="${cls}" ${!done?`onclick="pick(${q.n},${j})"`:''}>
+            <span class="opt-letter">${'ABCD'[j]}</span>
+            <span class="opt-text">${o}</span>
+          </div>`;
+        }).join('')}
+      </div>
+      <div class="q-feedback ${done?(answers[q.n]===q.a?'fb-correct show':'fb-wrong show'):''}" id="fb-${q.n}">
+        <span class="fb-label">${done?(answers[q.n]===q.a?'✓ Correto':'✗ Incorreto — Gabarito: '+'ABCD'[q.a]):'' }</span>
+        <span class="fb-body">${q.c}</span>
+      </div>`;
+    container.appendChild(block);
+  });
+}
+
+function pick(qn, optIdx){
+  if(answers[qn]!==undefined) return;
+  const q = QUESTIONS.find(x=>x.n===qn);
+  answers[qn] = optIdx;
+  const correct = optIdx===q.a;
+  // Style options
+  const opts = document.querySelectorAll('#opts-'+qn+' .q-opt');
+  opts.forEach(o=>o.classList.add('done'));
+  opts[optIdx].classList.add(correct?'correct':'wrong');
+  if(!correct) opts[q.a].classList.add('correct');
+  // Feedback
+  const fb=document.getElementById('fb-'+qn);
+  fb.className='q-feedback show '+(correct?'fb-correct':'fb-wrong');
+  fb.innerHTML=`<span class="fb-label">${correct?'✓ Correto':'✗ Incorreto — Gabarito: '+'ABCD'[q.a]}</span><span class="fb-body">${q.c}</span>`;
+  document.getElementById('qb-'+qn).classList.add('answered');
+  updateStats();
+  if(Object.keys(answers).length===TOTAL) finishQuiz();
+}
+
+function updateStats(){
+  const answered=Object.keys(answers).length;
+  const correct=Object.values(answers).filter((v,i)=>v===QUESTIONS[i]?.a).length;
+  // Recalculate correctly
+  let corr=0;
+  QUESTIONS.forEach(q=>{ if(answers[q.n]===q.a) corr++; });
+  const pct=answered?Math.round(corr/answered*100):0;
+  document.getElementById('hdr-answered').textContent=answered;
+  document.getElementById('hdr-correct').textContent=corr;
+  document.getElementById('hdr-pct').textContent=pct+'%';
+  document.getElementById('prog-bar').style.width=(answered/TOTAL*100)+'%';
+  document.getElementById('st-pts').textContent=corr;
+  document.getElementById('st-fill').style.width=(corr/TOTAL*100)+'%';
+  document.getElementById('st-pct').textContent=pct+'%';
+}
+
+function finishQuiz(){
+  let corr=0;
+  QUESTIONS.forEach(q=>{ if(answers[q.n]===q.a) corr++; });
+  const pct=Math.round(corr/TOTAL*100);
+  const panel=document.getElementById('score-panel');
+  panel.classList.add('show');
+  const numEl=document.getElementById('sc-num');
+  numEl.textContent=corr+'/'+TOTAL;
+  numEl.className='sc-number '+(pct>=70?'sc-approved':'sc-failed');
+  document.getElementById('sc-pct').textContent=pct+'% de acerto';
+  const errs=TOTAL-corr;
+  document.getElementById('sc-breakdown').innerHTML=
+    `<div class="sc-item"><strong>${corr}</strong>Corretas</div>
+     <div class="sc-item"><strong>${errs}</strong>Incorretas</div>
+     <div class="sc-item"><strong>${pct}%</strong>Aproveitamento</div>`;
+  document.getElementById('err-btn').style.display=errs>0?'block':'none';
+  if(errs>0) document.getElementById('sc-review-btn').style.display='inline-block';
+  else document.getElementById('sc-review-btn').style.display='none';
+  panel.scrollIntoView({behavior:'smooth'});
+}
+
+function resetQuiz(){
+  answers={};
+  errorsMode=false;
+  currentFilter='all';
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelector('[data-filter="all"]').classList.add('active');
+  document.getElementById('score-panel').classList.remove('show');
+  document.getElementById('err-btn').style.display='none';
+  document.getElementById('hdr-answered').textContent='0';
+  document.getElementById('hdr-correct').textContent='0';
+  document.getElementById('hdr-pct').textContent='0%';
+  document.getElementById('prog-bar').style.width='0%';
+  document.getElementById('st-pts').textContent='0';
+  document.getElementById('st-fill').style.width='0%';
+  document.getElementById('st-pct').textContent='0%';
+  renderQuiz();
+  window.scrollTo(0,0);
+}
+
+function reviewErrors(){
+  errorsMode=true;
+  document.getElementById('score-panel').classList.remove('show');
+  currentFilter='all';
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelector('[data-filter="all"]').classList.add('active');
+  renderQuiz();
+  window.scrollTo(0,0);
+}
+
+function setFilter(f, btn){
+  currentFilter=f;
+  errorsMode=false;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderQuiz();
+}
+
+function toggleErrors(){
+  errorsMode=!errorsMode;
+  renderQuiz();
+}
+
+renderQuiz();
+</script>
+</body>
+</html>

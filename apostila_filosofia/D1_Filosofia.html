@@ -55,8 +55,7 @@ body{background:var(--bg);color:var(--text);font-family:'Lato',sans-serif;font-s
   display:flex;align-items:center;gap:8px;
   padding:9px 16px;color:var(--text2);text-decoration:none;
   font-size:13px;border-left:2px solid transparent;
-  transition:all .2s;cursor:pointer;background:none;
-  border-top:none;border-right:none;border-bottom:none;width:100%;text-align:left;
+  transition:all .2s;cursor:pointer;background:none;border-top:none;border-right:none;border-bottom:none;width:100%;text-align:left;
 }
 .sb-home:hover,.sb-home.active{color:var(--gold2);border-left-color:var(--gold);background:rgba(200,164,74,.06)}
 .sb-topic{
@@ -146,7 +145,7 @@ body{background:var(--bg);color:var(--text);font-family:'Lato',sans-serif;font-s
 }
 .quiz-link-btn:hover{background:rgba(200,164,74,.22);color:var(--gold3)}
 
-/* TOPIC BODY */
+/* TOPIC BODY CONTENT */
 .topic-body h2{
   font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700;
   color:var(--gold2);margin:36px 0 14px;padding-bottom:8px;
@@ -170,13 +169,6 @@ body{background:var(--bg);color:var(--text);font-family:'Lato',sans-serif;font-s
 }
 .topic-body ul li{color:var(--text)}
 .topic-body hr{border:none;border-top:1px solid var(--border);margin:28px 0}
-.topic-body blockquote{
-  margin:16px 0;padding:12px 18px;
-  border-left:3px solid var(--gold);
-  background:rgba(200,164,74,.05);
-  color:var(--text2);font-style:italic;
-  border-radius:0 6px 6px 0;
-}
 .callout-gold,.callout-warn{
   padding:14px 18px;border-radius:0 6px 6px 0;
   font-size:14px;margin:18px 0;line-height:1.7;
@@ -211,6 +203,13 @@ pre.code{
   overflow-x:auto;margin:16px 0;
 }
 
+.topic-body blockquote{
+  margin:16px 0;padding:12px 16px;
+  border-left:3px solid var(--gold);
+  background:rgba(200,164,74,.05);
+  color:var(--text2);font-style:italic;
+}
+
 /* TOPIC NAV */
 .topic-nav{
   display:flex;gap:12px;align-items:center;
@@ -238,6 +237,28 @@ pre.code{
 ::-webkit-scrollbar{width:6px}
 ::-webkit-scrollbar-track{background:var(--bg)}
 ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+
+
+@media (max-width: 980px){
+  body{display:block}
+  #sidebar{position:static;width:100%;height:auto;max-height:none;border-right:none;border-bottom:1px solid var(--border)}
+  #main{margin-left:0}
+  #home-section,.topic-section{max-width:none;padding:28px 24px}
+  .home-grid{grid-template-columns:repeat(auto-fill,minmax(240px,1fr))}
+}
+
+@media (max-width: 640px){
+  .sb-brand h1{font-size:16px}
+  .home-title{font-size:36px}
+  .home-sub{font-size:15px}
+  #home-section,.topic-section{padding:22px 16px}
+  .topic-title{font-size:28px}
+  .topic-body h2{font-size:22px}
+  .topic-nav{gap:10px}
+  .quiz-link-btn-lg,.nav-btn,.quiz-link-btn{width:100%;justify-content:center;text-align:center}
+  .hc-actions{flex-direction:column}
+}
+
 </style>
 </head>
 <body>
@@ -247,7 +268,7 @@ pre.code{
     <div class="sb-brand-tag">D1 — Filosofia</div>
     <h1>Conhecimentos Específicos</h1>
   </div>
-  <button class="sb-back" onclick="showHome()">← Apostila completa</button>
+  <button type="button" class="sb-back" onclick="showHome()">← Apostila completa</button>
   <div class="sb-section-label">Navegação</div>
   <button class="sb-home active" id="sb-home-btn" onclick="showHome()">🏠 Visão Geral</button>
   <div class="sb-section-label">Tópicos</div>
@@ -314,6 +335,7 @@ pre.code{
 
 <main id="main">
 
+<!-- HOME -->
 <section id="home-section">
   <p class="home-badge">D1 — Conhecimentos Específicos · 20 questões · 50 pontos</p>
   <h1 class="home-title">Filosofia</h1>
@@ -324,7 +346,7 @@ pre.code{
       <div class="hc-num">T01</div>
       <div class="hc-title">Do Mito ao Logos · Pré-Socráticos · Sócrates</div>
       <div class="hc-actions">
-        <button class="hc-btn-theory" onclick="showTopic('T1');event.stopPropagation()">📖 Teoria</button>
+        <button type="button" class="hc-btn-theory" onclick="showTopic('T1');event.stopPropagation()">📖 Teoria</button>
         <a href="D1_T01_Quiz.html" class="hc-btn-quiz" onclick="event.stopPropagation()">📝 50 questões</a>
       </div>
     </div>
@@ -332,7 +354,7 @@ pre.code{
       <div class="hc-num">T02</div>
       <div class="hc-title">Moral, Discurso e o Homem na Filosofia Antiga</div>
       <div class="hc-actions">
-        <button class="hc-btn-theory" onclick="showTopic('T2');event.stopPropagation()">📖 Teoria</button>
+        <button type="button" class="hc-btn-theory" onclick="showTopic('T2');event.stopPropagation()">📖 Teoria</button>
         <a href="D1_T02_Quiz.html" class="hc-btn-quiz" onclick="event.stopPropagation()">📝 50 questões</a>
       </div>
     </div>
@@ -340,7 +362,7 @@ pre.code{
       <div class="hc-num">T03</div>
       <div class="hc-title">Filosofia Medieval: Patrística e Escolástica</div>
       <div class="hc-actions">
-        <button class="hc-btn-theory" onclick="showTopic('T3');event.stopPropagation()">📖 Teoria</button>
+        <button type="button" class="hc-btn-theory" onclick="showTopic('T3');event.stopPropagation()">📖 Teoria</button>
         <a href="D1_T03_Quiz.html" class="hc-btn-quiz" onclick="event.stopPropagation()">📝 50 questões</a>
       </div>
     </div>
@@ -348,7 +370,7 @@ pre.code{
       <div class="hc-num">T04</div>
       <div class="hc-title">Empirismo e Racionalismo</div>
       <div class="hc-actions">
-        <button class="hc-btn-theory" onclick="showTopic('T4');event.stopPropagation()">📖 Teoria</button>
+        <button type="button" class="hc-btn-theory" onclick="showTopic('T4');event.stopPropagation()">📖 Teoria</button>
         <a href="D1_T04_Quiz.html" class="hc-btn-quiz" onclick="event.stopPropagation()">📝 50 questões</a>
       </div>
     </div>
@@ -356,7 +378,7 @@ pre.code{
       <div class="hc-num">T05</div>
       <div class="hc-title">Criticismo Kantiano</div>
       <div class="hc-actions">
-        <button class="hc-btn-theory" onclick="showTopic('T5');event.stopPropagation()">📖 Teoria</button>
+        <button type="button" class="hc-btn-theory" onclick="showTopic('T5');event.stopPropagation()">📖 Teoria</button>
         <a href="D1_T05_Quiz.html" class="hc-btn-quiz" onclick="event.stopPropagation()">📝 50 questões</a>
       </div>
     </div>
@@ -364,7 +386,7 @@ pre.code{
       <div class="hc-num">T06</div>
       <div class="hc-title">Filosofia Política Moderna: Contratualismo × Naturalismo</div>
       <div class="hc-actions">
-        <button class="hc-btn-theory" onclick="showTopic('T6');event.stopPropagation()">📖 Teoria</button>
+        <button type="button" class="hc-btn-theory" onclick="showTopic('T6');event.stopPropagation()">📖 Teoria</button>
         <a href="D1_T06_Quiz.html" class="hc-btn-quiz" onclick="event.stopPropagation()">📝 50 questões</a>
       </div>
     </div>
@@ -372,7 +394,7 @@ pre.code{
       <div class="hc-num">T07</div>
       <div class="hc-title">A Crise da Razão — o Fracasso do Iluminismo</div>
       <div class="hc-actions">
-        <button class="hc-btn-theory" onclick="showTopic('T7');event.stopPropagation()">📖 Teoria</button>
+        <button type="button" class="hc-btn-theory" onclick="showTopic('T7');event.stopPropagation()">📖 Teoria</button>
         <a href="D1_T07_Quiz.html" class="hc-btn-quiz" onclick="event.stopPropagation()">📝 50 questões</a>
       </div>
     </div>
@@ -380,7 +402,7 @@ pre.code{
       <div class="hc-num">T08</div>
       <div class="hc-title">A Filosofia das Ciências no Século XX</div>
       <div class="hc-actions">
-        <button class="hc-btn-theory" onclick="showTopic('T8');event.stopPropagation()">📖 Teoria</button>
+        <button type="button" class="hc-btn-theory" onclick="showTopic('T8');event.stopPropagation()">📖 Teoria</button>
         <a href="D1_T08_Quiz.html" class="hc-btn-quiz" onclick="event.stopPropagation()">📝 50 questões</a>
       </div>
     </div>
@@ -388,7 +410,7 @@ pre.code{
       <div class="hc-num">T09</div>
       <div class="hc-title">Fenomenologia e Existencialismo</div>
       <div class="hc-actions">
-        <button class="hc-btn-theory" onclick="showTopic('T9');event.stopPropagation()">📖 Teoria</button>
+        <button type="button" class="hc-btn-theory" onclick="showTopic('T9');event.stopPropagation()">📖 Teoria</button>
         <a href="D1_T09_Quiz.html" class="hc-btn-quiz" onclick="event.stopPropagation()">📝 50 questões</a>
       </div>
     </div>
@@ -396,7 +418,7 @@ pre.code{
       <div class="hc-num">T10</div>
       <div class="hc-title">Ética, Política e Educação na Filosofia Contemporânea</div>
       <div class="hc-actions">
-        <button class="hc-btn-theory" onclick="showTopic('T10');event.stopPropagation()">📖 Teoria</button>
+        <button type="button" class="hc-btn-theory" onclick="showTopic('T10');event.stopPropagation()">📖 Teoria</button>
         <a href="D1_T10_Quiz.html" class="hc-btn-quiz" onclick="event.stopPropagation()">📝 50 questões</a>
       </div>
     </div>
@@ -404,7 +426,7 @@ pre.code{
       <div class="hc-num">T11</div>
       <div class="hc-title">O Ensino de Filosofia e suas Indagações</div>
       <div class="hc-actions">
-        <button class="hc-btn-theory" onclick="showTopic('T11');event.stopPropagation()">📖 Teoria</button>
+        <button type="button" class="hc-btn-theory" onclick="showTopic('T11');event.stopPropagation()">📖 Teoria</button>
         <a href="D1_T11_Quiz.html" class="hc-btn-quiz" onclick="event.stopPropagation()">📝 50 questões</a>
       </div>
     </div>
@@ -412,7 +434,7 @@ pre.code{
       <div class="hc-num">T12</div>
       <div class="hc-title">Avanços, Limites e Perspectivas Históricas</div>
       <div class="hc-actions">
-        <button class="hc-btn-theory" onclick="showTopic('T12');event.stopPropagation()">📖 Teoria</button>
+        <button type="button" class="hc-btn-theory" onclick="showTopic('T12');event.stopPropagation()">📖 Teoria</button>
         <a href="D1_T12_Quiz.html" class="hc-btn-quiz" onclick="event.stopPropagation()">📝 50 questões</a>
       </div>
     </div>
@@ -420,13 +442,14 @@ pre.code{
       <div class="hc-num">T13</div>
       <div class="hc-title">Métodos e Metodologias de Ensino de Filosofia</div>
       <div class="hc-actions">
-        <button class="hc-btn-theory" onclick="showTopic('T13');event.stopPropagation()">📖 Teoria</button>
+        <button type="button" class="hc-btn-theory" onclick="showTopic('T13');event.stopPropagation()">📖 Teoria</button>
         <a href="D1_T13_Quiz.html" class="hc-btn-quiz" onclick="event.stopPropagation()">📝 50 questões</a>
       </div>
     </div>
   </div>
 </section>
 
+<!-- TOPIC SECTIONS -->
 
 <section id="topic-T1" class="topic-section" style="display:none">
   <div class="topic-header">
@@ -460,7 +483,7 @@ pre.code{
 <p><strong>Na Mesopotâmia:</strong> O <em>Enuma Elish</em> (poema babilônico da criação) narra que o mundo surgiu de uma batalha entre deuses primordiais.</p>
 <div class="callout callout-gold">⭐ <strong>Ponto importante:</strong> O mito não é irracional no sentido de "sem lógica interna" — ele tem sua própria coerência narrativa. O que falta no mito é a exigência de <strong>justificação racional pública e verificável</strong>.</div>
 <h2>1.3 A PASSAGEM DO MITO AO LOGOS: A GRANDE RUPTURA</h2>
-<p>O surgimento da Filosofia é frequentemente descrito como a passagem do <strong><em>mythos</strong></em> ao <strong><em>logos</strong></em>. O termo <strong>logos</strong> (em grego) significa palavra, razão, discurso racional, argumento. É a capacidade de dar razões verificáveis e públicas para as afirmações sobre o mundo.</p>
+<p>O surgimento da Filosofia é frequentemente descrito como a passagem do <strong><em>mythos</em></strong> ao <strong><em>logos</em></strong>. O termo <strong>logos</strong> (em grego) significa palavra, razão, discurso racional, argumento. É a capacidade de dar razões verificáveis e públicas para as afirmações sobre o mundo.</p>
 <h3>O que mudou com o logos?</h3>
 <div class="tbl-wrap"><table>
 <tr><th>Aspecto</th><th>Pensamento Mítico (<em>mythos</em>)</th><th>Pensamento Racional (<em>logos</em>)</th></tr>
@@ -475,20 +498,20 @@ pre.code{
 <p>É importante evitar um erro comum: a passagem do mito ao logos não foi uma ruptura total e instantânea. Os primeiros filósofos ainda usavam elementos da linguagem mítica. <strong>Tales de Mileto</strong>, por exemplo, dizia que "tudo está cheio de deuses" — mas ao mesmo tempo afirmava que o princípio de tudo era a água (um elemento natural, não uma divindade). Essa mistura é característica do período de transição.</p>
 <p>Além disso, o mito nunca desapareceu completamente — <strong>Platão</strong>, um dos maiores filósofos racionais, usou mitos (como o Mito da Caverna) para transmitir ideias filosóficas. A relação entre mito e razão é, portanto, de tensão e complementaridade, não de eliminação.</p>
 <h2>1.4 OS PRIMEIROS FILÓSOFOS: OS PRÉ-SOCRÁTICOS</h2>
-<p>Os primeiros filósofos são chamados de <strong>pré-socráticos</strong> porque viveram antes de Sócrates (470–399 a.C.) ou foram contemporâneos dele sem compartilhar seu método. Eles se concentravam em uma questão central: <strong>qual é o</strong> <strong><em>arché</strong></em>?</p>
+<p>Os primeiros filósofos são chamados de <strong>pré-socráticos</strong> porque viveram antes de Sócrates (470–399 a.C.) ou foram contemporâneos dele sem compartilhar seu método. Eles se concentravam em uma questão central: <strong>qual é o</strong> <strong><em>arché</em></strong>?</p>
 <h3>O que é o <em>arché</em>?</h3>
 <p><em>Arché</em> (ἀρχή) é uma palavra grega que significa <strong>princípio, origem, fundamento</strong>. Os pré-socráticos queriam identificar o elemento ou princípio primordial do qual toda a realidade deriva e ao qual retorna. Essa é a primeira pergunta filosófica: de que é feita a realidade?</p>
 <h3>Principais pré-socráticos e suas propostas de <em>arché</em>:</h3>
 <div class="tbl-wrap"><table>
 <tr><th>Filósofo</th><th>Origem</th><th>Período</th><th><em>Arché</em> proposto</th><th>Inovação</th></tr>
 <tr><td><strong>Tales de Mileto</strong></td><td>Mileto (Jônia)</td><td>~624–546 a.C.</td><td><strong>Água</strong></td><td>Considerado o primeiro filósofo ocidental; substituiu explicação divina por natural</td></tr>
-<tr><td><strong>Anaximandro</strong></td><td>Mileto (Jônia)</td><td>~610–546 a.C.</td><td><strong><em>Ápeiron</strong></em> (o indeterminado, o ilimitado)</td><td>Percebeu que o <em>arché</em> não pode ser um elemento determinado; introduziu conceito abstrato</td></tr>
+<tr><td><strong>Anaximandro</strong></td><td>Mileto (Jônia)</td><td>~610–546 a.C.</td><td><strong><em>Ápeiron</em></strong> (o indeterminado, o ilimitado)</td><td>Percebeu que o <em>arché</em> não pode ser um elemento determinado; introduziu conceito abstrato</td></tr>
 <tr><td><strong>Anaxímenes</strong></td><td>Mileto (Jônia)</td><td>~585–525 a.C.</td><td><strong>Ar</strong></td><td>Propôs condensação e rarefação do ar como mecanismo de transformação</td></tr>
 <tr><td><strong>Heráclito</strong></td><td>Éfeso (Jônia)</td><td>~535–475 a.C.</td><td><strong>Fogo</strong> (e o Logos)</td><td>Tudo está em constante mudança ("não se entra duas vezes no mesmo rio"); o logos é o princípio da ordem no devir</td></tr>
 <tr><td><strong>Parmênides</strong></td><td>Eleia (Itália)</td><td>~515–450 a.C.</td><td><strong>O Ser</strong> (uno, imutável)</td><td>Opôs-se a Heráclito: a realidade verdadeira é imutável; a mudança é ilusão dos sentidos</td></tr>
 <tr><td><strong>Pitágoras</strong></td><td>Samos → Itália Sul</td><td>~570–495 a.C.</td><td><strong>Número</strong></td><td>A realidade é estruturada matematicamente; fundou escola filosófico-religiosa</td></tr>
 <tr><td><strong>Empédocles</strong></td><td>Sicília</td><td>~490–430 a.C.</td><td><strong>Quatro raízes</strong> (fogo, ar, água, terra)</td><td>Combinação e separação por amor e ódio</td></tr>
-<tr><td><strong>Anaxágoras</strong></td><td>Clazômenas</td><td>~500–428 a.C.</td><td><strong><em>Nous</strong></em> (Inteligência)</td><td>Introduziu um princípio organizador inteligente, distinto da matéria</td></tr>
+<tr><td><strong>Anaxágoras</strong></td><td>Clazômenas</td><td>~500–428 a.C.</td><td><strong><em>Nous</em></strong> (Inteligência)</td><td>Introduziu um princípio organizador inteligente, distinto da matéria</td></tr>
 <tr><td><strong>Demócrito</strong></td><td>Abdera</td><td>~460–370 a.C.</td><td><strong>Átomos</strong></td><td>Tudo é composto de partículas indivisíveis (átomos) no vazio — precursor do atomismo</td></tr>
 </table></div>
 <div class="callout callout-gold">⭐ <strong>Os três de Mileto</strong> (Tales, Anaximandro, Anaxímenes) formam a <strong>Escola de Mileto</strong> ou <strong>Escola Jônica</strong> — os mais cobrados como "primeiros filósofos".</div>
@@ -512,7 +535,7 @@ A palavra grega <em>scholé</em> (da qual vem "escola") significa tempo livre. A
 <h3>O método socrático: a <em>maiêutica</em></h3>
 <p>Sócrates comparava seu método ao trabalho de sua mãe, que era parteira (<em>maieutiké</em>): assim como a parteira ajuda a trazer o bebê ao mundo (sem gerá-lo), Sócrates ajudava seu interlocutor a "parir" o conhecimento que já estava latente nele.</p>
 <p>O método opera em dois movimentos:</p>
-<p><strong>1. Ironia socrática (<em>eironeia</em>):</strong> Sócrates fingia não saber nada e fazia perguntas ao interlocutor que se julgava sábio. Com perguntas progressivamente mais precisas, levava o interlocutor a perceber que não sabia o que pensava saber — chegavam ao <strong><em>aporia</strong></em> (impasse, sem saída), o reconhecimento da própria ignorância.</p>
+<p><strong>1. Ironia socrática (<em>eironeia</em>):</strong> Sócrates fingia não saber nada e fazia perguntas ao interlocutor que se julgava sábio. Com perguntas progressivamente mais precisas, levava o interlocutor a perceber que não sabia o que pensava saber — chegavam ao <strong><em>aporia</em></strong> (impasse, sem saída), o reconhecimento da própria ignorância.</p>
 <p><strong>2. <em>Maiêutica</em> propriamente dita:</strong> A partir do <em>aporia</em>, Sócrates continuava o diálogo para que o interlocutor chegasse, por si mesmo, a definições mais precisas e verdadeiras.</p>
 <div class="callout callout-gold">⭐ <strong>A ironia socrática</strong> é frequentemente confundida com cinismo ou desrespeito. Na verdade, é um instrumento pedagógico e filosófico: só quem reconhece que não sabe pode começar a buscar o conhecimento verdadeiro.</div>
 <h3>"Só sei que nada sei"</h3>
@@ -524,7 +547,7 @@ A palavra grega <em>scholé</em> (da qual vem "escola") significa tempo livre. A
 <h2>1.8 RELEVÂNCIA PARA O ENSINO DE FILOSOFIA NO EF ANOS FINAIS</h2>
 <p>O tema "origens da filosofia" tem relevância pedagógica direta para o professor de Filosofia no EF Anos Finais:</p>
 <ul><li>A <strong>BNCC</strong> inclui Filosofia como componente curricular obrigatório no Ensino Médio, mas o EF Anos Finais pode abordá-la de forma integrada ao componente de Ciências Humanas (Geografia e História).</li><li>Trabalhar a passagem do mito ao logos com alunos de 12–15 anos permite desenvolver o <strong>pensamento crítico</strong> — habilidade central na BNCC.</li><li>O método socrático (questionamento, diálogo, <em>aporia</em>) é uma <strong>metodologia ativa</strong> que pode ser aplicada diretamente em sala de aula.</li><li>A discussão sobre mito e razão conecta-se diretamente com a vida dos alunos: crenças populares, notícias falsas (<em>fake news</em>) e o papel da argumentação na democracia.</li></ul>
-<h2>MAPA MENTAL — TÓPICO 1: Do Mito ao Logos</h2>
+<p><p><h2>MAPA MENTAL — TÓPICO 1: Do Mito ao Logos</h2>
 <pre class="code">ORIGENS DA FILOSOFIA
 │
 ├── O QUE É FILOSOFIA
@@ -616,7 +639,7 @@ A palavra grega <em>scholé</em> (da qual vem "escola") significa tempo livre. A
   <div class="topic-nav">
     
     <a href="D1_T01_Quiz.html" class="quiz-link-btn-lg">📝 Quiz do Tópico T01</a>
-    <button class="nav-btn" onclick="showTopic('T2')">T02 →</button>
+    <button type="button" class="nav-btn" onclick="showTopic('T2')">T02 →</button>
   </div>
 </section>
 <section id="topic-T2" class="topic-section" style="display:none">
@@ -631,7 +654,7 @@ A palavra grega <em>scholé</em> (da qual vem "escola") significa tempo livre. A
 <p>Se o Tópico 1 tratou do nascimento da Filosofia e da pergunta sobre a natureza (<em>physis</em>), o Tópico 2 trata do momento em que a Filosofia voltou seu olhar para o próprio ser humano. Essa virada ocorre no século V a.C. e tem dois protagonistas principais — aparentemente opostos, mas complementares: os <strong>Sofistas</strong> e <strong>Sócrates</strong>.</p>
 <p>A pergunta que passa a organizar o pensamento filosófico não é mais "de que é feito o cosmos?" mas sim:</p>
 <ul><li><strong>O que é o ser humano?</strong></li><li><strong>O que é a virtude (<em>areté</em>)?</strong></li><li><strong>O que é o bem? O que é o justo?</strong></li><li><strong>Como devemos viver?</strong></li><li><strong>O conhecimento moral é possível?</strong></li></ul>
-Essa mudança de foco é o que se chama de <strong>virada antropológica</strong> — e ela define o que chamamos de Filosofia Clássica grega.
+<p>Essa mudança de foco é o que se chama de <strong>virada antropológica</strong> — e ela define o que chamamos de Filosofia Clássica grega.
 <h2>2.2 OS SOFISTAS: O DISCURSO COMO PODER</h2>
 <h3>Quem eram os Sofistas?</h3>
 <p>Os <strong>Sofistas</strong> (<em>sophistés</em> = sábio, especialista) eram filósofos e educadores itinerantes que percorriam as cidades gregas do século V a.C. oferecendo instrução remunerada — especialmente em <strong>retórica</strong> (a arte de falar bem e persuadir) e em <strong>areté política</strong> (as virtudes necessárias para ser bem-sucedido na vida pública).</p>
@@ -642,14 +665,14 @@ Essa mudança de foco é o que se chama de <strong>virada antropológica</strong
 <p><strong>1. Relativismo do conhecimento:</strong>
 O conhecimento não é universal — depende do sujeito que conhece, da cultura e do contexto. O que é verdadeiro para um pode ser falso para outro.</p>
 <p><strong>Protágoras de Abdera</strong> (485–411 a.C.) formulou a tese mais famosa:</p>
-<blockquote><em><em>"O homem é a medida de todas as coisas: das que são, enquanto são; das que não são, enquanto não são."</em></em></blockquote>
+<blockquote><em>"O homem é a medida de todas as coisas: das que são, enquanto são; das que não são, enquanto não são."</em></blockquote>
 <p>Essa frase — o <strong>homo mensura</strong> — significa que não há verdade objetiva e universal: cada ser humano (ou cada comunidade) define o que é verdadeiro a partir de sua própria perspectiva.</p>
 <p><strong>2. Relativismo moral (<em>nomos</em> vs. <em>physis</em>):</strong>
 Os Sofistas introduziram a distinção crucial entre:</p>
 <div class="tbl-wrap"><table>
 <tr><th>Conceito</th><th>Significado</th><th>Implicação</th></tr>
-<tr><td><strong><em>Physis</strong></em></td><td>Natureza — o que existe por necessidade natural</td><td>As leis naturais são universais e imutáveis</td></tr>
-<tr><td><strong><em>Nomos</strong></em></td><td>Convenção, lei — o que existe por acordo humano</td><td>As leis morais e políticas são relativas, convencionais, mutáveis</td></tr>
+<tr><td><strong><em>Physis</em></strong></td><td>Natureza — o que existe por necessidade natural</td><td>As leis naturais são universais e imutáveis</td></tr>
+<tr><td><strong><em>Nomos</em></strong></td><td>Convenção, lei — o que existe por acordo humano</td><td>As leis morais e políticas são relativas, convencionais, mutáveis</td></tr>
 </table></div>
 <p>Para os Sofistas, as leis morais e políticas não têm fundamento na natureza — são <em>nomoi</em> (convenções) que variam de cidade para cidade, de cultura para cultura. Não existe "justo por natureza" — o justo é o que cada comunidade convencionou chamar de justo.</p>
 <p><strong>Thrasymachus</strong> (personagem da <em>República</em> de Platão) radicaliza: "O justo é o interesse do mais forte."</p>
@@ -663,12 +686,12 @@ Se não há verdade objetiva, o que importa é <strong>persuadir</strong> — fa
 <h3>Contribuições positivas dos Sofistas</h3>
 <p>Apesar da crítica socrático-platônica, os Sofistas trouxeram contribuições genuínas:</p>
 <ul><li><strong>Democratização do saber:</strong> Tornaram a educação acessível a quem pudesse pagar — não apenas a uma elite aristocrática</li><li><strong>Filosofia da linguagem:</strong> Foram os primeiros a estudar sistematicamente a gramática, a retórica e as relações entre linguagem e realidade</li><li><strong>Relativismo cultural:</strong> Anteciparam, de certo modo, a antropologia moderna ao reconhecer que culturas diferentes têm valores diferentes — sem que uma seja necessariamente superior</li><li><strong>Crítica das instituições:</strong> Ao questionar o <em>nomos</em>, puseram em xeque a naturalidade das hierarquias sociais — incluindo a escravidão</li></ul>
-<div class="callout callout-gold">⭐ <strong>Ponto importante para concursos:</strong> Platão e Sócrates são críticos dos Sofistas, mas essa crítica não deve ser aceita acriticamente. A historiografia filosófica contemporânea reabilitou parcialmente os Sofistas como pensadores genuínos — não meros charlatões como Platão os retratava.</div>
+<p><div class="callout callout-gold">⭐ <strong>Ponto importante para concursos:</strong> Platão e Sócrates são críticos dos Sofistas, mas essa crítica não deve ser aceita acriticamente. A historiografia filosófica contemporânea reabilitou parcialmente os Sofistas como pensadores genuínos — não meros charlatões como Platão os retratava.</div>
 <h2>2.3 SÓCRATES: A MORAL COMO CONHECIMENTO</h2>
 <p>Sócrates (470–399 a.C.) é o grande antagonista dos Sofistas — e o fundador da tradição que associa <strong>ética e conhecimento</strong>.</p>
 <h3>A tese central socrática: virtude é conhecimento</h3>
 <p>Para Sócrates, existe uma tese fundamental chamada de <strong>intelectualismo moral</strong>:</p>
-<blockquote><em><strong>A virtude (<em>areté</em>) é conhecimento (<em>episteme</em>). Ninguém faz o mal voluntariamente — quem faz o mal o faz por ignorância do bem.</strong></em></blockquote>
+<blockquote><strong>A virtude (<em>areté</em>) é conhecimento (<em>episteme</em>). Ninguém faz o mal voluntariamente — quem faz o mal o faz por ignorância do bem.</strong></blockquote>
 <p>Essa tese tem implicações radicais:</p>
 <p><strong>1. Ninguém é mau voluntariamente:</strong> Se alguém pratica uma ação injusta, é porque não sabe o que é a justiça verdadeira. Se soubesse, agiria de forma justa — pois ninguém escolhe conscientemente o mal para si mesmo.</p>
 <p><strong>2. A virtude é ensinável:</strong> Se virtude é conhecimento, então é possível transmiti-la — o que está no coração do projeto educativo socrático e platônico (contra os Sofistas, que ensinavam retórica sem se preocupar com a verdade).</p>
@@ -689,9 +712,9 @@ Se não há verdade objetiva, o que importa é <strong>persuadir</strong> — fa
 <p><strong>Platão</strong> (428–348 a.C.) foi discípulo de Sócrates e fundador da <strong>Academia</strong> (387 a.C.) — a primeira instituição de ensino superior do Ocidente. Suas obras são escritas em forma de <strong>diálogos</strong> — Sócrates é o personagem principal na maioria deles.</p>
 <h3>A Teoria das Formas (Ideias)</h3>
 <p>Platão desenvolveu a resposta filosófica mais elaborada ao relativismo sofístico: se os Sofistas dizem que não há verdade objetiva, Platão responde que há — mas ela não está no mundo sensível (que muda), mas no <strong>mundo das Formas</strong> (<em>eidos</em> ou <em>idea</em>).</p>
-<p>As Formas são:
+<p>As Formas são:</p>
 <ul><li><strong>Eternas e imutáveis</strong> — ao contrário dos objetos sensíveis</li><li><strong>Universais</strong> — são o que todas as coisas particulares de um mesmo tipo têm em comum</li><li><strong>Objetos do conhecimento verdadeiro</strong> — só a razão as alcança; os sentidos alcançam apenas aparências</li></ul>
-Exemplo: todas as mesas particulares participam da Forma da Mesa — que é a mesa perfeita, eterna, imutável, que existe no mundo inteligível. O que vemos com os olhos são cópias imperfeitas.</p>
+<p><p>Exemplo: todas as mesas particulares participam da Forma da Mesa — que é a mesa perfeita, eterna, imutável, que existe no mundo inteligível. O que vemos com os olhos são cópias imperfeitas.</p>
 <h3>O Mito da Caverna e a questão do conhecimento moral</h3>
 <p>O <strong>Mito da Caverna</strong> (República, Livro VII) é a alegoria mais famosa de Platão e ilustra sua visão do conhecimento e da educação moral:</p>
 <p><strong>A alegoria:</strong> Prisioneiros acorrentados em uma caverna desde a infância veem apenas sombras projetadas na parede — e tomam essas sombras pela realidade. Um prisioneiro é libertado, sai da caverna, e com dificuldade (primeiro cega-se com a luz) vai gradualmente conhecendo a realidade fora da caverna — até contemplar o Sol (a Forma do Bem). Ao retornar para ajudar os outros, é ridicularizado e ameaçado.</p>
@@ -727,8 +750,8 @@ Exemplo: todas as mesas particulares participam da Forma da Mesa — que é a me
 <h2>2.5 ARISTÓTELES: ÉTICA, POLÍTICA E A VIDA BOA</h2>
 <p><strong>Aristóteles</strong> (384–322 a.C.) foi discípulo de Platão por 20 anos na Academia, mas divergiu do mestre em pontos fundamentais. Fundou o <strong>Liceu</strong> (335 a.C.) em Atenas.</p>
 <h3>A ética aristotélica: o bem como fim</h3>
-<p>Aristóteles começa sua obra ética fundamental — a <strong><em>Ética a Nicômaco</strong></em> (dedicada ao filho Nicômaco) — com a pergunta: <strong>qual é o bem supremo do ser humano?</strong></p>
-<p>Sua resposta: <strong>a <em>eudaimonia</strong></em> — a felicidade entendida como o pleno florescimento das capacidades humanas, especialmente da razão.</p>
+<p>Aristóteles começa sua obra ética fundamental — a <strong><em>Ética a Nicômaco</em></strong> (dedicada ao filho Nicômaco) — com a pergunta: <strong>qual é o bem supremo do ser humano?</strong></p>
+<p>Sua resposta: <strong>a <em>eudaimonia</em></strong> — a felicidade entendida como o pleno florescimento das capacidades humanas, especialmente da razão.</p>
 <p>Mas a <em>eudaimonia</em> aristotélica difere da socrático-platônica:</p>
 <div class="tbl-wrap"><table>
 <tr><th>Aspecto</th><th>Sócrates/Platão</th><th>Aristóteles</th></tr>
@@ -752,7 +775,7 @@ Exemplo: todas as mesas particulares participam da Forma da Mesa — que é a me
 <p><em>Phronesis</em> (prudência, sabedoria prática) é a virtude intelectual que nos permite determinar o meio-termo correto em cada situação concreta. É diferente da <em>sophia</em> (sabedoria teórica) — a <em>phronesis</em> orienta a ação moral no mundo real, não a contemplação das verdades eternas.</p>
 <h3>O ser humano como animal político</h3>
 <p>Para Aristóteles, o ser humano é por natureza um <strong>animal político</strong> (<em>zoon politikon</em>): só pode realizar sua natureza plenamente vivendo em comunidade política (<em>polis</em>). A <em>polis</em> não é um mal necessário — é o ambiente natural do florescimento humano.</p>
-<blockquote><em><em>"O homem é por natureza um animal político, e aquele que vive fora da polis é, ou uma besta, ou um deus."</em> — Aristóteles, <em>Política</em></em></blockquote>
+<blockquote><em>"O homem é por natureza um animal político, e aquele que vive fora da polis é, ou uma besta, ou um deus."</em> — Aristóteles, <em>Política</em></blockquote>
 <h2>2.6 SÍNTESE: AS TRÊS POSIÇÕES SOBRE MORAL E DISCURSO</h2>
 <div class="tbl-wrap"><table>
 <tr><th>Aspecto</th><th>Sofistas</th><th>Sócrates/Platão</th><th>Aristóteles</th></tr>
@@ -844,9 +867,9 @@ Exemplo: todas as mesas particulares participam da Forma da Mesa — que é a me
 </table></div>
   </div>
   <div class="topic-nav">
-    <button class="nav-btn" onclick="showTopic('T1')">← T01</button>
+    <button type="button" class="nav-btn" onclick="showTopic('T1')">← T01</button>
     <a href="D1_T02_Quiz.html" class="quiz-link-btn-lg">📝 Quiz do Tópico T02</a>
-    <button class="nav-btn" onclick="showTopic('T3')">T03 →</button>
+    <button type="button" class="nav-btn" onclick="showTopic('T3')">T03 →</button>
   </div>
 </section>
 <section id="topic-T3" class="topic-section" style="display:none">
@@ -867,24 +890,24 @@ Exemplo: todas as mesas particulares participam da Forma da Mesa — que é a me
 <p><strong>3. A herança grega filtrada pela fé:</strong> Os medievais não partiam do zero — herdaram a Filosofia grega (especialmente Platão e Aristóteles) e precisaram <strong>reconciliá-la com as verdades reveladas</strong>. Esse é o trabalho central da Escolástica.</p>
 <h2>3.2 O PROBLEMA CENTRAL: FÉ E RAZÃO</h2>
 <p>O problema fundamental da Filosofia Medieval pode ser formulado assim:</p>
-<blockquote><em><strong>Existe harmonia ou conflito entre o que a fé revela e o que a razão demonstra? E se houver conflito — qual prevalece?</strong></em></blockquote>
+<blockquote><strong>Existe harmonia ou conflito entre o que a fé revela e o que a razão demonstra? E se houver conflito — qual prevalece?</strong></blockquote>
 <p>Esse não é um problema simples. Envolve questões como:</p>
 <ul><li>A existência de Deus pode ser <em>provada</em> racionalmente, ou apenas <em>crida</em>?</li><li>A criação do mundo <em>ex nihilo</em> (do nada) é compatível com a filosofia aristotélica (que pressupunha a eternidade da matéria)?</li><li>A imortalidade da alma é demonstrável pela razão ou é artigo de fé?</li><li>O ser humano tem livre-arbítrio se Deus é onisciente e sabe de antemão todas as nossas escolhas?</li></ul>
-Cada filósofo medieval respondeu a essas questões de forma diferente — gerando as grandes posições que estruturam o período.
+<p><p>Cada filósofo medieval respondeu a essas questões de forma diferente — gerando as grandes posições que estruturam o período.</p>
 <h2>3.3 PATRÍSTICA: OS PAIS DA IGREJA E A PRIMEIRA SÍNTESE</h2>
 <p>O período <strong>Patrístico</strong> (séc. II–VIII d.C.) corresponde aos escritos dos <strong>Padres da Igreja</strong> (<em>patres</em> = pais) — teólogos e filósofos que estabeleceram as bases doutrinárias do Cristianismo. O desafio patrístico era duplo: defender o Cristianismo das perseguições romanas e das heresias internas, e articulá-lo com a filosofia grega disponível.</p>
 <h3>Tertuliano: Razão e Fé são incompatíveis</h3>
 <p><strong>Tertuliano</strong> (155–220 d.C.) representa a posição mais radical de subordinação da razão à fé:</p>
-<blockquote><em><em>"Que tem Atenas a ver com Jerusalém? Que tem a Academia a ver com a Igreja?"</em></em></blockquote>
+<blockquote><em>"Que tem Atenas a ver com Jerusalém? Que tem a Academia a ver com a Igreja?"</em></blockquote>
 <p>E a frase mais célebre (embora a atribuição exata seja debatida):</p>
-<blockquote><em><em>"Credo quia absurdum"</em> — "Creio porque é absurdo."</em></blockquote>
+<blockquote><em>"Credo quia absurdum"</em> — "Creio porque é absurdo."</blockquote>
 <p>Para Tertuliano, a fé cristã não precisa de justificação racional — ela se sustenta por si mesma. A Filosofia grega é suspeita e potencialmente corrupta. Razão e fé são domínios separados e incompatíveis.</p>
 <div class="callout callout-gold">⭐ <strong>Para concursos:</strong> Tertuliano representa a posição de <strong>primazia absoluta da fé sobre a razão</strong> — ou separação radical dos dois domínios.</div>
 <h3>Santo Agostinho: Fé que busca compreender</h3>
 <p><strong>Santo Agostinho de Hipona</strong> (354–430 d.C.) é o maior filósofo da Patrística latina e um dos pensadores mais influentes de toda a história ocidental. Convertido ao Cristianismo após anos de busca intelectual e espiritual, ele realizou a primeira grande síntese entre Filosofia (especialmente o <strong>Neoplatonismo</strong> de Plotino) e a fé cristã.</p>
 <p><strong>A fórmula agostiniana central:</strong></p>
-<blockquote><em><em>"Crede ut intelligas"</em> — "Crê para que entendas."</em></blockquote>
-<blockquote><em><em>"Intellige ut credas"</em> — "Entende para que creias."</em></blockquote>
+<blockquote><em>"Crede ut intelligas"</em> — "Crê para que entendas."
+> <em>"Intellige ut credas"</em> — "Entende para que creias."</blockquote>
 <p>Para Agostinho, fé e razão não são opostas — são <strong>complementares e mutuamente necessárias</strong>. A fé precede e orienta a razão, mas a razão aprofunda e compreende aquilo que a fé afirma. O crente não é irracional — ele usa a razão para penetrar mais fundo nas verdades reveladas.</p>
 <p><strong>Contribuições filosóficas de Agostinho:</strong></p>
 <div class="tbl-wrap"><table>
@@ -898,12 +921,12 @@ Cada filósofo medieval respondeu a essas questões de forma diferente — geran
 <div class="callout callout-gold">⭐ <strong>Agostinho e Platão:</strong> Agostinho é profundamente platonista — ele substitui o Mundo das Formas pelo intelecto divino (as verdades eternas existem na mente de Deus, não num mundo separado). A iluminação divina substitui a reminiscência platônica.</div>
 <h2>3.4 ESCOLÁSTICA: A GRANDE SÍNTESE MEDIEVAL</h2>
 <p>A <strong>Escolástica</strong> (<em>scholasticus</em> = relativo às escolas) é o método filosófico-teológico dominante entre os séculos IX e XIV, desenvolvido nas escolas catedrais e, depois, nas primeiras universidades medievais (Bolonha, Paris, Oxford).</p>
-<p>O método escolástico é caracterizado por:
+<p>O método escolástico é caracterizado por:</p>
 <ul><li><strong>Leitura de auctoritates</strong> (autoridades — textos sagrados e filosóficos)</li><li><strong>Levantamento de objeções</strong> (<em>obiectiones</em>)</li><li><strong>Resposta fundamentada</strong> (<em>responsio</em>)</li><li><strong>Refutação das objeções</strong> (<em>ad obiectiones</em>)</li></ul>
-A <em>Suma Teológica</em> de Tomás de Aquino é o exemplo mais perfeito desse método.</p>
+<p><p>A <em>Suma Teológica</em> de Tomás de Aquino é o exemplo mais perfeito desse método.</p>
 <h3>Anselmo de Cantuária: Fé que busca a inteligência</h3>
 <p><strong>Anselmo de Cantuária</strong> (1033–1109) formulou o lema que define a Escolástica:</p>
-<blockquote><em><em>"Fides quaerens intellectum"</em> — <strong>"A fé que busca a inteligência."</strong></em></blockquote>
+<blockquote><em>"Fides quaerens intellectum"</em> — <strong>"A fé que busca a inteligência."</strong></blockquote>
 <p>Para Anselmo, a fé é o ponto de partida — mas a razão filosófica é o instrumento para aprofundar e compreender o que se crê. Não se trata de provar a fé pela razão — mas de usar a razão para compreender melhor o que a fé já afirma.</p>
 <p><strong>O Argumento Ontológico de Anselmo:</strong></p>
 <p>Anselmo formulou o argumento filosófico mais debatido da história da Filosofia: a prova ontológica da existência de Deus.</p>
@@ -953,7 +976,7 @@ A <em>Suma Teológica</em> de Tomás de Aquino é o exemplo mais perfeito desse 
 <h3>Guilherme de Ockham e a "Navalha de Ockham"</h3>
 <p><strong>Guilherme de Ockham</strong> (1285–1347) é o grande nominalista medieval. Sua posição tem implicações radicais: se os universais são apenas nomes, então a teologia racional (como a de Tomás) é impossível — não podemos alcançar Deus pela razão; só pela fé.</p>
 <p><strong>A Navalha de Ockham:</strong>
-<blockquote><em><em>"Não se devem multiplicar entidades além do necessário."</em> (<em>Entia non sunt multiplicanda praeter necessitatem</em>)</em></blockquote></p>
+> <em>"Não se devem multiplicar entidades além do necessário."</em> (<em>Entia non sunt multiplicanda praeter necessitatem</em>)</p>
 <p>Princípio de parcimônia: a explicação mais simples, que usa menos entidades, deve ser preferida. Isso é tanto um princípio lógico quanto uma crítica ao realismo excessivo: não precisamos postular universais existentes separadamente quando a experiência dos particulares é suficiente.</p>
 <div class="callout callout-gold">⭐ <strong>A Navalha de Ockham</strong> é um dos conceitos mais cobrados da Filosofia Medieval em concursos de qualquer nível. Ela antecipa o empirismo moderno e é usada até hoje no pensamento científico.</div>
 <h2>3.7 A FILOSOFIA ISLÂMICA E JUDAICA MEDIEVAL</h2>
@@ -1068,9 +1091,9 @@ A <em>Suma Teológica</em> de Tomás de Aquino é o exemplo mais perfeito desse 
 </table></div>
   </div>
   <div class="topic-nav">
-    <button class="nav-btn" onclick="showTopic('T2')">← T02</button>
+    <button type="button" class="nav-btn" onclick="showTopic('T2')">← T02</button>
     <a href="D1_T03_Quiz.html" class="quiz-link-btn-lg">📝 Quiz do Tópico T03</a>
-    <button class="nav-btn" onclick="showTopic('T4')">T04 →</button>
+    <button type="button" class="nav-btn" onclick="showTopic('T4')">T04 →</button>
   </div>
 </section>
 <section id="topic-T4" class="topic-section" style="display:none">
@@ -1093,7 +1116,7 @@ A <em>Suma Teológica</em> de Tomás de Aquino é o exemplo mais perfeito desse 
 <p><strong>4. A invenção da imprensa e a circulação de ideias:</strong> A difusão do conhecimento para além das universidades e dos mosteiros criou novos interlocutores e novas exigências de clareza e justificação.</p>
 <h2>4.2 O PROBLEMA EPISTEMOLÓGICO CENTRAL</h2>
 <p>O problema que organiza toda a Filosofia Moderna pode ser formulado assim:</p>
-<blockquote><em><strong>Qual é a origem, o alcance e os limites do conhecimento humano? É possível alcançar certezas absolutas — e, em caso afirmativo, como?</strong></em></blockquote>
+<blockquote><strong>Qual é a origem, o alcance e os limites do conhecimento humano? É possível alcançar certezas absolutas — e, em caso afirmativo, como?</strong></blockquote>
 <p>Duas grandes tradições responderam a essa questão de formas opostas:</p>
 <div class="tbl-wrap"><table>
 <tr><th>Tradição</th><th>Resposta</th><th>Filósofos principais</th></tr>
@@ -1123,7 +1146,7 @@ A <em>Suma Teológica</em> de Tomás de Aquino é o exemplo mais perfeito desse 
 <p><strong>Resultado:</strong> Praticamente tudo pode ser posto em dúvida. Mas há uma exceção.</p>
 <h4>O <em>Cogito</em>: o fundamento indubitável</h4>
 <p>Ao duvidar de tudo, Descartes percebe que há algo que a dúvida não pode eliminar: <strong>o próprio ato de duvidar</strong>. Para duvidar, é preciso pensar. Para pensar, é preciso existir.</p>
-<blockquote><em><strong><em>"Cogito ergo sum"</strong></em> — <strong>"Penso, logo existo."</strong></em></blockquote>
+<blockquote><strong><em>"Cogito ergo sum"</em></strong> — <strong>"Penso, logo existo."</strong></blockquote>
 <p>Esta é a primeira certeza indubitável: <strong>mesmo que o gênio maligno me engane em tudo, ele não pode me enganar de que eu existo enquanto penso</strong>. A existência do sujeito pensante é a única certeza que sobrevive à dúvida radical.</p>
 <div class="callout callout-gold">⭐ <strong>Para concursos:</strong> O <em>cogito</em> é o argumento mais cobrado de Descartes. Atenção: "penso, logo existo" não é um silogismo — não é "todo ser que pensa existe; eu penso; logo existo." É uma intuição imediata: no próprio ato de pensar, percebo imediatamente que existo.</div>
 <h4>A reconstrução do conhecimento</h4>
@@ -1143,7 +1166,7 @@ A <em>Suma Teológica</em> de Tomás de Aquino é o exemplo mais perfeito desse 
 <h4>As ideias inatas</h4>
 <p>Para o racionalismo cartesiano, algumas ideias são <strong>inatas</strong> — estão na mente antes e independentemente de qualquer experiência:</p>
 <ul><li>A ideia de <strong>Deus</strong> (ser infinito e perfeitíssimo)</li><li>As <strong>verdades matemáticas</strong> (triângulo tem 180°)</li><li>As <strong>noções comuns</strong> (tudo tem uma causa; o nada não pode produzir nada)</li></ul>
-Essas ideias não vêm dos sentidos — são estruturas da própria razão.
+<p><p>Essas ideias não vêm dos sentidos — são estruturas da própria razão.</p>
 <h3>Baruch de Spinoza (1632–1677)</h3>
 <p><strong>Spinoza</strong> é o mais radical dos racionalistas. Sua obra principal é a <em>Ética</em> (1677) — escrita em formato geométrico, com definições, axiomas, proposições e demonstrações, como os <em>Elementos</em> de Euclides.</p>
 <p><strong>Monismo:</strong> Spinoza rejeita o dualismo cartesiano. Para ele, existe apenas <strong>uma única substância</strong> — que pode ser chamada de "Deus" ou "Natureza" (<em>Deus sive Natura</em>). Pensamento e extensão são apenas dois dos infinitos <strong>atributos</strong> dessa única substância. Não há dualidade entre mente e corpo — são dois aspectos da mesma realidade.</p>
@@ -1172,10 +1195,10 @@ Essas ideias não vêm dos sentidos — são estruturas da própria razão.
 </table></div>
 <p><strong>Qualidades primárias e secundárias:</strong> Locke distingue:
 <ul><li><strong>Qualidades primárias:</strong> existem no objeto independentemente do observador — extensão, figura, número, movimento</li><li><strong>Qualidades secundárias:</strong> dependem do observador — cor, som, sabor, odor (o limão tem a <em>potência</em> de produzir a sensação de amarelo em nós, mas o amarelo não está no limão)</li></ul>
-<strong>Consequências políticas:</strong> Locke é também o pai do liberalismo político. Sua teoria do conhecimento (sem ideias inatas, conhecimento construído pela experiência) fundamenta sua teoria política: não há autoridade política "inata" — toda autoridade legítima deriva do consentimento dos governados.</p>
+<p><strong>Consequências políticas:</strong> Locke é também o pai do liberalismo político. Sua teoria do conhecimento (sem ideias inatas, conhecimento construído pela experiência) fundamenta sua teoria política: não há autoridade política "inata" — toda autoridade legítima deriva do consentimento dos governados.</p>
 <h3>George Berkeley (1685–1753): O empirismo idealista</h3>
 <p>Berkeley é o empirista mais radical — e paradoxalmente o mais próximo do misticismo. Sua tese central:</p>
-<blockquote><em><strong><em>"Esse est percipi"</strong></em> — <strong>"Ser é ser percebido."</strong></em></blockquote>
+<blockquote><strong><em>"Esse est percipi"</em></strong> — <strong>"Ser é ser percebido."</strong></blockquote>
 <p>Para Berkeley, os objetos materiais não existem independentemente da percepção. Quando não estou percebendo uma árvore, ela não existe? Berkeley responde: ela continua existindo porque Deus a percebe continuamente. O mundo material não é uma substância independente — é um conjunto de ideias na mente de Deus que ele comunica às mentes humanas.</p>
 <p>Berkeley usa o empirismo para <strong>combater o materialismo</strong>: se só conhecemos nossas percepções, nunca temos acesso à "matéria" em si — logo, não há razão para postular sua existência. O idealismo de Berkeley é uma resposta ao materialismo de inspiração newtoniana.</p>
 <h3>David Hume (1711–1776): O empirismo radical e o ceticismo</h3>
@@ -1348,9 +1371,9 @@ Essas ideias não vêm dos sentidos — são estruturas da própria razão.
 </table></div>
   </div>
   <div class="topic-nav">
-    <button class="nav-btn" onclick="showTopic('T3')">← T03</button>
+    <button type="button" class="nav-btn" onclick="showTopic('T3')">← T03</button>
     <a href="D1_T04_Quiz.html" class="quiz-link-btn-lg">📝 Quiz do Tópico T04</a>
-    <button class="nav-btn" onclick="showTopic('T5')">T05 →</button>
+    <button type="button" class="nav-btn" onclick="showTopic('T5')">T05 →</button>
   </div>
 </section>
 <section id="topic-T5" class="topic-section" style="display:none">
@@ -1365,21 +1388,21 @@ Essas ideias não vêm dos sentidos — são estruturas da própria razão.
 <p><strong>Immanuel Kant</strong> (1724–1804) é considerado um dos maiores filósofos de todos os tempos e o pensador que operou o que ele mesmo chamou de <strong>"Revolução Copernicana"</strong> na Filosofia. Nasceu em Königsberg (atual Kaliningrado, Rússia), onde viveu e ensinou a vida inteira, sem jamais se afastar da cidade por mais de alguns quilômetros.</p>
 <p>Kant enfrentou um problema que o impasse entre racionalismo e empirismo havia deixado irresoluto:</p>
 <ul><li>O <strong>racionalismo</strong> (Descartes, Leibniz) afirmava que a razão pura pode conhecer verdades necessárias e universais — mas não explicava como a razão, partindo de si mesma, pode alcançar o mundo real.</li><li>O <strong>empirismo</strong> (Locke, Hume) afirmava que todo conhecimento vem da experiência — mas Hume demonstrou que a experiência não pode fundamentar princípios universais e necessários como a causalidade.</li></ul>
-Kant percebeu que <strong>ambas as tradições tinham razão em parte e erravam em parte</strong>. Sua solução foi radicalmente nova: em vez de perguntar "como o sujeito conhece o objeto?", Kant inverteu a questão — <strong>como o objeto se conforma ao sujeito que conhece?</strong>
+<p>Kant percebeu que <strong>ambas as tradições tinham razão em parte e erravam em parte</strong>. Sua solução foi radicalmente nova: em vez de perguntar "como o sujeito conhece o objeto?", Kant inverteu a questão — <strong>como o objeto se conforma ao sujeito que conhece?</strong>
 <p>Essa inversão é a <strong>Revolução Copernicana</strong> de Kant: assim como Copérnico descobriu que não é o Sol que gira em torno da Terra, mas o contrário, Kant propõe que não é o sujeito que se adapta passivamente ao objeto — é o <strong>objeto que se conforma às estruturas do sujeito que conhece</strong>.</p>
 <h2>5.2 AS TRÊS OBRAS CRÍTICAS DE KANT</h2>
 <p>A filosofia de Kant está organizada em três grandes obras, cada uma correspondendo a uma faculdade humana:</p>
 <div class="tbl-wrap"><table>
 <tr><th>Obra</th><th>Ano</th><th>Faculdade</th><th>Pergunta central</th></tr>
-<tr><td><strong><em>Crítica da Razão Pura</strong></em></td><td>1781</td><td><strong>Razão teórica</strong> (conhecimento)</td><td>O que posso conhecer?</td></tr>
-<tr><td><strong><em>Crítica da Razão Prática</strong></em></td><td>1788</td><td><strong>Razão prática</strong> (moral)</td><td>O que devo fazer?</td></tr>
-<tr><td><strong><em>Crítica do Juízo</strong></em></td><td>1790</td><td><strong>Faculdade do juízo</strong> (estética e teleologia)</td><td>O que me é permitido esperar?</td></tr>
+<tr><td><strong><em>Crítica da Razão Pura</em></strong></td><td>1781</td><td><strong>Razão teórica</strong> (conhecimento)</td><td>O que posso conhecer?</td></tr>
+<tr><td><strong><em>Crítica da Razão Prática</em></strong></td><td>1788</td><td><strong>Razão prática</strong> (moral)</td><td>O que devo fazer?</td></tr>
+<tr><td><strong><em>Crítica do Juízo</em></strong></td><td>1790</td><td><strong>Faculdade do juízo</strong> (estética e teleologia)</td><td>O que me é permitido esperar?</td></tr>
 </table></div>
 <div class="callout callout-gold">⭐ <strong>Para concursos:</strong> As três perguntas kantianas fundamentais são frequentemente cobradas. O Tópico 5 foca principalmente na <em>Crítica da Razão Pura</em> (teoria do conhecimento) e na <em>Crítica da Razão Prática</em> (ética). A <em>Crítica do Juízo</em> (estética) será abordada marginalmente.</div>
 <h2>5.3 A CRÍTICA DA RAZÃO PURA: TEORIA DO CONHECIMENTO</h2>
 <h3>A pergunta fundamental</h3>
 <p>A pergunta central da <em>Crítica da Razão Pura</em> é:</p>
-<blockquote><em><strong>Como são possíveis os juízos sintéticos <em>a priori</em>?</strong></em></blockquote>
+<blockquote><strong>Como são possíveis os juízos sintéticos <em>a priori</em>?</strong></blockquote>
 <p>Para entender essa pergunta, é preciso compreender duas distinções kantianas fundamentais.</p>
 <h3>Distinção 1: Juízos analíticos × juízos sintéticos</h3>
 <div class="tbl-wrap"><table>
@@ -1390,14 +1413,14 @@ Kant percebeu que <strong>ambas as tradições tinham razão em parte e erravam 
 <h3>Distinção 2: Conhecimento <em>a priori</em> × conhecimento <em>a posteriori</em></h3>
 <div class="tbl-wrap"><table>
 <tr><th>Tipo</th><th>Definição</th><th>Características</th><th>Exemplos</th></tr>
-<tr><td><strong><em>A priori</strong></em></td><td>Independente da experiência</td><td>Necessário e universal</td><td>"7 + 5 = 12"; "todo efeito tem uma causa"</td></tr>
-<tr><td><strong><em>A posteriori</strong></em></td><td>Dependente da experiência</td><td>Contingente e particular</td><td>"A água ferve a 100°C"; "este livro é vermelho"</td></tr>
+<tr><td><strong><em>A priori</em></strong></td><td>Independente da experiência</td><td>Necessário e universal</td><td>"7 + 5 = 12"; "todo efeito tem uma causa"</td></tr>
+<tr><td><strong><em>A posteriori</em></strong></td><td>Dependente da experiência</td><td>Contingente e particular</td><td>"A água ferve a 100°C"; "este livro é vermelho"</td></tr>
 </table></div>
 <h3>A questão central: os juízos sintéticos <em>a priori</em></h3>
 <p>Kant identifica um tipo de juízo que não se encaixa nem no racionalismo nem no empirismo:</p>
 <p><strong>Juízos sintéticos <em>a priori</em>:</strong> São juízos que:
 <ul><li><strong>Ampliam</strong> nosso conhecimento (sintéticos — não são apenas explicativos)</li><li>São <strong>necessários e universais</strong> (<em>a priori</em> — não vêm da experiência)</li></ul>
-<strong>Exemplos:</strong></p>
+<p><strong>Exemplos:</strong></p>
 <div class="tbl-wrap"><table>
 <tr><th>Juízo</th><th>Por que sintético?</th><th>Por que <em>a priori</em>?</th></tr>
 <tr><td>"7 + 5 = 12"</td><td>"12" não está contido nos conceitos de "7" e "5" — precisamos de uma síntese mental</td><td>Necessário e universal — válido em qualquer experiência</td></tr>
@@ -1406,7 +1429,7 @@ Kant percebeu que <strong>ambas as tradições tinham razão em parte e erravam 
 </table></div>
 <p><strong>O problema:</strong> Como é possível que certos juízos sejam ao mesmo tempo informativos (sintéticos) e necessariamente universais (<em>a priori</em>)? Para o empirismo, a necessidade e universalidade vêm da razão — mas a razão pura só produz analíticos. Para o racionalismo, a informatividade vem da experiência — mas a experiência só produz contingentes. Kant precisa de uma terceira explicação.</p>
 <h3>A solução kantiana: o sujeito constitui o objeto</h3>
-<p>A solução de Kant é a <strong>Revolução Copernicana</strong>: os juízos sintéticos <em>a priori</em> são possíveis porque o <strong>sujeito que conhece possui estruturas <em>a priori</strong></em> que <strong>organizam</strong> a experiência antes de qualquer dado empírico.</p>
+<p>A solução de Kant é a <strong>Revolução Copernicana</strong>: os juízos sintéticos <em>a priori</em> são possíveis porque o <strong>sujeito que conhece possui estruturas <em>a priori</em></strong> que <strong>organizam</strong> a experiência antes de qualquer dado empírico.</p>
 <p>O conhecimento resulta da combinação de dois componentes:</p>
 <div class="tbl-wrap"><table>
 <tr><th>Componente</th><th>Origem</th><th>O que fornece</th></tr>
@@ -1417,7 +1440,7 @@ Kant percebeu que <strong>ambas as tradições tinham razão em parte e erravam 
 <h3>As estruturas <em>a priori</em> do sujeito: a Estética e a Analítica Transcendentais</h3>
 <p>Kant divide sua análise das condições de possibilidade do conhecimento em dois níveis:</p>
 <h4>Nível 1: Estética Transcendental — as formas da intuição sensível</h4>
-<p>Antes de qualquer conceito, a experiência começa pela <strong>intuição sensível</strong> — pela recepção de dados pelos sentidos. Mas esses dados chegam já organizados por <strong>duas formas <em>a priori</strong></em> da intuição:</p>
+<p>Antes de qualquer conceito, a experiência começa pela <strong>intuição sensível</strong> — pela recepção de dados pelos sentidos. Mas esses dados chegam já organizados por <strong>duas formas <em>a priori</em></strong> da intuição:</p>
 <div class="tbl-wrap"><table>
 <tr><th>Forma <em>a priori</em></th><th>Corresponde a</th><th>Função</th></tr>
 <tr><td><strong>Espaço</strong></td><td>Sentido externo (percepção dos objetos fora de nós)</td><td>Organiza as percepções externas — todo objeto externo é percebido no espaço</td></tr>
@@ -1467,7 +1490,7 @@ Kant percebeu que <strong>ambas as tradições tinham razão em parte e erravam 
 <p>Se a razão teórica não pode alcançar Deus, alma e liberdade como objetos de conhecimento, Kant abre uma segunda via: a <strong>razão prática</strong> — a razão em seu uso moral.</p>
 <h3>O fundamento da moral: a boa vontade</h3>
 <p>Kant começa a <em>Fundamentação da Metafísica dos Costumes</em> (1785 — obra introdutória à ética kantiana) com uma das frases mais famosas da filosofia:</p>
-<blockquote><em><em>"Nada no mundo — na verdade, nada fora do mundo — pode ser chamado de bom sem qualificação, exceto uma boa vontade."</em></em></blockquote>
+<blockquote><em>"Nada no mundo — na verdade, nada fora do mundo — pode ser chamado de bom sem qualificação, exceto uma boa vontade."</em></blockquote>
 <p>A <strong>boa vontade</strong> é o único bem incondicional: saúde, riqueza, coragem, inteligência podem ser usadas para o bem ou para o mal — dependem das circunstâncias. Só a boa vontade — a vontade que age por dever moral — é boa em si mesma, independentemente dos resultados.</p>
 <h3>Agir por dever vs. agir conforme ao dever</h3>
 <p>Kant distingue:</p>
@@ -1480,15 +1503,15 @@ Kant percebeu que <strong>ambas as tradições tinham razão em parte e erravam 
 <h3>O Imperativo Categórico</h3>
 <p>A <strong>lei moral</strong>, para Kant, deve ser universal e incondicional — não pode depender de circunstâncias, desejos ou consequências. Kant formula essa lei moral na forma do <strong>Imperativo Categórico</strong> — que apresenta em diferentes formulações equivalentes:</p>
 <h4>1ª Formulação — Fórmula da Universalidade:</h4>
-<blockquote><em><strong><em>"Age apenas segundo a máxima pela qual possas ao mesmo tempo querer que ela se torne uma lei universal."</strong></em></em></blockquote>
+<blockquote><strong><em>"Age apenas segundo a máxima pela qual possas ao mesmo tempo querer que ela se torne uma lei universal."</em></strong></blockquote>
 <p><strong>Como usar:</strong> Antes de agir, pergunte: "E se todos fizessem isso?" Se a universalização da sua máxima gerar contradição ou for impossível, a ação é imoral.</p>
 <p><strong>Exemplo — Promessa falsa:</strong> "Posso fazer uma promessa falsa quando preciso de dinheiro?" Universalize: "Todos podem fazer promessas falsas quando precisam de dinheiro." Resultado: a própria instituição da promessa colapsa (ninguém acreditaria em promessas) — contradição. Logo, fazer promessas falsas é imoral.</p>
 <h4>2ª Formulação — Fórmula da Humanidade:</h4>
-<blockquote><em><strong><em>"Age de tal modo que uses a humanidade, tanto na tua pessoa como na de qualquer outro, sempre e ao mesmo tempo como fim, e nunca simplesmente como meio."</strong></em></em></blockquote>
+<blockquote><strong><em>"Age de tal modo que uses a humanidade, tanto na tua pessoa como na de qualquer outro, sempre e ao mesmo tempo como fim, e nunca simplesmente como meio."</em></strong></blockquote>
 <p><strong>Significado:</strong> Toda pessoa humana tem <strong>dignidade</strong> (<em>Würde</em>) — um valor absoluto, incomparável, que não pode ser instrumentalizado. Usar pessoas como simples meios para fins próprios é imoral.</p>
 <p><strong>Exemplo:</strong> Mentir para alguém é usar essa pessoa como meio (instrumento) para meus fins — violando sua racionalidade e autonomia. É imoral mesmo se os resultados forem bons.</p>
 <h4>3ª Formulação — Fórmula da Autonomia:</h4>
-<blockquote><em><strong><em>"Age apenas segundo máximas que possas ao mesmo tempo querer como leis de uma legislação universal."</strong></em></em></blockquote>
+<blockquote><strong><em>"Age apenas segundo máximas que possas ao mesmo tempo querer como leis de uma legislação universal."</em></strong></blockquote>
 <p><strong>Significado:</strong> O ser racional é ao mesmo tempo <strong>legislador</strong> e <strong>súdito</strong> da lei moral — ele dá a si mesmo a lei que é universalmente válida. Essa <strong>autonomia</strong> (auto-legislação) é a essência da moralidade e da dignidade humana.</p>
 <p><strong>Autonomia × Heteronomia:</strong></p>
 <div class="tbl-wrap"><table>
@@ -1520,7 +1543,7 @@ Kant percebeu que <strong>ambas as tradições tinham razão em parte e erravam 
 <h3>Estética transcendental (julgamento do belo)</h3>
 <p>Kant distingue o belo do agradável e do útil:</p>
 <ul><li><strong>Agradável:</strong> prazer subjetivo, individual — "este perfume me agrada"</li><li><strong>Útil:</strong> satisfaz um interesse prático — "este martelo é bom para pregar"</li><li><strong>Belo:</strong> prazer desinteressado, universal e necessário — "esta paisagem é bela" implica que todos deveriam concordar</li></ul>
-O <strong>julgamento estético</strong> é:
+<p>O <strong>julgamento estético</strong> é:
 <ul><li><strong>Desinteressado:</strong> não depende de posse ou utilidade</li><li><strong>Universal:</strong> pretende validade para todos — "é belo", não "é belo para mim"</li><li><strong>Necessário:</strong> não é uma simples preferência — é um julgamento com pretensão de validade geral</li><li><strong>Sem conceito:</strong> não se funda em conceito determinado — é uma harmonia livre entre imaginação e entendimento</li></ul>
 <h3>Teleologia</h3>
 <p>Kant analisa a aparente <strong>finalidade</strong> da natureza — especialmente nos organismos vivos. A natureza parece agir com finalidade, como se fosse um projeto intencional — mas isso não nos permite concluir que há um designer. A finalidade é um <strong>princípio regulativo</strong> (modo de pensar a natureza) — não um <strong>princípio constitutivo</strong> (afirmação sobre como a natureza realmente é).</p>
@@ -1615,8 +1638,8 @@ O <strong>julgamento estético</strong> é:
 <h2>TABELA — JUÍZOS KANTIANOS</h2>
 <div class="tbl-wrap"><table>
 <tr><th>Tipo de Juízo</th><th>Analítico</th><th>Sintético</th></tr>
-<tr><td><strong><em>A priori</strong></em></td><td>Analítico <em>a priori</em>: verdades lógicas ("solteiro é não-casado")</td><td><strong>Sintético <em>a priori</strong></em>: PROBLEMA CENTRAL — "7+5=12"; "todo efeito tem causa"</td></tr>
-<tr><td><strong><em>A posteriori</strong></em></td><td>Analítico <em>a posteriori</em>: impossível (seria contraditório)</td><td>Sintético <em>a posteriori</em>: fatos empíricos ("a água ferve a 100°C")</td></tr>
+<tr><td><strong><em>A priori</em></strong></td><td>Analítico <em>a priori</em>: verdades lógicas ("solteiro é não-casado")</td><td><strong>Sintético <em>a priori</em></strong>: PROBLEMA CENTRAL — "7+5=12"; "todo efeito tem causa"</td></tr>
+<tr><td><strong><em>A posteriori</em></strong></td><td>Analítico <em>a posteriori</em>: impossível (seria contraditório)</td><td>Sintético <em>a posteriori</em>: fatos empíricos ("a água ferve a 100°C")</td></tr>
 </table></div>
 <h2>TABELA — IMPERATIVO CATEGÓRICO × IMPERATIVO HIPOTÉTICO</h2>
 <div class="tbl-wrap"><table>
@@ -1635,9 +1658,9 @@ O <strong>julgamento estético</strong> é:
 </table></div>
   </div>
   <div class="topic-nav">
-    <button class="nav-btn" onclick="showTopic('T4')">← T04</button>
+    <button type="button" class="nav-btn" onclick="showTopic('T4')">← T04</button>
     <a href="D1_T05_Quiz.html" class="quiz-link-btn-lg">📝 Quiz do Tópico T05</a>
-    <button class="nav-btn" onclick="showTopic('T6')">T06 →</button>
+    <button type="button" class="nav-btn" onclick="showTopic('T6')">T06 →</button>
   </div>
 </section>
 <section id="topic-T6" class="topic-section" style="display:none">
@@ -1660,7 +1683,7 @@ O <strong>julgamento estético</strong> é:
 <h2>6.2 O NATURALISMO POLÍTICO: ARISTÓTELES COMO REFERÊNCIA</h2>
 <p>Antes de examinar o contratualismo moderno, é fundamental compreender o <strong>naturalismo político</strong> contra o qual os contratualistas reagem.</p>
 <p><strong>Aristóteles</strong> (já estudado no Tópico 2) formulou a tese fundamental do naturalismo:</p>
-<blockquote><em><em>"O ser humano é por natureza um animal político."</em> (<em>Política</em>, Livro I)</em></blockquote>
+<blockquote><em>"O ser humano é por natureza um animal político."</em> (<em>Política</em>, Livro I)</blockquote>
 <p>Para Aristóteles, a <em>polis</em> (cidade-Estado) não é uma criação artificial ou convencional — é o ambiente <em>natural</em> em que o ser humano realiza sua natureza racional e social. Viver em comunidade política não é uma escolha — é uma necessidade inscrita na natureza humana.</p>
 <h3>Consequências do naturalismo aristotélico:</h3>
 <p><strong>1. A sociedade política é anterior ao indivíduo:</strong> A <em>polis</em> não é criada por indivíduos que decidem se associar — ela é a condição de possibilidade do próprio desenvolvimento humano. O todo (a cidade) é anterior às partes (os indivíduos).</p>
@@ -1680,13 +1703,13 @@ O <strong>julgamento estético</strong> é:
 <p><strong>Contexto:</strong> Hobbes viveu a Guerra Civil inglesa (1642–1651) — um período de caos, violência e instabilidade política. Sua filosofia política é uma resposta direta a esse horror: como garantir a paz e a ordem?</p>
 <h3>O estado de natureza hobbesiano</h3>
 <p>Para Hobbes, o estado de natureza é uma situação de <strong>guerra de todos contra todos</strong> (<em>bellum omnium contra omnes</em>):</p>
-<blockquote><em><em>"A vida do homem [no estado de natureza] é solitária, pobre, sórdida, brutal e curta."</em></em></blockquote>
+<blockquote><em>"A vida do homem [no estado de natureza] é solitária, pobre, sórdida, brutal e curta."</em></blockquote>
 <p><strong>Por que o estado de natureza é guerra?</strong></p>
-<p>Hobbes parte de uma antropologia pessimista:
+<p>Hobbes parte de uma antropologia pessimista:</p>
 <ul><li>Todos os seres humanos são naturalmente <strong>iguais</strong> em capacidades (o mais fraco pode matar o mais forte durante o sono)</li><li>Todos buscam seu próprio <strong>interesse e autopreservação</strong></li><li>Com recursos escassos e sem autoridade comum, o conflito é inevitável</li></ul>
-No estado de natureza:
+<p><p>No estado de natureza:</p>
 <ul><li><strong>Não há propriedade</strong> — o que é meu é o que consigo manter pela força</li><li><strong>Não há justiça ou injustiça</strong> — sem lei comum, nada é justo ou injusto</li><li><strong>Não há moral</strong> — as noções de bem e mal são relativas ao poder de cada um</li></ul>
-<h3>O contrato social hobbesiano</h3></p>
+<p><p><h3>O contrato social hobbesiano</h3></p>
 <p>Para sair do estado de natureza, os indivíduos firmam um contrato: <strong>renunciam a todos os seus direitos naturais</strong> e transferem todo o poder a um soberano (que pode ser um indivíduo ou uma assembleia).</p>
 <p><strong>Características do soberano hobbesiano:</strong></p>
 <div class="tbl-wrap"><table>
@@ -1703,10 +1726,10 @@ No estado de natureza:
 <p><strong>Contexto:</strong> Locke viveu a Revolução Gloriosa inglesa (1688) — a deposição do rei absolutista Jaime II e a instauração da monarquia constitucional. Sua filosofia política justifica essa revolução e funda o liberalismo político.</p>
 <h3>O estado de natureza lockiano</h3>
 <p>Para Locke, o estado de natureza é radicalmente diferente do hobbesiano:</p>
-<blockquote><em>O estado de natureza é um <strong>estado de paz, boa vontade, assistência mútua e conservação</strong>.</em></blockquote>
-<p>No estado de natureza lockiano:
+<blockquote>O estado de natureza é um <strong>estado de paz, boa vontade, assistência mútua e conservação</strong>.</blockquote>
+<p>No estado de natureza lockiano:</p>
 <ul><li>Os seres humanos são governados pela <strong>lei natural</strong> — uma lei racional que todos podem conhecer pela razão</li><li>A lei natural determina que <strong>ninguém deve lesar outro em sua vida, saúde, liberdade ou posses</strong></li><li>Existem <strong>direitos naturais</strong> pré-políticos: <strong>vida, liberdade e propriedade</strong></li></ul>
-<strong>O problema:</strong> Embora o estado de natureza seja relativamente pacífico, há um inconveniente: <strong>falta um juiz comum</strong> para resolver disputas. Cada um é juiz em causa própria — o que pode levar a erros e injustiças.</p>
+<p><p><strong>O problema:</strong> Embora o estado de natureza seja relativamente pacífico, há um inconveniente: <strong>falta um juiz comum</strong> para resolver disputas. Cada um é juiz em causa própria — o que pode levar a erros e injustiças.</p>
 <h3>O contrato social lockiano</h3>
 <p>Os indivíduos criam a sociedade política para <strong>proteger seus direitos naturais</strong> — não para escapar do caos (como em Hobbes), mas para garantir mais eficientemente o que já possuem por natureza.</p>
 <p><strong>Características do governo lockiano:</strong></p>
@@ -1725,16 +1748,16 @@ No estado de natureza:
 <p><strong>Contexto:</strong> Rousseau é o contratualista mais radical e o mais influente sobre a Revolução Francesa (1789). Ao contrário de Hobbes e Locke (ingleses), Rousseau é franco-suíço — e sua visão da política é profundamente crítica da civilização burguesa.</p>
 <h3>O estado de natureza rousseauniano</h3>
 <p>Para Rousseau, o estado de natureza é o estado mais próximo da inocência e da bondade natural:</p>
-<blockquote><em><em>"O homem nasceu livre, e por toda parte se encontra acorrentado."</em> (<em>Do Contrato Social</em>)</em></blockquote>
-<p>No estado de natureza rousseauniano:
+<blockquote><em>"O homem nasceu livre, e por toda parte se encontra acorrentado."</em> (<em>Do Contrato Social</em>)</blockquote>
+<p>No estado de natureza rousseauniano:</p>
 <ul><li>O ser humano é naturalmente <strong>bom</strong> — não egoísta nem belicoso</li><li>O ser humano natural possui apenas dois sentimentos básicos: <strong>amor de si</strong> (<em>amour de soi</em> — autopreservação saudável) e <strong>piedade</strong> (compaixão natural pelo sofrimento alheio)</li><li>Não há propriedade, desigualdade social, vaidade nem competição</li></ul>
-<strong>A corrupção vem da civilização:</strong> Rousseau inverte a narrativa do progresso: a sociedade não aperfeiçoa o ser humano — o <strong>corrompe</strong>. A propriedade privada é a raiz da desigualdade e da corrupção moral:</p>
-<blockquote><em><em>"O primeiro que, tendo cercado um terreno, lembrou-se de dizer 'isto é meu', e encontrou pessoas simples o suficiente para acreditar nele, foi o verdadeiro fundador da sociedade civil."</em></em></blockquote>
+<p><p><strong>A corrupção vem da civilização:</strong> Rousseau inverte a narrativa do progresso: a sociedade não aperfeiçoa o ser humano — o <strong>corrompe</strong>. A propriedade privada é a raiz da desigualdade e da corrupção moral:</p>
+<blockquote><em>"O primeiro que, tendo cercado um terreno, lembrou-se de dizer 'isto é meu', e encontrou pessoas simples o suficiente para acreditar nele, foi o verdadeiro fundador da sociedade civil."</em></blockquote>
 <p>A civilização introduz o <strong>amor-próprio</strong> (<em>amour-propre</em> — vaidade, desejo de ser admirado e superior aos outros) — que substitui o amor de si natural e cria a competição, a inveja e a desigualdade.</p>
 <h3>O contrato social rousseauniano: a vontade geral</h3>
 <p>O problema de Rousseau é diferente do de Hobbes e Locke: não é "como saímos de um estado de guerra?" nem "como protegemos direitos naturais?" — é: <strong>como pode um ser livre obedecer a uma lei sem deixar de ser livre?</strong></p>
 <p>A resposta é a <strong>vontade geral</strong> (<em>volonté générale</em>):</p>
-<blockquote><em><em>"Cada um de nós põe em comum sua pessoa e todo o seu poder sob a direção suprema da vontade geral."</em></em></blockquote>
+<blockquote><em>"Cada um de nós põe em comum sua pessoa e todo o seu poder sob a direção suprema da vontade geral."</em></blockquote>
 <p><strong>A vontade geral é diferente da vontade de todos:</strong></p>
 <div class="tbl-wrap"><table>
 <tr><th>Conceito</th><th>Definição</th><th>Característica</th></tr>
@@ -1868,9 +1891,9 @@ No estado de natureza:
 <hr>
   </div>
   <div class="topic-nav">
-    <button class="nav-btn" onclick="showTopic('T5')">← T05</button>
+    <button type="button" class="nav-btn" onclick="showTopic('T5')">← T05</button>
     <a href="D1_T06_Quiz.html" class="quiz-link-btn-lg">📝 Quiz do Tópico T06</a>
-    <button class="nav-btn" onclick="showTopic('T7')">T07 →</button>
+    <button type="button" class="nav-btn" onclick="showTopic('T7')">T07 →</button>
   </div>
 </section>
 <section id="topic-T7" class="topic-section" style="display:none">
@@ -1883,10 +1906,10 @@ No estado de natureza:
     <h2>TÓPICO 7: A crise da razão — o fracasso do iluminismo</h2>
 <h2>7.1 CONTEXTO: O QUE FOI O ILUMINISMO?</h2>
 <p>O <strong>Iluminismo</strong> (<em>Aufklärung</em> em alemão; <em>Lumières</em> em francês; <em>Enlightenment</em> em inglês) foi o movimento intelectual dominante do século XVIII que colocou a <strong>razão</strong> como instrumento supremo de libertação da humanidade. O projeto iluminista pode ser resumido na fórmula de <strong>Immanuel Kant</strong> em seu ensaio <em>O que é o Esclarecimento?</em> (1784):</p>
-<blockquote><em><strong><em>"Sapere aude!"</strong></em> — <strong>"Ouse saber! Tem a coragem de usar tua própria razão!"</strong></em></blockquote>
+<blockquote><strong><em>"Sapere aude!"</em></strong> — <strong>"Ouse saber! Tem a coragem de usar tua própria razão!"</strong></blockquote>
 <p>O Iluminismo representou a confiança de que a razão humana — aplicada sistematicamente à natureza, à política, à moral e à religião — poderia:</p>
 <ul><li><strong>Superar a superstição e a ignorância</strong></li><li><strong>Libertar o ser humano das tradições opressivas</strong> — do absolutismo, da religião dogmática, dos preconceitos herdados</li><li><strong>Construir uma sociedade mais justa, racional e feliz</strong></li><li><strong>Promover o progresso indefinido</strong> da civilização humana</li></ul>
-Os filósofos iluministas (<em>philosophes</em>) — Voltaire, Montesquieu, Rousseau, Diderot, D'Alembert, Condorcet — eram otimistas: a razão seria capaz de diagnosticar e curar todos os males sociais.
+<p>Os filósofos iluministas (<em>philosophes</em>) — Voltaire, Montesquieu, Rousseau, Diderot, D'Alembert, Condorcet — eram otimistas: a razão seria capaz de diagnosticar e curar todos os males sociais.
 <h3>O projeto iluminista em quatro pilares:</h3>
 <div class="tbl-wrap"><table>
 <tr><th>Pilar</th><th>Conteúdo</th><th>Expressão histórica</th></tr>
@@ -1921,7 +1944,7 @@ O projeto de usar a razão para criticar os dogmas religiosos criou seus própri
 <p><strong>Georg Wilhelm Friedrich Hegel</strong> (1770–1831) é o filósofo que tentou a síntese mais ambiciosa entre razão iluminista e crítica romântica. Sua filosofia é simultaneamente a culminação do projeto iluminista (a razão governa a história) e sua crítica interna (a razão não é abstrata — é histórica, contraditória, dialética).</p>
 <h3>O Idealismo Absoluto</h3>
 <p>Para Hegel, a realidade não é simplesmente material (como os materialistas diziam) nem simplesmente mental (como Berkeley dizia): a realidade é o <strong>Espírito</strong> (<em>Geist</em>) que se autodesenvlove através da história. O real é racional; o racional é real:</p>
-<blockquote><em><strong><em>"O que é racional é real; e o que é real é racional."</strong></em> (<em>Filosofia do Direito</em>, Prefácio)</em></blockquote>
+<blockquote><strong><em>"O que é racional é real; e o que é real é racional."</em></strong> (<em>Filosofia do Direito</em>, Prefácio)</blockquote>
 <h3>A Dialética Hegeliana</h3>
 <p>O método de Hegel é a <strong>dialética</strong> — o processo pelo qual o pensamento e a realidade se desenvolvem através de contradições:</p>
 <div class="tbl-wrap"><table>
@@ -1946,10 +1969,10 @@ O projeto de usar a razão para criticar os dogmas religiosos criou seus própri
 <div class="callout callout-gold">⭐ <strong>Para concursos:</strong> A dialética senhor-escravo é um dos trechos mais cobrados de Hegel — especialmente em questões sobre filosofia da história, reconhecimento e alienação. Marx a retomará e transformará materialmente.</div>
 <h3>A Filosofia da História de Hegel</h3>
 <p>Para Hegel, a história não é caos — é o desenvolvimento racional do Espírito rumo à <strong>liberdade</strong>:</p>
-<blockquote><em><em>"A história do mundo não é outra coisa senão o progresso da consciência da liberdade."</em></em></blockquote>
+<blockquote><em>"A história do mundo não é outra coisa senão o progresso da consciência da liberdade."</em></blockquote>
 <p><strong>Cada época histórica</strong> representa um estágio do autodesenvolvimento do Espírito:
 <ul><li><strong>Oriente:</strong> Um é livre (o déspota)</li><li><strong>Grécia e Roma:</strong> Alguns são livres (cidadãos livres, mas havia escravos)</li><li><strong>Mundo Germânico-cristão:</strong> Todos são livres (liberdade universal reconhecida)</li></ul>
-<strong>O Espírito do Tempo</strong> (<em>Zeitgeist</em>): Cada época tem um espírito próprio — um conjunto de valores, ideias e formas de vida que a caracterizam e que se expressa em sua política, arte, religião e filosofia.</p>
+<p><strong>O Espírito do Tempo</strong> (<em>Zeitgeist</em>): Cada época tem um espírito próprio — um conjunto de valores, ideias e formas de vida que a caracterizam e que se expressa em sua política, arte, religião e filosofia.</p>
 <p><strong>A "Astúcia da Razão" (<em>List der Vernunft</em>):</strong> A razão (Espírito) usa os indivíduos como instrumentos de seu desenvolvimento histórico — sem que eles saibam. Napoleão, por exemplo, foi o "Espírito do mundo a cavalo" — um instrumento da razão histórica que propagou os ideais revolucionários pela Europa, mesmo sem perceber plenamente esse papel.</p>
 <h2>7.5 MARX: A DIALÉTICA MATERIALIZADA E A CRÍTICA DO ILUMINISMO BURGUÊS</h2>
 <p><strong>Karl Marx</strong> (1818–1883) é o herdeiro mais radical e mais crítico de Hegel. Sua relação com o Iluminismo é paradoxal: ele usa a razão iluminista (análise científica da sociedade) para criticar o Iluminismo burguês (que libertou apenas os proprietários).</p>
@@ -1964,7 +1987,7 @@ O projeto de usar a razão para criticar os dogmas religiosos criou seus própri
 </table></div>
 <h3>A Crítica da Ideologia</h3>
 <p>Para Marx, o Iluminismo proclamou ideais "universais" — liberdade, igualdade, fraternidade — que eram na verdade os interesses particulares da <strong>burguesia</strong> disfarçados de universalidade:</p>
-<blockquote><em><em>"As ideias dominantes de uma época são sempre as ideias da classe dominante."</em></em></blockquote>
+<blockquote><em>"As ideias dominantes de uma época são sempre as ideias da classe dominante."</em></blockquote>
 <p>A <strong>ideologia</strong> é o conjunto de ideias que a classe dominante produz e difunde para apresentar seus interesses particulares como interesses universais — naturalizando e legitimando a exploração.</p>
 <p>O Iluminismo, nessa leitura, foi a ideologia da burguesia em ascensão: proclamou a liberdade (de comércio e propriedade), a igualdade (formal, perante a lei — não real, econômica) e a fraternidade (que logo cedeu lugar à concorrência capitalista).</p>
 <h3>A Alienação do Trabalho</h3>
@@ -1988,11 +2011,11 @@ O projeto de usar a razão para criticar os dogmas religiosos criou seus própri
 <p><strong>Friedrich Nietzsche</strong> (1844–1900) é o crítico mais radical do Iluminismo — e um dos pensadores mais influentes (e mal compreendidos) do século XIX e XX.</p>
 <h3>A Morte de Deus</h3>
 <p>A frase mais famosa de Nietzsche, pronunciada pelo "homem louco" em <em>A Gaia Ciência</em> (1882):</p>
-<blockquote><em><strong><em>"Deus está morto. Deus continua morto. E nós o matamos."</strong></em></em></blockquote>
+<blockquote><strong><em>"Deus está morto. Deus continua morto. E nós o matamos."</em></strong></blockquote>
 <p>Nietzsche não faz uma afirmação teológica — faz um diagnóstico cultural: <strong>os valores e a cosmovisão que dependiam de Deus como fundamento perderam sua credibilidade na modernidade</strong>. A ciência, a crítica histórica e o secularismo destruíram a base sobre a qual repousava a moral, o sentido e os valores ocidentais.</p>
 <p><strong>Consequência:</strong> Se Deus morreu (se o fundamento absoluto dos valores desapareceu), <strong>os valores tradicionais entram em colapso</strong>. O que preenche o vazio? Nietzsche vê duas possibilidades:</p>
 <ul><li><strong>Niilismo passivo:</strong> A depressão, a paralisia, o desespero diante da ausência de sentido</li><li><strong>Niilismo ativo / além-do-homem:</strong> A criação de novos valores a partir da força vital — o projeto afirmativo de Nietzsche</li></ul>
-<h3>Crítica da Moral e do Iluminismo</h3>
+<p><h3>Crítica da Moral e do Iluminismo</h3>
 <p>Para Nietzsche, tanto o Iluminismo quanto o Cristianismo são expressões da mesma <strong>moral do ressentimento</strong> (<em>Ressentiment</em>) — uma moral criada pelos fracos para limitar os fortes:</p>
 <p><strong>A "genealogia da moral" nietzschiana:</strong></p>
 <div class="tbl-wrap"><table>
@@ -2025,10 +2048,10 @@ O projeto de usar a razão para criticar os dogmas religiosos criou seus própri
 <p>A indústria cultural promete diversão e satisfação — mas produz passividade: o consumidor de cultura de massa não pensa criticamente, não questiona, não resiste. É o equivalente cultural da razão instrumental.</p>
 <h2>7.8 O PÓS-MODERNISMO: A INCREDULIDADE DIANTE DOS METARRELATOS</h2>
 <p><strong>Jean-François Lyotard</strong> (1924–1998) diagnosticou a situação cultural contemporânea na obra <em>A Condição Pós-Moderna</em> (1979) com uma frase que se tornou a definição do pós-modernismo:</p>
-<blockquote><em><strong><em>"Simplificando ao extremo, define-se como pós-moderna a incredulidade em relação aos metarrelatos."</strong></em></em></blockquote>
+<blockquote><strong><em>"Simplificando ao extremo, define-se como pós-moderna a incredulidade em relação aos metarrelatos."</em></strong></blockquote>
 <p><strong>Metarrelatos</strong> (<em>grands récits</em>) são as grandes narrativas que a modernidade usou para legitimar o conhecimento e a política:</p>
 <ul><li>O metarrelato do <strong>Progresso</strong> (a história avança rumo ao bem-estar crescente)</li><li>O metarrelato da <strong>Emancipação</strong> (a razão libertará a humanidade)</li><li>O metarrelato da <strong>Ciência</strong> (a ciência é o único conhecimento válido)</li><li>O metarrelato do <strong>Marxismo</strong> (a revolução proletária libertará a humanidade)</li></ul>
-Para Lyotard, a <strong>pós-modernidade</strong> é a época em que esses grandes relatos perderam credibilidade. Não há uma narrativa única que justifique o conhecimento ou a política — há apenas <strong>jogos de linguagem</strong> múltiplos e heterogêneos, sem um árbitro último.
+<p>Para Lyotard, a <strong>pós-modernidade</strong> é a época em que esses grandes relatos perderam credibilidade. Não há uma narrativa única que justifique o conhecimento ou a política — há apenas <strong>jogos de linguagem</strong> múltiplos e heterogêneos, sem um árbitro último.
 <p><strong>Consequências:</strong>
 <ul><li><strong>Pluralidade de perspectivas:</strong> Nenhuma visão de mundo pode reivindicar validade universal</li><li><strong>Fim das ideologias totalizantes:</strong> Tanto o liberalismo quanto o marxismo são metarrelatos desacreditados</li><li><strong>Micropolíticas:</strong> Em vez de grandes revoluções, pequenas resistências locais e específicas</li></ul>
 <h2>7.9 SÍNTESE: AS CRÍTICAS AO ILUMINISMO</h2></p>
@@ -2132,9 +2155,9 @@ Para Lyotard, a <strong>pós-modernidade</strong> é a época em que esses grand
 <hr>
   </div>
   <div class="topic-nav">
-    <button class="nav-btn" onclick="showTopic('T6')">← T06</button>
+    <button type="button" class="nav-btn" onclick="showTopic('T6')">← T06</button>
     <a href="D1_T07_Quiz.html" class="quiz-link-btn-lg">📝 Quiz do Tópico T07</a>
-    <button class="nav-btn" onclick="showTopic('T8')">T08 →</button>
+    <button type="button" class="nav-btn" onclick="showTopic('T8')">T08 →</button>
   </div>
 </section>
 <section id="topic-T8" class="topic-section" style="display:none">
@@ -2148,7 +2171,7 @@ Para Lyotard, a <strong>pós-modernidade</strong> é a época em que esses grand
 <h2>8.1 CONTEXTO: POR QUE UMA FILOSOFIA DA CIÊNCIA?</h2>
 <p>No século XX, a ciência tornou-se o fenômeno cultural, social e político mais poderoso da história humana. A física relativista de Einstein, a mecânica quântica, a biologia evolutiva, a genética e a neurociência transformaram radicalmente a compreensão do universo, da vida e do ser humano. Ao mesmo tempo, a ciência produziu a bomba atômica, os agrotóxicos e as armas biológicas.</p>
 <p>Diante dessa potência ambivalente, surge com urgência uma questão filosófica fundamental:</p>
-<blockquote><em><strong>O que distingue o conhecimento científico de outras formas de conhecimento? Como a ciência funciona? Como ela progride? Quais são seus limites?</strong></em></blockquote>
+<blockquote><strong>O que distingue o conhecimento científico de outras formas de conhecimento? Como a ciência funciona? Como ela progride? Quais são seus limites?</strong></blockquote>
 <p>A <strong>Filosofia da Ciência</strong> (<em>Wissenschaftsphilosophie</em> em alemão; <em>Philosophy of Science</em> em inglês) é o ramo da filosofia que investiga a natureza, os métodos, os pressupostos e os limites do conhecimento científico.</p>
 <h3>As perguntas centrais da filosofia da ciência:</h3>
 <div class="tbl-wrap"><table>
@@ -2165,7 +2188,7 @@ Para Lyotard, a <strong>pós-modernidade</strong> é a época em que esses grand
 <p>O movimento ficou conhecido como <strong>Positivismo Lógico</strong> ou <strong>Empirismo Lógico</strong>.</p>
 <h3>O Princípio da Verificabilidade</h3>
 <p>O projeto central do Círculo de Viena era estabelecer os fundamentos do conhecimento científico e, ao mesmo tempo, eliminar a metafísica da filosofia. O instrumento para isso foi o <strong>Princípio da Verificabilidade</strong> (<em>Verifikationsprinzip</em>):</p>
-<blockquote><em><strong>Uma afirmação tem significado cognitivo se e somente se é analiticamente verdadeira (lógica ou matemática) ou empiricamente verificável.</strong></em></blockquote>
+<blockquote><strong>Uma afirmação tem significado cognitivo se e somente se é analiticamente verdadeira (lógica ou matemática) ou empiricamente verificável.</strong></blockquote>
 <p><strong>Consequências:</strong></p>
 <div class="tbl-wrap"><table>
 <tr><th>Tipo de afirmação</th><th>Significado cognitivo?</th><th>Exemplos</th></tr>
@@ -2190,7 +2213,7 @@ Para Lyotard, a <strong>pós-modernidade</strong> é a época em que esses grand
 <p>O problema central de Popper — que ele chamou de <strong>problema da demarcação</strong> — é: <strong>o que distingue a ciência da não-ciência (pseudociência)?</strong></p>
 <p>O critério do Positivismo Lógico (verificabilidade) falhou — pois as leis científicas não são verificáveis completamente. Popper propôs um critério radicalmente diferente: <strong>a falsificabilidade</strong>.</p>
 <h3>O Critério da Falsificabilidade</h3>
-<blockquote><em><strong>Uma teoria é científica se e somente se é <em>falsificável</em> — ou seja, se existe alguma observação ou experimento que poderia, em princípio, refutá-la.</strong></em></blockquote>
+<blockquote><strong>Uma teoria é científica se e somente se é <em>falsificável</em> — ou seja, se existe alguma observação ou experimento que poderia, em princípio, refutá-la.</strong></blockquote>
 <p><strong>Lógica do falsificacionismo:</strong></p>
 <p>A verificação tem uma limitação lógica: não importa quantas observações confirmem uma teoria ("todos os cisnes observados são brancos"), nunca podemos inferir com certeza que ela é universalmente verdadeira.</p>
 <p>Mas a refutação tem uma força lógica irresistível: <strong>um único contra-exemplo refuta definitivamente uma afirmação universal</strong> ("encontrei um cisne negro — logo, 'todos os cisnes são brancos' é falsa"). Essa é a lógica do <em>modus tollens</em>:</p>
@@ -2211,7 +2234,7 @@ Portanto: Não-P
 <div class="callout callout-gold">⭐ <strong>Para concursos:</strong> Os três exemplos de Popper (Einstein, Freud, Marx) são frequentemente cobrados. A psicanálise como pseudociência não significa que seja <em>inútil</em> — apenas que não é <em>científica</em> no sentido popperiano.</div>
 <h3>A Racionalidade Científica: Conjecturas e Refutações</h3>
 <p>Para Popper, a ciência avança não pela acumulação de confirmações, mas por <strong>conjecturas ousadas</strong> seguidas de <strong>refutações rigorosas</strong>:</p>
-<blockquote><em><strong>Conjecturas e Refutações</strong> — título de sua obra de 1963.</em></blockquote>
+<blockquote><strong>Conjecturas e Refutações</strong> — título de sua obra de 1963.</blockquote>
 <p>O método científico genuíno é:
 1. <strong>Formular</strong> uma teoria ousada e falsificável
 2. <strong>Deduzir</strong> previsões testáveis a partir dela
@@ -2229,7 +2252,7 @@ Portanto: Não-P
 <h3>O Conceito de Paradigma</h3>
 <p>O conceito central de Kuhn é o <strong>paradigma</strong> (<em>paradigm</em>): o conjunto de compromissos compartilhados por uma comunidade científica que define:</p>
 <ul><li>Os <strong>problemas legítimos</strong> a serem investigados</li><li>Os <strong>métodos aceitos</strong> para investigá-los</li><li>Os <strong>padrões de solução</strong> considerados satisfatórios</li><li>Os <strong>valores e suposições</strong> sobre o que conta como boa ciência</li></ul>
-<strong>Exemplos de paradigmas:</strong>
+<p><strong>Exemplos de paradigmas:</strong>
 <ul><li>A física aristotélica (dominante por ~2000 anos)</li><li>A astronomia ptolemaica (geocêntrica)</li><li>A física newtoniana (dominante por ~250 anos)</li><li>A teoria da relatividade de Einstein</li><li>A mecânica quântica</li></ul>
 <h3>A Estrutura das Revoluções Científicas: O Modelo de Kuhn</h3>
 <p>Kuhn propõe que a ciência não progride linearmente — progride por <strong>ciclos</strong> que alternam períodos de estabilidade e períodos de crise:</p>
@@ -2249,7 +2272,7 @@ Portanto: Não-P
 <p>Quando as anomalias se acumulam e o paradigma entra em crise, ocorre uma <strong>revolução científica</strong>: um novo paradigma emerge e substitui o antigo. O exemplo mais famoso é a <strong>Revolução Copernicana</strong> — a substituição do geocentrismo pelo heliocentrismo.</p>
 <p>O conceito mais polêmico de Kuhn é a <strong>incomensurabilidade</strong> (<em>incommensurability</em>): paradigmas diferentes são incomparáveis porque:</p>
 <ul><li>Definem problemas diferentes</li><li>Usam conceitos com significados diferentes (a "massa" newtoniana e a "massa" relativística não são exatamente o mesmo conceito)</li><li>Têm padrões de avaliação diferentes</li></ul>
-<strong>Consequência:</strong> A passagem de um paradigma a outro não é uma decisão puramente racional — envolve persuasão, conversão, fatores sociológicos e psicológicos. A escolha entre paradigmas não pode ser feita a partir de uma posição neutra (pois qualquer posição já está dentro de algum paradigma).
+<p><strong>Consequência:</strong> A passagem de um paradigma a outro não é uma decisão puramente racional — envolve persuasão, conversão, fatores sociológicos e psicológicos. A escolha entre paradigmas não pode ser feita a partir de uma posição neutra (pois qualquer posição já está dentro de algum paradigma).
 <div class="callout callout-gold">⭐ <strong>Para concursos:</strong> Os conceitos de <strong>paradigma</strong>, <strong>ciência normal</strong>, <strong>anomalia</strong>, <strong>crise</strong>, <strong>revolução científica</strong> e <strong>incomensurabilidade</strong> são os mais cobrados de Kuhn.</div>
 <h3>Implicações e Críticas ao Modelo de Kuhn</h3>
 <p><strong>Implicação relativista:</strong> Se paradigmas são incomensuráveis, há uma base objetiva para comparar teorias científicas? Kuhn foi acusado de relativismo — de sugerir que a ciência não progride em direção à verdade, mas apenas muda de paradigma.</p>
@@ -2276,11 +2299,11 @@ Portanto: Não-P
 <h2>8.6 PAUL FEYERABEND: CONTRA O MÉTODO</h2>
 <p><strong>Paul Feyerabend</strong> (1924–1994) é o mais radical e provocador dos filósofos da ciência do século XX. Sua obra central é <em>Contra o Método</em> (1975).</p>
 <h3>A Tese Anarquista</h3>
-<blockquote><em><strong><em>"Anything goes"</strong></em> — <strong>"Tudo vale."</strong></em></blockquote>
+<blockquote><strong><em>"Anything goes"</em></strong> — <strong>"Tudo vale."</strong></blockquote>
 <p>Feyerabend argumenta que a história da ciência mostra que não há nenhum método científico único que tenha levado ao progresso — e que a tentativa de impor um método único <em>prejudica</em> a ciência:</p>
 <p><strong>Argumento histórico:</strong> Galileu, que fundou a ciência moderna, violou todas as regras metodológicas que os filósofos da ciência propuseram:
 <ul><li>Ignorou anomalias que contradiziam o heliocentrismo (a Torre de Pisa deveria mostrar que a Terra não se move, segundo a física aristotélica — e Galileu não explicou satisfatoriamente isso)</li><li>Usou argumentos retóricos e psicológicos além dos lógicos</li><li>Apelou a instrumentos (telescópio) cuja confiabilidade não estava estabelecida</li></ul>
-Se Galileu tivesse seguido rigorosamente o falsificacionismo de Popper, teria abandonado o heliocentrismo. O progresso científico real exige <strong>pluralismo metodológico</strong> — não obediência a um método único.</p>
+<p>Se Galileu tivesse seguido rigorosamente o falsificacionismo de Popper, teria abandonado o heliocentrismo. O progresso científico real exige <strong>pluralismo metodológico</strong> — não obediência a um método único.</p>
 <h3>Ciência e Democracia</h3>
 <p>Feyerabend vai além: em <em>A Ciência em uma Sociedade Livre</em> (1978), argumenta que a ciência não deve ter um status privilegiado sobre outros modos de conhecimento numa sociedade democrática. O vodu, a astrologia, a medicina tradicional indígena — têm tanto direito de ser ensinados e financiados pelo Estado quanto a ciência ocidental.</p>
 <p><strong>Posição:</strong> Feyerabend não nega que a ciência produziu resultados impressionantes — nega que seu método seja superiora outros modos de conhecimento, e que deva ter monopólio epistêmico numa sociedade plural.</p>
@@ -2296,7 +2319,7 @@ Se Galileu tivesse seguido rigorosamente o falsificacionismo de Popper, teria ab
 <h3>A Ciência como Prática Social (Estudos Sociais da Ciência)</h3>
 <p>A partir dos anos 1970, um programa de pesquisa chamado <strong>Sociologia do Conhecimento Científico</strong> (SCC) — associado a <strong>David Bloor</strong>, Barry Barnes e a <strong>Escola de Edimburgo</strong> — argumentou que o conhecimento científico é social e culturalmente construído:</p>
 <ul><li>Os critérios de aceitação de teorias são influenciados por fatores sociais, políticos e culturais</li><li>O que conta como "boa ciência" varia historicamente e culturalmente</li><li>Interesses de grupos sociais influenciam quais problemas são investigados e quais resultados são aceitos</li></ul>
-<strong>O "Programa Forte"</strong> de Bloor: explica simétricamente tanto as crenças científicas consideradas verdadeiras quanto as consideradas falsas pelos mesmos tipos de fatores causais (sociais, psicológicos, históricos) — sem privilegiar as "verdadeiras" como se fossem explicadas pela "razão pura".
+<p><strong>O "Programa Forte"</strong> de Bloor: explica simétricamente tanto as crenças científicas consideradas verdadeiras quanto as consideradas falsas pelos mesmos tipos de fatores causais (sociais, psicológicos, históricos) — sem privilegiar as "verdadeiras" como se fossem explicadas pela "razão pura".
 <h2>8.8 SÍNTESE COMPARATIVA DOS FILÓSOFOS DA CIÊNCIA</h2>
 <div class="tbl-wrap"><table>
 <tr><th>Aspecto</th><th>Positivismo Lógico</th><th>Popper</th><th>Kuhn</th><th>Lakatos</th><th>Feyerabend</th></tr>
@@ -2400,9 +2423,9 @@ Se Galileu tivesse seguido rigorosamente o falsificacionismo de Popper, teria ab
 <hr>
   </div>
   <div class="topic-nav">
-    <button class="nav-btn" onclick="showTopic('T7')">← T07</button>
+    <button type="button" class="nav-btn" onclick="showTopic('T7')">← T07</button>
     <a href="D1_T08_Quiz.html" class="quiz-link-btn-lg">📝 Quiz do Tópico T08</a>
-    <button class="nav-btn" onclick="showTopic('T9')">T09 →</button>
+    <button type="button" class="nav-btn" onclick="showTopic('T9')">T09 →</button>
   </div>
 </section>
 <section id="topic-T9" class="topic-section" style="display:none">
@@ -2417,18 +2440,18 @@ Se Galileu tivesse seguido rigorosamente o falsificacionismo de Popper, teria ab
 <p>A Filosofia do século XX produziu dois movimentos intimamente relacionados — a <strong>Fenomenologia</strong> e o <strong>Existencialismo</strong> — que compartilham uma rejeição comum: o abstracionismo dos sistemas filosóficos anteriores.</p>
 <p>Tanto os idealistas alemães (Hegel) quanto os positivistas lógicos (Círculo de Viena) tratavam a consciência ou o conhecimento como problemas abstratos — desligados da existência concreta, vivida, temporal e corporal do ser humano. A fenomenologia e o existencialismo recusam esse abstracionismo: a filosofia deve partir da <strong>experiência vivida</strong> — da existência concreta, situada no mundo, encarnada num corpo, lançada no tempo.</p>
 <p>O ponto de partida compartilhado:</p>
-<blockquote><em><strong>O ser humano não é primeiro um sujeito que conhece e depois existe no mundo — ele primeiro <em>existe</em>, está <em>no</em> mundo, e somente a partir dessa existência pode conhecer, refletir, escolher.</strong></em></blockquote>
+<blockquote><strong>O ser humano não é primeiro um sujeito que conhece e depois existe no mundo — ele primeiro <em>existe</em>, está <em>no</em> mundo, e somente a partir dessa existência pode conhecer, refletir, escolher.</strong></blockquote>
 <h2>9.2 HUSSERL E A FENOMENOLOGIA</h2>
 <p><strong>Edmund Husserl</strong> (1859–1938) é o fundador da Fenomenologia. Matemático de formação, voltou-se para a filosofia em busca de fundamentos rigorosos para o conhecimento — mas chegou a conclusões radicalmente diferentes do Positivismo Lógico.</p>
 <h3>O Projeto Fenomenológico</h3>
 <p>Husserl queria retornar às <strong>"coisas elas mesmas"</strong> (<em>zu den Sachen selbst</em>) — à experiência imediata da consciência, antes de qualquer teoria científica ou filosófica que a interpretasse. A fenomenologia é a descrição rigorosa da estrutura da experiência consciente.</p>
 <h3>A Intencionalidade</h3>
 <p>O conceito central da fenomenologia é a <strong>intencionalidade</strong> — herdada de Franz Brentano, professor de Husserl:</p>
-<blockquote><em><strong>Toda consciência é consciência <em>de</em> algo. Não existe consciência vazia — ela sempre se dirige a um objeto.</strong></em></blockquote>
+<blockquote><strong>Toda consciência é consciência <em>de</em> algo. Não existe consciência vazia — ela sempre se dirige a um objeto.</strong></blockquote>
 <p>A intencionalidade não é uma relação causal entre sujeito e objeto — é a estrutura fundamental da consciência: consciência e objeto são correlatos inseparáveis. Não existe o "sujeito puro" sem mundo, nem o "mundo em si" sem sujeito que o experiencie.</p>
 <h3>A Epoché e a Redução Fenomenológica</h3>
 <p>Para descrever a estrutura da consciência sem pressupostos, Husserl propõe a <strong>epoché</strong> (do grego: suspensão):</p>
-<blockquote><em><strong>Colocar entre parênteses (<em>einklammerung</em>) a tese da existência do mundo</strong> — não negar que o mundo existe, mas suspender temporariamente essa crença para examinar como o mundo aparece à consciência.</em></blockquote>
+<blockquote><strong>Colocar entre parênteses (<em>einklammerung</em>) a tese da existência do mundo</strong> — não negar que o mundo existe, mas suspender temporariamente essa crença para examinar como o mundo aparece à consciência.</blockquote>
 <p>A <strong>redução fenomenológica</strong> (<em>redução transcendental</em>) transforma o "objeto natural" em <strong>fenômeno</strong> — no objeto tal como aparece à consciência, com toda a riqueza de suas camadas de significado.</p>
 <h3>Noema e Noese</h3>
 <p>Husserl distingue dois aspectos correlatos de qualquer ato intencional:</p>
@@ -2444,7 +2467,7 @@ Se Galileu tivesse seguido rigorosamente o falsificacionismo de Popper, teria ab
 <p><strong>Martin Heidegger</strong> (1889–1976) foi discípulo de Husserl — e radicalizou a fenomenologia numa direção ontológica. Sua obra principal é <em>Ser e Tempo</em> (<em>Sein und Zeit</em>, 1927) — um dos textos mais influentes e difíceis da filosofia ocidental.</p>
 <h3>A Pergunta Fundamental: O Ser</h3>
 <p>Para Heidegger, a filosofia ocidental esqueceu a pergunta mais fundamental de todas — a <strong>questão do Ser</strong> (<em>Seinsfrage</em>):</p>
-<blockquote><em><strong>O que significa "ser"? O que é o Ser (não os entes, mas o Ser ele mesmo)?</strong></em></blockquote>
+<blockquote><strong>O que significa "ser"? O que é o Ser (não os entes, mas o Ser ele mesmo)?</strong></blockquote>
 <p>Os filósofos anteriores estudaram os <strong>entes</strong> (as coisas que são — pedras, animais, pessoas, Deus) mas esqueceram o <strong>Ser</strong> — o próprio fato de que algo <em>é</em>, o horizonte dentro do qual qualquer ente pode aparecer.</p>
 <h3>O <em>Dasein</em> — O Ser-Aí</h3>
 <p>Heidegger não começa pela consciência (Husserl) nem pelo sujeito (Descartes) — começa pelo <strong>Dasein</strong> (em alemão: <em>Da</em> = aí + <em>sein</em> = ser = "ser-aí"):</p>
@@ -2469,15 +2492,15 @@ Se Galileu tivesse seguido rigorosamente o falsificacionismo de Popper, teria ab
 <h3>A Angústia (<em>Angst</em>)</h3>
 <p>A <strong>angústia</strong> é o <em>Stimmung</em> (disposição de humor) fundamental que revela a condição do <em>Dasein</em>:</p>
 <ul><li>Diferente do <strong>medo</strong> (que tem objeto determinado — tenho medo <em>de</em> X), a angústia não tem objeto — ela revela o <em>nada</em>, a falta de fundamento necessário da existência</li><li>A angústia confronta o <em>Dasein</em> com sua <strong>liberdade radical</strong> e sua <strong>finitude</strong> — é a disposição que abre a possibilidade da existência autêntica</li><li>No cotidiano inautêntico, fugimos da angústia mergulhando no "se" — na tagarelice (<em>Gerede</em>), na curiosidade superficial e na ambiguidade</li></ul>
-<h3>O Tempo e a Temporalidade</h3>
+<p><h3>O Tempo e a Temporalidade</h3>
 <p>Para Heidegger, o <strong>tempo</strong> não é uma série de "agoras" — é a estrutura fundamental do <em>Dasein</em>:</p>
 <ul><li><strong>Futuro:</strong> O <em>Dasein</em> se projeta para possibilidades — o futuro é o horizonte primário</li><li><strong>Passado</strong> (<em>Gewesen</em> = "tendo-sido"): O <em>Dasein</em> sempre já está situado numa herança histórica e cultural que não escolheu</li><li><strong>Presente:</strong> O <em>Dasein</em> se ocupa com as coisas do mundo a partir de seu projeto e de sua herança</li></ul>
-A <strong>temporalidade</strong> (<em>Zeitlichkeit</em>) é a unidade extática desses três momentos — o <em>Dasein</em> é fundamentalmente temporal, não uma substância permanente.
+<p>A <strong>temporalidade</strong> (<em>Zeitlichkeit</em>) é a unidade extática desses três momentos — o <em>Dasein</em> é fundamentalmente temporal, não uma substância permanente.
 <div class="callout callout-gold">⭐ <strong>Para concursos:</strong> <em>Dasein</em>, ser-no-mundo, ser-para-a-morte, autenticidade/inautenticidade, angústia e cuidado são os conceitos heideggeriano mais cobrados.</div>
 <h2>9.4 SARTRE: A EXISTÊNCIA PRECEDE A ESSÊNCIA</h2>
 <p><strong>Jean-Paul Sartre</strong> (1905–1980) é o filósofo mais associado popularmente ao Existencialismo. Romancista, dramaturgo e filósofo, tornou o existencialismo um fenômeno cultural de massa no pós-guerra francês. Suas obras centrais são <em>O Ser e o Nada</em> (1943) e a conferência <em>O Existencialismo é um Humanismo</em> (1945).</p>
 <h3>A Tese Central: Existência Precede a Essência</h3>
-<blockquote><em><strong><em>"A existência precede a essência."</strong></em></em></blockquote>
+<blockquote><strong><em>"A existência precede a essência."</em></strong></blockquote>
 <p>Esta é a frase mais famosa do existencialismo sartriano. Para compreendê-la:</p>
 <p><strong>Nos objetos fabricados:</strong> a essência (o conceito, o propósito) precede a existência. Um canivete existe para cortar — seu propósito foi determinado pelo artesão antes de ser fabricado. Primeiro a essência (o conceito de canivete), depois a existência (este canivete concreto).</p>
 <p><strong>No ser humano (segundo o existencialismo):</strong> não há natureza humana prévia que defina o que o ser humano <em>deve</em> ser. O ser humano primeiro existe — é lançado no mundo sem essência definida — e depois, pelas suas escolhas, constrói o que é.</p>
@@ -2492,16 +2515,16 @@ A <strong>temporalidade</strong> (<em>Zeitlichkeit</em>) é a unidade extática 
 <p>A consciência humana (ser-para-si) é fundamentalmente <strong>falta</strong>: ela não é nunca coincidente consigo mesma — está sempre projetando-se para o que não é ainda. O ser humano quer ser <em>em-si-para-si</em> (ser uma substância sólida com consciência — ser Deus) — mas isso é impossível. Essa impossibilidade fundamental é a raiz da angústia existencial.</p>
 <h3>A Liberdade Radical e a Má-fé</h3>
 <p>Para Sartre, o ser humano está <strong>"condenado a ser livre"</strong>:</p>
-<blockquote><em><em>"O homem não é outra coisa senão o que ele faz de si mesmo."</em></em></blockquote>
+<blockquote><em>"O homem não é outra coisa senão o que ele faz de si mesmo."</em></blockquote>
 <p>Não há natureza humana, Deus ou determinismo histórico que exima o ser humano da responsabilidade por suas escolhas. Mesmo não escolher é uma escolha.</p>
 <p><strong>A má-fé (<em>mauvaise foi</em>):</strong> A tentativa de fugir da liberdade — de tratar-se como coisa (ser-em-si), como se fossem determinado pelas circunstâncias, pela natureza, pelos outros:</p>
 <p><strong>Exemplos de má-fé:</strong>
 <ul><li>O garçom que age exageradamente "como garçom" — negando que poderia ser outra coisa</li><li>Alguém que diz "sou assim, não posso mudar" — tratando-se como coisa determinada</li><li>A pessoa que obedece a ordens por "dever" — negando sua própria liberdade de escolha</li></ul>
-A má-fé é a tentativa de escapar da angústia da liberdade — transformando-se em coisa determinada. Para Sartre, é sempre uma ilusão — o ser-para-si nunca pode ser em-si.</p>
+<p>A má-fé é a tentativa de escapar da angústia da liberdade — transformando-se em coisa determinada. Para Sartre, é sempre uma ilusão — o ser-para-si nunca pode ser em-si.</p>
 <h3>O Outro e o Inferno</h3>
 <p>O ser humano não existe sozinho — existe com e diante dos outros. Sartre analisa essa relação:</p>
 <p><strong>O olhar do outro (<em>le regard d'autrui</em>):</strong> Quando o outro me olha, ele me objetifica — transforma-me em objeto do seu mundo. O olhar do outro é sempre ameaçador: ele me "fixa" numa identidade que eu não escolhi.</p>
-<blockquote><em><em>"O inferno são os outros."</em> (<em>Entre quatro paredes</em>, peça de Sartre)</em></blockquote>
+<blockquote><em>"O inferno são os outros."</em> (<em>Entre quatro paredes</em>, peça de Sartre)</blockquote>
 <p>Essa frase não significa que os outros são necessariamente maus — significa que a existência com os outros é inevitavelmente conflituosa: cada um quer ser sujeito e tende a transformar o outro em objeto.</p>
 <h3>O Engajamento Político</h3>
 <p>Sartre era um filósofo engajado: a liberdade radical implica <strong>responsabilidade radical</strong>. Ao escolher, o ser humano não escolhe apenas para si — escolhe o tipo de ser humano que afirma que todos deveriam ser. A escolha individual é sempre uma escolha universal (eco do imperativo categórico kantiano, mas numa chave existencial).</p>
@@ -2524,16 +2547,16 @@ A má-fé é a tentativa de escapar da angústia da liberdade — transformando-
 <h2>9.6 SIMONE DE BEAUVOIR: O EXISTENCIALISMO E O FEMINISMO</h2>
 <p><strong>Simone de Beauvoir</strong> (1908–1986) aplicou o existencialismo sartriano à análise da condição feminina. Sua obra <em>O Segundo Sexo</em> (1949) é um dos textos fundadores do feminismo contemporâneo.</p>
 <h3>"Não se nasce mulher — torna-se"</h3>
-<blockquote><em><strong><em>"Não se nasce mulher: torna-se mulher."</strong></em></em></blockquote>
+<blockquote><strong><em>"Não se nasce mulher: torna-se mulher."</em></strong></blockquote>
 <p>Essa frase é o existencialismo aplicado ao gênero: assim como, para Sartre, a existência precede a essência, para Beauvoir a feminilidade não é uma essência biológica determinada — é uma construção histórica, social e cultural que é <em>imposta</em> às mulheres.</p>
 <h3>A Mulher como "Outro"</h3>
 <p>Beauvoir usa a análise hegeliana do reconhecimento: na cultura patriarcal, o <strong>homem é o sujeito</strong> (o "Um") e a <strong>mulher é o Outro</strong> — aquele que é definido em relação ao sujeito, como negação, alteridade:</p>
 <ul><li>O homem é o padrão humano universal; a mulher é o desvio, o "segundo sexo"</li><li>A mulher é definida em relação ao homem (esposa, mãe, filha) — nunca como sujeito autônomo</li></ul>
-<strong>A armadilha da má-fé feminina:</strong> Beauvoir analisa como as mulheres frequentemente internalizam sua objetificação — aceitando o papel de "eterno feminino" que lhes é imposto, fugindo assim da angústia da liberdade (má-fé sartriana). A libertação feminina requer assumir a própria subjetividade e liberdade — deixar de ser o Outro e tornar-se sujeito.
+<p><strong>A armadilha da má-fé feminina:</strong> Beauvoir analisa como as mulheres frequentemente internalizam sua objetificação — aceitando o papel de "eterno feminino" que lhes é imposto, fugindo assim da angústia da liberdade (má-fé sartriana). A libertação feminina requer assumir a própria subjetividade e liberdade — deixar de ser o Outro e tornar-se sujeito.
 <h2>9.7 ALBERT CAMUS: O ABSURDO E A REVOLTA</h2>
 <p><strong>Albert Camus</strong> (1913–1960) é frequentemente associado ao existencialismo, embora ele próprio rejeitasse o rótulo. Sua filosofia gira em torno do conceito de <strong>absurdo</strong>.</p>
 <h3>O Absurdo</h3>
-<blockquote><em>O <strong>absurdo</strong> surge do confronto entre a <strong>sede humana de sentido e clareza</strong> e o <strong>silêncio irracional do mundo</strong>.</em></blockquote>
+<blockquote>O <strong>absurdo</strong> surge do confronto entre a <strong>sede humana de sentido e clareza</strong> e o <strong>silêncio irracional do mundo</strong>.</blockquote>
 <p>O ser humano é um ser que busca sentido, ordem e propósito — mas o mundo não fornece nenhuma dessas coisas. O universo é indiferente, silencioso, sem sentido. O absurdo é a tensão entre essa busca e esse silêncio — não é uma propriedade do ser humano nem do mundo, mas da relação entre os dois.</p>
 <h3>As Três Respostas ao Absurdo</h3>
 <p>Camus identifica três respostas possíveis ao absurdo:</p>
@@ -2546,13 +2569,13 @@ A má-fé é a tentativa de escapar da angústia da liberdade — transformando-
 <h3>Sísifo como Herói do Absurdo</h3>
 <p>No ensaio <em>O Mito de Sísifo</em> (1942), Camus retoma o mito grego de Sísifo — condenado pelos deuses a rolar uma pedra até o topo de uma montanha, de onde ela sempre rola de volta. Sísifo é a imagem perfeita do absurdo: uma tarefa sem sentido, eternamente repetida.</p>
 <p>Mas Camus conclui:</p>
-<blockquote><em><strong><em>"É preciso imaginar Sísifo feliz."</strong></em></em></blockquote>
+<blockquote><strong><em>"É preciso imaginar Sísifo feliz."</em></strong></blockquote>
 <p>Sísifo é feliz não apesar de sua situação absurda, mas <em>através</em> da revolta lúcida contra ela: ele não busca evasão nem resignação — ele <em>assume</em> sua condição, a <em>enfrenta</em> a cada passo, e nisso encontra uma dignidade que transcende o absurdo sem negá-lo.</p>
 <h2>9.8 KIERKEGAARD: O PRECURSOR EXISTENCIALISTA</h2>
 <p><strong>Søren Kierkegaard</strong> (1813–1855) é considerado o pai do existencialismo — embora tenha vivido no século XIX, muito antes do movimento tomar forma. Sua crítica ao sistema hegeliano e sua análise da existência individual anteciparam todos os temas existencialistas.</p>
 <h3>A Crítica ao Sistema</h3>
 <p>Kierkegaard criticou Hegel por ter construído um sistema filosófico grandioso que esqueceu o indivíduo existente concreto. O sistema hegeliano pode explicar tudo — exceto o ser humano singular, histórico, atormentado pela escolha:</p>
-<blockquote><em><em>"Hegel explica toda a história da humanidade — mas esqueceu que existe um sujeito que precisa existir."</em></em></blockquote>
+<blockquote><em>"Hegel explica toda a história da humanidade — mas esqueceu que existe um sujeito que precisa existir."</em></blockquote>
 <h3>Os Três Estágios da Existência</h3>
 <p>Kierkegaard propõe que a existência humana passa por três estágios (ou pode permanecer num deles):</p>
 <div class="tbl-wrap"><table>
@@ -2662,9 +2685,9 @@ A má-fé é a tentativa de escapar da angústia da liberdade — transformando-
 <hr>
   </div>
   <div class="topic-nav">
-    <button class="nav-btn" onclick="showTopic('T8')">← T08</button>
+    <button type="button" class="nav-btn" onclick="showTopic('T8')">← T08</button>
     <a href="D1_T09_Quiz.html" class="quiz-link-btn-lg">📝 Quiz do Tópico T09</a>
-    <button class="nav-btn" onclick="showTopic('T10')">T10 →</button>
+    <button type="button" class="nav-btn" onclick="showTopic('T10')">T10 →</button>
   </div>
 </section>
 <section id="topic-T10" class="topic-section" style="display:none">
@@ -2698,7 +2721,7 @@ A má-fé é a tentativa de escapar da angústia da liberdade — transformando-
 </table></div>
 <p><strong>Variantes:</strong>
 <ul><li><strong>Utilitarismo de ato</strong> (Bentham): cada ato individual deve ser avaliado pelas suas consequências</li><li><strong>Utilitarismo de regra</strong> (Mill): devemos seguir as regras que, se seguidas geralmente, produzem as melhores consequências</li></ul>
-<strong>Problemas do utilitarismo:</strong>
+<p><strong>Problemas do utilitarismo:</strong>
 <ul><li><strong>Problema da justiça:</strong> Pode justificar a opressão de uma minoria se isso maximiza o bem-estar da maioria (torturar um inocente para salvar mil pessoas?)</li><li><strong>Problema do cálculo:</strong> Como medir e comparar diferentes tipos de bem-estar?</li><li><strong>Problema das preferências:</strong> Devo satisfazer qualquer preferência (incluindo preferências "degradantes")?</li></ul>
 <h3>10.2.2 Ética Deontológica Contemporânea (Neo-kantiana)</h3></p>
 <p>A tradição deontológica — baseada no dever e nos direitos, não nas consequências — foi revitalizada no século XX por diversas correntes:</p>
@@ -2741,7 +2764,7 @@ A má-fé é a tentativa de escapar da angústia da liberdade — transformando-
 <p><strong>Jürgen Habermas</strong> (1929–) e <strong>Karl-Otto Apel</strong> (1922–2017) desenvolveram a <strong>ética do discurso</strong> como alternativa tanto ao utilitarismo quanto ao kantismo:</p>
 <p><strong>Princípio fundamental:</strong> Uma norma é moralmente válida se todos os afetados por ela poderiam concordar com ela numa situação de <strong>discurso ideal</strong> — uma situação em que:
 <ul><li>Todos os afetados participam</li><li>Não há coerção</li><li>Prevalece apenas a força do melhor argumento</li></ul>
-<strong>A universalização por procedimento:</strong> Habermas não propõe um princípio moral substantivo (como Kant). Propõe um <strong>procedimento</strong> para testar a validade de normas: se elas poderiam ser aceitas por todos os afetados em condições ideais de diálogo.</p>
+<p><strong>A universalização por procedimento:</strong> Habermas não propõe um princípio moral substantivo (como Kant). Propõe um <strong>procedimento</strong> para testar a validade de normas: se elas poderiam ser aceitas por todos os afetados em condições ideais de diálogo.</p>
 <p><strong>Implicações para a democracia:</strong> A política democrática legítima deve ser organizada como um discurso público — onde os cidadãos deliberam racionalmente sobre as normas que os governarão. Isso fundamenta a <strong>democracia deliberativa</strong>.</p>
 <h2>10.3 FILOSOFIA POLÍTICA CONTEMPORÂNEA</h2>
 <h3>10.3.1 Liberalismo e Seus Críticos</h3>
@@ -2784,7 +2807,7 @@ No relato do julgamento de Adolf Eichmann (<em>Eichmann em Jerusalém</em>, 1963
 Freire critica o modelo dominante de educação como "educação bancária" (<em>banking education</em>): o professor é o depositante, o aluno é o banco. O professor "deposita" conteúdos prontos numa consciência passiva — e a educação é medida pela quantidade depositada.</p>
 <p><strong>Consequências da educação bancária:</strong>
 <ul><li>Nega a criatividade e o poder de transformação dos alunos</li><li>Domestica a consciência — torna os alunos adaptados à realidade existente</li><li>Reproduz a ideologia dominante — pois os "depósitos" são o saber dos opressores</li></ul>
-<strong>A Educação Problematizadora:</strong>
+<p><strong>A Educação Problematizadora:</strong>
 Em oposição, Freire propõe a <strong>educação problematizadora</strong>: o processo educativo como <strong>diálogo</strong> entre educador e educando, a partir das <strong>situações vividas</strong> dos alunos, orientado para a <strong>conscientização</strong> (<em>conscientização</em>) — o processo pelo qual os oprimidos tomam consciência de sua situação e se tornam sujeitos de sua história.</p>
 <div class="tbl-wrap"><table>
 <tr><th>Educação Bancária</th><th>Educação Problematizadora</th></tr>
@@ -2803,7 +2826,7 @@ O diálogo é o coração da pedagogia freiriana — não o diálogo retórico c
 <h3>10.4.3 Filosofia da Educação e BNCC</h3>
 <p>A <strong>Base Nacional Comum Curricular</strong> (BNCC, 2017–2018) incorpora explicitamente tradições filosóficas da educação:</p>
 <ul><li><strong>Desenvolvimento de competências</strong> (influência construtivista — Piaget, Vygotsky)</li><li><strong>Formação para a cidadania</strong> (influência de Dewey e Freire)</li><li><strong>Pensamento crítico e criativo</strong> (influência da tradição filosófica)</li><li><strong>Protagonismo do aluno</strong> (influência de Freire e escolanovismo)</li></ul>
-A BNCC define <strong>10 competências gerais</strong> orientadas para o desenvolvimento integral do estudante — incorporando tanto a dimensão cognitiva (conhecimento, pensamento científico, pensamento crítico) quanto a socioemocional (autoconhecimento, responsabilidade, empatia, cidadania).
+<p>A BNCC define <strong>10 competências gerais</strong> orientadas para o desenvolvimento integral do estudante — incorporando tanto a dimensão cognitiva (conhecimento, pensamento científico, pensamento crítico) quanto a socioemocional (autoconhecimento, responsabilidade, empatia, cidadania).
 <p><strong>O Ensino Médio e a Filosofia:</strong> A BNCC reintroduziu a Filosofia como componente obrigatório do Ensino Médio (retirada temporariamente pela reforma do EM de 2017 e reincorporada). A Filosofia no EM deve desenvolver: investigação filosófica, argumentação, reflexão ética e política.</p>
 <h2>10.5 ÉTICA APLICADA: TEMAS CONTEMPORÂNEOS</h2>
 <p>A filosofia ética contemporânea se aplica a questões práticas urgentes:</p>
@@ -2820,11 +2843,11 @@ A BNCC define <strong>10 competências gerais</strong> orientadas para o desenvo
 <h3>Ética Ambiental</h3>
 <p>A <strong>ética ambiental</strong> questiona se o ser humano é o único portador de valor moral ou se animais, ecossistemas e a natureza em geral têm valor intrínseco:</p>
 <ul><li><strong>Antropocentrismo:</strong> Apenas os seres humanos têm valor intrínseco — a natureza tem valor instrumental</li><li><strong>Biocentrismo</strong> (Albert Schweitzer, Paul Taylor): Todo ser vivo tem valor intrínseco</li><li><strong>Ecocentrismo</strong> (Aldo Leopold, "Ética da Terra"): Os ecossistemas e a biosfera têm valor intrínseco — a ação certa é aquela que preserva a integridade, estabilidade e beleza da comunidade biótica</li></ul>
-<strong>Peter Singer</strong> (<em>Libertação Animal</em>, 1975) desenvolveu a ética animal: os animais são capazes de sofrer e, portanto, seus interesses devem ser considerados moralmente. A exclusão dos animais da consideração moral é <strong>especismo</strong> — análogo ao racismo.
+<p><strong>Peter Singer</strong> (<em>Libertação Animal</em>, 1975) desenvolveu a ética animal: os animais são capazes de sofrer e, portanto, seus interesses devem ser considerados moralmente. A exclusão dos animais da consideração moral é <strong>especismo</strong> — análogo ao racismo.
 <h3>Ética e Tecnologia</h3>
-<p>A filosofia da tecnologia de Heidegger (Tópico 9) se conecta às questões éticas contemporâneas sobre:
+<p>A filosofia da tecnologia de Heidegger (Tópico 9) se conecta às questões éticas contemporâneas sobre:</p>
 <ul><li>Inteligência artificial e responsabilidade moral</li><li>Privacidade e vigilância digital</li><li>Biotecnologia e modificação genética</li><li>Automação e trabalho</li></ul>
-<h2>10.6 EDUCAÇÃO FILOSÓFICA E FILOSOFIA PARA CRIANÇAS</h2></p>
+<p><p><h2>10.6 EDUCAÇÃO FILOSÓFICA E FILOSOFIA PARA CRIANÇAS</h2></p>
 <h3>Matthew Lipman e a Filosofia para Crianças</h3>
 <p><strong>Matthew Lipman</strong> (1922–2010) fundou o movimento <strong>"Filosofia para Crianças"</strong> (<em>Philosophy for Children</em> — P4C) nos anos 1970, baseado na ideia de que crianças são naturalmente filosóficas e que o ensino de filosofia desde cedo desenvolve o <strong>pensamento crítico, criativo, cuidativo e colaborativo</strong> (os "4Cs").</p>
 <p><strong>A Comunidade de Investigação (<em>Community of Inquiry</em>):</strong>
@@ -2832,7 +2855,7 @@ O método central de Lipman: a sala de aula como comunidade de investigação fi
 <h3>A Filosofia no Ensino Fundamental</h3>
 <p>A presença da Filosofia nos anos finais do EF (6º ao 9º ano) tem fundamento nas tradições que estudamos neste tópico:</p>
 <ul><li><strong>Dewey:</strong> Aprendizagem pela experiência e investigação ativa</li><li><strong>Freire:</strong> Diálogo, contextualização na realidade do aluno e conscientização</li><li><strong>Lipman:</strong> Comunidade de investigação e desenvolvimento do pensamento crítico</li></ul>
-A filosofia no EF Anos Finais não visa formar filósofos profissionais — visa desenvolver a capacidade de pensar criticamente, argumentar, questionar pressupostos e refletir eticamente.
+<p><p>A filosofia no EF Anos Finais não visa formar filósofos profissionais — visa desenvolver a capacidade de pensar criticamente, argumentar, questionar pressupostos e refletir eticamente.</p>
 <h2>10.7 SÍNTESE COMPARATIVA</h2>
 <h3>As Correntes Éticas Contemporâneas</h3>
 <div class="tbl-wrap"><table>
@@ -2951,9 +2974,9 @@ A filosofia no EF Anos Finais não visa formar filósofos profissionais — visa
 <hr>
   </div>
   <div class="topic-nav">
-    <button class="nav-btn" onclick="showTopic('T9')">← T09</button>
+    <button type="button" class="nav-btn" onclick="showTopic('T9')">← T09</button>
     <a href="D1_T10_Quiz.html" class="quiz-link-btn-lg">📝 Quiz do Tópico T10</a>
-    <button class="nav-btn" onclick="showTopic('T11')">T11 →</button>
+    <button type="button" class="nav-btn" onclick="showTopic('T11')">T11 →</button>
   </div>
 </section>
 <section id="topic-T11" class="topic-section" style="display:none">
@@ -2967,7 +2990,7 @@ A filosofia no EF Anos Finais não visa formar filósofos profissionais — visa
 <h2>11.1 CONTEXTO: POR QUE ENSINAR FILOSOFIA HOJE?</h2>
 <p>O ensino de Filosofia na educação básica é um campo atravessado por debates filosóficos, políticos e pedagógicos que não estão resolvidos — e que constituem, eles próprios, um objeto de investigação filosófica. As "indagações" do tópico não são apenas questões didáticas — são questões que tocam no próprio estatuto da Filosofia como disciplina escolar.</p>
 <p>As perguntas que organizam este tópico:</p>
-<blockquote><em><strong>Por que ensinar Filosofia? O que ensinar? Para quem? Como? Com qual Filosofia?</strong></em></blockquote>
+<blockquote><strong>Por que ensinar Filosofia? O que ensinar? Para quem? Como? Com qual Filosofia?</strong></blockquote>
 <p>Essas questões não têm respostas únicas — há posições filosóficas em disputa, e o professor de Filosofia precisa conhecê-las para tomar posições fundamentadas.</p>
 <h2>11.2 A QUESTÃO DA LEGITIMIDADE: POR QUE FILOSOFIA NA ESCOLA?</h2>
 <p>A pergunta mais fundamental — e a mais frequentemente ignorada — é: <strong>por que a Filosofia merece um lugar no currículo da educação básica?</strong></p>
@@ -2976,28 +2999,28 @@ A filosofia no EF Anos Finais não visa formar filósofos profissionais — visa
 <p>A Filosofia desenvolve a capacidade de pensar criticamente — analisar argumentos, identificar pressupostos, detectar falácias, avaliar razões. Numa sociedade marcada pela desinformação, pelas fake news e pela manipulação discursiva, o pensamento crítico filosófico é uma competência de cidadania.</p>
 <p><strong>Referências:</strong>
 <ul><li><strong>Matthew Lipman</strong> (<em>Thinking in Education</em>, 1991): a filosofia desenvolve o "pensamento de ordem superior" — crítico, criativo, cuidativo e colaborativo</li><li><strong>Harvey Siegel</strong> (<em>Educating Reason</em>, 1988): o pensamento crítico é um ideal educacional porque respeita a racionalidade dos estudantes como fim em si mesmo</li><li><strong>BNCC</strong> (2017): o pensamento crítico é uma das 10 competências gerais — e a Filosofia tem papel privilegiado em seu desenvolvimento</li></ul>
-<strong>Problema dessa justificativa:</strong> Reduzir a Filosofia ao pensamento crítico pode instrumentalizá-la — como se ela fosse apenas uma "ginástica mental" sem conteúdo próprio. A lógica e o debate crítico poderiam ser ensinados de outras formas. O que faz a Filosofia <em>especificamente</em> necessária?</p>
+<p><strong>Problema dessa justificativa:</strong> Reduzir a Filosofia ao pensamento crítico pode instrumentalizá-la — como se ela fosse apenas uma "ginástica mental" sem conteúdo próprio. A lógica e o debate crítico poderiam ser ensinados de outras formas. O que faz a Filosofia <em>especificamente</em> necessária?</p>
 <h3>11.2.2 Justificativa pela Formação Ética e Cidadã</h3>
 <p>A Filosofia é o espaço privilegiado de reflexão sobre valores, direitos, deveres, justiça e boa vida — questões que a formação cidadã exige. Numa democracia, cidadãos precisam não apenas obedecer a regras — precisam refletir sobre sua fundamentação e sua legitimidade.</p>
 <p><strong>Referências:</strong>
 <ul><li><strong>Hannah Arendt:</strong> a "banalidade do mal" demonstra que a incapacidade de pensar eticamente tem consequências catastróficas</li><li><strong>Paulo Freire:</strong> a educação que não desenvolve consciência crítica e ética reproduce a opressão</li><li><strong>Lei de Diretrizes e Bases da Educação</strong> (LDB, Lei 9.394/1996): o pleno desenvolvimento da pessoa, o preparo para o exercício da cidadania e a qualificação para o trabalho são os fins da educação (art. 2º)</li></ul>
-<strong>Problema:</strong> A ética pode parecer moralismo — o professor de Filosofia que "ensina valores" pode estar doutrinando. A fronteira entre formação ética e doutrinação é filosófica e pedagogicamente problemática.</p>
+<p><strong>Problema:</strong> A ética pode parecer moralismo — o professor de Filosofia que "ensina valores" pode estar doutrinando. A fronteira entre formação ética e doutrinação é filosófica e pedagogicamente problemática.</p>
 <h3>11.2.3 Justificativa pelo Valor Intrínseco</h3>
 <p>A Filosofia tem valor em si mesma — independentemente de seus efeitos práticos. A capacidade de admirar-se (<em>thaumazein</em> — Aristóteles), de questionar o óbvio, de investigar o sentido das coisas, é uma dimensão constitutiva do ser humano que merece cultivo escolar.</p>
 <p><strong>Referências:</strong>
 <ul><li><strong>Aristóteles</strong> (<em>Metafísica</em>): "Todos os homens desejam naturalmente conhecer" — a filosofia começa com o espanto</li><li><strong>Kant</strong>: a razão tem uma necessidade natural de ir além da experiência — as questões metafísicas (alma, liberdade, Deus) não podem ser simplesmente silenciadas</li><li><strong>Marilena Chauí</strong> (<em>Convite à Filosofia</em>): a Filosofia não é um ornamento cultural — é a interrogação radical que impede que o mundo se feche em certezas dogmáticas</li></ul>
-<strong>Problema:</strong> O valor intrínseco é difícil de defender num ambiente educacional que exige resultados mensuráveis. Como avaliar o "espanto filosófico"?</p>
+<p><strong>Problema:</strong> O valor intrínseco é difícil de defender num ambiente educacional que exige resultados mensuráveis. Como avaliar o "espanto filosófico"?</p>
 <h2>11.3 A IDENTIDADE DA FILOSOFIA COMO DISCIPLINA ESCOLAR</h2>
 <p>Uma das indagações mais polêmicas é: <strong>a Filosofia escolar deve ser uma disciplina com identidade própria ou uma competência transversal?</strong></p>
 <h3>11.3.1 Filosofia como Disciplina Autônoma</h3>
 <p><strong>Argumento:</strong> A Filosofia tem um corpus de problemas, textos, conceitos e métodos que exigem espaço próprio, professor especialista e tempo dedicado. Diluída em outras disciplinas, perde sua especificidade.</p>
 <p><strong>Referências:</strong>
 <ul><li><strong>Orientações Curriculares para o Ensino Médio — OCEMs/Filosofia</strong> (MEC, 2006): a Filosofia tem identidade disciplinar própria — não pode ser reduzida a "temas transversais"</li><li><strong>Marilena Chauí:</strong> a Filosofia não é um conjunto de temas que "aparecem" em outras disciplinas — é um modo específico de fazer perguntas e problematizar respostas</li></ul>
-<h3>11.3.2 Filosofia como Prática Transversal</h3></p>
+<p><h3>11.3.2 Filosofia como Prática Transversal</h3></p>
 <p><strong>Argumento:</strong> A atitude filosófica — o questionamento rigoroso, a análise conceitual, o diálogo socrático — pode e deve impregnar todas as disciplinas. A Filosofia não é um conteúdo — é um modo de ensinar e aprender.</p>
 <p><strong>Referências:</strong>
 <ul><li><strong>Tradição da Filosofia para Crianças</strong> (Lipman, Naji): o filosofar pode ocorrer em qualquer disciplina, a partir de qualquer texto que levante questões investigáveis</li><li><strong>BNCC</strong> (2017): as competências filosóficas (pensamento científico e crítico, argumentação) atravessam todas as áreas do conhecimento</li></ul>
-<strong>A tensão na prática brasileira:</strong>
+<p><strong>A tensão na prática brasileira:</strong>
 <ul><li>No EF Anos Finais, a Filosofia (junto à Sociologia e à Arte) integra a área de <strong>Ciências Humanas</strong> — o que cria pressão pela integração curricular sem eliminar completamente a especificidade</li><li>No EM, a Lei 13.415/2017 (Reforma do Ensino Médio) tornou a Filosofia componente optativo, não obrigatório — decisão revertida pela Lei 14.892/2024, que a reobrigou junto à Sociologia</li></ul>
 <h2>11.4 A QUESTÃO DO CONTEÚDO: QUAL FILOSOFIA ENSINAR?</h2></p>
 <h3>11.4.1 História da Filosofia vs. Problemas Filosóficos</h3>
@@ -3005,18 +3028,18 @@ A filosofia no EF Anos Finais não visa formar filósofos profissionais — visa
 A Filosofia só pode ser ensinada através de seus textos canônicos e da história de seus problemas. Sem conhecer Platão, Kant e Nietzsche, o aluno não sabe de que está falando quando "filosofa".</p>
 <p><strong>Defesa:</strong>
 <ul><li><strong>Hegel:</strong> a Filosofia só pode ser compreendida em seu desenvolvimento histórico — cada posição é resposta às anteriores</li><li><strong>Marilena Chauí</strong>: ensinar Filosofia sem textos filosóficos é ensinar pseudofilosofia</li><li><strong>OCEMs/Filosofia</strong> (2006): recomendam o contato direto com textos filosóficos como componente essencial</li></ul>
-<strong>Posição B — Ensinar pelos Problemas:</strong>
+<p><strong>Posição B — Ensinar pelos Problemas:</strong>
 A Filosofia escolar deve partir de problemas filosóficos vivos — questões que os alunos genuinamente investigam — sem se subordinar à ordem cronológica da história da filosofia.</p>
 <p><strong>Defesa:</strong>
 <ul><li><strong>Lipman:</strong> o ponto de partida deve ser a investigação genuína, não a transmissão de um cânone</li><li><strong>Freire:</strong> partir da realidade dos alunos — seus "temas geradores" — não de textos externos à sua experiência</li><li><strong>Questão pedagógica:</strong> Sócrates é mais acessível que Aristóteles como ponto de partida, mas qual Sócrates? O de Platão, o histórico?</li></ul>
-<strong>Posição C — Articulação entre história e problemas:</strong>
+<p><strong>Posição C — Articulação entre história e problemas:</strong>
 A maioria dos autores contemporâneos defende uma articulação: os textos canônicos servem como "provocadores" de problemas genuínos — não como monumentos a ser reverenciados. O professor parte do problema vivido pelo aluno, apresenta como a tradição o enfrentou, e retorna ao problema com novas ferramentas.</p>
 <div class="callout callout-gold">⭐ <strong>Para concursos:</strong> A tensão história da filosofia vs. problemas filosóficos é um dos temas mais cobrados sobre ensino de filosofia.</div>
 <h3>11.4.2 Cânone Ocidental vs. Filosofias Outras</h3>
 <p>Uma das indagações mais urgentes da atualidade: <strong>o cânone filosófico ocidental (grego-europeu-branco-masculino) é o único ou o melhor ponto de partida para o ensino de Filosofia no Brasil?</strong></p>
 <p><strong>A crítica ao cânone:</strong>
 <ul><li>O cânone filosófico ocidental é produto de seleções históricas que excluíram sistematicamente mulheres, filósofos africanos, asiáticos, árabes e ameríndios</li><li>Ensinar apenas esse cânone no Brasil — país de maioria negra e com rica tradição indígena — é uma forma de apagamento cultural</li><li>A <strong>Lei 10.639/2003</strong> (incluída na LDB) tornou obrigatório o ensino de história e cultura afro-brasileira e africana em todo o currículo — incluindo Filosofia</li></ul>
-<strong>Alternativas:</strong>
+<p><strong>Alternativas:</strong>
 <ul><li><strong>Filosofia Africana:</strong> Ubuntu ("Sou porque somos" — concepção relacional do ser humano), Filosofia Bantu, pensamento de intelectuais africanos contemporâneos (Kwame Nkrumah, Frantz Fanon, Achille Mbembe)</li><li><strong>Filosofia Indígena:</strong> cosmologias e epistemologias ameríndias como sistemas de pensamento com pretensão filosófica (Eduardo Viveiros de Castro — perspectivismo ameríndio)</li><li><strong>Filosofia Latino-Americana:</strong> Enrique Dussel (filosofia da libertação), Leopoldo Zea (filosofia ibero-americana), Walter Mignolo (decolonialidade)</li><li><strong>Filosofia Feminista:</strong> Mary Wollstonecraft, Simone de Beauvoir, Judith Butler, bell hooks — tradição sistematicamente excluída do cânone</li></ul>
 <strong>A posição decolonial:</strong>
 A <strong>filosofia decolonial</strong> (Mignolo, Quijano, Dussel) argumenta que a "filosofia" ocidental universalizou uma perspectiva particular — a europeia — como se fosse o padrão universal do conhecimento. A <strong>"colonialidade do saber"</strong> (Aníbal Quijano) é a dimensão epistêmica da colonialidade: a imposição da epistemologia europeia como a única legítima, invisibilizando e desvalorizando outros modos de conhecimento.</p>
@@ -3030,12 +3053,12 @@ A <strong>filosofia decolonial</strong> (Mignolo, Quijano, Dussel) argumenta que
 <h3>11.5.2 A Diversidade dos Alunos como Condição Filosófica</h3>
 <p>A sala de aula de Filosofia no Brasil contemporâneo é marcada por:</p>
 <ul><li><strong>Diversidade étnico-racial:</strong> alunos negros, brancos, indígenas, de diferentes origens culturais</li><li><strong>Diversidade socioeconômica:</strong> alunos de contextos muito diferentes de capital cultural</li><li><strong>Diversidade de gênero e sexualidade:</strong> identidades e experiências diversas que as questões filosóficas de identidade, corpo e reconhecimento tocam diretamente</li><li><strong>Diversidade religiosa:</strong> alunos evangélicos, católicos, umbandistas, ateus, espíritas — cada um com uma cosmologia que o ensino de Filosofia desafia e é desafiado por</li></ul>
-Essa diversidade não é um obstáculo ao ensino de Filosofia — é sua condição de possibilidade. A pluralidade de perspectivas é o material da investigação filosófica genuína.
+<p><p>Essa diversidade não é um obstáculo ao ensino de Filosofia — é sua condição de possibilidade. A pluralidade de perspectivas é o material da investigação filosófica genuína.</p>
 <h2>11.6 A QUESTÃO DO PROFESSOR: QUEM PODE ENSINAR FILOSOFIA?</h2>
 <h3>11.6.1 O Perfil do Professor de Filosofia</h3>
 <p>O professor de Filosofia no EF Anos Finais ocupa uma posição peculiar: deve ser simultaneamente:</p>
 <ul><li><strong>Especialista em Filosofia:</strong> domínio dos conteúdos filosóficos, dos textos canônicos, da história da filosofia e dos problemas filosóficos centrais</li><li><strong>Especialista em educação:</strong> domínio pedagógico — conhecimento de como os adolescentes aprendem, de metodologias de ensino, de avaliação</li><li><strong>Filósofo praticante:</strong> não apenas transmissor de filosofia — mas alguém que <em>filosofa</em> com os alunos, que tem uma relação viva com os problemas filosóficos</li><li><strong>Mediador cultural:</strong> capaz de articular o cânone filosófico com a realidade cultural, social e histórica dos alunos brasileiros</li></ul>
-<h3>11.6.2 A Tensão entre Conteúdo e Pedagogia</h3>
+<p><h3>11.6.2 A Tensão entre Conteúdo e Pedagogia</h3>
 <p>Uma das indagações mais práticas: <strong>o professor de Filosofia deve ser primeiro filósofo ou primeiro pedagogo?</strong></p>
 <p>A resposta mais equilibrada: a <strong>transposição didática</strong> (Chevallard) — o processo pelo qual o saber filosófico (<em>saber sábio</em>) é transformado em <em>saber a ensinar</em> e depois em <em>saber ensinado</em> — requer tanto o domínio do conteúdo quanto o domínio pedagógico. Um professor que sabe muito de Filosofia mas não sabe como torná-la acessível aos adolescentes fracassa; um professor que sabe pedagogia mas não tem domínio filosófico não tem o que transpor.</p>
 <h2>11.7 INDAGAÇÕES CONTEMPORÂNEAS ESPECÍFICAS</h2>
@@ -3043,7 +3066,7 @@ Essa diversidade não é um obstáculo ao ensino de Filosofia — é sua condiç
 <p>Como ensinar Filosofia num contexto em que os alunos têm acesso imediato a qualquer informação mas têm dificuldade crescente com a atenção sustentada e o pensamento lento que a Filosofia exige?</p>
 <p><strong>Desafios:</strong>
 <ul><li>A leitura filosófica é lenta e exigente — o ambiente digital favorece o consumo rápido e fragmentado</li><li>A "pós-verdade" e as fake news tornam o pensamento crítico ao mesmo tempo mais necessário e mais difícil de desenvolver</li><li>As redes sociais criam "bolhas epistêmicas" que reforçam preconceitos em vez de questioná-los</li></ul>
-<strong>Oportunidades:</strong>
+<p><strong>Oportunidades:</strong>
 <ul><li>O ambiente digital oferece acesso sem precedentes a textos filosóficos, debate e comunidades filosóficas</li><li>As questões filosóficas sobre privacidade, identidade digital, inteligência artificial e pós-humanismo são diretamente relevantes para os jovens</li><li>Ferramentas digitais podem ser usadas para criar comunidades de investigação filosófica online</li></ul>
 <h3>11.7.2 Filosofia e Saúde Mental dos Adolescentes</h3></p>
 <p>A adolescência contemporânea é marcada por altas taxas de ansiedade, depressão e crise de sentido. A Filosofia — especialmente o existencialismo, a estoicismo, a ética das virtudes e as práticas de si — oferece recursos para a reflexão sobre o sentido, o sofrimento e o florescimento que podem complementar (sem substituir) as abordagens clínicas.</p>
@@ -3052,7 +3075,7 @@ Essa diversidade não é um obstáculo ao ensino de Filosofia — é sua condiç
 <p>Uma das indagações mais politicamente carregadas: <strong>o professor de Filosofia deve ser "neutro" — apresentar todas as posições sem tomar partido — ou deve ser "engajado" — comprometer-se com posições filosóficas e políticas?</strong></p>
 <p><strong>Posição da neutralidade:</strong>
 <ul><li>O professor tem autoridade e influência sobre os alunos — tomar partido pode ser doutrinação</li><li>A pluralidade de posições é constitutiva da Filosofia — o professor que "escolhe" uma posição empobrece a investigação</li></ul>
-<strong>Posição do engajamento:</strong>
+<p><strong>Posição do engajamento:</strong>
 <ul><li>A neutralidade é uma posição filosófica — e frequentemente uma posição política implícita (que reproduz o status quo ao não questioná-lo)</li><li><strong>Freire:</strong> a neutralidade é impossível — a educação é sempre política. A questão é: a favor de quem?</li><li><strong>Arendt:</strong> o julgamento (tomar uma posição fundamentada) é uma capacidade humana fundamental que a educação deve desenvolver — não suprimir</li></ul>
 <strong>Posição mediadora:</strong>
 A distinção relevante não é entre "neutro" e "engajado" — mas entre <strong>doutrinação</strong> (imposição de posições sem permitir questionamento) e <strong>investigação filosófica comprometida</strong> (tomar posições fundamentadas, apresentar razões, e encorajar os alunos a avaliar essas razões e desenvolver as suas próprias).</p>
@@ -3152,9 +3175,9 @@ A distinção relevante não é entre "neutro" e "engajado" — mas entre <stron
 <hr>
   </div>
   <div class="topic-nav">
-    <button class="nav-btn" onclick="showTopic('T10')">← T10</button>
+    <button type="button" class="nav-btn" onclick="showTopic('T10')">← T10</button>
     <a href="D1_T11_Quiz.html" class="quiz-link-btn-lg">📝 Quiz do Tópico T11</a>
-    <button class="nav-btn" onclick="showTopic('T12')">T12 →</button>
+    <button type="button" class="nav-btn" onclick="showTopic('T12')">T12 →</button>
   </div>
 </section>
 <section id="topic-T12" class="topic-section" style="display:none">
@@ -3172,12 +3195,12 @@ A distinção relevante não é entre "neutro" e "engajado" — mas entre <stron
 <p>A Filosofia chegou ao Brasil com os jesuítas. O <em>Ratio Studiorum</em> (1599) — o plano de estudos da Companhia de Jesus — incluía a Filosofia (especialmente a escolástica aristotélico-tomista) como componente central da formação dos estudantes dos colégios jesuíticos.</p>
 <p><strong>Características:</strong>
 <ul><li>Filosofia como propedêutica à Teologia</li><li>Predomínio da escolástica — Aristóteles lido através de Tomás de Aquino</li><li>Formação das elites coloniais</li><li>Exclusão sistemática de indígenas, africanos escravizados e mulheres</li></ul>
-<strong>A expulsão dos jesuítas (1759):</strong> O Marquês de Pombal expulsou os jesuítas do Brasil e Portugal — e com eles, o sistema educacional que mantinham. O vácuo educacional foi parcialmente preenchido pelas Aulas Régias — mas sem a organicidade do sistema jesuítico.</p>
+<p><strong>A expulsão dos jesuítas (1759):</strong> O Marquês de Pombal expulsou os jesuítas do Brasil e Portugal — e com eles, o sistema educacional que mantinham. O vácuo educacional foi parcialmente preenchido pelas Aulas Régias — mas sem a organicidade do sistema jesuítico.</p>
 <h3>12.2.2 Período Imperial e Positivismo (1822–1889)</h3>
 <p>Com a Independência (1822) e a criação do Colégio Pedro II (1837) — modelo de referência para o ensino secundário —, a Filosofia foi incluída como componente curricular. Mas o clima intelectual do século XIX foi crescentemente dominado pelo <strong>Positivismo</strong> (Augusto Comte) — que desvalorizava a Filosofia especulativa em favor da ciência positiva.</p>
 <p><strong>O Positivismo no Brasil:</strong>
 <ul><li>O lema positivista "Ordem e Progresso" está na bandeira republicana</li><li>A Filosofia positivista valorizava apenas o conhecimento científico — a metafísica e a filosofia especulativa eram vistas como estágios superados</li><li>Tensão entre a permanência da Filosofia no currículo e a hegemonia positivista</li></ul>
-<h3>12.2.3 Primeira República e Reformas (1889–1930)</h3></p>
+<p><h3>12.2.3 Primeira República e Reformas (1889–1930)</h3></p>
 <p>A Primeira República foi marcada por reformas educacionais sucessivas — cada uma com implicações para o status da Filosofia:</p>
 <p><strong>Reforma Benjamim Constant (1891):</strong> Influenciada pelo positivismo, reorganizou o ensino secundário. A Filosofia manteve-se, mas em posição secundária em relação às ciências.</p>
 <p><strong>Reforma Francisco Campos (1931):</strong> A primeira reforma educacional do período Vargas. Organizou o ensino secundário em dois ciclos e incluiu a Filosofia no currículo — mas com perfil enciclopédico, voltado à transmissão de sistemas filosóficos.</p>
@@ -3185,7 +3208,7 @@ A distinção relevante não é entre "neutro" e "engajado" — mas entre <stron
 <p>O período mais crítico da história do ensino de Filosofia no Brasil. A <strong>Lei 5.692/1971</strong> — reforma educacional da ditadura militar — substituiu as disciplinas de Filosofia e Sociologia por <strong>Educação Moral e Cívica</strong> (EMC) e <strong>Organização Social e Política Brasileira</strong> (OSPB):</p>
 <p><strong>Motivações políticas:</strong>
 <ul><li>A Filosofia e a Sociologia eram vistas como "subversivas" — potenciais instrumentos de crítica ao regime</li><li>A EMC tinha objetivo explícito de doutrinação cívica — formação de cidadãos acríticos e obedientes ao Estado militar</li><li>A lógica era oposta à de Freire: não conscientização, mas domesticação</li></ul>
-<strong>Consequências:</strong>
+<p><strong>Consequências:</strong>
 <ul><li>Geração de professores sem formação filosófica</li><li>Ruptura na tradição de ensino de Filosofia no Brasil</li><li>Enfraquecimento dos cursos de Licenciatura em Filosofia</li></ul>
 <div class="callout callout-gold">⭐ <strong>Para concursos:</strong> A exclusão da Filosofia pelo regime militar (Lei 5.692/1971) e sua substituição pela EMC é o dado histórico mais cobrado.</div></p>
 <h3>12.2.5 Redemocratização e Reinclusão Gradual (1985–2008)</h3>
@@ -3197,7 +3220,7 @@ A distinção relevante não é entre "neutro" e "engajado" — mas entre <stron
 <p><strong>Lei 13.415/2017</strong> (Reforma do Ensino Médio — "Novo EM"): A Filosofia deixou de ser disciplina obrigatória autônoma — tornou-se parte de uma "área de ciências humanas e sociais aplicadas", com a obrigatoriedade de componente curricular somente no Ensino Médio não garantida na mesma forma anterior.</p>
 <p><strong>Reação da comunidade filosófica e educacional:</strong>
 <ul><li>Crítica de que a reforma priorizava formação para o mercado de trabalho em detrimento da formação humanística e cidadã</li><li>Mobilização de associações de professores (ANPOF — Associação Nacional de Pós-Graduação em Filosofia; SEAF — Sociedade de Estudos e Atividades Filosóficas) pela reobrigatoriedade</li></ul>
-<strong>Lei 14.892/2024:</strong> Reintroduziu a obrigatoriedade da Filosofia e da Sociologia no Ensino Médio — encerrando (provisoriamente) a disputa pelo espaço curricular.</p>
+<p><strong>Lei 14.892/2024:</strong> Reintroduziu a obrigatoriedade da Filosofia e da Sociologia no Ensino Médio — encerrando (provisoriamente) a disputa pelo espaço curricular.</p>
 <h2>12.3 AVANÇOS CONCRETOS NO ENSINO DE FILOSOFIA</h2>
 <h3>12.3.1 Avanços Legislativos e Curriculares</h3>
 <div class="tbl-wrap"><table>
@@ -3210,7 +3233,7 @@ A distinção relevante não é entre "neutro" e "engajado" — mas entre <stron
 </table></div>
 <h3>12.3.2 Avanços na Formação de Professores</h3>
 <ul><li>Criação e expansão de cursos de Licenciatura em Filosofia em universidades federais e estaduais — inclusive via REUNI (programa de expansão das universidades federais)</li><li>Programas de pós-graduação em Filosofia e em Ensino de Filosofia que desenvolveram pesquisa sobre metodologias específicas</li><li>Programas como o PIBID (Programa Institucional de Bolsas de Iniciação à Docência) que aproximaram a formação universitária da prática escolar</li></ul>
-<h3>12.3.3 Avanços na Pesquisa e nos Materiais Didáticos</h3>
+<p><h3>12.3.3 Avanços na Pesquisa e nos Materiais Didáticos</h3>
 <ul><li>Crescimento da pesquisa em <strong>didática da Filosofia</strong> — área específica que investiga como ensinar Filosofia para adolescentes</li><li>Produção de materiais didáticos diversificados — livros didáticos de Filosofia avaliados pelo PNLD (Programa Nacional do Livro Didático)</li><li>Incorporação crescente de perspectivas africanas, indígenas e feministas nos materiais e cursos de formação</li></ul>
 <h3>12.3.4 Avanços na Consciência Social</h3>
 <ul><li>Reconhecimento crescente da Filosofia como componente essencial da formação cidadã — especialmente no contexto de crise democrática e desinformação</li><li>Aproximação entre a Filosofia e temas urgentes (ética, tecnologia, direitos humanos, meio ambiente) que aumentam sua relevância percebida</li><li>Movimento de Filosofia para Crianças crescendo no Brasil — com experiências em escolas públicas de diferentes estados</li></ul>
@@ -3241,23 +3264,23 @@ A distinção relevante não é entre "neutro" e "engajado" — mas entre <stron
 <p>A tendência crescente de incorporar filosofias africanas, indígenas, latino-americanas e feministas ao currículo de Filosofia representa uma perspectiva de transformação profunda — não apenas do <em>quê</em> se ensina, mas de <em>como</em> se concebe o próprio objeto filosófico.</p>
 <p><strong>Perspectivas concretas:</strong>
 <ul><li>Incorporação da <strong>Lei 10.639/2003</strong> de forma mais sistemática nos currículos de Filosofia</li><li>Desenvolvimento de materiais didáticos que incluam o Ubuntu, o perspectivismo ameríndio, a filosofia da libertação latino-americana como alternativas ao cânone, não como complemento decorativo</li><li>Formação continuada de professores em filosofias outras — não como competência adicional, mas como transformação da concepção do que é Filosofia</li></ul>
-<h3>12.5.3 A Filosofia e a Crise Democrática</h3></p>
+<p><h3>12.5.3 A Filosofia e a Crise Democrática</h3></p>
 <p>Numa democracia sob pressão — marcada pela polarização, pela desinformação, pelo enfraquecimento das instituições e pelo crescimento de movimentos autoritários — o ensino de Filosofia tem um papel específico: desenvolver cidadãos capazes de pensar criticamente, avaliar argumentos, reconhecer manipulação discursiva e participar de forma fundamentada na vida pública.</p>
 <p><strong>Perspectiva:</strong> A Filosofia pode ser um dos instrumentos mais poderosos de educação democrática — se souber articular rigor filosófico com relevância cívica concreta. O risco é a tentação de tornar a Filosofia instrumento de um lado específico da polarização política — o que a desfigura e a enfraquece.</p>
 <h3>12.5.4 A Institucionalização da Pesquisa em Ensino de Filosofia</h3>
 <p>O campo do <strong>ensino de Filosofia</strong> — distinto da Filosofia acadêmica e da pedagogia geral — está se consolidando como área de pesquisa específica no Brasil:</p>
 <ul><li>Grupos de pesquisa em universidades dedicados ao ensino de Filosofia (FILO, GEFe, e outros)</li><li>Periódicos específicos (<em>Filosofia e Educação</em>, <em>Childhood & Philosophy</em>)</li><li>Cursos de especialização e pós-graduação em ensino de Filosofia</li><li>Interlocução crescente com pesquisas internacionais (P4C, filosofia intercultural)</li></ul>
-<h3>12.5.5 A Filosofia no Ensino Fundamental: Uma Fronteira Aberta</h3>
+<p><h3>12.5.5 A Filosofia no Ensino Fundamental: Uma Fronteira Aberta</h3>
 <p>O EF Anos Finais — que é o foco deste concurso — é exatamente o espaço onde o ensino de Filosofia tem maior potencial de crescimento e menor tradição consolidada. As perspectivas incluem:</p>
 <ul><li>Desenvolvimento de materiais didáticos específicos para o EF Anos Finais — ainda escassos em relação ao EM</li><li>Formação de professores de Filosofia especificamente para essa faixa etária — com metodologias adequadas (Lipman, comunidade de investigação)</li><li>Articulação entre Filosofia e as outras Ciências Humanas no EF — História, Geografia, Sociologia — de forma integrada sem perder a especificidade filosófica</li></ul>
-<h2>12.6 O ENSINO DE FILOSOFIA NO MARANHÃO E EM SÃO JOSÉ DE RIBAMAR</h2>
+<p><h2>12.6 O ENSINO DE FILOSOFIA NO MARANHÃO E EM SÃO JOSÉ DE RIBAMAR</h2>
 <h3>12.6.1 Contexto Nacional e Local</h3>
 <p>O ensino de Filosofia no Maranhão compartilha os desafios nacionais — escassez de professores habilitados, carga horária reduzida, precarização — mas com especificidades regionais:</p>
 <ul><li>O Maranhão possui uma das maiores populações negras e indígenas do Brasil — o que torna a perspectiva decolonial e a Lei 10.639/2003 particularmente relevantes</li><li>A UFMA (Universidade Federal do Maranhão) e a UEMA (Universidade Estadual do Maranhão) formam professores de Filosofia — mas a demanda nas redes públicas supera a oferta de habilitados</li><li>O município de São José de Ribamar é parte da Região Metropolitana de São Luís — com perfil urbano-periférico que implica realidade específica de seus alunos</li></ul>
-<h3>12.6.2 O Perfil do Professor para São José de Ribamar</h3>
-<p>O professor de Filosofia para o EF Anos Finais em São José de Ribamar precisa articular:
+<p><h3>12.6.2 O Perfil do Professor para São José de Ribamar</h3>
+<p>O professor de Filosofia para o EF Anos Finais em São José de Ribamar precisa articular:</p>
 <ul><li>Domínio do conteúdo filosófico (avaliado neste concurso nos tópicos 1-13)</li><li>Competências pedagógicas para o EF Anos Finais (adolescentes de 11-15 anos)</li><li>Sensibilidade à realidade local — uma região com forte presença de comunidades quilombolas, pescadores e trabalhadores da construção civil</li><li>Conhecimento da legislação educacional — LDB, BNCC, Lei 10.639/2003, Estatuto da Criança e do Adolescente</li></ul>
-<h2>12.7 SÍNTESE: AVANÇOS, LIMITES E PERSPECTIVAS</h2></p>
+<p><p><h2>12.7 SÍNTESE: AVANÇOS, LIMITES E PERSPECTIVAS</h2></p>
 <div class="tbl-wrap"><table>
 <tr><th>Dimensão</th><th>Avanços</th><th>Limites</th><th>Perspectivas</th></tr>
 <tr><td><strong>Legislação</strong></td><td>Lei 11.684/2008 (obrigatoriedade EM); Lei 14.892/2024 (reobrigatoriedade)</td><td>Instabilidade legislativa; ausência no EF</td><td>Consolidação legislativa; extensão ao EF</td></tr>
@@ -3332,9 +3355,9 @@ A distinção relevante não é entre "neutro" e "engajado" — mas entre <stron
 <hr>
   </div>
   <div class="topic-nav">
-    <button class="nav-btn" onclick="showTopic('T11')">← T11</button>
+    <button type="button" class="nav-btn" onclick="showTopic('T11')">← T11</button>
     <a href="D1_T12_Quiz.html" class="quiz-link-btn-lg">📝 Quiz do Tópico T12</a>
-    <button class="nav-btn" onclick="showTopic('T13')">T13 →</button>
+    <button type="button" class="nav-btn" onclick="showTopic('T13')">T13 →</button>
   </div>
 </section>
 <section id="topic-T13" class="topic-section" style="display:none">
@@ -3350,7 +3373,7 @@ A distinção relevante não é entre "neutro" e "engajado" — mas entre <stron
 <p>A pergunta metodológica não é trivial — ela tem fundamento filosófico. O <em>como</em> se ensina Filosofia não é neutro: ele exprime concepções sobre o que é a Filosofia, o que é aprender, o que é o aluno e qual é o papel do professor. Um professor que acha que Filosofia é transmissão de doutrinas usará metodologias expositivas; um que acha que é investigação colaborativa criará comunidades de investigação. O método expressa a epistemologia.</p>
 <p><strong>Distinção importante:</strong>
 <ul><li><strong>Método:</strong> modo geral e sistemático de conduzir o processo de ensino-aprendizagem de Filosofia (ex.: método socrático, método histórico-temático)</li><li><strong>Metodologia:</strong> reflexão sobre os fundamentos, a adequação e os limites dos métodos — a teoria dos métodos</li><li><strong>Estratégia didática:</strong> recurso específico e pontual usado dentro de um método (ex.: debate, análise de filme, escrita filosófica)</li></ul>
-<h2>13.2 O MÉTODO SOCRÁTICO</h2></p>
+<p><h2>13.2 O MÉTODO SOCRÁTICO</h2></p>
 <h3>13.2.1 Fundamentos</h3>
 <p>O método mais antigo e mais característico da tradição filosófica. Sócrates — conforme descrito nos diálogos de Platão — não ensinava doutrinas: conduzia seus interlocutores por um processo de <strong>exame</strong> (<em>elenchos</em>) e <strong>assistência ao parto intelectual</strong> (<em>maiêutica</em>).</p>
 <p><strong>Os dois momentos do método socrático:</strong></p>
@@ -3369,13 +3392,13 @@ A distinção relevante não é entre "neutro" e "engajado" — mas entre <stron
 <h3>13.2.3 Adaptação ao Contexto Escolar</h3>
 <p>O método socrático puro é difícil de implementar com turmas de 35 alunos em 50 minutos. Adaptações:</p>
 <ul><li><strong>Diálogo socrático em plenário:</strong> o professor conduz perguntas para a turma inteira — perigo de apenas alguns alunos participarem</li><li><strong>Diálogo socrático em duplas:</strong> alunos se questionam mutuamente seguindo roteiro</li><li><strong>Seminário socrático:</strong> grupo menor (8-12 alunos) discute um texto enquanto o restante observa e depois analisa o diálogo</li><li><strong>Fishbowl:</strong> círculo interno dialoga socraticamente; círculo externo observa e depois comenta</li></ul>
-<div class="callout callout-gold">⭐ <strong>Para concursos:</strong> O método socrático — ironia, maiêutica, aporia — é o conceito metodológico mais cobrado em concursos de Filosofia.</div>
+<p><div class="callout callout-gold">⭐ <strong>Para concursos:</strong> O método socrático — ironia, maiêutica, aporia — é o conceito metodológico mais cobrado em concursos de Filosofia.</div>
 <h2>13.3 A COMUNIDADE DE INVESTIGAÇÃO (LIPMAN)</h2>
 <h3>13.3.1 Fundamentos</h3>
 <p>Desenvolvida por Matthew Lipman como núcleo do programa Filosofia para Crianças, a <strong>Comunidade de Investigação</strong> (<em>Community of Inquiry</em>) é uma metodologia que organiza a sala de aula como uma comunidade que investiga filosoficamente a partir de estímulos textuais.</p>
 <p><strong>Os quatro pilares do pensamento desenvolvido:</strong>
 <ul><li><strong>Pensamento crítico</strong> (<em>critical</em>): avalia razões, identifica falácias, argumenta</li><li><strong>Pensamento criativo</strong> (<em>creative</em>): gera alternativas, imagina possibilidades</li><li><strong>Pensamento cuidativo</strong> (<em>caring</em>): considera o impacto no outro, é sensível ao contexto</li><li><strong>Pensamento colaborativo</strong> (<em>collaborative</em>): constrói com o outro, não apenas argumenta contra</li></ul>
-<h3>13.3.2 Estrutura de uma Sessão de Comunidade de Investigação</h3></p>
+<p><h3>13.3.2 Estrutura de uma Sessão de Comunidade de Investigação</h3></p>
 <p>1. <strong>Apresentação do texto:</strong> leitura do texto filosófico narrativo (em voz alta, em roda)
 2. <strong>Formulação de perguntas:</strong> cada aluno (ou dupla) formula uma pergunta filosófica a partir do texto — sem responder ainda
 3. <strong>Registro das perguntas:</strong> todas as perguntas são escritas no quadro ou registradas
@@ -3383,16 +3406,16 @@ A distinção relevante não é entre "neutro" e "engajado" — mas entre <stron
 5. <strong>Investigação:</strong> discussão filosófica conduzida pelo professor-facilitador
 6. <strong>Metacognição:</strong> ao final, reflexão sobre <em>como</em> a comunidade investigou — não apenas <em>o que</em> concluiu</p>
 <h3>13.3.3 O Papel do Professor-Facilitador</h3>
-<p>Na Comunidade de Investigação, o professor não transmite — facilita:
+<p>Na Comunidade de Investigação, o professor não transmite — facilita:</p>
 <ul><li>Mantém a investigação focada sem controlá-la</li><li>Faz perguntas que aprofundam em vez de resolver</li><li>Modela o pensamento filosófico sem impor conclusões</li><li>Garante que todos tenham voz</li><li>Registra e articula as contribuições</li></ul>
-<h3>13.3.4 Adaptação ao EF Anos Finais</h3></p>
-<p>Para alunos de 11-14 anos, textos adequados incluem:
+<p><p><h3>13.3.4 Adaptação ao EF Anos Finais</h3></p>
+<p>Para alunos de 11-14 anos, textos adequados incluem:</p>
 <ul><li>Contos filosóficos (os da série de Lipman — <em>Ari e Amigos</em>, <em>Pimpa</em>)</li><li>Textos literários com questões filosóficas (fábulas, contos de ficção científica, crônicas)</li><li>Situações-problema filosóficas curtas</li><li>Experimentos mentais acessíveis ("Se você acordasse amanhã sendo outra pessoa...")</li></ul>
-<h2>13.4 O MÉTODO HISTÓRICO-TEMÁTICO</h2></p>
+<p><p><h2>13.4 O MÉTODO HISTÓRICO-TEMÁTICO</h2></p>
 <h3>13.4.1 Fundamentos</h3>
 <p>Baseado nas OCEMs/Filosofia (2006) e na perspectiva de autores como Marilena Chauí, o <strong>método histórico-temático</strong> articula:</p>
 <ul><li><strong>Eixo temático:</strong> um problema filosófico central que organiza a unidade (ex.: "O que é liberdade?")</li><li><strong>Eixo histórico:</strong> a apresentação de como a tradição filosófica abordou esse problema em diferentes épocas e perspectivas</li></ul>
-<strong>O movimento metodológico:</strong>
+<p><strong>O movimento metodológico:</strong>
 <pre class="code">Problema contemporâneo do aluno
          ↓
 Como a tradição filosófica o pensou?
@@ -3413,25 +3436,25 @@ Posição própria fundamentada
 <h2>13.5 A AULA EXPOSITIVO-DIALOGADA</h2>
 <h3>13.5.1 Fundamentos e Legitimidade</h3>
 <p>A aula expositiva tem má reputação na pedagogia contemporânea — associada ao ensino passivo e bancário (Freire). Mas há uma diferença fundamental entre a exposição monológica (o professor fala, os alunos ouvem passivamente) e a <strong>aula expositivo-dialogada</strong> — que mantém a estrutura expositiva mas com abertura permanente ao diálogo.</p>
-<p>A aula expositivo-dialogada é legítima em Filosofia quando:
+<p>A aula expositivo-dialogada é legítima em Filosofia quando:</p>
 <ul><li>Apresenta um conteúdo de que os alunos precisam para avançar na investigação (contextualização histórica, conceito técnico)</li><li>Frequentemente interrompida por perguntas do professor aos alunos</li><li>Termina com espaço para dúvidas, reações e questionamentos</li></ul>
-<h3>13.5.2 Técnicas para Tornar a Exposição Dialógica</h3></p>
+<p><p><h3>13.5.2 Técnicas para Tornar a Exposição Dialógica</h3></p>
 <ul><li><strong>Perguntas intercaladas:</strong> o professor para a cada 5-10 minutos e formula perguntas ("O que vocês acham disso?", "Alguém discorda?", "Podem dar um exemplo?")</li><li><strong>Think-pair-share:</strong> o professor lança uma questão → alunos pensam individualmente → discutem em dupla → compartilham com a turma</li><li><strong>Pause procedure:</strong> após uma exposição, 2 minutos para que os alunos comparem anotações e formulem dúvidas</li><li><strong>Mudcard:</strong> cartões em que os alunos escrevem no final o que ficou "confuso" (<em>muddy</em>) — o professor lê e responde na aula seguinte</li></ul>
-<h2>13.6 O TRABALHO COM TEXTOS FILOSÓFICOS</h2>
+<p><h2>13.6 O TRABALHO COM TEXTOS FILOSÓFICOS</h2>
 <h3>13.6.1 Por Que Trabalhar com Textos?</h3>
 <p>As OCEMs/Filosofia e Marilena Chauí defendem que o contato com textos filosóficos autênticos é insubstituível: é no texto que o filosófico genuinamente ocorre. A resistência ao texto — a tentativa de ensinar Filosofia apenas por paráfrases e resumos — empurra o conteúdo filosófico para um nível em que ele deixa de ser filosofia.</p>
 <p>Mas os textos filosóficos clássicos são genuinamente difíceis — e o desafio metodológico é criar condições para que os alunos entrem no texto sem se perder.</p>
 <h3>13.6.2 Estratégias de Trabalho com Textos</h3>
 <p><strong>Antes do texto:</strong>
 <ul><li>Contextualização do autor, do problema e do período histórico</li><li>Ativação de conhecimentos prévios: "O que vocês sabem sobre esse problema?"</li><li>Formulação de perguntas antecipadas: "O que vocês esperam que o texto diga?"</li></ul>
-<strong>Durante o texto:</strong>
+<p><strong>Durante o texto:</strong>
 <ul><li><strong>Leitura em voz alta compartilhada:</strong> cada aluno lê um parágrafo, o professor para para explicar termos técnicos</li><li><strong>Marcação textual:</strong> sublinhar afirmações centrais, colocar "?" onde há dúvida, "!" onde há surpresa, "≠" onde há discordância</li><li><strong>Perguntas ao texto:</strong> alunos formulam perguntas dirigidas ao próprio texto ("Por que o autor afirma X?", "O que ele quer dizer com Y?")</li><li><strong>Paráfrase:</strong> reescrever o trecho em suas próprias palavras — não simplificar, mas reformular</li></ul>
 <strong>Depois do texto:</strong>
 <ul><li>Mapa conceitual dos argumentos do texto</li><li>Identificação das teses centrais e das razões apresentadas</li><li>Avaliação crítica: "O argumento convence? Por quê?"</li><li>Conexão com o problema inicial: "Como o texto mudou ou aprofundou sua compreensão?"</li></ul>
 <h3>13.6.3 Seleção de Textos para o EF Anos Finais</h3></p>
-<p>Critérios de seleção:
+<p>Critérios de seleção:</p>
 <ul><li><strong>Extensão:</strong> fragmentos de 1-2 páginas são mais adequados</li><li><strong>Linguagem:</strong> verificar se é acessível ou requer adaptação</li><li><strong>Problema:</strong> o texto deve levantar uma questão genuinamente filosófica</li><li><strong>Conexão:</strong> deve ter alguma conexão com a realidade dos alunos</li></ul>
-<strong>Fontes adequadas para o EF Anos Finais:</strong>
+<p><p><strong>Fontes adequadas para o EF Anos Finais:</strong>
 <ul><li>Diálogos de Platão (<em>Mênon</em>, <em>República</em> Livro VII — mito da caverna — em versões adaptadas)</li><li>Textos de Rousseau (<em>Discurso</em>) em fragmentos</li><li>Contos filosóficos (Lipman, Muriel Barbery)</li><li>Crônicas filosóficas (Moacyr Scliar, Mario Quintana)</li><li>Textos da filosofia africana e indígena adequados</li></ul>
 <h2>13.7 O DEBATE FILOSÓFICO</h2></p>
 <h3>13.7.1 Tipos de Debate em Filosofia</h3>
@@ -3472,10 +3495,10 @@ Posição própria fundamentada
 4. Retorno ao filme com as ferramentas adquiridas</p>
 <p><strong>Exemplos:</strong>
 <ul><li><em>Matrix</em> → ceticismo, problema mente-corpo, realidade e ilusão</li><li><em>Doze Homens e uma Sentença</em> → epistemologia, julgamento, racionalidade</li><li><em>A Invenção de Hugo Cabret</em> → filosofia da técnica, memória, identidade</li><li><em>Wall-E</em> → ética ambiental, consumismo, humanidade</li><li><em>O Menino que Descobriu o Vento</em> → filosofia da ciência, ingenuidade e método</li></ul>
-<h3>13.8.2 Música, Literatura e Arte</h3></p>
+<p><h3>13.8.2 Música, Literatura e Arte</h3></p>
 <p>Mesma lógica: o recurso cultural não é o conteúdo filosófico — é o ponto de entrada para a investigação:</p>
 <ul><li><strong>Letras de música:</strong> podem levantar questões sobre liberdade, justiça, existência — analisadas filosoficamente</li><li><strong>Poesia:</strong> pode capturar experiências filosóficas de forma mais imediata que o texto técnico (Fernando Pessoa, Drummond, Adélia Prado)</li><li><strong>Obras de arte:</strong> imagens filosóficas (a caverna de Platão, o cogito cartesiano, o absurdo de Camus) podem ser visualizadas e discutidas</li><li><strong>Literatura:</strong> contos, romances e fábulas com questões filosóficas implícitas</li></ul>
-<h3>13.8.3 Experimentos Mentais e Dilemas</h3>
+<p><h3>13.8.3 Experimentos Mentais e Dilemas</h3>
 <p>Os <strong>experimentos mentais</strong> (<em>thought experiments</em>) são uma das metodologias mais poderosas e específicas da Filosofia — situações hipotéticas que isolam variáveis conceituais para testar intuições morais e filosóficas:</p>
 <div class="tbl-wrap"><table>
 <tr><th>Experimento Mental</th><th>Questão Filosófica</th><th>Aplicação</th></tr>
@@ -3486,13 +3509,13 @@ Posição própria fundamentada
 <tr><td><strong>A caverna</strong> (Platão)</td><td>Metafísica / epistemologia — aparência vs. realidade</td><td>Múltiplos</td></tr>
 <tr><td><strong>O navio de Teseu</strong></td><td>Ontologia — identidade e permanência</td><td>Metafísica</td></tr>
 </table></div>
-<p>Os experimentos mentais são especialmente adequados ao EF Anos Finais porque:
+<p>Os experimentos mentais são especialmente adequados ao EF Anos Finais porque:</p>
 <ul><li>São narrativos (contados como histórias)</li><li>Não requerem leitura de textos complexos como ponto de entrada</li><li>Geram intuições imediatas nos alunos</li><li>Revelam rapidamente divergências filosóficas produtivas</li></ul>
-<h2>13.9 A ESCRITA FILOSÓFICA</h2></p>
+<p><p><h2>13.9 A ESCRITA FILOSÓFICA</h2></p>
 <h3>13.9.1 Por Que Escrever em Filosofia?</h3>
-<p>A escrita filosófica não é apenas um instrumento de avaliação — é um instrumento de pensamento. Escrever sobre um problema filosófico força o aluno a:
+<p>A escrita filosófica não é apenas um instrumento de avaliação — é um instrumento de pensamento. Escrever sobre um problema filosófico força o aluno a:</p>
 <ul><li>Articular o que está pensando</li><li>Identificar incoerências em seu raciocínio</li><li>Organizar argumentos de forma estruturada</li><li>Considerar objeções e respondê-las</li></ul>
-<h3>13.9.2 Tipos de Escrita Filosófica</h3></p>
+<p><p><h3>13.9.2 Tipos de Escrita Filosófica</h3></p>
 <div class="tbl-wrap"><table>
 <tr><th>Tipo</th><th>Descrição</th><th>Adequação ao EF</th></tr>
 <tr><td><strong>Paráfrase</strong></td><td>Reescrever um argumento com as próprias palavras</td><td>Alta — desenvolve compreensão</td></tr>
@@ -3558,7 +3581,7 @@ Posição própria fundamentada
 <h2>13.13 O PROFESSOR DE FILOSOFIA COMO MODELO DE PENSAMENTO</h2>
 <p>Uma dimensão metodológica que frequentemente é negligenciada: o professor de Filosofia ensina não apenas pelo que faz os alunos fazerem, mas pelo que <strong>modela</strong> em sua própria prática:</p>
 <ul><li><strong>Modela a dúvida:</strong> o professor que genuinamente não sabe a resposta e investiga junto com os alunos</li><li><strong>Modela a revisão:</strong> o professor que muda de posição à luz de um bom argumento — mesmo do aluno</li><li><strong>Modela a escuta:</strong> o professor que genuinamente considera o que o aluno disse antes de responder</li><li><strong>Modela a distinção:</strong> o professor que distingue o que sabe do que não sabe, a certeza da hipótese, o argumento da opinião</li></ul>
-O professor de Filosofia que modela esses comportamentos está ensinando Filosofia — independentemente do método que usa.
+<p><p>O professor de Filosofia que modela esses comportamentos está ensinando Filosofia — independentemente do método que usa.</p>
 <h2>13.14 SÍNTESE COMPARATIVA DOS MÉTODOS</h2>
 <div class="tbl-wrap"><table>
 <tr><th>Método</th><th>Fundamento Filosófico</th><th>Papel do Professor</th><th>Papel do Aluno</th><th>Melhor para</th></tr>
@@ -3639,7 +3662,7 @@ O professor de Filosofia que modela esses comportamentos está ensinando Filosof
 <hr>
   </div>
   <div class="topic-nav">
-    <button class="nav-btn" onclick="showTopic('T12')">← T12</button>
+    <button type="button" class="nav-btn" onclick="showTopic('T12')">← T12</button>
     <a href="D1_T13_Quiz.html" class="quiz-link-btn-lg">📝 Quiz do Tópico T13</a>
     
   </div>
@@ -3650,22 +3673,29 @@ O professor de Filosofia que modela esses comportamentos está ensinando Filosof
 <script>
 function showHome(){
   document.getElementById('home-section').style.display='block';
-  document.querySelectorAll('.topic-section').forEach(s => s.style.display='none');
-  document.querySelectorAll('.sb-topic').forEach(l => l.classList.remove('active'));
+  document.querySelectorAll('.topic-section').forEach(function(s){ s.style.display='none'; });
+  document.querySelectorAll('.sb-topic').forEach(function(l){ l.classList.remove('active'); });
   document.getElementById('sb-home-btn').classList.add('active');
-  if (location.hash) history.replaceState(null, '', location.pathname + location.search);
+  if (location.hash) {
+    history.replaceState(null, '', location.pathname + location.search);
+  }
   window.scrollTo(0,0);
 }
 function showTopic(k){
   document.getElementById('home-section').style.display='none';
-  document.querySelectorAll('.topic-section').forEach(s => s.style.display='none');
-  document.querySelectorAll('.sb-topic').forEach(l => l.classList.remove('active'));
+  document.querySelectorAll('.topic-section').forEach(function(s){ s.style.display='none'; });
+  document.querySelectorAll('.sb-topic').forEach(function(l){ l.classList.remove('active'); });
   document.getElementById('sb-home-btn').classList.remove('active');
-  var sec = document.getElementById('topic-'+k);
-  if (sec) sec.style.display='block';
-  var link = document.querySelector('.sb-topic[href="#topic-'+k+'"]');
+
+  var sec = document.getElementById('topic-' + k);
+  if (sec) sec.style.display = 'block';
+
+  var link = document.querySelector('.sb-topic[href="#topic-' + k + '"]');
   if (link) link.classList.add('active');
-  if (location.hash !== '#topic-'+k) history.replaceState(null, '', '#topic-'+k);
+
+  if (location.hash !== '#topic-' + k) {
+    history.replaceState(null, '', '#topic-' + k);
+  }
   window.scrollTo(0,0);
 }
 (function(){

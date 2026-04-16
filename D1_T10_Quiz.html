@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>T10 Quiz — Ética, Política e Educação na Filosofia Contemporânea | Filosofia SJR 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+
+:root{
+  --bg:#0b0d10;--bg2:#111318;--bg3:#181c22;--bg4:#1e232b;
+  --border:#252b35;--border2:#2d3443;
+  --text:#cdd5e0;--text2:#8a96a8;--text3:#4d5a6e;
+  --gold:#c8a44a;--gold2:#e2c070;--gold3:#f0d490;
+  --blue:#3d8fd1;--green:#3d9e72;--green2:#5ec090;
+  --red:#c05050;--red2:#e07070;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:'Lato',sans-serif;font-size:15px;line-height:1.7;min-height:100vh}
+
+/* HEADER */
+.quiz-header{
+  background:var(--bg2);border-bottom:1px solid var(--border);
+  padding:16px 24px;display:flex;align-items:center;gap:16px;
+  position:sticky;top:0;z-index:50;flex-wrap:wrap;
+}
+.qh-back{
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  color:var(--text3);text-decoration:none;transition:color .2s;white-space:nowrap;
+}
+.qh-back:hover{color:var(--gold)}
+.qh-title{
+  font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:700;color:var(--gold2);
+  flex:1;
+}
+.qh-badge{
+  font-family:'JetBrains Mono',monospace;font-size:10px;
+  color:var(--gold);background:rgba(200,164,74,.12);
+  padding:3px 10px;border-radius:4px;white-space:nowrap;
+}
+.qh-stats{
+  display:flex;gap:16px;flex-wrap:wrap;
+}
+.qh-stat{
+  font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3);
+  white-space:nowrap;
+}
+.qh-stat strong{color:var(--text);font-size:14px}
+
+/* PROGRESS BAR */
+.progress-bar{height:3px;background:var(--border);overflow:hidden}
+.progress-fill{height:100%;background:var(--gold);transition:width .4s ease}
+
+/* FILTERS */
+.filter-bar{
+  padding:14px 24px;background:var(--bg2);border-bottom:1px solid var(--border);
+  display:flex;gap:8px;align-items:center;flex-wrap:wrap;
+}
+.filter-label{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3);margin-right:4px}
+.filter-btn{
+  padding:5px 14px;border-radius:4px;border:1px solid var(--border);
+  background:var(--bg3);color:var(--text2);font-family:'JetBrains Mono',monospace;
+  font-size:11px;cursor:pointer;transition:all .15s;
+}
+.filter-btn:hover{border-color:var(--gold);color:var(--gold)}
+.filter-btn.active{background:rgba(200,164,74,.15);border-color:var(--gold);color:var(--gold)}
+.filter-sep{width:1px;height:20px;background:var(--border);margin:0 4px}
+.toggle-btn{
+  margin-left:auto;padding:5px 14px;border-radius:4px;border:1px solid var(--border2);
+  background:var(--bg3);color:var(--text2);font-family:'JetBrains Mono',monospace;
+  font-size:11px;cursor:pointer;transition:all .15s;
+}
+.toggle-btn:hover{border-color:var(--blue);color:var(--blue)}
+.toggle-btn:disabled{opacity:.45;cursor:not-allowed}
+.toggle-btn:disabled:hover{border-color:var(--border2);color:var(--text2)}
+
+/* CONTENT */
+.quiz-content{padding:24px;max-width:860px;margin:0 auto}
+
+/* QUESTION BLOCK */
+.q-block{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:8px;padding:24px;margin-bottom:18px;
+  transition:border-color .2s;
+}
+.q-block.answered{border-color:var(--border2)}
+.q-meta{display:flex;gap:8px;align-items:center;margin-bottom:12px}
+.q-num{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3)}
+.q-diff{
+  font-family:'JetBrains Mono',monospace;font-size:10px;
+  padding:2px 7px;border-radius:3px;
+}
+.diff-easy{background:rgba(61,158,114,.15);color:var(--green2)}
+.diff-med{background:rgba(61,143,209,.12);color:var(--blue)}
+.diff-hard{background:rgba(192,80,80,.12);color:var(--red2)}
+.q-text{font-size:14.5px;line-height:1.75;margin-bottom:16px;color:var(--text)}
+.q-opts{display:flex;flex-direction:column;gap:8px}
+.q-opt{
+  display:flex;align-items:flex-start;gap:10px;
+  padding:10px 14px;border:1px solid var(--border);
+  border-radius:6px;cursor:pointer;background:var(--bg3);
+  transition:all .15s;
+}
+.q-opt:hover:not(.done){border-color:var(--gold);background:rgba(200,164,74,.05)}
+.q-opt.done{cursor:default}
+.q-opt.sel{border-color:var(--blue)!important;background:rgba(61,143,209,.08)!important}
+.q-opt.correct{border-color:var(--green)!important;background:rgba(61,158,114,.12)!important}
+.q-opt.wrong{border-color:var(--red)!important;background:rgba(192,80,80,.08)!important}
+.opt-letter{
+  font-family:'JetBrains Mono',monospace;font-size:12px;
+  font-weight:500;color:var(--gold);min-width:18px;margin-top:2px;
+}
+.opt-text{font-size:13.5px;color:var(--text);line-height:1.6}
+.q-feedback{
+  margin-top:12px;padding:12px 16px;border-radius:6px;
+  font-size:13px;line-height:1.7;display:none;
+}
+.q-feedback.show{display:block;animation:fadeIn .2s ease}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.fb-correct{background:rgba(61,158,114,.1);border:1px solid rgba(61,158,114,.3);color:var(--green2)}
+.fb-wrong{background:rgba(192,80,80,.08);border:1px solid rgba(192,80,80,.25);color:var(--red2)}
+.fb-label{
+  font-family:'JetBrains Mono',monospace;font-size:10px;
+  text-transform:uppercase;letter-spacing:.8px;display:block;margin-bottom:5px;
+}
+.fb-correct .fb-label{color:var(--green)}
+.fb-wrong .fb-label{color:var(--red)}
+.fb-body{color:var(--text);font-style:italic}
+
+/* SCORE PANEL */
+#score-panel{
+  display:none;background:var(--bg2);border:1px solid var(--border);
+  border-radius:12px;padding:40px;text-align:center;margin:24px;
+}
+#score-panel.show{display:block;animation:fadeIn .4s ease}
+.sc-title{
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;
+}
+.sc-number{
+  font-family:'Cormorant Garamond',serif;font-size:72px;font-weight:700;line-height:1;margin-bottom:8px;
+}
+.sc-approved{color:var(--green2)}
+.sc-failed{color:var(--red2)}
+.sc-pct{font-size:20px;color:var(--text2);margin-bottom:24px}
+.sc-breakdown{display:flex;gap:24px;justify-content:center;flex-wrap:wrap;margin:20px 0}
+.sc-item{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text3)}
+.sc-item strong{color:var(--text);display:block;font-size:18px}
+.sc-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:24px}
+.sc-btn{
+  padding:11px 24px;border-radius:6px;font-family:'JetBrains Mono',monospace;
+  font-size:12px;cursor:pointer;transition:all .2s;border:none;
+}
+.sc-btn-primary{background:var(--gold);color:var(--bg)}
+.sc-btn-primary:hover{opacity:.85}
+.sc-btn-secondary{background:var(--bg3);border:1px solid var(--border);color:var(--text2)}
+.sc-btn-secondary:hover{border-color:var(--gold);color:var(--gold)}
+
+/* BOTTOM NAV */
+.bottom-nav{
+  padding:20px 24px;border-top:1px solid var(--border);
+  display:flex;gap:10px;align-items:center;flex-wrap:wrap;
+}
+.nav-btn{
+  padding:9px 18px;border-radius:6px;
+  background:var(--bg3);border:1px solid var(--border);
+  color:var(--text2);font-family:'JetBrains Mono',monospace;
+  font-size:11px;cursor:pointer;transition:all .2s;text-decoration:none;
+  display:inline-block;
+}
+.nav-btn:hover{border-color:var(--gold);color:var(--gold)}
+.nav-theory{margin-left:auto}
+
+/* STICKY SCORE */
+#sticky{
+  position:fixed;bottom:0;left:0;right:0;
+  background:rgba(17,19,24,.95);border-top:1px solid var(--border);
+  backdrop-filter:blur(8px);
+  padding:10px 24px;display:flex;align-items:center;gap:16px;
+  z-index:50;
+}
+#sticky .ss-txt{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3)}
+#sticky .ss-txt strong{color:var(--gold)}
+.ss-bar{flex:1;height:3px;background:var(--border);border-radius:2px;overflow:hidden}
+.ss-fill{height:100%;background:var(--gold);transition:width .3s}
+
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+
+
+@media (max-width: 720px){
+  .quiz-header,.filter-bar,.bottom-nav,.quiz-content,#sticky{padding-left:16px;padding-right:16px}
+  .qh-title{flex-basis:100%;font-size:17px}
+  .qh-stats{width:100%;gap:12px}
+  .filter-sep{display:none}
+  .toggle-btn{margin-left:0}
+  #score-panel{margin:16px;padding:28px 20px}
+  .sc-number{font-size:56px}
+  .bottom-nav{padding-bottom:84px}
+}
+
+@media (max-width: 520px){
+  .q-block{padding:18px}
+  .q-text{font-size:14px}
+  .opt-text{font-size:13px}
+  #sticky{gap:10px;flex-wrap:wrap}
+  #sticky .ss-txt{width:auto}
+  .ss-bar{order:3;flex-basis:100%}
+}
+
+
+</style>
+</head>
+<body>
+<header class="quiz-header">
+  <a href="D1_Filosofia.html" class="qh-back">← Teoria D1</a>
+  <div class="qh-title">T10 — Ética, Política e Educação na Filosofia Contemporânea</div>
+  <span class="qh-badge">50 questões</span>
+  <div class="qh-stats">
+    <span class="qh-stat"><strong id="hdr-answered">0</strong> respondidas</span>
+    <span class="qh-stat"><strong id="hdr-correct">0</strong> corretas</span>
+    <span class="qh-stat"><strong id="hdr-pct">0%</strong></span>
+  </div>
+</header>
+<div class="progress-bar"><div class="progress-fill" id="prog-bar" style="width:0%"></div></div>
+<div class="filter-bar">
+  <span class="filter-label">Dificuldade:</span>
+  <button type="button" class="filter-btn active" data-filter="all" onclick="setFilter('all',this)">Todas</button>
+  <button type="button" class="filter-btn" data-filter="Fácil" onclick="setFilter('Fácil',this)">Fácil</button>
+  <button type="button" class="filter-btn" data-filter="Média" onclick="setFilter('Média',this)">Média</button>
+  <button type="button" class="filter-btn" data-filter="Difícil" onclick="setFilter('Difícil',this)">Difícil</button>
+  <div class="filter-sep"></div>
+  <button type="button" class="toggle-btn" onclick="toggleErrors()" id="err-btn" style="display:none">↺ Só erros</button>
+</div>
+<div class="quiz-content" id="quiz-content"></div>
+<div id="score-panel">
+  <p class="sc-title">Resultado Final — T10</p>
+  <div class="sc-number" id="sc-num"></div>
+  <p class="sc-pct" id="sc-pct"></p>
+  <div class="sc-breakdown" id="sc-breakdown"></div>
+  <div class="sc-actions">
+    <button type="button" class="sc-btn sc-btn-primary" onclick="resetQuiz()">↺ Refazer</button>
+    <button type="button" class="sc-btn sc-btn-secondary" onclick="reviewErrors()" id="sc-review-btn">Revisar erros</button>
+    <a href="D1_Filosofia.html" class="sc-btn sc-btn-secondary">← Teoria</a>
+  </div>
+</div>
+<div class="bottom-nav">
+  <a href="D1_T09_Quiz.html" class="nav-btn">← T09</a>
+  <a href="D1_Filosofia.html" class="nav-btn nav-theory">📖 Conteúdo T10</a>
+  <a href="D1_T11_Quiz.html" class="nav-btn">T11 →</a>
+</div>
+<div id="sticky">
+  <span class="ss-txt">Acertos: <strong id="st-pts">0</strong> / 50</span>
+  <div class="ss-bar"><div class="ss-fill" id="st-fill" style="width:0%"></div></div>
+  <span class="ss-txt"><strong id="st-pct">0%</strong></span>
+</div>
+<script>
+const QUESTIONS = [{n:1,t:"O **utilitarismo**, formulado por Jeremy Bentham e desenvolvido por John Stuart Mill, defende que a ação moralmente correta é aquela que:",o:["Cumpre o dever moral independentemente das consequências","Produz o maior bem para o maior número — maximizando o bem-estar total","Expressa a vontade de uma comunidade histórica específica","Decorre de um acordo entre todos os afetados em situação ideal de diálogo"],a:1,c:"O utilitarismo é uma ética consequencialista: o critério moral é o resultado da ação — não a intenção (kantismo) nem o caráter do agente (virtudes). A \"utilidade\" (bem-estar, felicidade, prazer) de todos os afetados deve ser calculada, e a ação que maximiza o total é a correta. Bentham propôs o \"cálculo hedônico\"; Mill refinando ao distinguir prazeres superiores e inferiores.",d:"Fácil"},{n:2,t:"O **\"véu de ignorância\"** de Rawls é um dispositivo que serve para:",o:["Mostrar que os seres humanos são naturalmente ignorantes sobre questões de justiça","Simular uma situação de imparcialidade: ao não saber sua posição na sociedade, a pessoa escolheria princípios de justiça genuinamente imparciais","Criticar os cidadãos que se recusam a participar de debates políticos","Demonstrar que o conhecimento é impossível em questões morais"],a:1,c:"O véu de ignorância é o mecanismo central da \"posição original\" de Rawls: imagine-se sem saber qual será sua posição na sociedade — rico ou pobre, de qual raça, gênero, religião, nível de talento. Nessa situação de imparcialidade estrutural, que princípios de justiça escolheria para organizar a sociedade? Rawls argumenta que escolheríamos princípios que protegem os mais vulneráveis — pois qualquer um de nós poderia ser o mais vulnerável.",d:"Fácil"},{n:3,t:"O conceito de **\"banalidade do mal\"**, cunhado por Hannah Arendt a partir do julgamento de Adolf Eichmann, refere-se a:",o:["A tendência humana natural para o mal — a maldade como banalidade da natureza humana","O fato de que grandes atrocidades podem ser cometidas por pessoas comuns, sem motivação demoníaca, simplesmente pela ausência de pensamento crítico","A banalização cultural da violência pelos meios de comunicação de massa","A ideia de que o mal é tão frequente que nos tornamos insensíveis a ele"],a:1,c:"Eichmann era um burocrata responsável pelo transporte de judeus para os campos de extermínio. Arendt observou que ele não era um monstro sádico — era medíocre, obediente, incapaz de pensar sobre as consequências de suas ações além de sua carreira administrativa. O \"mal banal\" é o mal cometido por pessoas que simplesmente não pensam — não se colocam no lugar do outro, não questionam as ordens. A conclusão: o pensamento crítico e a capacidade de julgamento são condições da étic",d:"Fácil"},{n:4,t:"Paulo Freire critica a **educação bancária** porque ela:",o:["É muito cara e inacessível para populações de baixa renda","Trata o aluno como receptáculo passivo de conteúdos prontos — domesticando a consciência e impedindo a transformação da realidade","Privilegia conteúdos científicos em detrimento das humanidades","Não desenvolve habilidades técnicas para o mercado de trabalho"],a:1,c:"A crítica freireana à educação bancária é filosófico-política: ela domestica porque trata o conhecimento como depósito (o professor sabe, o aluno não sabe — e deve receber passivamente o que o professor deposita). Essa relação reproduz a ideologia dominante e impede que os educandos tomem consciência de sua situação e se tornem sujeitos de sua história. A educação problematizadora inverte: parte da realidade dos alunos, dialoga, problematiza, conscientiza.",d:"Fácil"},{n:5,t:"Para John Dewey, a educação é fundamentalmente:",o:["Transmissão da herança cultural acumulada para as novas gerações","Reconstrução e reorganização da experiência que acrescenta sentido à experiência e aumenta a capacidade de dirigir experiências subsequentes","Preparação do indivíduo para suas funções na divisão social do trabalho","Desenvolvimento das capacidades intelectuais abstratas, especialmente a razão lógica"],a:1,c:"A definição deweyana de educação é processual e experiencial: não é um estado a atingir nem um conteúdo a transmitir — é o processo contínuo de reconstrução da experiência. Aprender é reorganizar experiências de modo que elas façam mais sentido e aumentem a capacidade de agir bem em experiências futuras. Isso exige que a educação parta da experiência concreta do aluno — não de abstrações externas.",d:"Fácil"},{n:6,t:"A **ética do cuidado**, desenvolvida por Carol Gilligan, critica as éticas tradicionais (kantismo e utilitarismo) por:",o:["Serem excessivamente focadas nas consequências das ações","Privilegiarem a voz da justiça (princípios universais e abstratos) e ignorarem a voz do cuidado (relações concretas e responsabilidade contextual)","Excluírem as mulheres do âmbito da moralidade","Serem incompatíveis com a prática democrática"],a:1,c:"Gilligan desenvolveu sua ética em resposta a Kohlberg, que classificava o raciocínio moral das mulheres (baseado em responsabilidades e relações concretas) como menos desenvolvido que o dos homens (baseado em princípios abstratos universais). Gilligan inverte: não é inferior — é *diferente*. A voz do cuidado — que pergunta \"como cuido desta pessoa nesta situação?\" — é uma forma legítima e necessária de raciocínio moral que as éticas abstratas ignoram.",d:"Fácil"},{n:7,t:"A **ética discursiva** de Habermas afirma que uma norma moral é válida se:",o:["É derivada de princípios racionais a priori, como o imperativo categórico kantiano","Todos os afetados por ela poderiam concordar com ela numa situação de discurso ideal — sem coerção, com participação de todos e prevalência do melhor argumento","Maximiza o bem-estar do maior número possível de pessoas","É aceita pela maioria dos membros de uma comunidade histórica"],a:1,c:"Habermas propõe uma ética do discurso: a validade das normas não é derivada de princípios a priori (kantismo) nem de cálculo de consequências (utilitarismo) — é procedural: uma norma é válida se poderia ser aceita por todos os afetados num discurso ideal (situação em que todos participam, sem coerção, e prevalece a força do melhor argumento). Isso fundamenta a democracia deliberativa como o regime mais adequado à ética discursiva.",d:"Fácil"},{n:8,t:"A análise de Hannah Arendt distingue três atividades humanas fundamentais. A **ação** (*action*) é a mais valorizada porque:",o:["É a atividade mais produtiva — gera mais riqueza","É a única atividade genuinamente política — ocorre no espaço público entre iguais, revelando quem somos pelo discurso e pela ação conjunta","É a base biológica de toda existência humana","Produz os artefatos duráveis que compõem o mundo humano"],a:1,c:"Arendt distingue: *labor* (atividade de sobrevivência biológica — produção e consumo, sem permanência); *trabalho* (fabricação de artefatos duráveis que compõem o mundo humano — a mesa, o livro, a ponte); e *ação* (a atividade especificamente política — o discurso e a ação conjunta no espaço público entre iguais). A ação é a mais alta porque é a que revela a singularidade de cada ser humano (*quem* somos, não apenas *o quê* somos) e constitui a vida política genuína.",d:"Fácil"},{n:9,t:"Para Michel Foucault, o **poder** nas sociedades modernas funciona principalmente por meio de:",o:["Violência física direta exercida pelo Estado sobre os cidadãos","Dominação econômica da burguesia sobre o proletariado","Disciplina — a produção de corpos dóceis e úteis por meio de instituições (escola, prisão, hospital, exército)","Manipulação psicológica pela mídia de massa"],a:2,c:"Foucault analisa o poder moderno como **disciplina** em obras como *Vigiar e Punir* (1975): as instituições modernas (escola, prisão, hospital, quartel, fábrica) produzem corpos *dóceis e úteis* por meio de técnicas de observação, normatização e exame. O poder não é apenas repressivo (proibição, violência) — é produtivo: produz subjetividades, habilidades, comportamentos. A \"alma\" do preso não preexiste à prisão — é produzida por ela.",d:"Fácil"},{n:10,t:"O **princípio da diferença** de Rawls — o segundo princípio de justiça — afirma que:",o:["As diferenças entre as pessoas devem ser eliminadas para alcançar a igualdade perfeita","As desigualdades socioeconômicas são justificadas apenas se beneficiam os membros mais desfavorecidos da sociedade","As diferenças culturais devem ser respeitadas — cada comunidade tem seus próprios padrões de justiça","A diferença entre liberdade e igualdade é irresolvível — Rawls opta pela liberdade"],a:1,c:"O princípio da diferença (*difference principle*) é a resposta rawlsiana ao igualitarismo estrito: nem toda desigualdade é injusta — apenas a desigualdade que não beneficia os mais desfavorecidos. Se uma desigualdade (como salários mais altos para médicos) aumenta a produtividade de tal forma que os mais pobres também melhoram, ela é justificada. O critério é sempre: a desigualdade beneficia os que estão em pior posição?",d:"Fácil"},{n:11,t:"A **ética das virtudes** contemporânea, retomada por MacIntyre, difere do utilitarismo e do kantismo ao perguntar:",o:["\"Qual ação produz mais bem-estar?\" ou \"Qual ação cumpre o dever?\"","\"Que tipo de pessoa devo ser?\" — focando o caráter moral e as virtudes habituais","\"O que todos concordariam em numa situação ideal de discurso?\"","\"Como cuido das relações concretas com pessoas específicas?\""],a:1,c:"A ética das virtudes desloca a questão central da ética: em vez de \"o que devo fazer?\" (kantismo, utilitarismo), pergunta \"quem devo ser?\" A virtude é um traço de caráter habitual que permite ao agente agir bem em diferentes situações. Não há um algoritmo (maximizar utilidade, aplicar o imperativo categórico) — há o desenvolvimento de sabedoria prática (*phronesis*) para agir bem no contexto concreto. Isso é o neo-aristotelismo de MacIntyre, Foot e Nussbaum.",d:"Fácil"},{n:12,t:"A **dialogicidade** em Paulo Freire — o diálogo como fundamento da educação — requer, entre outras condições:",o:["Que o professor tenha autoridade suficiente para conduzir o diálogo","Amor, humildade, esperança e pensamento crítico — o diálogo é um encontro de seres que nomeiam o mundo e se comprometem com sua transformação","Que os alunos já tenham adquirido conhecimento suficiente para participar","Que o conteúdo seja previamente determinado pelo currículo oficial"],a:1,c:"Para Freire, o diálogo não é simplesmente \"conversar\" — é um compromisso filosófico e político. Ele requer: **amor** (fé nos seres humanos e na sua capacidade de transformar o mundo); **humildade** (ninguém é totalmente ignorante nem totalmente sábio); **esperança** (confiança de que o mundo pode ser diferente); **pensamento crítico** (problematizar a realidade, não apenas nomeá-la). Sem essas condições, o que parece diálogo é monólogo disfarçado.",d:"Fácil"},{n:13,t:"A **abordagem das capacidades** (*capabilities approach*) de Martha Nussbaum e Amartya Sen propõe que a justiça social deve:",o:["Garantir igualdade estrita de resultados para todos os cidadãos","Garantir a todos o desenvolvimento de um conjunto de capacidades humanas centrais — condições reais de florescimento humano","Maximizar o produto interno bruto per capita de uma nação","Proteger apenas os direitos negativos — liberdades de interferência do Estado"],a:1,c:"A abordagem das capacidades é uma alternativa às teorias de justiça baseadas em recursos (Rawls distribui \"bens primários\") e em utilidade (utilitarismo maximiza bem-estar). Nussbaum e Sen propõem que o que importa é o que as pessoas são capazes de *ser* e de *fazer* — não apenas o que possuem ou sentem. A justiça requer que cada pessoa tenha condições reais de desenvolver capacidades centrais como saúde, integridade corporal, razão prática, afiliação e controle sobre seu amb",d:"Fácil"},{n:14,t:"Matthew Lipman propôs que o ensino de Filosofia para crianças deve ser organizado como uma **\"Comunidade de Investigação\"** (*Community of Inquiry*) que:",o:["É uma comunidade de especialistas que ensinam filosofia de forma expositiva","É uma forma de organização da sala de aula em que os alunos investigam filosoficamente questões surgidas de textos narrativos — desenvolvendo pensamento crítico, criativo, cuidativo e colaborativo","É restrita a alunos com altas habilidades intelectuais","É baseada na leitura e memorização dos grandes textos filosóficos"],a:1,c:"A Comunidade de Investigação de Lipman é o coração do método P4C (*Philosophy for Children*): os alunos, a partir de textos narrativos que levantam questões filosóficas acessíveis à sua faixa etária, investigam coletivamente — formulando questões, argumentando, avaliando razões, cuidando do raciocínio uns dos outros. O professor facilita — não transmite. Os \"4Cs\" (Critical, Creative, Caring, Collaborative thinking) são os objetivos do pensamento desenvolvido.",d:"Fácil"},{n:15,t:"Os **quatro princípios da bioética** formulados por Beauchamp e Childress são:",o:["Liberdade, igualdade, fraternidade e solidariedade","Autonomia, beneficência, não-maleficência e justiça","Vida, saúde, dignidade e privacidade","Consentimento, transparência, responsabilidade e equidade"],a:1,c:"Os quatro princípios da bioética (formulados em *Principles of Biomedical Ethics*, 1979) são: **Autonomia** (respeitar a capacidade do paciente de tomar decisões informadas); **Beneficência** (agir em benefício do paciente); **Não-maleficência** (*Primum non nocere* — não causar dano); **Justiça** (distribuição equitativa de recursos e tratamentos). Esses princípios orientam decisões éticas em medicina, pesquisa biomédica e saúde pública.",d:"Fácil"},{n:16,t:"A distinção de Rawls entre **\"liberdades básicas\"** (1º princípio) e **\"desigualdades socioeconômicas\"** (2º princípio) implica que:",o:["As liberdades individuais e a igualdade econômica têm igual importância","As liberdades básicas têm prioridade absoluta sobre a igualdade econômica — nunca podem ser restringidas em nome da distribuição de riqueza","A igualdade econômica é mais importante que as liberdades individuais","Os dois princípios podem ser ponderados — um pode ceder ao outro conforme as circunstâncias"],a:1,c:"Rawls estabelece uma ordem lexicográfica entre os dois princípios: o 1º (liberdades básicas iguais) tem prioridade estrita sobre o 2º (princípio da diferença). Isso significa que nunca é justificável sacrificar liberdades básicas (liberdade de expressão, de consciência, de voto) em nome de ganhos econômicos — mesmo que beneficiassem os mais pobres. A liberdade política tem prioridade sobre a igualdade econômica, embora ambas sejam exigências da justiça.",d:"Média"},{n:17,t:"A crítica de **Nozick** a Rawls baseia-se em que:",o:["Rawls não foi suficientemente igualitário — deveria propor igualdade completa","O princípio da diferença viola direitos individuais: qualquer redistribuição forçada de riqueza (mesmo para beneficiar os mais pobres) é ilegítima — as pessoas têm direitos invioláveis ao fruto de seu trabalho e de suas trocas voluntárias","Rawls foi ingênuo ao supor que as pessoas raciocinam imparcialmente sob o véu de ignorância","O utilitarismo é superior ao rawlsianismo — o bem-estar coletivo deve ter prioridade"],a:1,c:"Nozick em *Anarquia, Estado e Utopia* (1974) desenvolve o libertarismo como alternativa ao liberalismo rawlsiano: os seres humanos têm direitos individuais de auto-propriedade e propriedade adquirida justamente — e esses direitos são invioláveis. Qualquer redistribuição forçada (imposto para financiar programas sociais, mesmo rawlsianos) viola esses direitos. O Estado legítimo é mínimo — proteção policial, cumprimento de contratos. Nada mais.",d:"Média"},{n:18,t:"A distinção que Arendt faz entre **\"labor\"** e **\"trabalho\"** é relevante para a crítica à sociedade moderna porque:",o:["O labor produz mais riqueza que o trabalho — e a modernidade inverte essa valoração","A modernidade reduziu tudo ao ciclo biológico do labor (produção-consumo-produção) — perdendo a dimensão do trabalho (fabricação de um mundo durável) e da ação (espaço político genuíno)","O trabalho é mais alienante que o labor — e a modernidade aumentou o trabalho","A distinção é apenas analítica — na prática, labor e trabalho são idênticos"],a:1,c:"A crítica de Arendt à modernidade: ao elevar o *animal laborans* (o ser humano como ser de necessidade biológica) como norma humana, a modernidade degradou tanto o *homo faber* (o trabalhador que cria um mundo durável) quanto o cidadão político (*bios politikos*). A sociedade de consumo é uma sociedade de labor — onde tudo (incluindo arte, cultura e política) é consumido e descartado, sem deixar nada permanente. A ação política genuína é substituída por administração e gestão",d:"Média"},{n:19,t:"O conceito de **conscientização** em Freire é um processo que envolve:",o:["Memorização de conceitos filosóficos sobre opressão e libertação","O processo pelo qual os oprimidos tomam consciência de sua situação histórica concreta — distinguindo o que é \"natural\" do que é construído socialmente — e se tornam sujeitos de sua transformação","A aceitação das condições sociais existentes como naturais e imutáveis","A transferência do conhecimento do professor para o aluno sobre as causas da pobreza"],a:1,c:"A conscientização (*conscientização*) freireana é um processo gradual: de uma consciência ingênua (que aceita as condições sociais como naturais, dadas por Deus ou pela sorte) para uma consciência crítica (que reconhece as condições sociais como históricas, construídas por relações de poder — e portanto transformáveis). A educação genuína é o processo de conscientização — não de transmissão de conteúdos sobre a opressão.",d:"Média"},{n:20,t:"A crítica **comunitarista** de Michael Sandel ao liberalismo rawlsiano argumenta que:",o:["Rawls foi excessivamente igualitário — deveria dar mais peso à liberdade individual","O \"eu desvinculado\" pressuposto por Rawls é uma ficção: os seres humanos são constituídos por suas comunidades, histórias e tradições — e a política não pode ser neutra quanto às concepções do bem","O véu de ignorância é uma boa ferramenta, mas os princípios que derivamos devem ser mais igualitários","O comunitarismo e o liberalismo são posições complementares sem contradição real"],a:1,c:"Sandel (*Liberalism and the Limits of Justice*, 1982) critica o \"eu desvinculado\" rawlsiano: o indivíduo que, por trás do véu de ignorância, escolhe princípios de justiça sem saber quem é. Para Sandel, isso é impossível — somos sempre já constituídos por nossas tradições, histórias e comunidades. A política que finge neutralidade quanto às concepções do bem está, na verdade, privilegiando uma concepção específica (a liberal, individualista). Uma política genuína deve reconhec",d:"Média"},{n:21,t:"Para Foucault, a **\"genealogia\"** — como método histórico-filosófico — difere da história tradicional porque:",o:["A genealogia busca as origens puras das instituições e práticas","A genealogia mostra que as práticas e instituições que parecem naturais, racionais e necessárias têm origens contingentes, marcadas por conflitos de poder — desconstruindo suas pretensões de necessidade","A genealogia é o estudo da descendência biológica das espécies","A genealogia busca reconstruir a intenção original dos fundadores das instituições"],a:1,c:"Foucault herda o método genealógico de Nietzsche: a genealogia não busca origens puras — mostra que o que parece natural e necessário tem uma história de contingência, conflito e poder. A prisão moderna não é a realização racional do ideal de justiça — surgiu de práticas disciplinares específicas, com interesses específicos. A \"loucura\" não é um dado natural — foi produzida por práticas médicas e jurídicas. A genealogia desestabiliza as evidências e abre espaço para imaginar ",d:"Média"},{n:22,t:"A proposta de Dewey de **\"democracia e educação\"** como intimamente ligadas significa que:",o:["A escola deve ensinar os alunos a votar corretamente nas eleições","A democracia não é apenas um sistema político — é um modo de vida associativa; a escola democrática prepara cidadãos para viver democraticamente ao praticar, já na escola, a cooperação, a comunicação e a participação","A educação deve ser financiada democraticamente — por votos populares","Os professores devem ser eleitos democraticamente pelos alunos"],a:1,c:"Para Dewey, democracia e educação são inseparáveis: a democracia como \"modo de vida associativa\" exige cidadãos capazes de comunicar-se, cooperar, resolver problemas coletivamente e participar do autogoverno. A escola que prepara para a democracia não é aquela que ensina *sobre* democracia — é aquela que *é* uma comunidade democrática em miniatura: onde os alunos investigam, colaboram, constroem conhecimento juntos e participam ativamente.",d:"Média"},{n:23,t:"O **\"especismo\"** criticado por Peter Singer refere-se a:",o:["A especialização excessiva da ciência em áreas cada vez mais estreitas","A discriminação arbitrária de seres com base na espécie — assim como o racismo discrimina pela raça, o especismo exclui animais da consideração moral apenas por serem de espécie diferente","A crença de que os seres humanos são uma espécie superior que deve dominar a natureza","A tendência dos especialistas a ignorar o conhecimento popular"],a:1,c:"Singer (*Libertação Animal*, 1975) aplica a lógica antidiscriminatória ao tratamento dos animais: assim como o racismo exclui seres da consideração moral por causa de uma característica moralmente irrelevante (raça), o especismo os exclui por causa de outra característica moralmente irrelevante (pertencer a uma espécie diferente). O critério moralmente relevante é a capacidade de sofrer — e os animais sofrem. A exclusão dos animais da consideração moral é, para Singer, tão ar",d:"Média"},{n:24,t:"A análise foucaultiana do **panoptismo** — o modelo arquitetônico do panóptico de Jeremy Bentham, onde um guarda pode observar todos os prisioneiros sem ser visto — serve como metáfora para:",o:["A vigilância estatal direta e explícita exercida pela polícia","O poder disciplinar moderno que opera pela interiorização da vigilância: não é preciso estar sendo observado de fato para se comportar como se estivesse — os indivíduos vigiam a si mesmos","A transparência democrática que os cidadãos exigem dos governantes","A arquitetura prisional que visa apenas a segurança física dos detentos"],a:1,c:"Em *Vigiar e Punir* (1975), Foucault usa o panóptico de Bentham como metáfora do poder disciplinar moderno: o seu efeito mais importante é a **interiorização da vigilância**. O prisioneiro que sabe que pode ser observado a qualquer momento comporta-se como se sempre fosse observado — mesmo quando ninguém o vê. O poder disciplinar moderno funciona assim: não pela força constante, mas pela consciência permanente de ser visto. A escola, a fábrica, o hospital operam panopticament",d:"Média"},{n:25,t:"O conceito de **\"palavras geradoras\"** em Paulo Freire, usado no seu método de alfabetização, refere-se a:",o:["Palavras difíceis que os alunos precisam aprender para dominar a língua culta","Palavras extraídas do universo vocabular concreto dos próprios educandos — carregadas de significado para sua realidade, a partir das quais se desenvolvem tanto a alfabetização quanto a leitura crítica do mundo","Palavras geradoras de debates filosóficos abstratos sobre liberdade e justiça","Palavras que os professores devem usar para despertar a motivação dos alunos"],a:1,c:"As palavras geradoras são o elemento metodológico central do processo freireano de alfabetização de adultos: são palavras do próprio universo vocabular dos educandos (tijolo, favela, poço, trabalho — dependendo do contexto). A partir delas, decompõem-se as famílias fonéticas para o aprendizado da leitura e da escrita — mas simultaneamente, cada palavra geradora é um tema para discussão da realidade concreta dos alunos. Isso conecta alfabetização a conscientização.",d:"Média"},{n:26,t:"A análise de Hannah Arendt sobre o **totalitarismo** o distingue da tirania clássica porque:",o:["O totalitarismo usa tecnologia moderna — a tirania usava apenas força bruta","O totalitarismo não apenas domina politicamente — busca destruir a pluralidade humana, transformar as pessoas em seres supérfluos e criar um mundo novo totalmente controlado, eliminando qualquer espaço de ação livre","O totalitarismo é justificado ideologicamente — a tirania é puramente arbitrária","O totalitarismo foi possível apenas na Europa — a tirania é um fenômeno universal"],a:1,c:"Para Arendt, o totalitarismo (nazismo e stalinismo) é um fenômeno novo na história — não simplesmente uma tirania muito violenta. Ele não visa apenas controlar politicamente — visa destruir a própria condição de pluralidade que torna a ação política possível. Os campos de concentração não eram apenas meios de extermínio — eram experimentos para criar seres humanos supérfluos, sem individualidade, sem julgamento, sem espontaneidade. O totalitarismo ataca a condição humana fund",d:"Média"},{n:27,t:"A **democracia deliberativa** proposta por Habermas se distingue da democracia liberal clássica porque:",o:["A democracia deliberativa é direta — sem representação; a liberal é representativa","A democracia deliberativa fundamenta a legitimidade política não apenas no voto (procedimento eleitoral) mas na qualidade do processo de deliberação pública — na razão comunicativa dos cidadãos","A democracia deliberativa exige consenso absoluto; a liberal aceita a decisão pela maioria","A democracia deliberativa é mais eficiente que a liberal — decide mais rápido"],a:1,c:"Para Habermas, a legitimidade democrática não vem apenas do procedimento eleitoral (o voto da maioria). Vem da qualidade do processo deliberativo: uma lei é legítima não apenas porque a maioria votou nela, mas porque foi produto de um processo de deliberação pública racional — em que os cidadãos apresentaram razões, debateram, ouviram os outros e chegaram a um consenso (ou decidiram pela maioria após deliberação genuína). A razão comunicativa — não apenas o número de votos — ",d:"Média"},{n:28,t:"A abordagem de Foucault sobre o **\"cuidado de si\"** (*epimeleia heautou*) — desenvolvida em suas obras tardias sobre ética — representa uma virada em relação às suas análises de poder porque:",o:["Foucault abandona completamente a análise de poder em favor da ética individual","Foucault identifica nas práticas de si da Antiguidade grega e romana uma forma de subjetivação que não é simplesmente produção disciplinar do sujeito — mas criação de si como obra de arte, como resistência possível ao poder","Foucault passa a defender o liberalismo após criticá-lo durante toda a vida","O cuidado de si é uma técnica terapêutica que Foucault recomenda aos seus leitores"],a:1,c:"Na trilogia *História da Sexualidade* (especialmente vols. 2 e 3 — *O Uso dos Prazeres* e *O Cuidado de Si*, 1984), Foucault examina as práticas de autoconstituição do sujeito na Antiguidade — uma ética baseada não em regras universais (kantismo) nem em maximização de prazer (hedonismo) mas no *cuidado de si*: a elaboração de si mesmo como obra de arte. Para Foucault, isso representa uma forma de resistência à subjetivação disciplinar — a possibilidade de se constituir de out",d:"Média"},{n:29,t:"A distinção de Gilligan entre a **\"voz da justiça\"** e a **\"voz do cuidado\"** tem implicações para o ensino de filosofia porque:",o:["Mostra que os meninos são mais morais que as meninas","Indica que o currículo de filosofia deve incluir tanto as questões de justiça e direitos (tradição dominante) quanto as questões de cuidado, relacionalidade e responsabilidade contextual","Prova que a ética feminista é superior à ética masculina","Sugere que a ética deve ser ensinada separadamente para meninos e meninas"],a:1,c:"A implicação pedagógica da ética do cuidado é inclusiva: o currículo filosófico tradicional privilegia questões de justiça, direitos e princípios universais (a voz da justiça). Mas existem formas igualmente legítimas de raciocínio moral focadas em relações concretas, responsabilidade e cuidado (a voz do cuidado). Um ensino de ética completo deve incorporar as duas vozes — o que também significa incluir tradições filosóficas que foram historicamente marginalizadas (feministas,",d:"Média"},{n:30,t:"A proposta de **republicanismo** de Philip Pettit — a liberdade como **não-dominação** — difere do liberalismo clássico porque:",o:["O republicanismo defende a participação direta; o liberalismo defende a representação","A liberdade liberal é ausência de interferência atual; a liberdade republicana é ausência de dependência estrutural do poder arbitrário de outro — mesmo que esse poder não seja exercido atualmente","O republicanismo prioriza a igualdade econômica; o liberalismo prioriza a liberdade individual","São posições idênticas — Pettit usa terminologia diferente para o mesmo conceito"],a:1,c:"O debate liberdade negativa (liberal) vs. não-dominação (republicana) é crucial: para o liberalismo clássico, sou livre se ninguém interfere no meu comportamento. Para o republicanismo de Pettit, isso é insuficiente: um escravo com um senhor benevolente que nunca interfere não é livre — porque está *estruturalmente dependente* da boa vontade do senhor, que *poderia* interferir a qualquer momento. A liberdade genuína requer que ninguém tenha poder arbitrário sobre mim — indepe",d:"Média"},{n:31,t:"A concepção de **\"práxis\"** em Paulo Freire — a unidade entre reflexão e ação — é central para sua pedagogia porque:",o:["Separa a teoria da prática: primeiro o aluno aprende teoria, depois a aplica","A práxis é a ação transformadora fundada na reflexão crítica — nem ação sem reflexão (ativismo cego) nem reflexão sem ação (verbalismo vazio)","A práxis é a prática docente do professor — não tem a ver com os alunos","A práxis é um conceito exclusivamente marxista que Freire aplica à educação sem modificações"],a:1,c:"A práxis freireana (herdada de Marx mas recontextualizada) é a superação da dicotomia teoria/prática: a reflexão sem ação é \"palavrório\" (*verbalismo*) — academicismo que não muda nada; a ação sem reflexão é ativismo cego — muda coisas sem entender o que muda. A educação autêntica é práxis: parte da realidade concreta dos alunos (ação), a problematiza pela reflexão crítica, e retorna à realidade para transformá-la (ação transformada pela reflexão).",d:"Média"},{n:32,t:"A análise de Arendt sobre o julgamento de Eichmann levou-a a concluir que a **capacidade de pensar** é condição da **moralidade** porque:",o:["Pensar muito nos torna mais virtuosos automaticamente","O mal não requer monstruosidade — a incapacidade de pensar (de se colocar no lugar do outro e refletir sobre as consequências das ações) permite que pessoas comuns participem de atrocidades","O pensamento filosófico é superior ao pensamento prático na prevenção do mal","Apenas os intelectuais têm a capacidade de pensamento moral genuíno"],a:1,c:"A conexão arendtiana entre pensamento e moralidade: Eichmann não pensava — no sentido de não se colocar no lugar das vítimas, não refletir sobre o que estava fazendo além de sua função burocrática. A conclusão filosófica: o pensamento — especialmente o pensamento que imagina o ponto de vista do outro (\"mentalidade alargada\" — *enlarged mentality*) — é uma condição da moralidade. A educação filosófica que desenvolve o pensamento crítico tem, portanto, uma dimensão ética fundam",d:"Média"},{n:33,t:"A **crítica ao utilitarismo** formulada por Rawls — especialmente no caso da \"tortura do inocente para salvar muitos\" — é que:",o:["O utilitarismo é matematicamente incorreto — não é possível somar bem-estar","O utilitarismo pode justificar violações graves de direitos individuais se o cálculo de utilidade favorece — sacrificando a justiça em nome da eficiência","O utilitarismo é muito exigente — impossível calcular todas as consequências","Mill e Bentham discordavam entre si — o utilitarismo não é uma teoria coerente"],a:1,c:"A crítica rawlsiana fundamental ao utilitarismo: ele trata a sociedade como se fosse um indivíduo, aplicando à coletividade a lógica individual de sacrificar satisfações presentes por satisfações futuras maiores. Mas isso pode justificar a violação sistemática dos direitos de uma minoria se o ganho de bem-estar para a maioria for suficientemente grande. Para Rawls, a justiça tem prioridade sobre a eficiência — certos direitos são invioláveis, mesmo que sua violação maximizass",d:"Média"},{n:34,t:"A distinção que Habermas faz entre **\"mundo vivido\"** (*Lebenswelt*) e **\"sistema\"** (*System*) é relevante para a crítica da educação contemporânea porque:",o:["O mundo vivido é inferior ao sistema — a educação deve sistematizar o conhecimento","A colonização do mundo vivido pelo sistema (econômico e administrativo) ocorre também na educação: quando a escola é reduzida a indicadores de desempenho, competências de mercado e gestão eficiente, o mundo comunicativo da formação humana é invadido pela lógica instrumental","A distinção é apenas teórica sem aplicações práticas","O sistema é necessário e deve colonizar o mundo vivido para modernizar a educação"],a:1,c:"Habermas distingue o *Lebenswelt* (esfera da comunicação, cultura, tradição, formação) do *Sistema* (mercado econômico e administração burocrática, guiados por dinheiro e poder). A \"colonização do mundo vivido pelo sistema\" é um dos diagnósticos centrais de sua teoria social: quando a educação passa a ser avaliada exclusivamente por indicadores de desempenho, rankings e competências de empregabilidade, a lógica sistêmica (eficiência, mercado) coloniza o espaço de formação hum",d:"Média"},{n:35,t:"O **\"ecocentrismo\"** de Aldo Leopold — sua \"Ética da Terra\" (*Land Ethic*) — propõe que:",o:["Apenas os ecossistemas têm valor — os seres humanos individuais não","A comunidade moral deve ser expandida para incluir solos, águas, plantas e animais — a ação correta é aquela que preserva a integridade, estabilidade e beleza da comunidade biótica","A preservação ambiental só é justificada quando beneficia os seres humanos","Apenas os animais com sistema nervoso complexo têm valor moral intrínseco"],a:1,c:"Leopold (*A Sand County Almanac*, 1949) propõe a extensão da comunidade moral além dos seres humanos e dos animais individuais para incluir o ecossistema como um todo. A \"Ética da Terra\": \"Uma coisa é correta quando tende a preservar a integridade, estabilidade e beleza da comunidade biótica. É errada quando tende ao contrário.\" Isso é ecocentrismo — o valor não está apenas nos indivíduos (biocentrismo de Singer) mas nos sistemas e comunidades ecológicas.",d:"Média"},{n:36,t:"Considere as afirmações:  I. Para Rawls, as desigualdades de qualquer tipo são injustas — a posição original exige igualdade perfeita. II. Para Nozick, o Estado tem o dever de redistribuir riqueza para beneficiar os mais pobres. III. Para Habermas, a democracia é legítima quando as normas que a governam são produto de deliberação racional livre de coerção.  Estão corretas:",o:["Apenas I e II","Apenas III","Apenas I e III","I, II e III"],a:1,c:"I é **falsa**: Rawls não exige igualdade perfeita — o princípio da diferença justifica desigualdades que beneficiam os mais pobres. II é **falsa**: Nozick é o oposto — ele rejeita qualquer redistribuição coercitiva do Estado, mesmo para beneficiar os mais pobres. O Estado legítimo é mínimo. III é **verdadeira**: a democracia deliberativa habermasiana fundamenta a legitimidade das normas não apenas no voto mas na qualidade do processo deliberativo — livre de coerção e orientad",d:"Difícil"},{n:37,t:"A tensão entre a **pedagogia freireana** e a **BNCC** pode ser analisada porque:",o:["São totalmente incompatíveis — a BNCC é a versão atual da educação bancária","A BNCC incorpora elementos freireianos (protagonismo do aluno, formação cidadã, pensamento crítico) mas, ao padronizar competências e habilidades nacionais, cria tensão com a proposta freireana de partir da realidade local concreta dos educandos e com sua desconfiança de currículos prescritos externamente","Freire e a BNCC concordam em tudo — são perspectivas complementares sem tensões","A BNCC superou Freire — tornou sua pedagogia obsoleta"],a:1,c:"A relação BNCC-Freire é tensionada e produtiva: a BNCC incorpora linguagem freiriana (protagonismo, criticidade, cidadania) mas ao mesmo tempo prescreve competências e habilidades padronizadas nacionalmente — o que Freire teria problematizado como uma forma de controle externo do currículo. Para Freire, o ponto de partida deve ser a realidade concreta dos educandos e de sua comunidade — não um conjunto de competências definidas por especialistas em Brasília. Essa tensão não i",d:"Difícil"},{n:38,t:"A análise de Foucault sobre as **práticas penitenciárias** em *Vigiar e Punir* contribui para a filosofia da educação porque:",o:["Sugere que as escolas devem ser organizadas como prisões para garantir disciplina","A escola moderna e a prisão moderna compartilham técnicas disciplinares (vigilância, normatização, exame) que produzem subjetividades \"dóceis e úteis\" — levando à pergunta: a escola liberta ou disciplina?","A prisão é o modelo negativo que a escola deve evitar completamente","Foucault defendia a abolição tanto das prisões quanto das escolas"],a:1,c:"A análise foucaultiana das instituições disciplinares é diretamente aplicável à escola: os horários, os enfileiramentos, as notas, os exames, a vigilância do professor, os relatórios de comportamento — são técnicas disciplinares análogas às da prisão (embora evidentemente diferentes em grau e em fins). A pergunta filosófica que emerge: a escola produz subjetividades autônomas e críticas (como Freire queria) ou subjetividades normalizadas e dóceis (como Foucault temia)? Essa t",d:"Difícil"},{n:39,t:"A proposta de **Martha Nussbaum** para a educação humanística (*Sem Fins Lucrativos*, 2010) argumenta que:",o:["As humanidades são inúteis para o mercado de trabalho e devem ser reduzidas nos currículos","As humanidades (filosofia, literatura, artes) são essenciais para a democracia — desenvolvem imaginação, pensamento crítico e capacidade de se colocar no lugar do outro; sua eliminação dos currículos ameaça a democracia","A educação deve focar exclusivamente nas ciências e na tecnologia para o desenvolvimento econômico","As humanidades são superiores às ciências naturais — a educação deve privilegiá-las"],a:1,c:"Nussbaum em *Sem Fins Lucrativos* (*Not For Profit*, 2010) faz uma defesa filosófica das humanidades contra a tendência global de reduzi-las nos currículos em favor de conteúdos diretamente aplicáveis ao mercado. O argumento: as humanidades desenvolvem as capacidades que a democracia precisa — imaginação narrativa (capacidade de sentir com quem é diferente), pensamento crítico, capacidade de argumentação e compreensão da interdependência humana. Sem elas, produzimos trabalhad",d:"Difícil"},{n:40,t:"O conceito de **\"mentalidade alargada\"** (*enlarged mentality*) de Hannah Arendt — derivado de Kant — é central para a sua filosofia política e moral porque:",o:["Exige que todos os cidadãos tenham formação filosófica avançada","A capacidade de pensar \"no lugar de todos os outros\" — visitar imaginariamente perspectivas diferentes da própria — é a condição do julgamento político e moral genuíno e da prevenção da \"banalidade do mal\"","A mentalidade alargada é uma forma de empatia emocional — diferente do julgamento racional","A mentalidade alargada é a capacidade de pensar em larga escala — sobre questões globais"],a:1,c:"Arendt retoma de Kant (*Crítica da Faculdade de Juízo*) a ideia do \"sensus communis\" — a capacidade de julgar que leva em conta os pontos de vista de todos os outros. A \"mentalidade alargada\" (*erweiterte Denkungsart*) é a capacidade de visitar imaginariamente perspectivas diferentes da própria — não necessariamente concordar com elas, mas considerá-las. Essa é a capacidade que Eichmann *não tinha* — e cuja ausência permitiu sua participação no genocídio. A educação que desen",d:"Difícil"},{n:41,t:"A \"**situação-limite**\" (*limit-situation*) em Freire — derivada de Karl Jaspers — refere-se a:",o:["Situações de extrema pobreza que impedem o desenvolvimento humano","As situações concretas da realidade dos educandos que constituem barreiras à sua humanização — que, ao serem conscientizadas, revelam os \"atos-limite\" possíveis para superá-las","Os limites do conhecimento que a educação não pode superar","As situações em que a disciplina escolar atinge seus limites de controle"],a:1,c:"Freire adapta o conceito de \"situações-limite\" de Jaspers: são as situações concretas da realidade dos oprimidos que parecem naturais e imutáveis — como muros intransponíveis. A conscientização revela que essas situações não são \"naturais\" — são históricas e construídas. Ao perceber isso, os educandos podem vislumbrar os \"atos-limite\" — as ações que poderiam transformar essas situações. A educação problematizadora parte das situações-limite como temas geradores — transformand",d:"Difícil"},{n:42,t:"A proposta de **Charles Taylor** de **\"políticas de reconhecimento\"** — influenciada pela dialética hegeliana do reconhecimento — argumenta que:",o:["O reconhecimento é apenas uma questão de tolerância liberal — cada um vive como quer","A identidade individual e coletiva é formada pelo reconhecimento dos outros; quando grupos são sistematicamente mal-reconhecidos (estereotipados, inferiorizados), isso causa dano real à sua identidade — e a política tem o dever de reconhecimento positivo","O reconhecimento é um valor apenas para comunidades culturais — não para indivíduos","As políticas de reconhecimento contradizem o princípio da igualdade — devem ser evitadas"],a:1,c:"Taylor (*Multiculturalism: Examining the Politics of Recognition*, 1994) argumenta que a identidade é fundamentalmente dialógica — formada em relação com os outros. Quando grupos (minorias raciais, indígenas, mulheres, LGBTQIA+) são sistematicamente representados de forma negativa ou ignorados pela cultura dominante, isso não é apenas injusto — causa dano real à autocompreensão dos membros desses grupos. A política do reconhecimento exige não apenas tolerância (liberal) mas r",d:"Difícil"},{n:43,t:"A análise de Arendt do **\"espaço de aparição\"** (*space of appearance*) — onde a ação e o discurso político ocorrem — tem implicações para a filosofia da educação porque:",o:["A escola deve ser um espaço apolítico — reservado apenas ao conhecimento","A sala de aula como espaço de aparição — onde os alunos aparecem uns para os outros pelo discurso e pela ação, revelando suas perspectivas singulares — é uma forma de vida política em miniatura que prepara para a cidadania genuína","A política deve ficar fora da escola — que é espaço de formação técnica","O espaço de aparição é exclusivamente o parlamento — a escola não pode ser política"],a:1,c:"A aplicação pedagógica da filosofia política de Arendt: o espaço de aparição não é apenas o parlamento — é qualquer espaço onde pessoas agem e falam juntas, revelando suas perspectivas singulares e construindo um mundo comum. A sala de aula filosófica — onde alunos apresentam argumentos, debatem, ouvem perspectivas diferentes e constroem entendimentos coletivos — é um espaço de aparição em sentido arendtiano. Isso conecta o ensino de filosofia à formação política genuína.",d:"Difícil"},{n:44,t:"A tensão entre **autonomia** e **beneficência** na bioética — por exemplo, no caso de um paciente que recusa um tratamento que os médicos consideram necessário — ilustra que:",o:["A autonomia sempre prevalece — o paciente pode recusar qualquer tratamento","A beneficência sempre prevalece — os médicos sabem o que é melhor para o paciente","Os quatro princípios da bioética não formam uma hierarquia rígida — sua aplicação em casos concretos requer ponderação contextual e julgamento clínico","O caso deve ser decidido pelo princípio da não-maleficência — o que menos dano causa"],a:2,c:"A riqueza e a dificuldade da bioética principialista: os quatro princípios frequentemente entram em conflito — e não há uma hierarquia rígida entre eles. O caso da recusa de tratamento envolve autonomia (o direito do paciente de decidir sobre seu corpo) vs. beneficência (o dever médico de promover o bem do paciente). A resolução depende de fatores contextuais: o paciente está mentalmente capacitado? Foi devidamente informado? A recusa é coerente com seus valores? A ponderação",d:"Difícil"},{n:45,t:"O **pensamento de Paulo Freire** foi influenciado por múltiplas tradições filosóficas. A afirmação que melhor mapeia essas influências é:",o:["Freire foi exclusivamente influenciado pelo marxismo — sua pedagogia é aplicação direta do materialismo histórico","Freire sintetizou influências da fenomenologia e do existencialismo (Husserl, Sartre, Merleau-Ponty), do marxismo (Marx, Gramsci), da teologia cristã (Teilhard de Chardin) e do personalismo (Mounier) — numa síntese filosófico-pedagógica original","Freire foi influenciado apenas por educadores — não por filósofos","Freire rejeitou todas as influências filosóficas europeias como colonialistas"],a:1,c:"A riqueza filosófica de Freire está na síntese: a **intencionalidade husserliana** (a consciência sempre dirigida ao mundo) fundamenta a concepção freireana de consciência; o **existencialismo sartriano** (a existência precede a essência, a liberdade radical) fundamenta a concepção do ser humano como ser incompleto e em processo; o **marxismo** fornece a análise das relações de opressão e a práxis transformadora; o **personalismo cristão** de Mounier contribui com a ênfase na",d:"Difícil"},{n:46,t:"A **abordagem das capacidades** de Nussbaum difere de Rawls porque:",o:["Nussbaum é mais conservadora — preserva mais as liberdades individuais","Rawls distribui \"bens primários\" (renda, riqueza, oportunidades) sem considerar que pessoas diferentes precisam de quantidades diferentes de bens para alcançar capacidades equivalentes; Nussbaum enfatiza o que as pessoas são capazes de ser e fazer — não apenas o que possuem","Rawls e Nussbaum são idênticos — a abordagem das capacidades é uma versão do rawlsianismo","Nussbaum é mais utilitarista — foca no bem-estar subjetivo"],a:1,c:"A crítica de Nussbaum (e Sen) a Rawls: os \"bens primários\" rawlsianos ignoram a diversidade humana. Uma pessoa com deficiência física precisa de mais recursos para alcançar o mesmo nível de mobilidade e participação que uma pessoa sem deficiência. Uma mulher em sociedade patriarcal pode ter os mesmos \"bens primários\" que um homem mas capacidades reais muito diferentes. O que importa não é o que as pessoas *têm* mas o que elas são *capazes de ser e fazer* — e isso requer atenç",d:"Difícil"},{n:47,t:"A análise de Foucault sobre a **\"governamentalidade\"** (*gouvernementalité*) é relevante para a filosofia da educação porque:",o:["Descreve como os governos devem administrar as escolas","Analisa como o poder moderno opera não apenas coercitivamente mas pela produção de sujeitos que se autogovernamentam — e como a escola é um dispositivo de produção de subjetividades capazes de se gerir como \"capital humano\"","É irrelevante para a educação — trata apenas de questões de política econômica","A governamentalidade defende a autonomia dos sistemas educacionais em relação ao Estado"],a:1,c:"A governamentalidade foucaultiana (especialmente em suas aulas no Collège de France sobre o neoliberalismo) analisa como o poder contemporâneo opera pela produção de sujeitos que se autogovernamentam de acordo com lógicas de mercado. Na educação neoliberal, o estudante é incitado a gerir-se como \"capital humano\" — investir em si mesmo, desenvolver competências de empregabilidade, ser empreendedor de si mesmo. Foucault mostra que isso é uma forma de poder (produção de subjetiv",d:"Difícil"},{n:48,t:"A proposta de **Axel Honneth** de uma teoria social baseada no **reconhecimento** — desenvolvida em *Luta por Reconhecimento* (1992) — identifica três esferas de reconhecimento:",o:["Econômica, política e cultural","Amor (nas relações íntimas), direito (na esfera jurídica) e solidariedade (na esfera da estima social)","Individual, comunitária e universal","Família, Estado e mercado"],a:1,c:"Honneth (Escola de Frankfurt — terceira geração) identifica três esferas de reconhecimento, cada uma com sua forma específica de desrespeito quando violada: **amor** (relações primárias — família, amizade: desrespeito = maus-tratos físicos e abandono); **direito** (esfera jurídica — cidadania: desrespeito = exclusão de direitos e negação de reconhecimento legal); **solidariedade** (esfera da estima social — reconhecimento das contribuições para a comunidade: desrespeito = hum",d:"Difícil"},{n:49,t:"A crítica de **bell hooks** à pedagogia freireana — apesar de seu grande apreço por Freire — aponta que:",o:["Freire era conservador — defendia a educação bancária para grupos específicos","A linguagem sexista de Freire (que usa \"homem\" como universal) revela que sua pedagogia da libertação não contemplou adequadamente as opressões específicas das mulheres — exigindo uma articulação entre pedagogia crítica e feminismo","Freire ignorou completamente as questões de raça e classe social","A pedagogia engajada de bell hooks é completamente diferente de Freire — não há relação"],a:1,c:"bell hooks (*Teaching to Transgress*, 1994) reconhece a dívida fundamental com Freire — mas aponta o limite: a linguagem sexista e a tendência de Freire a teorizar a opressão de forma homogênea, sem atenção às especificidades da opressão de gênero e raça. Uma pedagogia da libertação genuína deve ser interseccional — reconhecer que opressões de classe, raça e gênero se articulam e que a libertação requer abordar todas essas dimensões. Isso não invalida Freire — mas o completa ",d:"Difícil"},{n:50,t:"Um professor de Filosofia no EF Anos Finais quer trabalhar **\"o que é uma sociedade justa?\"** com alunos de 9º ano usando o dispositivo do **véu de ignorância** de Rawls. A abordagem mais pedagogicamente rigorosa é:",o:["Explicar o conceito e pedir que os alunos memorizem os dois princípios de Rawls","Propor a atividade: \"Imagine que você vai nascer numa sociedade mas não sabe se será rico ou pobre, homem ou mulher, de qual raça. Que regras escolheria para essa sociedade?\" — e usar as respostas dos alunos para discutir imparcialidade, justiça distributiva e os princípios rawlsianos, conectando ao Brasil concreto","Apresentar apenas a crítica de Nozick — para mostrar que Rawls estava errado","Evitar o tema por ser politicamente controverso numa escola pública"],a:1,c:"Esta questão final integra filosofia política, pedagogia freireana e didática filosófica. A abordagem B usa o dispositivo rawlsiano como experimento mental pedagógico: a pergunta é acessível a alunos de 9º ano, provoca reflexão genuína sobre imparcialidade e justiça, e as respostas dos alunos servem como ponto de partida para os princípios rawlsianos — contextualizado na realidade brasileira (desigualdade de renda, racial, de gênero). Isso é ao mesmo tempo filosoficamente rig",d:"Difícil"}];
+const TOTAL = 50;
+let answers = {};
+let currentFilter = 'all';
+let errorsMode = false;
+
+function getVisible(){
+  if(errorsMode){
+    return QUESTIONS.filter(q=>answers[q.n]!==undefined && answers[q.n]!==q.a);
+  }
+  if(currentFilter==='all') return QUESTIONS;
+  return QUESTIONS.filter(q=>q.d===currentFilter);
+}
+
+function renderQuiz(){
+  const visible = getVisible();
+  const container = document.getElementById('quiz-content');
+  container.innerHTML = '';
+  if(!visible.length){
+    container.innerHTML = '<p style="text-align:center;color:var(--text3);padding:40px;font-family:JetBrains Mono,monospace;font-size:13px;">Nenhuma questão neste filtro.</p>';
+    return;
+  }
+  visible.forEach((q,i)=>{
+    const block = document.createElement('div');
+    block.className = 'q-block' + (answers[q.n]!==undefined?' answered':'');
+    block.id = 'qb-'+q.n;
+    const diffClass = q.d==='Fácil'?'diff-easy':q.d==='Média'?'diff-med':'diff-hard';
+    const done = answers[q.n]!==undefined;
+    block.innerHTML = `
+      <div class="q-meta">
+        <span class="q-num">Q${String(q.n).padStart(2,'0')}</span>
+        <span class="q-diff ${diffClass}">${q.d}</span>
+      </div>
+      <div class="q-text">${q.t}</div>
+      <div class="q-opts" id="opts-${q.n}">
+        ${q.o.map((o,j)=>{
+          let cls='q-opt'+(done?' done':'');
+          if(done){
+            if(j===q.a) cls+=' correct';
+            else if(j===answers[q.n]) cls+=' wrong';
+          }
+          return `<div class="${cls}" ${!done?`onclick="pick(${q.n},${j})"`:''}>
+            <span class="opt-letter">${'ABCD'[j]}</span>
+            <span class="opt-text">${o}</span>
+          </div>`;
+        }).join('')}
+      </div>
+      <div class="q-feedback ${done?(answers[q.n]===q.a?'fb-correct show':'fb-wrong show'):''}" id="fb-${q.n}">
+        <span class="fb-label">${done?(answers[q.n]===q.a?'✓ Correto':'✗ Incorreto — Gabarito: '+'ABCD'[q.a]):'' }</span>
+        <span class="fb-body">${q.c}</span>
+      </div>`;
+    container.appendChild(block);
+  });
+}
+
+function pick(qn, optIdx){
+  if(answers[qn]!==undefined) return;
+  const q = QUESTIONS.find(x=>x.n===qn);
+  answers[qn] = optIdx;
+  const correct = optIdx===q.a;
+  // Style options
+  const opts = document.querySelectorAll('#opts-'+qn+' .q-opt');
+  opts.forEach(o=>o.classList.add('done'));
+  opts[optIdx].classList.add(correct?'correct':'wrong');
+  if(!correct) opts[q.a].classList.add('correct');
+  // Feedback
+  const fb=document.getElementById('fb-'+qn);
+  fb.className='q-feedback show '+(correct?'fb-correct':'fb-wrong');
+  fb.innerHTML=`<span class="fb-label">${correct?'✓ Correto':'✗ Incorreto — Gabarito: '+'ABCD'[q.a]}</span><span class="fb-body">${q.c}</span>`;
+  document.getElementById('qb-'+qn).classList.add('answered');
+  updateStats();
+  if(Object.keys(answers).length===TOTAL) finishQuiz();
+}
+
+function updateStats(){
+  const answered = Object.keys(answers).length;
+  let corr = 0;
+  QUESTIONS.forEach(q => { if (answers[q.n] === q.a) corr++; });
+  const pct = answered ? Math.round(corr / answered * 100) : 0;
+
+  document.getElementById('hdr-answered').textContent = answered;
+  document.getElementById('hdr-correct').textContent = corr;
+  document.getElementById('hdr-pct').textContent = pct + '%';
+  document.getElementById('prog-bar').style.width = (answered / TOTAL * 100) + '%';
+  document.getElementById('st-pts').textContent = corr;
+  document.getElementById('st-fill').style.width = (corr / TOTAL * 100) + '%';
+  document.getElementById('st-pct').textContent = pct + '%';
+
+  syncErrorsButton();
+}
+
+function finishQuiz(){
+  let corr=0;
+  QUESTIONS.forEach(q=>{ if(answers[q.n]===q.a) corr++; });
+  const pct=Math.round(corr/TOTAL*100);
+  const panel=document.getElementById('score-panel');
+  panel.classList.add('show');
+  const numEl=document.getElementById('sc-num');
+  numEl.textContent=corr+'/'+TOTAL;
+  numEl.className='sc-number '+(pct>=70?'sc-approved':'sc-failed');
+  document.getElementById('sc-pct').textContent=pct+'% de acerto';
+  const errs=TOTAL-corr;
+  document.getElementById('sc-breakdown').innerHTML=
+    `<div class="sc-item"><strong>${corr}</strong>Corretas</div>
+     <div class="sc-item"><strong>${errs}</strong>Incorretas</div>
+     <div class="sc-item"><strong>${pct}%</strong>Aproveitamento</div>`;
+  syncErrorsButton();
+  if(errs>0) document.getElementById('sc-review-btn').style.display='inline-block';
+  else document.getElementById('sc-review-btn').style.display='none';
+  panel.scrollIntoView({behavior:'smooth'});
+}
+
+function syncErrorsButton(){
+  const errBtn = document.getElementById('err-btn');
+  const errs = QUESTIONS.filter(q => answers[q.n] !== undefined && answers[q.n] !== q.a).length;
+  const answered = Object.keys(answers).length;
+
+  if (errs > 0) {
+    errBtn.style.display = 'block';
+    errBtn.disabled = false;
+    errBtn.textContent = errorsMode ? '↺ Mostrar todas' : '↺ Só erros';
+  } else {
+    errBtn.style.display = answered === TOTAL ? 'block' : 'none';
+    errBtn.disabled = true;
+    errBtn.textContent = '↺ Só erros';
+  }
+}
+
+function resetQuiz(){
+  answers={};
+  errorsMode=false;
+  currentFilter='all';
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelector('[data-filter="all"]').classList.add('active');
+  document.getElementById('score-panel').classList.remove('show');
+  syncErrorsButton();
+  document.getElementById('hdr-answered').textContent='0';
+  document.getElementById('hdr-correct').textContent='0';
+  document.getElementById('hdr-pct').textContent='0%';
+  document.getElementById('prog-bar').style.width='0%';
+  document.getElementById('st-pts').textContent='0';
+  document.getElementById('st-fill').style.width='0%';
+  document.getElementById('st-pct').textContent='0%';
+  renderQuiz();
+  window.scrollTo(0,0);
+}
+
+function reviewErrors(){
+  errorsMode = true;
+  document.getElementById('score-panel').classList.remove('show');
+  currentFilter = 'all';
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector('[data-filter="all"]').classList.add('active');
+  renderQuiz();
+syncErrorsButton();
+  window.scrollTo(0,0);
+}
+
+function setFilter(f, btn){
+  currentFilter = f;
+  errorsMode = false;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderQuiz();
+syncErrorsButton();
+}
+
+function toggleErrors(){
+  const errs = QUESTIONS.filter(q => answers[q.n] !== undefined && answers[q.n] !== q.a).length;
+  if (!errs) return;
+  errorsMode = !errorsMode;
+  renderQuiz();
+syncErrorsButton();
+}
+
+renderQuiz();
+syncErrorsButton();
+
+</script>
+</body>
+</html>

@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>T02 Quiz — Moral, Discurso e o Homem na Filosofia Antiga | Filosofia SJR 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+
+:root{
+  --bg:#0b0d10;--bg2:#111318;--bg3:#181c22;--bg4:#1e232b;
+  --border:#252b35;--border2:#2d3443;
+  --text:#cdd5e0;--text2:#8a96a8;--text3:#4d5a6e;
+  --gold:#c8a44a;--gold2:#e2c070;--gold3:#f0d490;
+  --blue:#3d8fd1;--green:#3d9e72;--green2:#5ec090;
+  --red:#c05050;--red2:#e07070;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:'Lato',sans-serif;font-size:15px;line-height:1.7;min-height:100vh}
+
+/* HEADER */
+.quiz-header{
+  background:var(--bg2);border-bottom:1px solid var(--border);
+  padding:16px 24px;display:flex;align-items:center;gap:16px;
+  position:sticky;top:0;z-index:50;flex-wrap:wrap;
+}
+.qh-back{
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  color:var(--text3);text-decoration:none;transition:color .2s;white-space:nowrap;
+}
+.qh-back:hover{color:var(--gold)}
+.qh-title{
+  font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:700;color:var(--gold2);
+  flex:1;
+}
+.qh-badge{
+  font-family:'JetBrains Mono',monospace;font-size:10px;
+  color:var(--gold);background:rgba(200,164,74,.12);
+  padding:3px 10px;border-radius:4px;white-space:nowrap;
+}
+.qh-stats{
+  display:flex;gap:16px;flex-wrap:wrap;
+}
+.qh-stat{
+  font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3);
+  white-space:nowrap;
+}
+.qh-stat strong{color:var(--text);font-size:14px}
+
+/* PROGRESS BAR */
+.progress-bar{height:3px;background:var(--border);overflow:hidden}
+.progress-fill{height:100%;background:var(--gold);transition:width .4s ease}
+
+/* FILTERS */
+.filter-bar{
+  padding:14px 24px;background:var(--bg2);border-bottom:1px solid var(--border);
+  display:flex;gap:8px;align-items:center;flex-wrap:wrap;
+}
+.filter-label{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3);margin-right:4px}
+.filter-btn{
+  padding:5px 14px;border-radius:4px;border:1px solid var(--border);
+  background:var(--bg3);color:var(--text2);font-family:'JetBrains Mono',monospace;
+  font-size:11px;cursor:pointer;transition:all .15s;
+}
+.filter-btn:hover{border-color:var(--gold);color:var(--gold)}
+.filter-btn.active{background:rgba(200,164,74,.15);border-color:var(--gold);color:var(--gold)}
+.filter-sep{width:1px;height:20px;background:var(--border);margin:0 4px}
+.toggle-btn{
+  margin-left:auto;padding:5px 14px;border-radius:4px;border:1px solid var(--border2);
+  background:var(--bg3);color:var(--text2);font-family:'JetBrains Mono',monospace;
+  font-size:11px;cursor:pointer;transition:all .15s;
+}
+.toggle-btn:hover{border-color:var(--blue);color:var(--blue)}
+.toggle-btn:disabled{opacity:.45;cursor:not-allowed}
+.toggle-btn:disabled:hover{border-color:var(--border2);color:var(--text2)}
+
+/* CONTENT */
+.quiz-content{padding:24px;max-width:860px;margin:0 auto}
+
+/* QUESTION BLOCK */
+.q-block{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:8px;padding:24px;margin-bottom:18px;
+  transition:border-color .2s;
+}
+.q-block.answered{border-color:var(--border2)}
+.q-meta{display:flex;gap:8px;align-items:center;margin-bottom:12px}
+.q-num{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3)}
+.q-diff{
+  font-family:'JetBrains Mono',monospace;font-size:10px;
+  padding:2px 7px;border-radius:3px;
+}
+.diff-easy{background:rgba(61,158,114,.15);color:var(--green2)}
+.diff-med{background:rgba(61,143,209,.12);color:var(--blue)}
+.diff-hard{background:rgba(192,80,80,.12);color:var(--red2)}
+.q-text{font-size:14.5px;line-height:1.75;margin-bottom:16px;color:var(--text)}
+.q-opts{display:flex;flex-direction:column;gap:8px}
+.q-opt{
+  display:flex;align-items:flex-start;gap:10px;
+  padding:10px 14px;border:1px solid var(--border);
+  border-radius:6px;cursor:pointer;background:var(--bg3);
+  transition:all .15s;
+}
+.q-opt:hover:not(.done){border-color:var(--gold);background:rgba(200,164,74,.05)}
+.q-opt.done{cursor:default}
+.q-opt.sel{border-color:var(--blue)!important;background:rgba(61,143,209,.08)!important}
+.q-opt.correct{border-color:var(--green)!important;background:rgba(61,158,114,.12)!important}
+.q-opt.wrong{border-color:var(--red)!important;background:rgba(192,80,80,.08)!important}
+.opt-letter{
+  font-family:'JetBrains Mono',monospace;font-size:12px;
+  font-weight:500;color:var(--gold);min-width:18px;margin-top:2px;
+}
+.opt-text{font-size:13.5px;color:var(--text);line-height:1.6}
+.q-feedback{
+  margin-top:12px;padding:12px 16px;border-radius:6px;
+  font-size:13px;line-height:1.7;display:none;
+}
+.q-feedback.show{display:block;animation:fadeIn .2s ease}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.fb-correct{background:rgba(61,158,114,.1);border:1px solid rgba(61,158,114,.3);color:var(--green2)}
+.fb-wrong{background:rgba(192,80,80,.08);border:1px solid rgba(192,80,80,.25);color:var(--red2)}
+.fb-label{
+  font-family:'JetBrains Mono',monospace;font-size:10px;
+  text-transform:uppercase;letter-spacing:.8px;display:block;margin-bottom:5px;
+}
+.fb-correct .fb-label{color:var(--green)}
+.fb-wrong .fb-label{color:var(--red)}
+.fb-body{color:var(--text);font-style:italic}
+
+/* SCORE PANEL */
+#score-panel{
+  display:none;background:var(--bg2);border:1px solid var(--border);
+  border-radius:12px;padding:40px;text-align:center;margin:24px;
+}
+#score-panel.show{display:block;animation:fadeIn .4s ease}
+.sc-title{
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;
+}
+.sc-number{
+  font-family:'Cormorant Garamond',serif;font-size:72px;font-weight:700;line-height:1;margin-bottom:8px;
+}
+.sc-approved{color:var(--green2)}
+.sc-failed{color:var(--red2)}
+.sc-pct{font-size:20px;color:var(--text2);margin-bottom:24px}
+.sc-breakdown{display:flex;gap:24px;justify-content:center;flex-wrap:wrap;margin:20px 0}
+.sc-item{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text3)}
+.sc-item strong{color:var(--text);display:block;font-size:18px}
+.sc-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:24px}
+.sc-btn{
+  padding:11px 24px;border-radius:6px;font-family:'JetBrains Mono',monospace;
+  font-size:12px;cursor:pointer;transition:all .2s;border:none;
+}
+.sc-btn-primary{background:var(--gold);color:var(--bg)}
+.sc-btn-primary:hover{opacity:.85}
+.sc-btn-secondary{background:var(--bg3);border:1px solid var(--border);color:var(--text2)}
+.sc-btn-secondary:hover{border-color:var(--gold);color:var(--gold)}
+
+/* BOTTOM NAV */
+.bottom-nav{
+  padding:20px 24px;border-top:1px solid var(--border);
+  display:flex;gap:10px;align-items:center;flex-wrap:wrap;
+}
+.nav-btn{
+  padding:9px 18px;border-radius:6px;
+  background:var(--bg3);border:1px solid var(--border);
+  color:var(--text2);font-family:'JetBrains Mono',monospace;
+  font-size:11px;cursor:pointer;transition:all .2s;text-decoration:none;
+  display:inline-block;
+}
+.nav-btn:hover{border-color:var(--gold);color:var(--gold)}
+.nav-theory{margin-left:auto}
+
+/* STICKY SCORE */
+#sticky{
+  position:fixed;bottom:0;left:0;right:0;
+  background:rgba(17,19,24,.95);border-top:1px solid var(--border);
+  backdrop-filter:blur(8px);
+  padding:10px 24px;display:flex;align-items:center;gap:16px;
+  z-index:50;
+}
+#sticky .ss-txt{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3)}
+#sticky .ss-txt strong{color:var(--gold)}
+.ss-bar{flex:1;height:3px;background:var(--border);border-radius:2px;overflow:hidden}
+.ss-fill{height:100%;background:var(--gold);transition:width .3s}
+
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+
+
+@media (max-width: 720px){
+  .quiz-header,.filter-bar,.bottom-nav,.quiz-content,#sticky{padding-left:16px;padding-right:16px}
+  .qh-title{flex-basis:100%;font-size:17px}
+  .qh-stats{width:100%;gap:12px}
+  .filter-sep{display:none}
+  .toggle-btn{margin-left:0}
+  #score-panel{margin:16px;padding:28px 20px}
+  .sc-number{font-size:56px}
+  .bottom-nav{padding-bottom:84px}
+}
+
+@media (max-width: 520px){
+  .q-block{padding:18px}
+  .q-text{font-size:14px}
+  .opt-text{font-size:13px}
+  #sticky{gap:10px;flex-wrap:wrap}
+  #sticky .ss-txt{width:auto}
+  .ss-bar{order:3;flex-basis:100%}
+}
+
+
+</style>
+</head>
+<body>
+
+<header class="quiz-header">
+  <a href="D1_Filosofia.html" class="qh-back">← Teoria D1</a>
+  <div class="qh-title">T02 — Moral, Discurso e o Homem na Filosofia Antiga</div>
+  <span class="qh-badge">50 questões</span>
+  <div class="qh-stats">
+    <span class="qh-stat"><strong id="hdr-answered">0</strong> respondidas</span>
+    <span class="qh-stat"><strong id="hdr-correct">0</strong> corretas</span>
+    <span class="qh-stat"><strong id="hdr-pct">0%</strong></span>
+  </div>
+</header>
+<div class="progress-bar"><div class="progress-fill" id="prog-bar" style="width:0%"></div></div>
+
+<div class="filter-bar">
+  <span class="filter-label">Dificuldade:</span>
+  <button type="button" class="filter-btn active" data-filter="all" onclick="setFilter('all',this)">Todas</button>
+  <button type="button" class="filter-btn" data-filter="Fácil" onclick="setFilter('Fácil',this)">Fácil</button>
+  <button type="button" class="filter-btn" data-filter="Média" onclick="setFilter('Média',this)">Média</button>
+  <button type="button" class="filter-btn" data-filter="Difícil" onclick="setFilter('Difícil',this)">Difícil</button>
+  <div class="filter-sep"></div>
+  <button type="button" class="toggle-btn" onclick="toggleErrors()" id="err-btn" style="display:none">↺ Só erros</button>
+</div>
+
+<div class="quiz-content" id="quiz-content"></div>
+<div id="score-panel">
+  <p class="sc-title">Resultado Final — T02</p>
+  <div class="sc-number" id="sc-num"></div>
+  <p class="sc-pct" id="sc-pct"></p>
+  <div class="sc-breakdown" id="sc-breakdown"></div>
+  <div class="sc-actions">
+    <button type="button" class="sc-btn sc-btn-primary" onclick="resetQuiz()">↺ Refazer</button>
+    <button type="button" class="sc-btn sc-btn-secondary" onclick="reviewErrors()" id="sc-review-btn">Revisar erros</button>
+    <a href="D1_Filosofia.html" class="sc-btn sc-btn-secondary">← Teoria</a>
+  </div>
+</div>
+
+<div class="bottom-nav">
+  <a href="D1_T01_Quiz.html" class="nav-btn">← T01</a>
+  <a href="D1_Filosofia.html" class="nav-btn nav-theory">📖 Conteúdo T02</a>
+  <a href="D1_T03_Quiz.html" class="nav-btn">T03 →</a>
+</div>
+
+<div id="sticky">
+  <span class="ss-txt">Acertos: <strong id="st-pts">0</strong> / 50</span>
+  <div class="ss-bar"><div class="ss-fill" id="st-fill" style="width:0%"></div></div>
+  <span class="ss-txt"><strong id="st-pct">0%</strong></span>
+</div>
+
+<script>
+const QUESTIONS = [{n:1,t:"A famosa frase de Protágoras \"O homem é a medida de todas as coisas\" expressa o princípio sofístico do:",o:["Intelectualismo moral","Relativismo do conhecimento","Naturalismo ético","Dogmatismo filosófico"],a:1,c:"O *homo mensura* de Protágoras é a expressão mais célebre do relativismo sofístico: não há verdade objetiva e universal — cada ser humano (ou comunidade) define o que é verdadeiro a partir de sua perspectiva. O intelectualismo moral (A) é socrático; o naturalismo ético (C) é aristotélico.",d:"Fácil"},{n:2,t:"Os Sofistas se distinguiam dos filósofos anteriores principalmente porque:",o:["Rejeitavam qualquer forma de educação formal","Eram educadores itinerantes que cobravam pelo ensino de retórica e argumentação","Defendiam a existência de verdades absolutas e universais","Ensinavam exclusivamente em Atenas, sem percorrer outras cidades"],a:1,c:"Os Sofistas eram profissionais do ensino — percorriam as cidades gregas ensinando retórica e *areté* política mediante pagamento. Sócrates criticava exatamente isso: vender o saber equivalia, para ele, a prostituir a Filosofia.",d:"Fácil"},{n:3,t:"Para Sócrates, ninguém pratica o mal voluntariamente porque:",o:["As leis da cidade punem o comportamento injusto","Todo mal praticado resulta de ignorância sobre o verdadeiro bem","Os deuses protegem os virtuosos de cometer erros morais","O ser humano é naturalmente bom e o ambiente o corrompe"],a:1,c:"Este é o **intelectualismo moral socrático**: virtude = conhecimento; vício = ignorância. Quem conhece verdadeiramente o bem necessariamente age de forma justa — pois ninguém escolhe conscientemente o que lhe é prejudicial. A alternativa D lembra Rousseau (séc. XVIII), não Sócrates.",d:"Fácil"},{n:4,t:"Na alegoria platônica da Caverna, as sombras projetadas na parede representam:",o:["O conhecimento filosófico mais elevado","As Formas eternas e imutáveis do mundo inteligível","As ilusões e opiniões do mundo sensível","O método socrático de questionamento"],a:2,c:"As sombras = *doxa* (opinião) = percepção sensível enganosa. O mundo sensível é como uma caverna onde os prisioneiros (seres humanos comuns) veem apenas sombras e as tomam pela realidade. O Sol (fora da caverna) = a Forma do Bem = conhecimento filosófico supremo.",d:"Fácil"},{n:5,t:"A obra de Aristóteles dedicada à ética, endereçada ao seu filho, chama-se:",o:["*A República*","*Ética a Nicômaco*","*Apologia de Sócrates*","*Fédon*"],a:1,c:"*Ética a Nicômaco* é a principal obra ética de Aristóteles, dedicada a seu filho Nicômaco. *A República* é de Platão; *Apologia de Sócrates* e *Fédon* também são de Platão.",d:"Fácil"},{n:6,t:"A doutrina do meio-termo (*mesotes*) de Aristóteles afirma que a virtude é:",o:["O ponto de máxima intensidade de uma qualidade positiva","O equilíbrio entre dois extremos viciosos — excesso e deficiência","A capacidade de eliminar completamente as paixões da alma","O conhecimento teórico das Formas eternas, como em Platão"],a:1,c:"Para Aristóteles, cada virtude é o meio-termo entre dois vícios: a coragem está entre a temeridade (excesso) e a covardia (deficiência). Não é o estoicismo (A: eliminar as paixões) nem o platonismo (D: conhecimento das Formas).",d:"Fácil"},{n:7,t:"Platão divide a alma humana em três partes. A parte responsável pelas paixões nobres como honra e coragem é chamada de:",o:["*Logistikon* (racional)","*Epithymetikon* (apetitiva)","*Thymoeides* (irascível)","*Nous* (intelecto)"],a:2,c:"As três partes: *logistikon* (racional) → sabedoria; *thymoeides* (irascível) → coragem; *epithymetikon* (apetitiva) → temperança. *Nous* é conceito de Anaxágoras e Aristóteles — não é uma das partes da alma platônica tripartite.",d:"Fácil"},{n:8,t:"Para Aristóteles, o ser humano é por natureza:",o:["Um ser solitário que cria a sociedade por necessidade","Um animal político (*zoon politikon*)","Uma alma aprisionada em um corpo material","Um ser essencialmente racional que transcende a política"],a:1,c:"*Zoon politikon* — animal político. A polis não é criação artificial para Aristóteles: é o ambiente natural onde o ser humano realiza sua natureza racional. A alternativa A lembra o contratualismo (Hobbes, Locke, Rousseau — séc. XVII-XVIII). A alternativa C é platônica (e órfico-pitagórica).",d:"Fácil"},{n:9,t:"A distinção sofística entre *physis* (natureza) e *nomos* (convenção) implica que:",o:["As leis morais e políticas têm fundamento na ordem natural do cosmos","As leis morais e políticas são convenções humanas relativas e mutáveis","A natureza humana determina de forma imutável as regras morais","Apenas os filósofos podem conhecer as verdadeiras leis da natureza"],a:1,c:"A distinção *physis/nomos* é central ao relativismo sofístico: o *nomos* (lei, convenção) não tem fundamento natural — é criação humana, variável conforme a cultura e o momento histórico. Isso implica que nenhuma lei moral é absolutamente verdadeira — são todas convenções. A alternativa A é a posição jusnaturalista (diferente dos Sofistas).",d:"Fácil"},{n:10,t:"O conceito de *eudaimonia* na Filosofia grega é melhor traduzido como:",o:["Prazer sensorial imediato","Florescimento ou realização plena do ser humano","Riqueza e poder político","Ausência de sofrimento e perturbação"],a:1,c:"*Eudaimonia* não é simplesmente \"prazer\" (isso seria *hedoné*, do epicurismo) nem \"ausência de perturbação\" (*ataraxia*, dos estoicos e epicuristas). É o **florescimento** (*eu* = bem + *daimon* = espírito/destino) — a realização plena das capacidades humanas, especialmente da razão.",d:"Fácil"},{n:11,t:"O Mito da Caverna, de Platão, funciona como uma alegoria do processo de:",o:["Aquisição de habilidades retóricas pelos cidadãos atenienses","Educação filosófica que conduz da ignorância ao conhecimento do bem","Desenvolvimento econômico e político da polis grega","Método científico de observação e experimentação"],a:1,c:"A saída progressiva da caverna (das sombras à luz do Sol) representa o processo de *paideia* (educação) filosófica: da *doxa* (opinião) à *episteme* (conhecimento) — até a contemplação da Forma do Bem. Não é sobre retórica (A), economia (C) nem ciência experimental (D).",d:"Fácil"},{n:12,t:"A *phronesis* aristotélica refere-se a:",o:["A sabedoria teórica sobre as verdades eternas e necessárias","A prudência ou sabedoria prática que orienta a ação moral no mundo concreto","A capacidade contemplativa própria do filósofo puro","O conjunto de técnicas retóricas ensinadas pelos Sofistas"],a:1,c:"*Phronesis* = prudência = sabedoria prática. Distingue-se da *sophia* (sabedoria teórica: conhecimento das verdades necessárias) e da *techné* (habilidade técnica). É a virtude intelectual que nos permite determinar o meio-termo correto em cada situação particular — essencial para a vida ética.",d:"Fácil"},{n:13,t:"Na República ideal de Platão, os **filósofos-reis** devem governar porque:",o:["São os mais ricos e portanto têm mais interesse no bem comum","São os cidadãos mais corajosos e capazes de defender a cidade","Possuem o conhecimento do bem — o único fundamento legítimo do poder","Foram eleitos democraticamente pela maioria dos cidadãos"],a:2,c:"Para Platão, o poder legítimo pertence a quem conhece o bem — não a quem é rico (oligarquia), nem a quem é corajoso (timocracia), nem a quem foi eleito pela maioria (democracia — que Platão criticava). O filósofo-rei é a antítese do político sofístico que governa pela persuasão.",d:"Fácil"},{n:14,t:"Górgias de Leontinos é conhecido por ter defendido, em *Sobre o Não-Ser*, que:",o:["O ser é uno e imutável, como afirmava Parmênides","Nada existe; se existisse, não poderia ser conhecido; se fosse conhecido, não poderia ser comunicado","O discurso filosófico deve substituir completamente o discurso político","A natureza humana é fundamentalmente boa e corrompida pela sociedade"],a:1,c:"As três teses de Górgias em *Sobre o Não-Ser* constituem um desafio niilista à filosofia: (1) nada existe; (2) se existisse, não poderíamos conhecê-lo; (3) se o conhecêssemos, não poderíamos comunicá-lo. É o relativismo levado ao limite absoluto.",d:"Fácil"},{n:15,t:"A virtude da **justiça** (*dikaiosyne*), para Platão, é:",o:["Uma das virtudes parciais da parte apetitiva da alma","O equilíbrio das três partes da alma, com cada uma cumprindo sua função própria","A virtude exclusiva dos guerreiros que defendem a cidade","O produto da educação retórica oferecida pelos Sofistas"],a:1,c:"Para Platão, a justiça não é uma virtude \"a mais\" — é a virtude que resulta do equilíbrio das três: razão governa, irascível apoia, apetitivo obedece. Quando essa hierarquia é respeitada, a alma é justa. O mesmo se aplica à cidade: cada classe no seu lugar.",d:"Fácil"},{n:16,t:"A crítica de Sócrates aos Sofistas centrava-se principalmente no fato de que eles:",o:["Estudavam questões cosmológicas irrelevantes para a vida prática","Ensinavam a arte de persuadir sem se preocupar com a verdade","Defendiam a existência de verdades absolutas inacessíveis ao povo","Recusavam-se a participar da vida política ateniense"],a:1,c:"Para Sócrates, os Sofistas produziam *doxa* (opinião, aparência) e ensinavam a fazê-la parecer *episteme* (conhecimento). Ensinavam a fazer o argumento mais fraco parecer mais forte — independentemente de ser verdadeiro. Isso era, para Sócrates, uma traição ao logos filosófico.",d:"Média"},{n:17,t:"A diferença entre a *areté* (virtude) sofística e a socrática pode ser resumida como:",o:["A sofística era teórica; a socrática era exclusivamente prática","A sofística era habilidade prática de êxito político; a socrática era conhecimento do bem universal","A sofística era individual; a socrática era coletiva e voltada para a polis","A sofística se ensinava apenas aos aristocratas; a socrática era acessível a todos sem distinção"],a:1,c:"Os Sofistas ensinavam como ter *sucesso* na vida pública — a virtude como habilidade técnica. Sócrates buscava o fundamento racional e universal da virtude: o que é a virtude *em si*, independentemente do contexto. A alternativa D é parcialmente verdadeira historicamente (os Sofistas eram pagos, logo acessíveis apenas a quem podia pagar), mas não captura a diferença filosófica central.",d:"Média"},{n:18,t:"A teoria das Formas de Platão pode ser interpretada como uma resposta direta ao relativismo sofístico porque:",o:["Demonstra que existem verdades eternas e universais inacessíveis à percepção sensível","Prova empiricamente que a moral tem fundamento natural na biologia humana","Estabelece que o relativismo é logicamente impossível por contradição interna","Mostra que a retórica sofística é superiora à dialética filosófica para o governo da cidade"],a:0,c:"Se os Sofistas dizem que não há verdade objetiva, Platão responde: há — mas ela está no mundo das Formas, eternas e imutáveis, acessíveis apenas à razão. A Forma do Bem é o fundamento objetivo da moral, contra o relativismo de Protágoras. A alternativa C trata de uma refutação lógica diferente — que Platão usa em *Teeteto* mas não é a teoria das Formas propriamente dita.",d:"Média"},{n:19,t:"Para Aristóteles, a virtude é um **hábito** (*hexis*) adquirido pela **prática**. Isso significa que:",o:["Nascemos virtuosos e apenas precisamos desenvolver o que já possuímos","A virtude é inata e não pode ser ensinada ou modificada","Tornamo-nos corajosos praticando atos corajosos, e injustos praticando atos injustos","A virtude é resultado exclusivo da contemplação teórica e do estudo filosófico"],a:2,c:"Esta é uma das teses mais importantes e frequentemente cobradas de Aristóteles: a virtude é adquirida pela repetição de atos. Não nascemos corajosos ou injustos — tornamo-nos assim pelo hábito. A alternativa D descreve melhor a posição socrático-platônica (intelectualismo moral). A alternativa A lembra a teoria platônica da reminiscência.",d:"Média"},{n:20,t:"O conceito de *epimeleia tes psyches* (cuidado com a alma), central no pensamento socrático, implica que:",o:["A principal preocupação humana deve ser o acúmulo de riqueza e poder político","O cultivo da alma pelo conhecimento e pela virtude é prioritário sobre bens externos","A alma deve ser purificada por meio de rituais religiosos e sacrifícios aos deuses","O cuidado do corpo é tão importante quanto o cuidado da alma para a felicidade"],a:1,c:"Para Sócrates, a vida examinada — dedicada ao autoconhecimento e à virtude — é o único modo de vida digno do ser humano. \"Uma vida sem exame não merece ser vivida.\" Riqueza, fama e poder são bens externos que nada valem sem a virtude interior. A alternativa C seria característica de religiões mistéricas, não da filosofia socrática.",d:"Média"},{n:21,t:"Na República de Platão, a democracia é criticada porque:",o:["Concentra o poder nas mãos de uma oligarquia disfarçada de governo popular","Permite que qualquer cidadão governe, independentemente de saber o que é o bem","Exclui os filósofos do processo político, tornando-se necessariamente tirânica","Favorece os Sofistas em detrimento dos verdadeiros filósofos"],a:1,c:"A crítica platônica à democracia é epistemológica: ela pressupõe que qualquer cidadão pode governar — mas governar bem requer conhecimento do bem. Deixar o governo nas mãos da maioria ignorante é como deixar o timão de um navio para quem não sabe navegar. (Curiosidade histórica: foi uma democracia ateniense que condenou Sócrates à morte — o que pesou na visão de Platão.)",d:"Média"},{n:22,t:"O filósofo Trasímaco, personagem da *República* de Platão, afirma que \"o justo é o interesse do mais forte.\" Essa posição é característica do:",o:["Intelectualismo moral socrático","Relativismo moral sofístico levado ao extremo","Naturalismo ético aristotélico","Idealismo platônico das Formas"],a:1,c:"Trasímaco representa o relativismo sofístico na sua versão mais cínica: não existe justiça objetiva — o que chamamos de justo é simplesmente o que beneficia quem tem poder para impor suas normas. Platão usa esse personagem para formular o problema da justiça que a *República* inteira tenta responder.",d:"Média"},{n:23,t:"A diferença entre a *eudaimonia* aristotélica e a socrático-platônica reside em que, para Aristóteles:",o:["A felicidade é puramente intelectual e independe de quaisquer bens externos","A felicidade inclui bens externos como saúde, amizade e recursos materiais mínimos","A felicidade é idêntica ao prazer sensorial imediato","A felicidade só é alcançável após a morte, quando a alma se separa do corpo"],a:1,c:"Para Aristóteles, a *eudaimonia* requer certos bens externos além da virtude: saúde, amizade (*philia*), recursos materiais mínimos, boa fortuna básica. Sócrates e Platão tendiam a dizer que a virtude é suficiente para a felicidade — mesmo na pobreza ou na prisão (como Sócrates demonstrou). A alternativa D é platônica/pitagórica (a felicidade plena como libertação da alma do corpo).",d:"Média"},{n:24,t:"A posição de Sócrates de que \"só sei que nada sei\" opõe-se diretamente ao perfil dos Sofistas porque:",o:["Os Sofistas afirmavam possuir conhecimento absoluto e universal sobre todos os temas","Os Sofistas se apresentavam como sábios e vendiam esse título — Sócrates recusava o título de sábio","Os Sofistas eram humildes e Sócrates era arrogante em sua ignorância declarada","Os Sofistas estudavam a alma enquanto Sócrates estudava a natureza"],a:1,c:"O *sophistés* se apresentava como sábio (*sophos*) — esse era seu título e seu produto comercial. Sócrates recusava esse título: ele era *philo-sophos* — amante da sabedoria, não possuidor dela. A ironia socrática era diretamente dirigida a quem se julgava sábio sem sê-lo.",d:"Média"},{n:25,t:"Na estrutura da cidade ideal de Platão, a classe dos **guerreiros** corresponde à parte **irascível** da alma. A virtude específica dessa classe é:",o:["Sabedoria (*sophia*)","Temperança (*sophrosyne*)","Coragem (*andreia*)","Justiça (*dikaiosyne*)"],a:2,c:"O paralelismo alma-cidade é central na *República*: parte irascível (*thymoeides*) → guerreiros → virtude da coragem (*andreia*). Sabedoria é dos filósofos-reis (racional); temperança é dos produtores (apetitiva). Justiça não é uma virtude específica de uma classe — é a virtude do equilíbrio de todas as partes.",d:"Média"},{n:26,t:"Para Aristóteles, a política (*politike*) é considerada a **ciência arquitetônica** — ou seja, a ciência que organiza e orienta todas as demais. Isso ocorre porque:",o:["A política determina o método correto para todas as ciências teóricas","O bem da polis (comunidade) é superior ao bem do indivíduo isolado","Os políticos são mais sábios que os filósofos para determinar o bem comum","A política é a única ciência que produz conhecimento verdadeiro e universal"],a:1,c:"Para Aristóteles (*Ética a Nicômaco*, Livro I), a política é a ciência que engloba todas as outras porque seu objeto — o bem da comunidade — é maior e mais completo que o bem individual. Alcançar e preservar o bem da *polis* é alcançar o bem para todos os seus membros. Isso não significa que políticos sejam mais sábios (C) — mas que a finalidade política é mais abrangente.",d:"Média"},{n:27,t:"A *antilogia* sofística — a habilidade de defender qualquer tese e seu contrário com igual eficácia — era criticada por Sócrates e Platão porque:",o:["Tornava o debate público impossível e destruía a democracia ateniense","Separava completamente o discurso da busca pela verdade, tornando o logos um mero instrumento de poder","Era uma habilidade reservada às elites e inacessível ao povo comum","Contradizida as leis da lógica formal sistematizadas por Aristóteles"],a:1,c:"Para Sócrates e Platão, o *logos* (razão e discurso) deve ser instrumento da busca pela verdade — não instrumento de persuasão independente da verdade. A *antilogia* sofística faz o argumento vencer independentemente de ser verdadeiro — isso é, para Platão, uma corrupção radical do pensamento. A alternativa D é anacrônica: Aristóteles sistematizou a lógica formal depois, em parte como resposta a esse problema.",d:"Média"},{n:28,t:"A *paideia* grega, conceito central na discussão sobre moral e educação na Filosofia Antiga, refere-se a:",o:["O sistema de leis escritas que regulava a vida pública na polis","O processo de formação integral do ser humano — intelectual, moral e cívica","A educação técnica e profissional dos artesãos e produtores","O conjunto de narrativas míticas transmitidas oralmente de geração em geração"],a:1,c:"*Paideia* é o ideal grego de educação integral — não apenas instrução técnica, mas formação do caráter, da razão e da capacidade cívica. O Mito da Caverna é uma alegoria da *paideia* filosófica. Platão e Aristóteles discutem longamente como a *paideia* deve ser organizada para produzir cidadãos virtuosos.",d:"Média"},{n:29,t:"A posição socrática sobre a virtude difere da posição aristotélica principalmente porque, para Sócrates:",o:["A virtude é um hábito adquirido pela prática repetida de atos virtuosos","A virtude é uma forma de conhecimento — e conhecer o bem é condição suficiente para agir bem","A virtude depende de bens externos como saúde e amizade","A virtude varia conforme a situação e não tem definição universal"],a:1,c:"O intelectualismo moral socrático: conhecer o bem é suficiente para agir bem — ninguém faz o mal conscientemente. Aristóteles crítica esse ponto: conhecer o bem não garante agir bem — é preciso ter *hábitos virtuosos* (hexis). Alguém pode saber que a moderação no comer é boa e ainda assim comer em excesso — por falta de hábito temperante. Isso mostra que virtude não é só conhecimento.",d:"Média"},{n:30,t:"A distinção aristotélica entre virtudes **éticas** (*ethikai*) e virtudes **dianoéticas** (*dianoetikai*) refere-se a:",o:["Virtudes da cidade vs. virtudes do indivíduo","Virtudes do caráter (adquiridas pelo hábito) vs. virtudes do intelecto (desenvolvidas pelo ensino)","Virtudes públicas vs. virtudes privadas","Virtudes naturais vs. virtudes convencionais"],a:1,c:"Aristóteles divide as virtudes em: **éticas** (do caráter — coragem, temperança, generosidade — adquiridas pelo hábito desde a infância) e **dianoéticas** (do intelecto — *sophia*, *phronesis*, *nous* — desenvolvidas pelo ensino e pela experiência). A *phronesis* é a virtude dianoética mais importante para a vida prática.",d:"Média"},{n:31,t:"O papel do filósofo que retorna à caverna, na alegoria platônica, pode ser interpretado como:",o:["A obrigação dos intelectuais de se afastar da política para preservar sua sabedoria","O dever do filósofo de voltar à comunidade e participar do governo, mesmo sofrendo resistência","A demonstração de que o conhecimento filosófico é inútil para a vida prática","A crítica platônica ao isolamento dos Sofistas em relação à vida comum"],a:1,c:"O filósofo que contemplou o Sol (o bem) tem o dever de retornar à caverna e ajudar os outros — mesmo sendo ridicularizado e ameaçado (como Sócrates o foi). Platão usa isso para justificar o governo dos filósofos: quem conhece o bem deve governar, mesmo que prefira a vida contemplativa. É uma obrigação, não uma escolha.",d:"Média"},{n:32,t:"A crítica contemporânea ao projeto político platônico da *República* frequentemente aponta que ele é:",o:["Excessivamente democrático e igualitário para ser aplicado","Autoritário e elitista, pois concentra o poder em uma minoria de filósofos sem mecanismos de controle","Incoerente, pois contradiz os princípios da teoria das Formas","Demasiado influenciado pelo relativismo sofístico"],a:1,c:"A crítica contemporânea (Karl Popper, em *A Sociedade Aberta e seus Inimigos*, é o caso mais famoso) aponta que a *República* platônica é uma forma de totalitarismo filosófico: um grupo de \"sábios\" governa sem controle popular, sem mecanismos de prestação de contas, baseado na crença de que possuem o conhecimento do bem. Isso é incompatível com a democracia liberal moderna.",d:"Média"},{n:33,t:"A frase aristotélica \"O todo é anterior às partes\" aplicada à polis significa que:",o:["A cidade foi criada historicamente antes dos indivíduos que a habitam","A comunidade política é condição de possibilidade para o pleno desenvolvimento humano — e nesse sentido é \"anterior\" ao indivíduo","Os interesses coletivos devem sempre prevalecer sobre os interesses individuais","A família é a unidade social mais importante e precede logicamente a polis"],a:1,c:"Aristóteles usa \"anterior\" no sentido *lógico* e *ontológico*, não cronológico: a *polis* é condição necessária para que o ser humano realize sua natureza racional e política. Sem a comunidade, o ser humano não é plenamente humano. Isso não é coletivismo puro (C) — Aristóteles reconhece a importância do indivíduo; é uma afirmação sobre a *natureza* do ser humano como ser social.",d:"Média"},{n:34,t:"Qual das seguintes afirmações melhor descreve a posição sofística sobre a linguagem e o discurso?",o:["A linguagem é um instrumento transparente que reproduz fielmente a realidade","O discurso é um instrumento de poder que pode criar e destruir realidades — independentemente de sua relação com a verdade","A linguagem filosófica é superior à linguagem política porque acessa as Formas eternas","O discurso deve ser subordinado à lógica formal para ter validade filosófica"],a:1,c:"Para os Sofistas, especialmente Górgias, o discurso (*logos*) é uma força poderosa capaz de persuadir, convencer, criar impressões e mover multidões — independentemente de sua correspondência com a verdade. Isso antecipa debates modernos sobre linguagem, poder e manipulação (Michel Foucault, por exemplo, retomará esse tema no séc. XX).",d:"Média"},{n:35,t:"Um professor afirma em sala: \"Para Aristóteles, uma pessoa que sabe que fumar faz mal mas continua fumando demonstra que o intelectualismo moral socrático está errado.\" Essa afirmação é:",o:["Incorreta, pois Aristóteles concordava com Sócrates sobre a relação entre conhecimento e virtude","Correta, pois Aristóteles argumentou que o conhecimento do bem não garante a ação boa — é preciso ter hábitos virtuosos","Incorreta, pois Aristóteles não discutia comportamentos individuais, apenas questões políticas","Parcialmente correta, pois Sócrates admitia que o conhecimento era necessário mas não suficiente para a virtude"],a:1,c:"Este exemplo é perfeito para ilustrar a crítica aristotélica ao intelectualismo socrático. Aristóteles chama de *akrasia* (fraqueza da vontade ou incontinência) o fenômeno de saber o que é bom e ainda assim agir contrariamente — o que prova que virtude não é só conhecimento, mas hábito consolidado. Sócrates diria que quem fuma \"não sabe verdadeiramente\" que faz mal — mas essa resposta parece insatisfatória.",d:"Média"},{n:36,t:"A tese de Protágoras \"O homem é a medida de todas as coisas\" é autorrefutável, segundo o argumento de Platão no *Teeteto*, porque:",o:["Protágoras não era um ser humano no sentido pleno do termo","Se cada homem é medida de todas as coisas, então é também medida da falsidade de teses sofísticas — incluindo a de Protágoras","O argumento viola as leis da lógica formal sistematizadas por Aristóteles","A tese depende da existência de verdades absolutas para ser formulada"],a:1,c:"Platão formula no *Teeteto* a \"auto-refutação de Protágoras\": se toda verdade é relativa ao sujeito que a percebe, então quem percebe que a tese de Protágoras é falsa, tem razão — para si mesmo. A tese do homo mensura se autocontraditória: ao afirmar que toda verdade é relativa, faz uma afirmação que pretende ser absolutamente verdadeira. Este argumento é um dos mais elegantes da história da Filosofia.",d:"Difícil"},{n:37,t:"Considere as seguintes afirmações:  I. Para Sócrates, a ignorância moral é sempre involuntária. II. Para Aristóteles, é possível conhecer o bem e ainda assim agir mal (akrasia). III. Para os Sofistas, o conhecimento moral é impossível porque a moral é relativa.  Estão corretas:",o:["Apenas I e II","Apenas II e III","Apenas I e III","I, II e III"],a:3,c:"Todas as três são corretas. I: o intelectualismo socrático implica que toda ação má é produto de ignorância — não de má vontade deliberada. II: Aristóteles formula o conceito de *akrasia* (fraqueza da vontade) exatamente para descrever o fenômeno de saber o bem e agir mal. III: o relativismo moral sofístico implica que não há conhecimento moral objetivo possível.",d:"Difícil"},{n:38,t:"A doutrina platônica da **reminiscência** (*anamnese*) — segundo a qual conhecer é recordar — tem implicações diretas para a teoria moral porque:",o:["Significa que todos os seres humanos já nascem virtuosos e apenas precisam ser lembrados disso","Fundamenta a ideia de que o conhecimento do bem é acessível a todos por meio do diálogo, pois está latente na alma","Implica que somente quem já viveu muitas vidas pode alcançar o conhecimento moral verdadeiro","Justifica o ensinamento pago dos Sofistas como recuperação de memórias passadas"],a:1,c:"A *anamnese* (recordação) significa que a alma conheceu as Formas antes de encarnar e pode recordá-las pelo diálogo filosófico. Para a moral: o conhecimento do Bem está latente em todo ser humano — por isso a maiêutica socrática funciona (não ensina, desperta). Isso funda um universalismo moral: todos têm acesso potencial ao bem, independentemente de origem social.",d:"Difícil"},{n:39,t:"O conceito de **akrasia** (fraqueza da vontade) em Aristóteles representa um problema para o intelectualismo moral socrático porque:",o:["Demonstra que a ignorância é a causa de todas as ações más, confirmando Sócrates","Mostra que é possível saber o que é bom e ainda assim agir contrariamente — o que nega que virtude = conhecimento","Prova que a vontade é mais importante que o conhecimento para a vida moral","Indica que a virtude não pode ser adquirida pelo hábito, apenas pelo estudo filosófico"],a:1,c:"*Akrasia* (do grego: sem domínio, incontinência) é o estado em que o agente age contra seu próprio julgamento racional sobre o que é bom. Sócrates diria que isso é impossível — quem age assim, não *realmente* sabe que a ação é má. Aristóteles discorda: a *akrasia* é um fenômeno real e comum, e sua existência refuta o intelectualismo socrático. A solução aristotélica: precisamos de *hábitos* (hexis) para que o conhecimento do bem se traduza em açã",d:"Difícil"},{n:40,t:"A crítica de Karl Popper à filosofia política de Platão em *A Sociedade Aberta e seus Inimigos* (1945) centra-se na ideia de que a *República* platônica é \"totalitária\" porque:",o:["Platão defende a abolição da propriedade privada para todos os cidadãos","O governo dos filósofos-reis não prevê mecanismos de controle, correção ou substituição dos governantes","Platão propõe a conquista militar de outros povos como forma de expandir a cidade ideal","A *República* de Platão elimina todas as formas de arte e cultura popular"],a:1,c:"Popper argumenta que a *República* é o protótipo do pensamento político fechado: os filósofos-reis governam por saber, não por consentimento; não há mecanismo para questioná-los, removê-los ou corrigi-los. Uma sociedade \"aberta\" (democrática) deve ter instituições que permitam a crítica e a correção dos governantes. A alternativa A confunde com o comunismo de Marx; D exagera a crítica à arte em Platão (que a limita mas não a elimina totalmente).",d:"Difícil"},{n:41,t:"A distinção aristotélica entre **bem próprio** (*idion agathon*) e **bem comum** (*koinon agathon*) na *Política* revela que, para Aristóteles:",o:["O bem comum e o bem individual são sempre opostos e irreconciliáveis","O bem comum não suprime o bem individual — a polis é o ambiente onde ambos se realizam harmonicamente","O Estado deve suprimir os interesses individuais em favor do coletivo","O bem individual sempre precede e condiciona o bem comum"],a:1,c:"Aristóteles não é um coletivista puro nem um individualista: para ele, a *polis* é o espaço onde o ser humano realiza *plenamente* sua natureza — o que inclui seus bens individuais. O bem comum não anula o individual — é o contexto que o torna possível. Fora da *polis*, o ser humano é \"uma besta ou um deus\" — não desenvolve suas potencialidades humanas.",d:"Difícil"},{n:42,t:"A posição dos Sofistas sobre a relação entre *physis* e *nomos* pode ser considerada **progressista** em relação às tradições gregas porque:",o:["Defendia a superioridade da lei natural sobre as convenções humanas","Questionava a naturalidade das hierarquias sociais e podia justificar a crítica à escravidão","Propunha a substituição da democracia por um governo filosófico iluminado","Afirmava a igualdade absoluta entre todos os seres humanos com base na razão universal"],a:1,c:"Se as leis morais e sociais são *nomos* (convenção) e não *physis* (natureza), então nenhuma hierarquia social é \"natural\" — incluindo a escravidão. Antifonte sofista, por exemplo, argumentou que todos os seres humanos têm a mesma natureza (*physis*) e que as distinções entre nobres e escravos são meras convenções (*nomos*). Isso tem implicações igualitárias radicais para a época. Ironicamente, os \"relativistas\" Sofistas podem ter sido mais igual",d:"Difícil"},{n:43,t:"Na estrutura da alma tripartite de Platão, o conflito entre a parte racional e a parte apetitiva — como quando sabemos que devemos resistir a um desejo mas cedemos — é análogo ao fenômeno que Aristóteles chamaria de:",o:["*Sophia* (sabedoria teórica)","*Phronesis* (prudência)","*Akrasia* (fraqueza da vontade)","*Eudaimonia* (florescimento)"],a:2,c:"Tanto Platão quanto Aristóteles reconhecem o fenômeno de ceder ao desejo contra o julgamento da razão — mas o descrevem de formas diferentes. Para Platão: conflito entre partes da alma. Para Aristóteles: *akrasia*. Sócrates negaria que isso seja possível (quem cede não sabe *realmente* que deve resistir). Esta questão exige síntese entre os três pensadores.",d:"Difícil"},{n:44,t:"Um estudante afirma: \"Os Sofistas eram os vilões da filosofia grega — charlatães que destruíam a moral e enganavam os jovens.\" Essa afirmação é problemática porque:",o:["Os Sofistas eram filósofos superiores a Sócrates e Platão em todos os aspectos","Reflete acriticamente a perspectiva de Platão — um adversário intelectual dos Sofistas — sem considerar as contribuições genuínas do movimento sofístico","Ignora que Sócrates era, ele mesmo, um Sofista que cobrava pelo ensino","Desconhece que os Sofistas foram reabilitados por Aristóteles em sua *Ética a Nicômaco*"],a:1,c:"O \"caso contra os Sofistas\" é, em larga medida, construído por Platão — que era seu adversário direto. A historiografia contemporânea reconhece que Platão pode ter caricaturado os Sofistas para seus próprios fins filosóficos. Os Sofistas fizeram contribuições reais à teoria do conhecimento, à filosofia da linguagem e ao pensamento político. Ler Platão sobre os Sofistas é como ler um adversário político sobre seu oponente.",d:"Difícil"},{n:45,t:"A afirmação de Aristóteles de que \"não é suficiente saber o que é a virtude — é preciso praticá-la\" tem implicações diretas para o ensino de Filosofia no EF Anos Finais porque:",o:["Sugere que a aula de Filosofia deve substituir a educação moral da família","Indica que o ensino de Filosofia deve incluir práticas reflexivas e não apenas transmissão de conteúdo teórico","Implica que a Filosofia não tem papel na formação moral dos estudantes","Demonstra que apenas professores virtuosos podem ensinar Filosofia adequadamente"],a:1,c:"Esta questão conecta a filosofia aristotélica à prática pedagógica — habilidade essencial para o professor de Filosofia no EF. Se virtude é hábito (Aristóteles), então o ensino de Filosofia não se limita a transmitir conceitos sobre virtude — deve criar situações em que os estudantes *practiquem* o raciocínio ético, o diálogo respeitoso, a argumentação fundamentada. Isso se conecta às metodologias ativas e à BNCC.",d:"Difícil"},{n:46,t:"O conceito platônico de **Forma do Bem** (*idea tou agathou*), representada pelo Sol no Mito da Caverna, é descrito por Platão como:",o:["Uma divindade pessoal que criou o cosmos e governa os seres humanos","O princípio supremo que dá existência e inteligibilidade a todas as outras Formas","O estado mental de máxima felicidade alcançado pelo filósofo contemplativo","A lei moral universal derivada da razão prática, semelhante ao imperativo categórico de Kant"],a:1,c:"A Forma do Bem (*idea tou agathou*) é o ápice da hierarquia das Formas: ela não é apenas a Forma mais elevada — é o princípio que dá ser e cognoscibilidade a todas as outras Formas. Sem a Forma do Bem, nenhuma outra Forma seria nem existente nem conhecível. É análoga ao Sol: assim como o Sol dá existência (crescimento) e visibilidade às coisas sensíveis, a Forma do Bem dá ser e inteligibilidade às Formas. A alternativa D antecipa Kant — completam",d:"Difícil"},{n:47,t:"A teoria sofística do discurso — que separa o *logos* da busca pela verdade — pode ser relacionada com debates contemporâneos sobre:",o:["A física quântica e seus paradoxos sobre a observação da realidade","A *pós-verdade* e a manipulação da opinião pública por discursos desvinculados de fatos verificáveis","A teoria da evolução e suas implicações para a ética naturalista","O problema mente-corpo e a relação entre pensamento e linguagem"],a:1,c:"Esta questão de nível superior conecta a antiguidade ao presente. O fenômeno contemporâneo da *pós-verdade* — em que a eficácia persuasiva do discurso importa mais que sua correspondência com os fatos — é uma versão moderna do projeto sofístico. Fake news, propaganda política e manipulação midiática são, em certo sentido, aplicações contemporâneas da *antilogia* sofística. O professor de Filosofia pode usar esse paralelo para tornar o tema releva",d:"Difícil"},{n:48,t:"Considere a seguinte situação: Sócrates, Platão e Aristóteles são apresentados a um aluno que pergunta: \"Como devo viver para ser feliz?\" Qual seria a resposta mais fiel a cada um?",o:["Sócrates: \"Acumule riqueza.\" | Platão: \"Contemple as Formas.\" | Aristóteles: \"Pratique a virtude com moderação.\"","Sócrates: \"Conheça o bem.\" | Platão: \"Conheça a Forma do Bem e governe a cidade.\" | Aristóteles: \"Desenvolva hábitos virtuosos e viva em comunidade.\"","Sócrates: \"Seja persuasivo.\" | Platão: \"Evite a política.\" | Aristóteles: \"Busque o prazer moderado.\"","Sócrates: \"Questione tudo.\" | Platão: \"Siga as leis da cidade.\" | Aristóteles: \"Estude as ciências naturais.\""],a:1,c:"Esta questão sintética exige que o candidato domine as posições dos três filósofos simultaneamente. Sócrates: virtude = conhecimento do bem → conhecer o bem é condição da *eudaimonia*. Platão: o filósofo contempla as Formas, conhece o Bem e tem o dever de governar a cidade justa. Aristóteles: hábitos virtuosos + vida em comunidade política = *eudaimonia*.",d:"Difícil"},{n:49,t:"A posição de Aristóteles de que existem **formas naturais de governo** e **formas corrompidas** baseia-se no critério de:",o:["O número de governantes (um, poucos, muitos)","Se o governo visa o bem comum ou o interesse particular dos governantes","Se o governo se baseia na força ou no consentimento dos governados","Se o governo é fundamentado em leis escritas ou em costumes tradicionais"],a:1,c:"Aristóteles classifica as constituições por dois critérios: número de governantes e finalidade. As formas *retas* (monarquia, aristocracia, politeia) visam o bem comum. As formas *corrompidas* (tirania, oligarquia, democracia — para Aristóteles, a democracia era a corrupção da *politeia*) visam o interesse particular dos governantes. O critério decisivo é a **finalidade**, não o número.",d:"Difícil"},{n:50,t:"Um professor de Filosofia no EF Anos Finais quer discutir com seus alunos a questão: \"É possível que alguém faça uma coisa ruim sem saber que é ruim?\" Qual filósofo estudado neste tópico fornece a base mais direta para essa discussão, e qual seria sua resposta?",o:["Platão — sim, é possível, pois as almas que não contemplaram as Formas não sabem o que é o bem","Aristóteles — sim, é possível, especialmente no caso da *akrasia* (fraqueza da vontade)","Sócrates — não, é impossível; quem faz o mal não sabe que é mau; toda ação má é produto de ignorância","Protágoras — a pergunta não tem resposta definitiva, pois \"ruim\" é relativo a cada pessoa"],a:2,c:"Esta questão final sintetiza o tópico em sua dimensão pedagógica. Para fins de concurso, a pergunta \"é possível fazer o mal conscientemente?\" tem resposta direta em Sócrates: não — o intelectualismo moral nega essa possibilidade. Aristóteles (B) diz que sim (akrasia). Platão (A) é mais complexo. A alternativa D captura o relativismo sofístico mas não responde diretamente. Para o professor do EF Anos Finais, essa questão é excelente para provocar ",d:"Difícil"}];
+const TOTAL = 50;
+let answers = {};
+let currentFilter = 'all';
+let errorsMode = false;
+
+function getVisible(){
+  if(errorsMode){
+    return QUESTIONS.filter(q=>answers[q.n]!==undefined && answers[q.n]!==q.a);
+  }
+  if(currentFilter==='all') return QUESTIONS;
+  return QUESTIONS.filter(q=>q.d===currentFilter);
+}
+
+function renderQuiz(){
+  const visible = getVisible();
+  const container = document.getElementById('quiz-content');
+  container.innerHTML = '';
+  if(!visible.length){
+    container.innerHTML = '<p style="text-align:center;color:var(--text3);padding:40px;font-family:JetBrains Mono,monospace;font-size:13px;">Nenhuma questão neste filtro.</p>';
+    return;
+  }
+  visible.forEach((q,i)=>{
+    const block = document.createElement('div');
+    block.className = 'q-block' + (answers[q.n]!==undefined?' answered':'');
+    block.id = 'qb-'+q.n;
+    const diffClass = q.d==='Fácil'?'diff-easy':q.d==='Média'?'diff-med':'diff-hard';
+    const done = answers[q.n]!==undefined;
+    block.innerHTML = `
+      <div class="q-meta">
+        <span class="q-num">Q${String(q.n).padStart(2,'0')}</span>
+        <span class="q-diff ${diffClass}">${q.d}</span>
+      </div>
+      <div class="q-text">${q.t}</div>
+      <div class="q-opts" id="opts-${q.n}">
+        ${q.o.map((o,j)=>{
+          let cls='q-opt'+(done?' done':'');
+          if(done){
+            if(j===q.a) cls+=' correct';
+            else if(j===answers[q.n]) cls+=' wrong';
+          }
+          return `<div class="${cls}" ${!done?`onclick="pick(${q.n},${j})"`:''}>
+            <span class="opt-letter">${'ABCD'[j]}</span>
+            <span class="opt-text">${o}</span>
+          </div>`;
+        }).join('')}
+      </div>
+      <div class="q-feedback ${done?(answers[q.n]===q.a?'fb-correct show':'fb-wrong show'):''}" id="fb-${q.n}">
+        <span class="fb-label">${done?(answers[q.n]===q.a?'✓ Correto':'✗ Incorreto — Gabarito: '+'ABCD'[q.a]):'' }</span>
+        <span class="fb-body">${q.c}</span>
+      </div>`;
+    container.appendChild(block);
+  });
+}
+
+function pick(qn, optIdx){
+  if(answers[qn]!==undefined) return;
+  const q = QUESTIONS.find(x=>x.n===qn);
+  answers[qn] = optIdx;
+  const correct = optIdx===q.a;
+  // Style options
+  const opts = document.querySelectorAll('#opts-'+qn+' .q-opt');
+  opts.forEach(o=>o.classList.add('done'));
+  opts[optIdx].classList.add(correct?'correct':'wrong');
+  if(!correct) opts[q.a].classList.add('correct');
+  // Feedback
+  const fb=document.getElementById('fb-'+qn);
+  fb.className='q-feedback show '+(correct?'fb-correct':'fb-wrong');
+  fb.innerHTML=`<span class="fb-label">${correct?'✓ Correto':'✗ Incorreto — Gabarito: '+'ABCD'[q.a]}</span><span class="fb-body">${q.c}</span>`;
+  document.getElementById('qb-'+qn).classList.add('answered');
+  updateStats();
+  if(Object.keys(answers).length===TOTAL) finishQuiz();
+}
+
+function updateStats(){
+  const answered = Object.keys(answers).length;
+  let corr = 0;
+  QUESTIONS.forEach(q => { if (answers[q.n] === q.a) corr++; });
+  const pct = answered ? Math.round(corr / answered * 100) : 0;
+
+  document.getElementById('hdr-answered').textContent = answered;
+  document.getElementById('hdr-correct').textContent = corr;
+  document.getElementById('hdr-pct').textContent = pct + '%';
+  document.getElementById('prog-bar').style.width = (answered / TOTAL * 100) + '%';
+  document.getElementById('st-pts').textContent = corr;
+  document.getElementById('st-fill').style.width = (corr / TOTAL * 100) + '%';
+  document.getElementById('st-pct').textContent = pct + '%';
+
+  syncErrorsButton();
+}
+
+function finishQuiz(){
+  let corr=0;
+  QUESTIONS.forEach(q=>{ if(answers[q.n]===q.a) corr++; });
+  const pct=Math.round(corr/TOTAL*100);
+  const panel=document.getElementById('score-panel');
+  panel.classList.add('show');
+  const numEl=document.getElementById('sc-num');
+  numEl.textContent=corr+'/'+TOTAL;
+  numEl.className='sc-number '+(pct>=70?'sc-approved':'sc-failed');
+  document.getElementById('sc-pct').textContent=pct+'% de acerto';
+  const errs=TOTAL-corr;
+  document.getElementById('sc-breakdown').innerHTML=
+    `<div class="sc-item"><strong>${corr}</strong>Corretas</div>
+     <div class="sc-item"><strong>${errs}</strong>Incorretas</div>
+     <div class="sc-item"><strong>${pct}%</strong>Aproveitamento</div>`;
+  syncErrorsButton();
+  if(errs>0) document.getElementById('sc-review-btn').style.display='inline-block';
+  else document.getElementById('sc-review-btn').style.display='none';
+  panel.scrollIntoView({behavior:'smooth'});
+}
+
+function syncErrorsButton(){
+  const errBtn = document.getElementById('err-btn');
+  const errs = QUESTIONS.filter(q => answers[q.n] !== undefined && answers[q.n] !== q.a).length;
+  const answered = Object.keys(answers).length;
+
+  if (errs > 0) {
+    errBtn.style.display = 'block';
+    errBtn.disabled = false;
+    errBtn.textContent = errorsMode ? '↺ Mostrar todas' : '↺ Só erros';
+  } else {
+    errBtn.style.display = answered === TOTAL ? 'block' : 'none';
+    errBtn.disabled = true;
+    errBtn.textContent = '↺ Só erros';
+  }
+}
+
+function resetQuiz(){
+  answers={};
+  errorsMode=false;
+  currentFilter='all';
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelector('[data-filter="all"]').classList.add('active');
+  document.getElementById('score-panel').classList.remove('show');
+  syncErrorsButton();
+  document.getElementById('hdr-answered').textContent='0';
+  document.getElementById('hdr-correct').textContent='0';
+  document.getElementById('hdr-pct').textContent='0%';
+  document.getElementById('prog-bar').style.width='0%';
+  document.getElementById('st-pts').textContent='0';
+  document.getElementById('st-fill').style.width='0%';
+  document.getElementById('st-pct').textContent='0%';
+  renderQuiz();
+  window.scrollTo(0,0);
+}
+
+function reviewErrors(){
+  errorsMode = true;
+  document.getElementById('score-panel').classList.remove('show');
+  currentFilter = 'all';
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector('[data-filter="all"]').classList.add('active');
+  renderQuiz();
+syncErrorsButton();
+  window.scrollTo(0,0);
+}
+
+function setFilter(f, btn){
+  currentFilter = f;
+  errorsMode = false;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderQuiz();
+syncErrorsButton();
+}
+
+function toggleErrors(){
+  const errs = QUESTIONS.filter(q => answers[q.n] !== undefined && answers[q.n] !== q.a).length;
+  if (!errs) return;
+  errorsMode = !errorsMode;
+  renderQuiz();
+syncErrorsButton();
+}
+
+renderQuiz();
+syncErrorsButton();
+
+</script>
+</body>
+</html>

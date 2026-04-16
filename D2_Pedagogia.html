@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>D2 — Conhecimentos Pedagógicos | Apostila Concurso SJR 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=JetBrains+Mono:wght@400;500&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b0d10;--bg2:#111318;--bg3:#181c22;--bg4:#1e232b;
+  --border:#252b35;--border2:#2d3443;
+  --text:#cdd5e0;--text2:#8a96a8;--text3:#4d5a6e;
+  --gold:#c8a44a;--gold2:#e2c070;--gold3:#f0d490;
+  --blue:#3d8fd1;--blue2:#5aaee8;
+  --green:#3d9e72;--green2:#5ec090;
+  --red:#c05050;--red2:#e07070;
+  --sidebar:260px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:'Lato',sans-serif;font-size:15px;line-height:1.75;display:flex;min-height:100vh}
+
+/* SIDEBAR */
+#sidebar{
+  position:fixed;top:0;left:0;width:var(--sidebar);height:100vh;
+  background:var(--bg2);border-right:1px solid var(--border);
+  overflow-y:auto;z-index:100;display:flex;flex-direction:column;
+}
+.sb-brand{
+  padding:20px 16px 14px;border-bottom:1px solid var(--border);
+  background:linear-gradient(135deg,var(--bg3),var(--bg2));
+}
+.sb-brand-tag{
+  font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--gold);
+  text-transform:uppercase;letter-spacing:2px;margin-bottom:6px;
+}
+.sb-brand h1{
+  font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:700;
+  color:var(--text);line-height:1.2;
+}
+.sb-back{
+  display:block;padding:10px 16px;
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  color:var(--text3);text-decoration:none;
+  border:none;border-bottom:1px solid var(--border);
+  background:none;width:100%;text-align:left;cursor:pointer;
+  transition:color .2s;
+}
+.sb-back:hover{color:var(--gold)}
+.sb-section-label{
+  padding:12px 16px 4px;
+  font-family:'JetBrains Mono',monospace;font-size:10px;
+  font-weight:500;text-transform:uppercase;letter-spacing:1.5px;color:var(--text3);
+}
+.sb-home{
+  display:flex;align-items:center;gap:8px;
+  padding:9px 16px;color:var(--text2);text-decoration:none;
+  font-size:13px;border-left:2px solid transparent;
+  transition:all .2s;cursor:pointer;background:none;border-top:none;border-right:none;border-bottom:none;width:100%;text-align:left;
+}
+.sb-home:hover,.sb-home.active{color:var(--gold2);border-left-color:var(--gold);background:rgba(200,164,74,.06)}
+.sb-topic{
+  display:flex;align-items:flex-start;gap:10px;
+  padding:8px 16px;color:var(--text2);text-decoration:none;
+  border-left:2px solid transparent;transition:all .2s;cursor:pointer;
+}
+.sb-topic:hover,.sb-topic.active{color:var(--text);border-left-color:var(--gold);background:rgba(200,164,74,.05)}
+.sb-num{
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  color:var(--gold);min-width:28px;margin-top:1px;
+}
+.sb-label{font-size:12px;line-height:1.4}
+.sb-footer{
+  margin-top:auto;padding:14px 16px;
+  border-top:1px solid var(--border);
+  font-family:'JetBrains Mono',monospace;font-size:10px;
+  color:var(--text3);line-height:1.8;
+}
+
+/* MAIN */
+#main{margin-left:var(--sidebar);flex:1;min-height:100vh}
+
+/* HOME */
+#home-section{padding:40px 48px;max-width:1000px;display:block}
+.home-title{
+  font-family:'Cormorant Garamond',serif;font-size:48px;font-weight:700;
+  color:var(--gold2);line-height:1.1;margin-bottom:6px;
+}
+.home-sub{font-size:16px;color:var(--text2);margin-bottom:8px}
+.home-badge{
+  display:inline-block;padding:4px 12px;
+  background:rgba(200,164,74,.12);border:1px solid rgba(200,164,74,.3);
+  border-radius:4px;font-family:'JetBrains Mono',monospace;
+  font-size:11px;color:var(--gold);margin-bottom:32px;
+}
+.home-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin-top:8px}
+.home-card{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:8px;padding:20px;cursor:pointer;
+  transition:all .2s;
+}
+.home-card:hover{border-color:var(--gold);transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.3)}
+.hc-num{
+  font-family:'JetBrains Mono',monospace;font-size:12px;
+  color:var(--gold);margin-bottom:8px;
+}
+.hc-title{
+  font-family:'Cormorant Garamond',serif;font-size:15px;
+  font-weight:600;color:var(--text);line-height:1.4;margin-bottom:14px;
+}
+.hc-actions{display:flex;gap:8px}
+.hc-btn-theory,.hc-btn-quiz{
+  flex:1;padding:6px 10px;border-radius:5px;
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  cursor:pointer;text-decoration:none;text-align:center;
+  transition:all .15s;border:none;
+}
+.hc-btn-theory{background:var(--bg3);color:var(--text2)}
+.hc-btn-theory:hover{background:var(--bg4);color:var(--text)}
+.hc-btn-quiz{background:rgba(200,164,74,.15);color:var(--gold)}
+.hc-btn-quiz:hover{background:rgba(200,164,74,.25)}
+
+/* TOPIC SECTION */
+.topic-section{padding:40px 52px;max-width:900px;animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.topic-header{
+  display:flex;flex-direction:column;gap:10px;
+  margin-bottom:36px;padding-bottom:24px;
+  border-bottom:1px solid var(--border2);
+}
+.topic-badge{
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  color:var(--gold);text-transform:uppercase;letter-spacing:2px;
+}
+.topic-title{
+  font-family:'Cormorant Garamond',serif;font-size:36px;
+  font-weight:700;color:var(--gold2);line-height:1.15;
+}
+.quiz-link-btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:10px 20px;background:rgba(200,164,74,.12);
+  border:1px solid rgba(200,164,74,.35);border-radius:6px;
+  font-family:'JetBrains Mono',monospace;font-size:12px;
+  color:var(--gold);text-decoration:none;
+  transition:all .2s;width:fit-content;
+}
+.quiz-link-btn:hover{background:rgba(200,164,74,.22);color:var(--gold3)}
+
+/* TOPIC BODY CONTENT */
+.topic-body h2{
+  font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700;
+  color:var(--gold2);margin:36px 0 14px;padding-bottom:8px;
+  border-bottom:1px solid var(--border2);
+}
+.topic-body h3{
+  font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;
+  color:var(--text);margin:24px 0 10px;
+}
+.topic-body h4{
+  font-family:'JetBrains Mono',monospace;font-size:12px;
+  color:var(--gold);text-transform:uppercase;letter-spacing:1px;
+  margin:18px 0 8px;
+}
+.topic-body p{margin-bottom:14px;color:var(--text);line-height:1.8}
+.topic-body strong{color:var(--gold2)}
+.topic-body em{color:var(--text2);font-style:italic}
+.topic-body ul{
+  margin:12px 0 16px 24px;
+  display:flex;flex-direction:column;gap:6px;
+}
+.topic-body ul li{color:var(--text)}
+.topic-body hr{border:none;border-top:1px solid var(--border);margin:28px 0}
+.callout-gold,.callout-warn{
+  padding:14px 18px;border-radius:0 6px 6px 0;
+  font-size:14px;margin:18px 0;line-height:1.7;
+}
+.callout-gold{
+  border-left:3px solid var(--gold);
+  background:rgba(200,164,74,.07);color:var(--text);
+}
+.callout-warn{
+  border-left:3px solid var(--red2);
+  background:rgba(192,80,80,.07);color:var(--text);
+}
+.tbl-wrap{overflow-x:auto;margin:16px 0 22px;border-radius:6px;border:1px solid var(--border)}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th{
+  background:var(--bg3);color:var(--gold);
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  text-transform:uppercase;letter-spacing:.7px;
+  padding:10px 14px;text-align:left;border-bottom:1px solid var(--border2);
+}
+td{
+  padding:10px 14px;border-bottom:1px solid var(--border);
+  color:var(--text);vertical-align:top;
+}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(255,255,255,.02)}
+pre.code{
+  background:var(--bg3);border:1px solid var(--border);
+  border-radius:6px;padding:18px;
+  font-family:'JetBrains Mono',monospace;font-size:12px;
+  color:var(--text2);white-space:pre-wrap;line-height:1.7;
+  overflow-x:auto;margin:16px 0;
+}
+
+.topic-body blockquote{
+  margin:16px 0;padding:12px 16px;
+  border-left:3px solid var(--gold);
+  background:rgba(200,164,74,.05);
+  color:var(--text2);font-style:italic;
+}
+
+/* TOPIC NAV */
+.topic-nav{
+  display:flex;gap:12px;align-items:center;
+  margin-top:48px;padding-top:28px;
+  border-top:1px solid var(--border);
+  flex-wrap:wrap;
+}
+.nav-btn{
+  padding:10px 18px;border-radius:6px;
+  background:var(--bg3);border:1px solid var(--border);
+  color:var(--text2);font-family:'JetBrains Mono',monospace;
+  font-size:12px;cursor:pointer;transition:all .2s;
+}
+.nav-btn:hover{border-color:var(--gold);color:var(--gold)}
+.quiz-link-btn-lg{
+  padding:12px 24px;background:rgba(200,164,74,.14);
+  border:1px solid rgba(200,164,74,.4);border-radius:6px;
+  font-family:'JetBrains Mono',monospace;font-size:13px;
+  color:var(--gold);text-decoration:none;transition:all .2s;
+  margin:0 auto;
+}
+.quiz-link-btn-lg:hover{background:rgba(200,164,74,.24)}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+
+
+@media (max-width: 980px){
+  body{display:block}
+  #sidebar{position:static;width:100%;height:auto;max-height:none;border-right:none;border-bottom:1px solid var(--border)}
+  #main{margin-left:0}
+  #home-section,.topic-section{max-width:none;padding:28px 24px}
+  .home-grid{grid-template-columns:repeat(auto-fill,minmax(240px,1fr))}
+}
+
+@media (max-width: 640px){
+  .sb-brand h1{font-size:16px}
+  .home-title{font-size:36px}
+  .home-sub{font-size:15px}
+  #home-section,.topic-section{padding:22px 16px}
+  .topic-title{font-size:28px}
+  .topic-body h2{font-size:22px}
+  .topic-nav{gap:10px}
+  .quiz-link-btn-lg,.nav-btn,.quiz-link-btn{width:100%;justify-content:center;text-align:center}
+  .hc-actions{flex-direction:column}
+}
+</style>
+</head>
+<body>
+
+<nav id="sidebar">
+  <div class="sb-brand">
+    <div class="sb-brand-tag">D2 — Pedagogia</div>
+    <h1>Conhecimentos Pedagógicos</h1>
+  </div>
+  <button type="button" class="sb-back" onclick="goToPortal()">← Apostila completa</button>
+  <div class="sb-section-label">Navegação</div>
+  <button type="button" class="sb-home active" id="sb-home-btn" onclick="showHome()">🏠 Visão Geral</button>
+  <div class="sb-section-label">Tópicos</div>
+  
+      <a class="sb-topic" href="#topic-P1" onclick="showTopic('P1')">
+        <span class="sb-num">P01</span>
+        <span class="sb-label">Contexto: O que são Conhecimentos Pedagógicos?</span>
+      </a>
+      <a class="sb-topic" href="#topic-P2" onclick="showTopic('P2')">
+        <span class="sb-num">P02</span>
+        <span class="sb-label">Grandes Teorias e Pensadores</span>
+      </a>
+      <a class="sb-topic" href="#topic-P3" onclick="showTopic('P3')">
+        <span class="sb-num">P03</span>
+        <span class="sb-label">Tendências Pedagógicas no Brasil</span>
+      </a>
+      <a class="sb-topic" href="#topic-P4" onclick="showTopic('P4')">
+        <span class="sb-num">P04</span>
+        <span class="sb-label">Didática e Planejamento</span>
+      </a>
+      <a class="sb-topic" href="#topic-P5" onclick="showTopic('P5')">
+        <span class="sb-num">P05</span>
+        <span class="sb-label">Avaliação da Aprendizagem</span>
+      </a>
+      <a class="sb-topic" href="#topic-P6" onclick="showTopic('P6')">
+        <span class="sb-num">P06</span>
+        <span class="sb-label">Legislação Educacional Brasileira</span>
+      </a>
+      <a class="sb-topic" href="#topic-P7" onclick="showTopic('P7')">
+        <span class="sb-num">P07</span>
+        <span class="sb-label">Projeto Político-Pedagógico e Currículo</span>
+      </a>
+      <a class="sb-topic" href="#topic-P8" onclick="showTopic('P8')">
+        <span class="sb-num">P08</span>
+        <span class="sb-label">Psicologia da Educação</span>
+      </a>
+      <a class="sb-topic" href="#topic-P9" onclick="showTopic('P9')">
+        <span class="sb-num">P09</span>
+        <span class="sb-label">TICs na Educação</span>
+      </a>
+      <a class="sb-topic" href="#topic-P10" onclick="showTopic('P10')">
+        <span class="sb-num">P10</span>
+        <span class="sb-label">Síntese, Mapas e Tabelas</span>
+      </a>
+  <div class="sb-footer">
+    Prof. Filosofia EF Anos Finais<br>
+    São José de Ribamar/MA<br>
+    Edital 001/2026 · Banca IJK<br>
+    Prova: 12/07/2026
+  </div>
+</nav>
+
+<main id="main">
+
+<section id="home-section">
+  <p class="home-badge">D2 — Conhecimentos Pedagógicos · 9 questões · 18 pontos</p>
+  <h1 class="home-title">Pedagogia</h1>
+  <p class="home-sub">10 seções completas · 60 questões · teoria explanativa + simulado interativo</p>
+  <a href="D2_Quiz.html" class="quiz-link-btn">📝 Quiz Geral D2 (60 questões)</a>
+  <div class="home-grid">
+    
+    <div class="home-card" onclick="showTopic('P1')">
+      <div class="hc-num">P01</div>
+      <div class="hc-title">Contexto: O que são Conhecimentos Pedagógicos?</div>
+      <div class="hc-actions">
+        <button type="button" class="hc-btn-theory" onclick="showTopic('P1');event.stopPropagation()">📖 Teoria</button>
+      </div>
+    </div>
+    <div class="home-card" onclick="showTopic('P2')">
+      <div class="hc-num">P02</div>
+      <div class="hc-title">Grandes Teorias e Pensadores</div>
+      <div class="hc-actions">
+        <button type="button" class="hc-btn-theory" onclick="showTopic('P2');event.stopPropagation()">📖 Teoria</button>
+      </div>
+    </div>
+    <div class="home-card" onclick="showTopic('P3')">
+      <div class="hc-num">P03</div>
+      <div class="hc-title">Tendências Pedagógicas no Brasil</div>
+      <div class="hc-actions">
+        <button type="button" class="hc-btn-theory" onclick="showTopic('P3');event.stopPropagation()">📖 Teoria</button>
+      </div>
+    </div>
+    <div class="home-card" onclick="showTopic('P4')">
+      <div class="hc-num">P04</div>
+      <div class="hc-title">Didática e Planejamento</div>
+      <div class="hc-actions">
+        <button type="button" class="hc-btn-theory" onclick="showTopic('P4');event.stopPropagation()">📖 Teoria</button>
+      </div>
+    </div>
+    <div class="home-card" onclick="showTopic('P5')">
+      <div class="hc-num">P05</div>
+      <div class="hc-title">Avaliação da Aprendizagem</div>
+      <div class="hc-actions">
+        <button type="button" class="hc-btn-theory" onclick="showTopic('P5');event.stopPropagation()">📖 Teoria</button>
+      </div>
+    </div>
+    <div class="home-card" onclick="showTopic('P6')">
+      <div class="hc-num">P06</div>
+      <div class="hc-title">Legislação Educacional Brasileira</div>
+      <div class="hc-actions">
+        <button type="button" class="hc-btn-theory" onclick="showTopic('P6');event.stopPropagation()">📖 Teoria</button>
+      </div>
+    </div>
+    <div class="home-card" onclick="showTopic('P7')">
+      <div class="hc-num">P07</div>
+      <div class="hc-title">Projeto Político-Pedagógico e Currículo</div>
+      <div class="hc-actions">
+        <button type="button" class="hc-btn-theory" onclick="showTopic('P7');event.stopPropagation()">📖 Teoria</button>
+      </div>
+    </div>
+    <div class="home-card" onclick="showTopic('P8')">
+      <div class="hc-num">P08</div>
+      <div class="hc-title">Psicologia da Educação</div>
+      <div class="hc-actions">
+        <button type="button" class="hc-btn-theory" onclick="showTopic('P8');event.stopPropagation()">📖 Teoria</button>
+      </div>
+    </div>
+    <div class="home-card" onclick="showTopic('P9')">
+      <div class="hc-num">P09</div>
+      <div class="hc-title">TICs na Educação</div>
+      <div class="hc-actions">
+        <button type="button" class="hc-btn-theory" onclick="showTopic('P9');event.stopPropagation()">📖 Teoria</button>
+      </div>
+    </div>
+    <div class="home-card" onclick="showTopic('P10')">
+      <div class="hc-num">P10</div>
+      <div class="hc-title">Síntese, Mapas e Tabelas</div>
+      <div class="hc-actions">
+        <button type="button" class="hc-btn-theory" onclick="showTopic('P10');event.stopPropagation()">📖 Teoria</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section id="topic-P1" class="topic-section" style="display:none">
+  <div class="topic-header">
+    <div class="topic-badge">P01</div>
+    <h1 class="topic-title">Contexto: O que são Conhecimentos Pedagógicos?</h1>
+  </div>
+  <div class="topic-body">
+    <h2>P.1 CONTEXTO: O QUE SÃO OS CONHECIMENTOS PEDAGÓGICOS?</h2>
+<p>Os Conhecimentos Pedagógicos constituem o corpo de saberes sobre <strong>como</strong> a educação acontece — as teorias que explicam o desenvolvimento humano, as correntes que orientam as práticas de ensino, os documentos legais que organizam a educação brasileira e os instrumentos que o professor usa para planejar, ensinar e avaliar.</p>
+<p>Para o professor de Filosofia no EF Anos Finais, dominar esses conhecimentos não é tarefa burocrática — é condição para exercer bem a docência: sem teoria do desenvolvimento, o professor não sabe o que é exigível de um aluno de 12 anos; sem didática, não sabe como transformar o saber filosófico em saber ensinável; sem conhecimento da legislação, não sabe quais são seus direitos, deveres e limitações legais.</p>
+  </div>
+  <div class="topic-nav">
+    <button type="button" class="nav-btn" onclick="showTopic('P2')">P02 →</button>
+  </div>
+</section>
+<section id="topic-P2" class="topic-section" style="display:none">
+  <div class="topic-header">
+    <div class="topic-badge">P02</div>
+    <h1 class="topic-title">Grandes Teorias e Pensadores</h1>
+  </div>
+  <div class="topic-body">
+    <h2>P.2 GRANDES TEORIAS E PENSADORES</h2>
+<h3>P.2.1 Behaviorismo / Condicionamento</h3>
+<p><strong>Ivan Pavlov (1849–1936):</strong> Neurofisiologista russo. Descobriu o <strong>condicionamento clássico</strong> (<em>reflexo condicionado</em>): ao associar repetidamente o som de uma campainha ao fornecimento de comida a cães, conseguiu que eles salivassem apenas com o som — sem a comida. O reflexo natural (comida → salivação) foi condicionado a um estímulo neutro (campainha).</p>
+<p><strong>Implicação pedagógica:</strong> A aprendizagem é associação entre estímulo e resposta. Repetição e associação são centrais.</p>
+<p><strong>B. F. Skinner (1904–1990):</strong> Psicólogo americano, pai do <strong>condicionamento operante</strong>: o comportamento é modelado pelas suas consequências — <strong>reforço</strong> (positivo ou negativo) aumenta a probabilidade do comportamento; <strong>punição</strong> a diminui.</p>
+<div class="tbl-wrap"><table>
+<tr><th>Conceito</th><th>Descrição</th><th>Exemplo</th></tr>
+<tr><td><strong>Reforço positivo</strong></td><td>Acrescentar algo agradável após o comportamento</td><td>Elogio após boa participação</td></tr>
+<tr><td><strong>Reforço negativo</strong></td><td>Retirar algo desagradável após o comportamento</td><td>Liberar o aluno de uma tarefa</td></tr>
+<tr><td><strong>Punição</strong></td><td>Consequência que diminui o comportamento</td><td>Repreensão</td></tr>
+<tr><td><strong>Extinção</strong></td><td>Retirar o reforço — o comportamento tende a desaparecer</td><td>Ignorar comportamento disruptivo</td></tr>
+</table></div>
+<p><strong>Contribuição à educação:</strong> instrução programada, ensino por módulos, feedback imediato, reforço positivo como ferramenta de gestão de sala.</p>
+<p><strong>Alfred Binet (1857–1911):</strong> Psicólogo francês que desenvolveu o primeiro <strong>teste de inteligência</strong> (<em>escala Binet-Simon</em>, 1905) — originalmente para identificar crianças com dificuldades de aprendizagem e garantir-lhes educação adequada. O conceito de <strong>idade mental</strong> (o nível de desempenho correspondente a uma faixa etária típica) é sua contribuição central. Critica-se o uso posterior dos testes para fins eugênicos e discriminatórios — que Binet não defendia.</p>
+<h3>P.2.2 Construtivismo e Desenvolvimento Cognitivo</h3>
+<p><strong>Jean Piaget (1896–1980):</strong> Biólogo e epistemólogo suíço, desenvolveu a <strong>epistemologia genética</strong> — a teoria de como o conhecimento se constrói no desenvolvimento do sujeito.</p>
+<p><strong>Conceitos centrais:</strong></p>
+<div class="tbl-wrap"><table>
+<tr><th>Conceito</th><th>Definição</th></tr>
+<tr><td><strong>Esquema</strong></td><td>Estrutura cognitiva que organiza a experiência</td></tr>
+<tr><td><strong>Assimilação</strong></td><td>Incorporar nova informação a esquemas existentes</td></tr>
+<tr><td><strong>Acomodação</strong></td><td>Modificar esquemas para incorporar informação que não se encaixa</td></tr>
+<tr><td><strong>Equilibração</strong></td><td>Processo de busca de equilíbrio entre assimilação e acomodação</td></tr>
+</table></div>
+<p><strong>Estágios do desenvolvimento cognitivo de Piaget:</strong></p>
+<div class="tbl-wrap"><table>
+<tr><th>Estágio</th><th>Faixa etária aproximada</th><th>Características</th></tr>
+<tr><td><strong>Sensório-motor</strong></td><td>0–2 anos</td><td>Inteligência prática, permanência do objeto</td></tr>
+<tr><td><strong>Pré-operatório</strong></td><td>2–7 anos</td><td>Linguagem, pensamento simbólico, egocentrismo, animismo</td></tr>
+<tr><td><strong>Operatório concreto</strong></td><td>7–12 anos</td><td>Operações lógicas sobre objetos concretos, conservação, reversibilidade</td></tr>
+<tr><td><strong>Operatório formal</strong></td><td>A partir de 12 anos</td><td>Pensamento hipotético-dedutivo, abstração, raciocínio sobre possibilidades</td></tr>
+</table></div>
+<div class="callout callout-gold">⭐ <strong>Para concursos:</strong> Os alunos do EF Anos Finais (6º ao 9º) estão na <strong>transição entre o operatório concreto e o operatório formal</strong> — o que tem implicações diretas para o ensino de Filosofia: o pensamento abstrato está emergindo, mas ainda precisa de suporte em exemplos concretos.</div>
+<p><strong>Implicação pedagógica:</strong> O professor deve conhecer o estágio dos alunos e propor atividades adequadas — nem além (frustração) nem aquém (tédio) de suas capacidades. A aprendizagem é construção ativa — não recepção passiva.</p>
+<p><strong>Lev Vygotsky (1896–1934):</strong> Psicólogo russo. Desenvolveu a teoria <strong>histórico-cultural</strong> do desenvolvimento — em contraposição ao construtivismo piagetiano, que enfatizou os aspectos biologicamente universais do desenvolvimento.</p>
+<p><strong>Conceitos centrais:</strong></p>
+<div class="tbl-wrap"><table>
+<tr><th>Conceito</th><th>Definição</th></tr>
+<tr><td><strong>Zona de Desenvolvimento Real (ZDR)</strong></td><td>O que o aluno já consegue fazer de forma independente</td></tr>
+<tr><td><strong>Zona de Desenvolvimento Potencial (ZDP)</strong></td><td>O que o aluno consegue fazer com ajuda</td></tr>
+<tr><td><strong>Zona de Desenvolvimento Proximal (ZDPróx)</strong></td><td>A distância entre a ZDR e a ZDP — o espaço da aprendizagem</td></tr>
+<tr><td><strong>Andaime</strong> (<em>scaffolding</em>)</td><td>Suporte temporário fornecido pelo professor que gradualmente é retirado</td></tr>
+<tr><td><strong>Mediação</strong></td><td>O papel dos instrumentos e dos outros (especialmente o professor) no desenvolvimento</td></tr>
+<tr><td><strong>Internalização</strong></td><td>O processo pelo qual funções interpessoais se tornam intrapessoais</td></tr>
+</table></div>
+<p><strong>A diferença fundamental de Piaget:</strong> Para Piaget, o desenvolvimento precede a aprendizagem (o que o aluno pode aprender é limitado pelo estágio de desenvolvimento). Para Vygotsky, <strong>a aprendizagem puxa o desenvolvimento</strong> — a interação social e o ensino são motores do desenvolvimento.</p>
+<div class="callout callout-gold">⭐ <strong>Para concursos:</strong> A ZDP de Vygotsky é o conceito mais cobrado em pedagogia. Memorizar: "o que o aluno não faz sozinho mas faz com ajuda está na ZDP — e é aí que o ensino deve atuar."</div>
+<p><strong>Henri Wallon (1879–1962):</strong> Médico e psicólogo francês. Desenvolveu uma <strong>psicologia do desenvolvimento integrada</strong> — que articulou aspectos motores, emocionais e cognitivos. Para Wallon, a emoção é central no desenvolvimento — não separada da cognição. Os <strong>estágios wallonianos</strong> articulam diferentes tipos de atividade dominante em cada período.</p>
+<h3>P.2.3 Humanismo e Psicologia Humanista</h3>
+<p><strong>Carl Rogers (1902–1987):</strong> Psicólogo americano, desenvolveu a <strong>psicologia humanista centrada na pessoa</strong>. Para Rogers, o ser humano tem uma tendência natural ao crescimento e à autorrealização — o papel do terapeuta (e do professor) é criar condições facilitadoras, não prescrever respostas.</p>
+<p><strong>Os três facilitadores do aprendizado significativo (Rogers):</strong></p>
+<div class="tbl-wrap"><table>
+<tr><th>Facilitador</th><th>Descrição</th></tr>
+<tr><td><strong>Autenticidade</strong></td><td>O professor é genuíno — não representa um papel</td></tr>
+<tr><td><strong>Empatia</strong></td><td>O professor compreende o mundo do aluno a partir de sua perspectiva</td></tr>
+<tr><td><strong>Consideração positiva incondicional</strong></td><td>O professor aceita e valoriza o aluno independentemente de seu desempenho</td></tr>
+</table></div>
+<p><strong>Aprendizagem significativa (Rogers):</strong> diferente da aprendizagem memorizada — é aquela que faz diferença na vida do aluno, que transforma sua forma de ser e de agir. ⚠️ Não confundir com a aprendizagem significativa de <strong>Ausubel</strong>.</p>
+<p><strong>Abraham Maslow (1908–1970):</strong> Psicólogo americano, desenvolveu a <strong>hierarquia das necessidades</strong> — frequentemente representada como uma pirâmide:</p>
+<p>1. <strong>Fisiológicas</strong> (alimentação, sono, saúde)
+2. <strong>Segurança</strong> (proteção, estabilidade)
+3. <strong>Sociais/pertença</strong> (afeto, grupo)
+4. <strong>Estima</strong> (autoestima, reconhecimento)
+5. <strong>Autorrealização</strong> (realização do potencial)</p>
+<p><strong>Implicação pedagógica:</strong> Alunos que não têm necessidades básicas atendidas (fome, violência doméstica, falta de segurança) não conseguem aprender de forma plena — as necessidades inferiores precisam ser minimamente atendidas para que as superiores sejam buscadas.</p>
+<h3>P.2.4 Sócio-Interacionismo e Pedagogia Social</h3>
+<p><strong>Émile Durkheim (1858–1917):</strong> Sociólogo francês, considerado o pai da Sociologia da Educação. Para Durkheim, a educação é a <strong>socialização metodicamente realizada pelas gerações adultas sobre as gerações jovens</strong> — seu objetivo é integrar o indivíduo à sociedade, transmitindo valores e normas coletivas.</p>
+<p><strong>Implicação:</strong> A escola tem função social — não apenas individual. A educação é um fato social antes de ser uma questão individual.</p>
+<p><strong>Paulo Freire (1921–1997):</strong> Já amplamente tratado nos Tópicos 10, 11 e 12 da Disciplina 1. <strong>Conceitos centrais para esta disciplina:</strong> educação bancária vs. problematizadora; conscientização; diálogo; práxis; palavras geradoras; situações-limite.</p>
+<h3>P.2.5 Cognitivismo e Aprendizagem</h3>
+<p><strong>Jerome Bruner (1915–2016):</strong> Psicólogo americano, desenvolveu a teoria da <strong>aprendizagem por descoberta</strong> e o conceito de <strong>currículo em espiral</strong>.</p>
+<ul><li><strong>Aprendizagem por descoberta:</strong> o aluno aprende melhor quando descobre ativamente os princípios por si mesmo — em vez de receber informação pronta. O professor cria condições para a descoberta, não transmite resultados.</li><li><strong>Currículo em espiral:</strong> os mesmos conceitos podem (e devem) ser ensinados em diferentes níveis de profundidade e abstração em diferentes momentos do desenvolvimento — retornando ao mesmo tema com maior complexidade.</li><li><strong>Representações:</strong> enativo (ação), icônico (imagem), simbólico (linguagem) — os três modos de representar o conhecimento, que devem ser usados pedagogicamente.</li></ul>
+<strong>Howard Gardner (1943–):</strong> Psicólogo americano, desenvolveu a <strong>teoria das inteligências múltiplas</strong> (1983). Propôs que a inteligência não é uma capacidade única e geral — são múltiplas capacidades relativamente independentes:
+<div class="tbl-wrap"><table>
+<tr><th>Inteligência</th><th>Descrição</th></tr>
+<tr><td><strong>Linguística</strong></td><td>Sensibilidade à linguagem oral e escrita</td></tr>
+<tr><td><strong>Lógico-matemática</strong></td><td>Raciocínio lógico e matemático</td></tr>
+<tr><td><strong>Espacial</strong></td><td>Percepção e manipulação do espaço</td></tr>
+<tr><td><strong>Musical</strong></td><td>Sensibilidade à música e ritmo</td></tr>
+<tr><td><strong>Corporal-cinestésica</strong></td><td>Controle e expressão pelo corpo</td></tr>
+<tr><td><strong>Naturalista</strong></td><td>Reconhecimento e categorização da natureza</td></tr>
+<tr><td><strong>Interpessoal</strong></td><td>Compreensão dos outros</td></tr>
+<tr><td><strong>Intrapessoal</strong></td><td>Autoconhecimento</td></tr>
+<tr><td><strong>Existencial</strong> (proposta posterior)</td><td>Reflexão sobre questões da existência</td></tr>
+</table></div>
+<p><strong>Implicação pedagógica:</strong> A escola tradicional valoriza quase exclusivamente a inteligência linguística e lógico-matemática — ignorando outras formas de inteligência igualmente valiosas. O professor deve diversificar as estratégias para alcançar alunos com diferentes perfis.</p>
+<p><strong>Carol Dweck (1946–):</strong> Psicóloga americana, desenvolveu a teoria das <strong>mentalidades</strong> (<em>mindsets</em>):</p>
+<div class="tbl-wrap"><table>
+<tr><th>Mentalidade</th><th>Crenças</th><th>Comportamento</th></tr>
+<tr><td><strong>Fixada</strong> (<em>fixed mindset</em>)</td><td>"Sou assim — não posso mudar"</td><td>Evita desafios, desiste diante de obstáculos</td></tr>
+<tr><td><strong>De crescimento</strong> (<em>growth mindset</em>)</td><td>"Posso desenvolver minhas capacidades"</td><td>Abraça desafios, persiste, aprende com erros</td></tr>
+</table></div>
+<p><strong>Implicação:</strong> O professor que elogia o esforço ("você se dedicou muito") desenvolve mentalidade de crescimento; o que elogia o talento ("você é muito inteligente") pode desenvolver mentalidade fixada.</p>
+<h3>P.2.6 Pedagogia Ativa e Escola Nova</h3>
+<p><strong>Maria Montessori (1870–1952):</strong> Médica e pedagoga italiana. Desenvolveu o <strong>Método Montessori</strong> — baseado na ideia de que a criança tem uma natureza ativa e criativa que a escola deve respeitar, não controlar.</p>
+<p><strong>Princípios centrais:</strong>
+<ul><li>Ambiente preparado — materiais adequados ao desenvolvimento</li><li>Liberdade com responsabilidade — a criança escolhe suas atividades</li><li>Educação sensorial — aprendizagem pelos sentidos</li><li>Respeito ao ritmo individual — sem comparações com colegas</li><li>O papel do professor como "guia" ou "observador"</li></ul>
+<strong>Célestin Freinet (1896–1966):</strong> Pedagogo francês, desenvolveu as <strong>técnicas Freinet</strong> — uma pedagogia do trabalho e da expressão:</p>
+<ul><li><strong>Imprensa escolar:</strong> os alunos produzem jornais escolares</li><li><strong>Texto livre:</strong> os alunos escrevem sobre o que querem</li><li><strong>Correspondência interescolar:</strong> troca de correspondência entre turmas</li><li><strong>Cooperativas de classe:</strong> autogestão parcial da sala pelos alunos</li></ul>
+<strong>John Dewey (1859–1952):</strong> Já amplamente tratado nos Tópicos 10 e 12. Para esta disciplina: <strong>"aprender fazendo"</strong> (<em>learning by doing</em>), escola como comunidade democrática, educação como experiência, método de resolução de problemas.
+  </div>
+  <div class="topic-nav">
+    <button type="button" class="nav-btn" onclick="showTopic('P1')">← P01</button>
+    <button type="button" class="nav-btn" onclick="showTopic('P3')">P03 →</button>
+  </div>
+</section>
+<section id="topic-P3" class="topic-section" style="display:none">
+  <div class="topic-header">
+    <div class="topic-badge">P03</div>
+    <h1 class="topic-title">Tendências Pedagógicas no Brasil</h1>
+  </div>
+  <div class="topic-body">
+    <h2>P.3 TENDÊNCIAS PEDAGÓGICAS NO BRASIL</h2>
+<p>A classificação das tendências pedagógicas mais usada no Brasil é a de <strong>José Carlos Libâneo</strong> — que divide as tendências em duas grandes vertentes: <strong>liberal</strong> e <strong>progressista</strong>.</p>
+<h3>P.3.1 Tendências Liberais</h3>
+<div class="tbl-wrap"><table>
+<tr><th>Tendência</th><th>Características</th><th>Papel do Professor</th><th>Papel do Aluno</th></tr>
+<tr><td><strong>Tradicional</strong></td><td>Transmissão do saber acumulado; conteúdo enciclopédico; ênfase na memória</td><td>Autoridade — transmite</td><td>Receptor passivo</td></tr>
+<tr><td><strong>Renovada Progressivista</strong> (Dewey, Escola Nova)</td><td>Aprendizagem pela experiência; método ativo; interesse do aluno</td><td>Facilitador</td><td>Protagonista</td></tr>
+<tr><td><strong>Renovada Não-Diretiva</strong> (Rogers)</td><td>Centralidade nas relações; desenvolvimento pessoal; não-diretividade</td><td>Facilitador afetivo</td><td>Centro do processo</td></tr>
+<tr><td><strong>Tecnicista</strong> (Skinner, behaviorismo)</td><td>Eficiência técnica; objetivos comportamentais; instrução programada</td><td>Técnico organizador</td><td>Executor</td></tr>
+</table></div>
+<h3>P.3.2 Tendências Progressistas</h3>
+<div class="tbl-wrap"><table>
+<tr><th>Tendência</th><th>Características</th><th>Referências</th></tr>
+<tr><td><strong>Libertadora</strong></td><td>Conscientização, diálogo, transformação da realidade</td><td>Paulo Freire</td></tr>
+<tr><td><strong>Libertária</strong></td><td>Autogestão, livre organização, antiautoritarismo</td><td>Freinet, Ferrer y Guardia</td></tr>
+<tr><td><strong>Crítico-Social dos Conteúdos</strong></td><td>Domínio dos conteúdos como instrumento de luta; mediação entre saber popular e saber científico</td><td>Saviani, Libâneo</td></tr>
+</table></div>
+<div class="callout callout-gold">⭐ <strong>Para concursos:</strong> A classificação de Libâneo é a mais cobrada. A <strong>Pedagogia Histórico-Crítica</strong> de <strong>Dermeval Saviani</strong> — que fundamenta a tendência "crítico-social dos conteúdos" — é altamente cobrada em concursos brasileiros: parte do conteúdo clássico (não rejeita o saber sistemático) mas o articula com a perspectiva crítica de transformação social.</div>
+  </div>
+  <div class="topic-nav">
+    <button type="button" class="nav-btn" onclick="showTopic('P2')">← P02</button>
+    <button type="button" class="nav-btn" onclick="showTopic('P4')">P04 →</button>
+  </div>
+</section>
+<section id="topic-P4" class="topic-section" style="display:none">
+  <div class="topic-header">
+    <div class="topic-badge">P04</div>
+    <h1 class="topic-title">Didática e Planejamento</h1>
+  </div>
+  <div class="topic-body">
+    <h2>P.4 DIDÁTICA E PLANEJAMENTO</h2>
+<h3>P.4.1 Didática</h3>
+<p>A <strong>Didática</strong> é a ciência do ensino — o estudo sistemático dos métodos e processos de ensino-aprendizagem. Ela investiga:</p>
+<ul><li>Os objetivos da educação</li><li>Os conteúdos a serem ensinados</li><li>Os métodos e estratégias de ensino</li><li>Os recursos didáticos</li><li>A avaliação da aprendizagem</li></ul>
+<strong>Didática fundamental (Libâneo):</strong> O ensino eficaz articula intencionalmente:
+<pre class="code">OBJETIVOS ↔ CONTEÚDOS ↔ MÉTODOS ↔ AVALIAÇÃO
+</pre>
+<p>Nenhum desses elementos pode ser planejado isoladamente — são interdependentes.</p>
+<h3>P.4.2 Planejamento de Ensino</h3>
+<p>O <strong>planejamento de ensino</strong> é o processo de prever, organizar e coordenar a ação docente. Diferentes níveis:</p>
+<div class="tbl-wrap"><table>
+<tr><th>Nível</th><th>Instrumento</th><th>Abrangência</th></tr>
+<tr><td><strong>Macro</strong></td><td>Plano Nacional de Educação / BNCC</td><td>Nacional</td></tr>
+<tr><td><strong>Meso</strong></td><td>Proposta Pedagógica / PPP</td><td>Escola</td></tr>
+<tr><td><strong>Intermediário</strong></td><td>Plano de Curso / Plano Anual</td><td>Componente curricular / Ano</td></tr>
+<tr><td><strong>Micro</strong></td><td>Plano de Aula</td><td>Aula específica</td></tr>
+</table></div>
+<p><strong>Elementos do Plano de Aula:</strong>
+<ul><li>Identificação (escola, turma, data, professor, componente)</li><li>Objetivos de aprendizagem (o que o aluno deverá ser capaz de fazer ao final)</li><li>Conteúdo (o que será ensinado)</li><li>Procedimentos metodológicos (como será ensinado)</li><li>Recursos didáticos (com quê)</li><li>Avaliação (como será verificado o aprendizado)</li><li>Referências</li></ul></p>
+  </div>
+  <div class="topic-nav">
+    <button type="button" class="nav-btn" onclick="showTopic('P3')">← P03</button>
+    <button type="button" class="nav-btn" onclick="showTopic('P5')">P05 →</button>
+  </div>
+</section>
+<section id="topic-P5" class="topic-section" style="display:none">
+  <div class="topic-header">
+    <div class="topic-badge">P05</div>
+    <h1 class="topic-title">Avaliação da Aprendizagem</h1>
+  </div>
+  <div class="topic-body">
+    <h2>P.5 AVALIAÇÃO DA APRENDIZAGEM</h2>
+<h3>P.5.1 Funções da Avaliação</h3>
+<div class="tbl-wrap"><table>
+<tr><th>Função</th><th>Denominação</th><th>Momento</th><th>Objetivo</th></tr>
+<tr><td><strong>Diagnóstica</strong></td><td>Avaliação inicial</td><td>Antes do processo</td><td>Identificar o ponto de partida dos alunos</td></tr>
+<tr><td><strong>Formativa</strong></td><td>Avaliação processual</td><td>Durante o processo</td><td>Orientar e regular o processo de aprendizagem</td></tr>
+<tr><td><strong>Somativa</strong></td><td>Avaliação final</td><td>Ao final do processo</td><td>Verificar o nível de aprendizagem atingido</td></tr>
+</table></div>
+<div class="callout callout-gold">⭐ <strong>Para concursos:</strong> A <strong>avaliação formativa</strong> é a mais valorizada pela pedagogia contemporânea — porque tem função de orientar o processo (não apenas certificar o resultado). A BNCC enfatiza a avaliação formativa.</div>
+<h3>P.5.2 Avaliação Qualitativa vs. Quantitativa</h3>
+<div class="tbl-wrap"><table>
+<tr><th>Avaliação Quantitativa</th><th>Avaliação Qualitativa</th></tr>
+<tr><td>Foco na nota numérica</td><td>Foco no processo de aprendizagem</td></tr>
+<tr><td>Instrumentos objetivos (prova)</td><td>Instrumentos diversificados (portfólio, observação, entrevista)</td></tr>
+<tr><td>Resultado como produto</td><td>Processo como objeto central</td></tr>
+<tr><td>Tendência classificatória</td><td>Tendência diagnóstica e formativa</td></tr>
+</table></div>
+<h3>P.5.3 Tipos de Instrumentos Avaliativos</h3>
+<ul><li><strong>Prova escrita objetiva</strong> (múltipla escolha, verdadeiro/falso)</li><li><strong>Prova dissertativa</strong> (redação, questões abertas)</li><li><strong>Trabalho de pesquisa</strong> (individual ou em grupo)</li><li><strong>Portfólio</strong> (coleção de produções ao longo do tempo)</li><li><strong>Autoavaliação</strong> (o aluno avalia seu próprio processo)</li><li><strong>Avaliação por pares</strong> (alunos avaliam uns aos outros)</li><li><strong>Observação sistemática</strong> (registro de comportamentos e desempenho)</li></ul>
+<h3>P.5.4 Ciclos de Formação e Progressão Continuada</h3>
+<p>A LDB e diversas legislações estaduais permitem a organização da escolaridade em <strong>ciclos</strong> — em vez de séries anuais — com <strong>progressão continuada</strong>: o aluno avança sem reprovação ao longo de um ciclo, sendo avaliado ao final do ciclo completo. Isso reduz a evasão escolar e a distorção série/idade.</p>
+  </div>
+  <div class="topic-nav">
+    <button type="button" class="nav-btn" onclick="showTopic('P4')">← P04</button>
+    <button type="button" class="nav-btn" onclick="showTopic('P6')">P06 →</button>
+  </div>
+</section>
+<section id="topic-P6" class="topic-section" style="display:none">
+  <div class="topic-header">
+    <div class="topic-badge">P06</div>
+    <h1 class="topic-title">Legislação Educacional Brasileira</h1>
+  </div>
+  <div class="topic-body">
+    <h2>P.6 LEGISLAÇÃO EDUCACIONAL BRASILEIRA</h2>
+<h3>P.6.1 Constituição Federal de 1988 — Arts. 205-214</h3>
+<p><strong>Art. 205:</strong> A educação é direito de todos e dever do Estado e da família, visando o pleno desenvolvimento da pessoa, seu preparo para o exercício da cidadania e sua qualificação para o trabalho.</p>
+<p><strong>Art. 206:</strong> O ensino será ministrado com base nos princípios:
+<ul><li>Igualdade de condições para acesso e permanência</li><li>Liberdade de aprender, ensinar, pesquisar e divulgar o pensamento</li><li>Pluralismo de ideias e concepções pedagógicas</li><li>Gratuidade do ensino público em estabelecimentos oficiais</li><li>Valorização dos profissionais da educação</li><li>Gestão democrática do ensino público</li><li>Garantia de padrão de qualidade</li><li>Piso salarial profissional nacional para os profissionais da educação</li></ul>
+<strong>Art. 207:</strong> Autonomia das universidades.</p>
+<p><strong>Art. 208:</strong> O dever do Estado com a educação será efetivado mediante a garantia de:
+<ul><li>Educação Básica obrigatória e gratuita dos 4 aos 17 anos</li><li>Progressiva universalização do ensino médio gratuito</li><li>Atendimento educacional especializado aos portadores de deficiência</li><li>Educação infantil em creches e pré-escolas</li><li>Acesso aos níveis mais elevados do ensino</li></ul>
+<strong>Art. 214:</strong> O PNE — Plano Nacional de Educação — com duração decenal, visando a articulação e desenvolvimento do ensino em seus diversos níveis.</p>
+<h3>P.6.2 LDB — Lei 9.394/1996</h3>
+<p>A <strong>Lei de Diretrizes e Bases da Educação Nacional</strong> é o principal instrumento normativo da educação brasileira.</p>
+<p><strong>Estrutura da Educação Nacional (LDB):</strong></p>
+<pre class="code">EDUCAÇÃO BÁSICA
+├── Educação Infantil (0–5 anos)
+│   ├── Creche (0–3 anos)
+│   └── Pré-escola (4–5 anos)
+├── Ensino Fundamental (6–14 anos) — obrigatório
+│   ├── Anos Iniciais (1º ao 5º ano)
+│   └── Anos Finais (6º ao 9º ano)
+└── Ensino Médio (15–17 anos)
+<p>EDUCAÇÃO SUPERIOR
+├── Graduação
+├── Pós-graduação
+└── Extensão</p>
+<p>MODALIDADES
+├── EJA (Educação de Jovens e Adultos)
+├── Educação Especial
+├── Educação Profissional e Tecnológica
+├── Educação Indígena
+└── Educação a Distância
+</pre></p>
+<p><strong>Princípios e fins (Art. 2º e 3º da LDB):</strong> Pleno desenvolvimento da pessoa, preparo para o exercício da cidadania, qualificação para o trabalho.</p>
+<p><strong>Carga horária mínima (LDB):</strong>
+<ul><li>EF: 800h/ano (mínimo) → ampliado pela BNCC para 200 dias letivos / 800h</li><li>O Programa Escola em Tempo Integral (Lei 14.640/2023) amplia para tempo integral (7h/dia)</li></ul>
+<h3>P.6.3 BNCC — Base Nacional Comum Curricular (2017–2018)</h3></p>
+<p><strong>O que é:</strong> Documento normativo que define o conjunto de aprendizagens essenciais que todos os alunos devem desenvolver ao longo da Educação Básica — garantindo o direito à aprendizagem.</p>
+<p><strong>10 Competências Gerais da BNCC:</strong>
+1. Conhecimento
+2. Pensamento científico, crítico e criativo
+3. Repertório cultural
+4. Comunicação
+5. Cultura digital
+6. Trabalho e projeto de vida
+7. Argumentação
+8. Autoconhecimento e autocuidado
+9. Empatia e cooperação
+10. Responsabilidade e cidadania</p>
+<p><strong>Estrutura da BNCC para o EF:</strong>
+<ul><li>Organizada por <strong>áreas do conhecimento</strong> (não apenas disciplinas)</li><li>Cada área tem <strong>competências de área</strong></li><li>Cada componente curricular tem <strong>competências de componente</strong> e <strong>habilidades</strong> específicas (com código: ex. EF09CI01)</li></ul>
+<strong>Ciências Humanas no EF (área que inclui Filosofia indiretamente):</strong>
+Composta por: História, Geografia, Sociologia e Filosofia — com ênfase no desenvolvimento da consciência crítica, na compreensão dos processos histórico-sociais e na formação cidadã.</p>
+<h3>P.6.4 ECA — Estatuto da Criança e do Adolescente (Lei 8.069/1990)</h3>
+<p>O ECA é o instrumento jurídico que garante os direitos das crianças e adolescentes no Brasil, baseado na <strong>Doutrina da Proteção Integral</strong>:</p>
+<p><strong>Princípios centrais:</strong>
+<ul><li>Criança e adolescente como <strong>sujeitos de direitos</strong> — não objetos de tutela</li><li><strong>Prioridade absoluta</strong> na garantia de seus direitos</li><li><strong>Melhor interesse da criança</strong> como critério decisório</li><li><strong>Corresponsabilidade</strong> de família, sociedade e Estado</li></ul>
+<strong>Direitos fundamentais (ECA):</strong>
+<ul><li>Direito à vida e à saúde (art. 7º)</li><li>Direito à liberdade, respeito e dignidade (art. 15)</li><li>Direito à educação, cultura, esporte e lazer (art. 53)</li><li>Proteção contra todas as formas de violência (art. 5º)</li></ul>
+<strong>Art. 53 (ECA) — Direito à educação:</strong>
+A criança e o adolescente têm direito à educação que garanta: (I) igualdade de condições; (II) direito de ser respeitado por seus educadores; (III) direito de contestar critérios avaliativos; (IV) direito de organização e participação em entidades estudantis.</p>
+<p><strong>Art. 56 (ECA) — Obrigações dos estabelecimentos de ensino:</strong>
+Os dirigentes de estabelecimentos de ensino devem comunicar ao Conselho Tutelar casos de: (I) maus-tratos envolvendo alunos; (II) reiteração de faltas injustificadas; (III) evasão escolar.</p>
+<h3>P.6.5 PNE — Plano Nacional de Educação (Lei 13.005/2014)</h3>
+<p><strong>20 metas</strong> para a educação brasileira no período 2014–2024. As mais relevantes para o professor do EF:</p>
+<ul><li><strong>Meta 5:</strong> Alfabetizar todas as crianças até o 3º ano do EF</li><li><strong>Meta 6:</strong> Oferecer educação em tempo integral em 50% das escolas públicas</li><li><strong>Meta 7:</strong> Fomentar qualidade da Educação Básica (indicadores IDEB)</li><li><strong>Meta 15:</strong> Garantir política de formação dos profissionais da educação</li><li><strong>Meta 17:</strong> Valorizar os profissionais do magistério — equiparação salarial</li></ul>
+<h3>P.6.6 Legislação Específica</h3>
+<p><strong>Lei 10.639/2003 (já abordada na D1):</strong> Obrigatoriedade do ensino de história e cultura afro-brasileira e africana.</p>
+<p><strong>Lei 11.645/2008:</strong> Inclui também a história e cultura indígena na obrigatoriedade.</p>
+<p><strong>Lei 13.146/2015 (Lei Brasileira de Inclusão — LBI):</strong> Já abordada na D3 (Educação Inclusiva). Assegura direitos das pessoas com deficiência, incluindo educação inclusiva.</p>
+<p><strong>Lei 14.180/2021 (Política Nacional de Leitura e Escrita):</strong> Instituiu a Política Nacional Aldir Blanc de Leitura e Escrita — voltada ao fomento da leitura e da escrita em todos os níveis e modalidades de educação.</p>
+<p><strong>Lei 14.533/2023 (Política Nacional de Educação Digital — PNED):</strong> Estabelece a Política Nacional de Educação Digital, estruturada em quatro eixos:
+<ul><li>Inclusão digital</li><li>Educação digital nas escolas</li><li>Capacitação e especialização digital</li><li>Pesquisa e desenvolvimento em tecnologias educacionais</li></ul>
+<strong>Lei 14.640/2023 (Programa Escola em Tempo Integral):</strong> Institui o Programa Escola em Tempo Integral — ampliação da jornada escolar para pelo menos 7 horas diárias, com atividades diversificadas (culturais, esportivas, artísticas).</p>
+<p><strong>Lei 15.247/2025:</strong> ⚠️ Esta legislação é posterior ao meu conhecimento consolidado. Com base no contexto do edital, trata provavelmente de temas educacionais recentes. Candidatos devem consultar o texto integral desta lei junto ao edital do concurso.</p>
+<p><strong>Decreto 12.391/2025:</strong> ⚠️ Igualmente posterior ao meu conhecimento. Consultar o texto do decreto junto ao edital.</p>
+<p><strong>Resolução CNE/CEB 7/2025:</strong> ⚠️ Posterior ao meu conhecimento. Provavelmente relacionada a diretrizes curriculares do EF. Consultar junto ao edital.</p>
+<p><strong>Resolução CNE/CEB 7/2010:</strong> <em>[Esta é a resolução que muitos candidatos conhecem]</em> — Fixa as Diretrizes Curriculares Nacionais para o Ensino Fundamental de 9 anos.</p>
+  </div>
+  <div class="topic-nav">
+    <button type="button" class="nav-btn" onclick="showTopic('P5')">← P05</button>
+    <button type="button" class="nav-btn" onclick="showTopic('P7')">P07 →</button>
+  </div>
+</section>
+<section id="topic-P7" class="topic-section" style="display:none">
+  <div class="topic-header">
+    <div class="topic-badge">P07</div>
+    <h1 class="topic-title">Projeto Político-Pedagógico e Currículo</h1>
+  </div>
+  <div class="topic-body">
+    <h2>P.7 PROJETO POLÍTICO-PEDAGÓGICO (PPP) E CURRÍCULO</h2>
+<h3>P.7.1 Projeto Político-Pedagógico</h3>
+<p>O <strong>PPP</strong> (também denominado Proposta Pedagógica) é o documento que expressa a <strong>identidade, a visão e as intenções de uma escola</strong>:</p>
+<ul><li><strong>Político:</strong> porque expressa uma visão de sociedade, de ser humano e de educação — não é neutro</li><li><strong>Pedagógico:</strong> porque define como a escola organizará seu trabalho de ensino-aprendizagem</li></ul>
+<strong>Elementos do PPP:</strong>
+<ul><li>Diagnóstico da realidade escolar</li><li>Missão, visão e valores da escola</li><li>Objetivos educacionais</li><li>Organização curricular</li><li>Organização do trabalho pedagógico</li><li>Mecanismos de avaliação institucional</li><li>Plano de ação</li></ul>
+<strong>Fundamento legal:</strong> Art. 12 e 13 da LDB — a escola tem autonomia para elaborar e executar sua proposta pedagógica; os professores participam da sua elaboração.
+<p><strong>Gestão democrática (Art. 14 da LDB e Art. 206 da CF):</strong> O ensino público será gerido democraticamente — com participação dos profissionais da educação na elaboração do PPP e participação das comunidades escolar e local em conselhos escolares.</p>
+<h3>P.7.2 Currículo</h3>
+<p>O <strong>currículo</strong> é o conjunto de experiências de aprendizagem organizadas pela escola — mais do que uma lista de disciplinas e conteúdos.</p>
+<p><strong>Tipos de currículo:</strong></p>
+<div class="tbl-wrap"><table>
+<tr><th>Tipo</th><th>Descrição</th></tr>
+<tr><td><strong>Formal/oficial</strong></td><td>O prescrito nos documentos oficiais (BNCC, diretrizes)</td></tr>
+<tr><td><strong>Real/vivido</strong></td><td>O que efetivamente ocorre na sala de aula</td></tr>
+<tr><td><strong>Oculto</strong></td><td>O que é ensinado implicitamente pelas relações, normas e cultura escolar — sem aparecer no plano formal</td></tr>
+<tr><td><strong>Nulo</strong></td><td>O que deliberadamente não é ensinado — as ausências significativas</td></tr>
+</table></div>
+<div class="callout callout-gold">⭐ <strong>Para concursos:</strong> O <strong>currículo oculto</strong> é frequentemente cobrado — é o currículo "invisível" que transmite valores, normas e expectativas através das práticas escolares cotidianas (como os alunos são tratados, que comportamentos são valorizados, como o espaço é organizado).</div>
+  </div>
+  <div class="topic-nav">
+    <button type="button" class="nav-btn" onclick="showTopic('P6')">← P06</button>
+    <button type="button" class="nav-btn" onclick="showTopic('P8')">P08 →</button>
+  </div>
+</section>
+<section id="topic-P8" class="topic-section" style="display:none">
+  <div class="topic-header">
+    <div class="topic-badge">P08</div>
+    <h1 class="topic-title">Psicologia da Educação</h1>
+  </div>
+  <div class="topic-body">
+    <h2>P.8 PSICOLOGIA DA EDUCAÇÃO</h2>
+<h3>P.8.1 Aprendizagem Significativa — David Ausubel</h3>
+<p><strong>David Ausubel (1918–2008):</strong> Psicólogo americano que desenvolveu a teoria da <strong>aprendizagem significativa</strong> — diferente da aprendizagem mecânica (memorização sem compreensão):</p>
+<ul><li><strong>Aprendizagem significativa:</strong> nova informação se ancora em conhecimentos prévios relevantes (<em>subsunçores</em>) — gerando compreensão, retenção e transferência</li><li><strong>Aprendizagem mecânica:</strong> nova informação é memorizada sem conexão com conhecimento prévio — pouco retenida e mal transferida</li></ul>
+<strong>Implicação pedagógica:</strong> O professor deve identificar os <strong>conhecimentos prévios</strong> dos alunos antes de apresentar novo conteúdo — e criar "pontes" (organizadores prévios) entre o que o aluno já sabe e o que vai aprender.
+<div class="callout callout-warn">⚠️ <strong>Atenção:</strong> Não confundir com a "aprendizagem significativa" de Rogers (que tem sentido diferente — experiencial e pessoal).</div>
+<h3>P.8.2 Motivação e Aprendizagem</h3>
+<p>A motivação para aprender tem dimensões intrínsecas e extrínsecas:</p>
+<div class="tbl-wrap"><table>
+<tr><th>Motivação</th><th>Origem</th><th>Sustentabilidade</th></tr>
+<tr><td><strong>Intrínseca</strong></td><td>Do próprio interesse e satisfação com a atividade</td><td>Alta — mais duradoura</td></tr>
+<tr><td><strong>Extrínseca</strong></td><td>De recompensas externas (notas, elogios, prêmios)</td><td>Baixa — dependente do reforço externo</td></tr>
+</table></div>
+<p><strong>Mentalidade de crescimento</strong> (Dweck — já abordada): o professor que enfatiza o processo de aprender (em vez do produto/nota) desenvolve motivação intrínseca.</p>
+<h3>P.8.3 Estilos de Aprendizagem</h3>
+<p>Embora o conceito de "estilos de aprendizagem" (visual, auditivo, cinestésico — VAK) seja popular, <strong>sua base empírica é questionada</strong> pela psicologia educacional contemporânea. O que a pesquisa sugere: a diversificação de estratégias de ensino beneficia todos os alunos — não porque "casamos" estilo com método, mas porque a variação mantém o engajamento e alcança diferentes pontos de entrada no conteúdo.</p>
+  </div>
+  <div class="topic-nav">
+    <button type="button" class="nav-btn" onclick="showTopic('P7')">← P07</button>
+    <button type="button" class="nav-btn" onclick="showTopic('P9')">P09 →</button>
+  </div>
+</section>
+<section id="topic-P9" class="topic-section" style="display:none">
+  <div class="topic-header">
+    <div class="topic-badge">P09</div>
+    <h1 class="topic-title">TICs na Educação</h1>
+  </div>
+  <div class="topic-body">
+    <h2>P.9 TECNOLOGIAS DA INFORMAÇÃO E COMUNICAÇÃO (TICs) NA EDUCAÇÃO</h2>
+<h3>P.9.1 Fundamentos</h3>
+<p>As <strong>TICs</strong> — e, mais recentemente, as <strong>TDICs</strong> (Tecnologias Digitais da Informação e Comunicação) — transformaram o contexto educacional. A <strong>Lei 14.533/2023 (PNED)</strong> reconheceu essa transformação ao institucionalizar a Política Nacional de Educação Digital.</p>
+<h3>P.9.2 Competências Digitais dos Professores</h3>
+<p>A BNCC e o <strong>Currículo de Referência em Tecnologia e Computação</strong> identificam dimensões da competência digital docente:</p>
+<ul><li><strong>Informação e letramento digital:</strong> buscar, avaliar e gerenciar informação digital</li><li><strong>Comunicação e colaboração:</strong> usar ferramentas digitais para comunicação e colaboração</li><li><strong>Criação de conteúdo digital:</strong> produzir e editar conteúdo digital</li><li><strong>Segurança:</strong> proteger dados pessoais e privacidade digital</li><li><strong>Resolução de problemas:</strong> usar ferramentas digitais para resolver problemas</li></ul>
+<h3>P.9.3 TICs e o Ensino de Filosofia</h3>
+<p>Já abordado no Tópico 13 da Disciplina 1: as TICs representam desafio (atenção fragmentada, pós-verdade) e oportunidade (acesso a textos, comunidades de investigação online, questões filosóficas sobre IA e privacidade).</p>
+<h3>P.9.4 Pensamento Computacional</h3>
+<p>A BNCC incorporou o <strong>Pensamento Computacional</strong> como competência transversal — não apenas para a área de Ciências da Natureza/Tecnologia. Envolve:
+<ul><li><strong>Decomposição:</strong> dividir problemas complexos em partes menores</li><li><strong>Reconhecimento de padrões:</strong> identificar regularidades</li><li><strong>Abstração:</strong> focar no essencial, ignorar o irrelevante</li><li><strong>Algoritmos:</strong> descrever passos de solução de um problema</li></ul></p>
+  </div>
+  <div class="topic-nav">
+    <button type="button" class="nav-btn" onclick="showTopic('P8')">← P08</button>
+    <button type="button" class="nav-btn" onclick="showTopic('P10')">P10 →</button>
+  </div>
+</section>
+<section id="topic-P10" class="topic-section" style="display:none">
+  <div class="topic-header">
+    <div class="topic-badge">P10</div>
+    <h1 class="topic-title">Síntese, Mapas e Tabelas</h1>
+  </div>
+  <div class="topic-body">
+    <h2>P.10 SÍNTESE COMPARATIVA DOS PRINCIPAIS TEÓRICOS</h2>
+<div class="tbl-wrap"><table>
+<tr><th>Teórico</th><th>Corrente</th><th>Conceito-chave</th><th>Implicação pedagógica</th></tr>
+<tr><td><strong>Pavlov</strong></td><td>Behaviorismo</td><td>Condicionamento clássico</td><td>Associação estímulo-resposta</td></tr>
+<tr><td><strong>Skinner</strong></td><td>Behaviorismo</td><td>Condicionamento operante</td><td>Reforço positivo, instrução programada</td></tr>
+<tr><td><strong>Binet</strong></td><td>Psicometria</td><td>Testes de inteligência / Idade mental</td><td>Diagnóstico e diferenciação</td></tr>
+<tr><td><strong>Piaget</strong></td><td>Construtivismo</td><td>Estágios do desenvolvimento</td><td>Respeitar o nível cognitivo do aluno</td></tr>
+<tr><td><strong>Vygotsky</strong></td><td>Sócio-histórico</td><td>ZDP / Mediação</td><td>Ensino na ZDP, andaime</td></tr>
+<tr><td><strong>Wallon</strong></td><td>Psicogênese</td><td>Emoção e cognição integradas</td><td>Dimensão afetiva da aprendizagem</td></tr>
+<tr><td><strong>Rogers</strong></td><td>Humanismo</td><td>Aprendizagem significativa (experiencial)</td><td>Facilitação, relação professor-aluno</td></tr>
+<tr><td><strong>Maslow</strong></td><td>Humanismo</td><td>Hierarquia de necessidades</td><td>Necessidades básicas como pré-condição</td></tr>
+<tr><td><strong>Durkheim</strong></td><td>Sociologia</td><td>Educação como socialização</td><td>Função social da escola</td></tr>
+<tr><td><strong>Freire</strong></td><td>Pedagogia crítica</td><td>Conscientização / Diálogo</td><td>Educação problematizadora</td></tr>
+<tr><td><strong>Montessori</strong></td><td>Escola ativa</td><td>Ambiente preparado / Auto-educação</td><td>Liberdade com responsabilidade</td></tr>
+<tr><td><strong>Freinet</strong></td><td>Escola ativa</td><td>Pedagogia do trabalho</td><td>Expressão livre, cooperação</td></tr>
+<tr><td><strong>Dewey</strong></td><td>Pragmatismo</td><td>Aprendizagem pela experiência</td><td><em>Learning by doing</em></td></tr>
+<tr><td><strong>Bruner</strong></td><td>Cognitivismo</td><td>Aprendizagem por descoberta / Currículo espiral</td><td>Descoberta ativa, retorno em espiral</td></tr>
+<tr><td><strong>Gardner</strong></td><td>Cognitivismo</td><td>Inteligências múltiplas</td><td>Diversificar estratégias e avaliação</td></tr>
+<tr><td><strong>Dweck</strong></td><td>Psicologia positiva</td><td>Mentalidades (fixada × crescimento)</td><td>Elogiar o esforço, não o talento</td></tr>
+</table></div>
+<h2>MAPA MENTAL — CONHECIMENTOS PEDAGÓGICOS</h2>
+<pre class="code">CONHECIMENTOS PEDAGÓGICOS
+│
+├── TEORIAS E PENSADORES
+│   ├── Behaviorismo: Pavlov (condicionamento clássico), Skinner (operante), Binet (testes)
+│   ├── Construtivismo: Piaget (estágios), Vygotsky (ZDP), Wallon (emoção + cognição)
+│   ├── Humanismo: Rogers (facilitação), Maslow (hierarquia de necessidades)
+│   ├── Sociologia: Durkheim (socialização), Freire (conscientização)
+│   ├── Escola Nova/Ativa: Montessori, Freinet, Dewey
+│   └── Cognitivismo: Bruner (descoberta/espiral), Gardner (inteligências múltiplas), Dweck (mentalidades)
+│
+├── TENDÊNCIAS PEDAGÓGICAS (Libâneo)
+│   ├── Liberais: Tradicional / Renovada / Não-diretiva / Tecnicista
+│   └── Progressistas: Libertadora (Freire) / Libertária / Crítico-social (Saviani)
+│
+├── DIDÁTICA E PLANEJAMENTO
+│   ├── Elementos do ensino: Objetivos ↔ Conteúdos ↔ Métodos ↔ Avaliação
+│   └── Níveis: PPP / Plano Anual / Plano de Curso / Plano de Aula
+│
+├── AVALIAÇÃO
+│   ├── Diagnóstica (antes) / Formativa (durante) / Somativa (depois)
+│   └── Qualitativa × Quantitativa
+│
+├── LEGISLAÇÃO
+│   ├── CF/88: Arts. 205-214 (educação como direito, fins, gratuidade)
+│   ├── LDB 9.394/1996: estrutura da educação, modalidades
+│   ├── BNCC (2017): 10 competências gerais, organização por áreas
+│   ├── ECA 8.069/1990: proteção integral, direito à educação
+│   ├── PNE 13.005/2014: 20 metas decenais
+│   ├── Lei 14.640/2023: Escola em Tempo Integral
+│   ├── Lei 14.533/2023: Política Nacional de Educação Digital
+│   └── Lei 14.180/2021: Política Nacional de Leitura e Escrita
+│
+├── PPP E CURRÍCULO
+│   ├── PPP: político + pedagógico / gestão democrática / autonomia escolar
+│   └── Currículo: formal / real / oculto / nulo
+│
+└── TICs
+    ├── Lei 14.533/2023 (PNED): 4 eixos
+    └── Pensamento computacional: decomposição, padrões, abstração, algoritmo
+</pre>
+<h2>TABELA — PIAGET × VYGOTSKY</h2>
+<div class="tbl-wrap"><table>
+<tr><th>Aspecto</th><th>Piaget</th><th>Vygotsky</th></tr>
+<tr><td><strong>Base teórica</strong></td><td>Biologia, epistemologia</td><td>Sócio-história, marxismo</td></tr>
+<tr><td><strong>Motor do desenvolvimento</strong></td><td>Maturação biológica + ação sobre o mundo</td><td>Interação social e cultural</td></tr>
+<tr><td><strong>Relação desenvolvimento/aprendizagem</strong></td><td>Desenvolvimento precede a aprendizagem</td><td>Aprendizagem puxa o desenvolvimento</td></tr>
+<tr><td><strong>Papel do outro</strong></td><td>Secundário — o sujeito constrói sozinho</td><td>Central — o outro é mediador fundamental</td></tr>
+<tr><td><strong>Conceito central</strong></td><td>Estágios / equilibração</td><td>ZDP / mediação / internalização</td></tr>
+<tr><td><strong>Implicação para o ensino</strong></td><td>Respeitar o estágio atual</td><td>Atuar na ZDP — entre o real e o potencial</td></tr>
+</table></div>
+<h2>TABELA — AVALIAÇÃO: TIPOS E FUNÇÕES</h2>
+<div class="tbl-wrap"><table>
+<tr><th>Tipo</th><th>Momento</th><th>Função</th><th>Instrumentos típicos</th></tr>
+<tr><td><strong>Diagnóstica</strong></td><td>Início do processo</td><td>Identificar ponto de partida</td><td>Sondagem, questionário, conversa</td></tr>
+<tr><td><strong>Formativa</strong></td><td>Durante o processo</td><td>Regular e orientar a aprendizagem</td><td>Observação, feedback, autoavaliação</td></tr>
+<tr><td><strong>Somativa</strong></td><td>Final do processo</td><td>Verificar nível atingido, classificar</td><td>Prova, trabalho final, portfólio</td></tr>
+</table></div>
+<hr>
+  </div>
+  <div class="topic-nav">
+    <button type="button" class="nav-btn" onclick="showTopic('P9')">← P09</button>
+    
+  </div>
+</section>
+
+</main>
+
+<script>
+function goToPortal(){
+  window.location.href = "index.html";
+}
+function showHome(){
+  document.getElementById('home-section').style.display='block';
+  document.querySelectorAll('.topic-section').forEach(function(s){ s.style.display='none'; });
+  document.querySelectorAll('.sb-topic').forEach(function(l){ l.classList.remove('active'); });
+  document.getElementById('sb-home-btn').classList.add('active');
+  if (location.hash) {
+    history.replaceState(null, '', location.pathname + location.search);
+  }
+  window.scrollTo(0,0);
+}
+function showTopic(k){
+  document.getElementById('home-section').style.display='none';
+  document.querySelectorAll('.topic-section').forEach(function(s){ s.style.display='none'; });
+  document.querySelectorAll('.sb-topic').forEach(function(l){ l.classList.remove('active'); });
+  document.getElementById('sb-home-btn').classList.remove('active');
+
+  var sec = document.getElementById('topic-' + k);
+  if (sec) sec.style.display = 'block';
+
+  var link = document.querySelector('.sb-topic[href="#topic-' + k + '"]');
+  if (link) link.classList.add('active');
+
+  if (location.hash !== '#topic-' + k) {
+    history.replaceState(null, '', '#topic-' + k);
+  }
+  window.scrollTo(0,0);
+}
+(function(){
+  var h = location.hash.replace('#','');
+  if (h && h.startsWith('topic-')) {
+    showTopic(h.replace('topic-',''));
+  } else {
+    showHome();
+  }
+})();
+</script>
+</body>
+</html>

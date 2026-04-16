@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>D3 — Educação Inclusiva | Apostila Concurso SJR 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=JetBrains+Mono:wght@400;500&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b0d10;--bg2:#111318;--bg3:#181c22;--bg4:#1e232b;
+  --border:#252b35;--border2:#2d3443;
+  --text:#cdd5e0;--text2:#8a96a8;--text3:#4d5a6e;
+  --gold:#c8a44a;--gold2:#e2c070;--gold3:#f0d490;
+  --blue:#3d8fd1;--blue2:#5aaee8;
+  --green:#3d9e72;--green2:#5ec090;
+  --red:#c05050;--red2:#e07070;
+  --sidebar:260px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:'Lato',sans-serif;font-size:15px;line-height:1.75;display:flex;min-height:100vh}
+
+/* SIDEBAR */
+#sidebar{
+  position:fixed;top:0;left:0;width:var(--sidebar);height:100vh;
+  background:var(--bg2);border-right:1px solid var(--border);
+  overflow-y:auto;z-index:100;display:flex;flex-direction:column;
+}
+.sb-brand{
+  padding:20px 16px 14px;border-bottom:1px solid var(--border);
+  background:linear-gradient(135deg,var(--bg3),var(--bg2));
+}
+.sb-brand-tag{
+  font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--gold);
+  text-transform:uppercase;letter-spacing:2px;margin-bottom:6px;
+}
+.sb-brand h1{
+  font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:700;
+  color:var(--text);line-height:1.2;
+}
+.sb-back{
+  display:block;padding:10px 16px;
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  color:var(--text3);text-decoration:none;
+  border:none;border-bottom:1px solid var(--border);
+  background:none;width:100%;text-align:left;cursor:pointer;
+  transition:color .2s;
+}
+.sb-back:hover{color:var(--gold)}
+.sb-section-label{
+  padding:12px 16px 4px;
+  font-family:'JetBrains Mono',monospace;font-size:10px;
+  font-weight:500;text-transform:uppercase;letter-spacing:1.5px;color:var(--text3);
+}
+.sb-home{
+  display:flex;align-items:center;gap:8px;
+  padding:9px 16px;color:var(--text2);text-decoration:none;
+  font-size:13px;border-left:2px solid transparent;
+  transition:all .2s;cursor:pointer;background:none;border-top:none;border-right:none;border-bottom:none;width:100%;text-align:left;
+}
+.sb-home:hover,.sb-home.active{color:var(--gold2);border-left-color:var(--gold);background:rgba(200,164,74,.06)}
+.sb-topic{
+  display:flex;align-items:flex-start;gap:10px;
+  padding:8px 16px;color:var(--text2);text-decoration:none;
+  border-left:2px solid transparent;transition:all .2s;cursor:pointer;
+}
+.sb-topic:hover,.sb-topic.active{color:var(--text);border-left-color:var(--gold);background:rgba(200,164,74,.05)}
+.sb-num{
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  color:var(--gold);min-width:28px;margin-top:1px;
+}
+.sb-label{font-size:12px;line-height:1.4}
+.sb-footer{
+  margin-top:auto;padding:14px 16px;
+  border-top:1px solid var(--border);
+  font-family:'JetBrains Mono',monospace;font-size:10px;
+  color:var(--text3);line-height:1.8;
+}
+
+/* MAIN */
+#main{margin-left:var(--sidebar);flex:1;min-height:100vh}
+
+/* HOME */
+#home-section{padding:40px 48px;max-width:1000px;display:block}
+.home-title{
+  font-family:'Cormorant Garamond',serif;font-size:48px;font-weight:700;
+  color:var(--gold2);line-height:1.1;margin-bottom:6px;
+}
+.home-sub{font-size:16px;color:var(--text2);margin-bottom:8px}
+.home-badge{
+  display:inline-block;padding:4px 12px;
+  background:rgba(200,164,74,.12);border:1px solid rgba(200,164,74,.3);
+  border-radius:4px;font-family:'JetBrains Mono',monospace;
+  font-size:11px;color:var(--gold);margin-bottom:32px;
+}
+.home-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin-top:8px}
+.home-card{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:8px;padding:20px;cursor:pointer;
+  transition:all .2s;
+}
+.home-card:hover{border-color:var(--gold);transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.3)}
+.hc-num{
+  font-family:'JetBrains Mono',monospace;font-size:12px;
+  color:var(--gold);margin-bottom:8px;
+}
+.hc-title{
+  font-family:'Cormorant Garamond',serif;font-size:15px;
+  font-weight:600;color:var(--text);line-height:1.4;margin-bottom:14px;
+}
+.hc-actions{display:flex;gap:8px}
+.hc-btn-theory,.hc-btn-quiz{
+  flex:1;padding:6px 10px;border-radius:5px;
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  cursor:pointer;text-decoration:none;text-align:center;
+  transition:all .15s;border:none;
+}
+.hc-btn-theory{background:var(--bg3);color:var(--text2)}
+.hc-btn-theory:hover{background:var(--bg4);color:var(--text)}
+.hc-btn-quiz{background:rgba(200,164,74,.15);color:var(--gold)}
+.hc-btn-quiz:hover{background:rgba(200,164,74,.25)}
+
+/* TOPIC SECTION */
+.topic-section{padding:40px 52px;max-width:900px;animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.topic-header{
+  display:flex;flex-direction:column;gap:10px;
+  margin-bottom:36px;padding-bottom:24px;
+  border-bottom:1px solid var(--border2);
+}
+.topic-badge{
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  color:var(--gold);text-transform:uppercase;letter-spacing:2px;
+}
+.topic-title{
+  font-family:'Cormorant Garamond',serif;font-size:36px;
+  font-weight:700;color:var(--gold2);line-height:1.15;
+}
+.quiz-link-btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:10px 20px;background:rgba(200,164,74,.12);
+  border:1px solid rgba(200,164,74,.35);border-radius:6px;
+  font-family:'JetBrains Mono',monospace;font-size:12px;
+  color:var(--gold);text-decoration:none;
+  transition:all .2s;width:fit-content;
+}
+.quiz-link-btn:hover{background:rgba(200,164,74,.22);color:var(--gold3)}
+
+/* TOPIC BODY CONTENT */
+.topic-body h2{
+  font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700;
+  color:var(--gold2);margin:36px 0 14px;padding-bottom:8px;
+  border-bottom:1px solid var(--border2);
+}
+.topic-body h3{
+  font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;
+  color:var(--text);margin:24px 0 10px;
+}
+.topic-body h4{
+  font-family:'JetBrains Mono',monospace;font-size:12px;
+  color:var(--gold);text-transform:uppercase;letter-spacing:1px;
+  margin:18px 0 8px;
+}
+.topic-body p{margin-bottom:14px;color:var(--text);line-height:1.8}
+.topic-body strong{color:var(--gold2)}
+.topic-body em{color:var(--text2);font-style:italic}
+.topic-body ul{
+  margin:12px 0 16px 24px;
+  display:flex;flex-direction:column;gap:6px;
+}
+.topic-body ul li{color:var(--text)}
+.topic-body hr{border:none;border-top:1px solid var(--border);margin:28px 0}
+.callout-gold,.callout-warn{
+  padding:14px 18px;border-radius:0 6px 6px 0;
+  font-size:14px;margin:18px 0;line-height:1.7;
+}
+.callout-gold{
+  border-left:3px solid var(--gold);
+  background:rgba(200,164,74,.07);color:var(--text);
+}
+.callout-warn{
+  border-left:3px solid var(--red2);
+  background:rgba(192,80,80,.07);color:var(--text);
+}
+.tbl-wrap{overflow-x:auto;margin:16px 0 22px;border-radius:6px;border:1px solid var(--border)}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th{
+  background:var(--bg3);color:var(--gold);
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  text-transform:uppercase;letter-spacing:.7px;
+  padding:10px 14px;text-align:left;border-bottom:1px solid var(--border2);
+}
+td{
+  padding:10px 14px;border-bottom:1px solid var(--border);
+  color:var(--text);vertical-align:top;
+}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(255,255,255,.02)}
+pre.code{
+  background:var(--bg3);border:1px solid var(--border);
+  border-radius:6px;padding:18px;
+  font-family:'JetBrains Mono',monospace;font-size:12px;
+  color:var(--text2);white-space:pre-wrap;line-height:1.7;
+  overflow-x:auto;margin:16px 0;
+}
+
+.topic-body blockquote{
+  margin:16px 0;padding:12px 16px;
+  border-left:3px solid var(--gold);
+  background:rgba(200,164,74,.05);
+  color:var(--text2);font-style:italic;
+}
+
+/* TOPIC NAV */
+.topic-nav{
+  display:flex;gap:12px;align-items:center;
+  margin-top:48px;padding-top:28px;
+  border-top:1px solid var(--border);
+  flex-wrap:wrap;
+}
+.nav-btn{
+  padding:10px 18px;border-radius:6px;
+  background:var(--bg3);border:1px solid var(--border);
+  color:var(--text2);font-family:'JetBrains Mono',monospace;
+  font-size:12px;cursor:pointer;transition:all .2s;
+}
+.nav-btn:hover{border-color:var(--gold);color:var(--gold)}
+.quiz-link-btn-lg{
+  padding:12px 24px;background:rgba(200,164,74,.14);
+  border:1px solid rgba(200,164,74,.4);border-radius:6px;
+  font-family:'JetBrains Mono',monospace;font-size:13px;
+  color:var(--gold);text-decoration:none;transition:all .2s;
+  margin:0 auto;
+}
+.quiz-link-btn-lg:hover{background:rgba(200,164,74,.24)}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+
+
+@media (max-width: 980px){
+  body{display:block}
+  #sidebar{position:static;width:100%;height:auto;max-height:none;border-right:none;border-bottom:1px solid var(--border)}
+  #main{margin-left:0}
+  #home-section,.topic-section{max-width:none;padding:28px 24px}
+  .home-grid{grid-template-columns:repeat(auto-fill,minmax(240px,1fr))}
+}
+
+@media (max-width: 640px){
+  .sb-brand h1{font-size:16px}
+  .home-title{font-size:36px}
+  .home-sub{font-size:15px}
+  #home-section,.topic-section{padding:22px 16px}
+  .topic-title{font-size:28px}
+  .topic-body h2{font-size:22px}
+  .topic-nav{gap:10px}
+  .quiz-link-btn-lg,.nav-btn,.quiz-link-btn{width:100%;justify-content:center;text-align:center}
+  .hc-actions{flex-direction:column}
+}
+</style>
+</head>
+<body>
+
+<nav id="sidebar">
+  <div class="sb-brand">
+    <div class="sb-brand-tag">D3 — Educação Inclusiva</div>
+    <h1>Educação Inclusiva</h1>
+  </div>
+  <button type="button" class="sb-back" onclick="goToPortal()">← Apostila completa</button>
+  <div class="sb-section-label">Navegação</div>
+  <button type="button" class="sb-home active" id="sb-home-btn" onclick="showHome()">🏠 Visão Geral</button>
+  <div class="sb-section-label">Tópicos</div>
+  
+      <a class="sb-topic" href="#topic-EI1" onclick="showTopic('EI1')">
+        <span class="sb-num">EI01</span>
+        <span class="sb-label">Contexto: Da Exclusão à Inclusão</span>
+      </a>
+      <a class="sb-topic" href="#topic-EI2" onclick="showTopic('EI2')">
+        <span class="sb-num">EI02</span>
+        <span class="sb-label">Fundamentos Legais da Educação Inclusiva</span>
+      </a>
+      <a class="sb-topic" href="#topic-EI3" onclick="showTopic('EI3')">
+        <span class="sb-num">EI03</span>
+        <span class="sb-label">Conceitos Centrais da Educação Inclusiva</span>
+      </a>
+      <a class="sb-topic" href="#topic-EI4" onclick="showTopic('EI4')">
+        <span class="sb-num">EI04</span>
+        <span class="sb-label">Especificidades por Tipo de Deficiência</span>
+      </a>
+      <a class="sb-topic" href="#topic-EI5" onclick="showTopic('EI5')">
+        <span class="sb-num">EI05</span>
+        <span class="sb-label">O Professor Diante da Diversidade</span>
+      </a>
+      <a class="sb-topic" href="#topic-EI6" onclick="showTopic('EI6')">
+        <span class="sb-num">EI06</span>
+        <span class="sb-label">Síntese, Mapas e Tabelas Legislativas</span>
+      </a>
+  <div class="sb-footer">
+    Prof. Filosofia EF Anos Finais<br>
+    São José de Ribamar/MA<br>
+    Edital 001/2026 · Banca IJK<br>
+    Prova: 12/07/2026
+  </div>
+</nav>
+
+<main id="main">
+
+<section id="home-section">
+  <p class="home-badge">D3 — Educação Inclusiva · 5 questões · 10 pontos</p>
+  <h1 class="home-title">Educação Inclusiva</h1>
+  <p class="home-sub">6 seções completas · 40 questões · teoria explanativa + simulado interativo</p>
+  <a href="D3_Quiz.html" class="quiz-link-btn">📝 Quiz Geral D3 (40 questões)</a>
+  <div class="home-grid">
+    
+    <div class="home-card" onclick="showTopic('EI1')">
+      <div class="hc-num">EI01</div>
+      <div class="hc-title">Contexto: Da Exclusão à Inclusão</div>
+      <div class="hc-actions">
+        <button type="button" class="hc-btn-theory" onclick="showTopic('EI1');event.stopPropagation()">📖 Teoria</button>
+      </div>
+    </div>
+    <div class="home-card" onclick="showTopic('EI2')">
+      <div class="hc-num">EI02</div>
+      <div class="hc-title">Fundamentos Legais da Educação Inclusiva</div>
+      <div class="hc-actions">
+        <button type="button" class="hc-btn-theory" onclick="showTopic('EI2');event.stopPropagation()">📖 Teoria</button>
+      </div>
+    </div>
+    <div class="home-card" onclick="showTopic('EI3')">
+      <div class="hc-num">EI03</div>
+      <div class="hc-title">Conceitos Centrais da Educação Inclusiva</div>
+      <div class="hc-actions">
+        <button type="button" class="hc-btn-theory" onclick="showTopic('EI3');event.stopPropagation()">📖 Teoria</button>
+      </div>
+    </div>
+    <div class="home-card" onclick="showTopic('EI4')">
+      <div class="hc-num">EI04</div>
+      <div class="hc-title">Especificidades por Tipo de Deficiência</div>
+      <div class="hc-actions">
+        <button type="button" class="hc-btn-theory" onclick="showTopic('EI4');event.stopPropagation()">📖 Teoria</button>
+      </div>
+    </div>
+    <div class="home-card" onclick="showTopic('EI5')">
+      <div class="hc-num">EI05</div>
+      <div class="hc-title">O Professor Diante da Diversidade</div>
+      <div class="hc-actions">
+        <button type="button" class="hc-btn-theory" onclick="showTopic('EI5');event.stopPropagation()">📖 Teoria</button>
+      </div>
+    </div>
+    <div class="home-card" onclick="showTopic('EI6')">
+      <div class="hc-num">EI06</div>
+      <div class="hc-title">Síntese, Mapas e Tabelas Legislativas</div>
+      <div class="hc-actions">
+        <button type="button" class="hc-btn-theory" onclick="showTopic('EI6');event.stopPropagation()">📖 Teoria</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section id="topic-EI1" class="topic-section" style="display:none">
+  <div class="topic-header">
+    <div class="topic-badge">EI01</div>
+    <h1 class="topic-title">Contexto: Da Exclusão à Inclusão</h1>
+  </div>
+  <div class="topic-body">
+    <h2>EI.1 CONTEXTO: DA EXCLUSÃO À INCLUSÃO</h2>
+<p>A história da educação das pessoas com deficiência é uma história de progressiva ampliação de direitos — do modelo de exclusão (pessoas com deficiência eram segregadas da sociedade) ao modelo de inclusão (pessoas com deficiência têm direito de aprender no mesmo ambiente que todos os demais).</p>
+<div class="tbl-wrap"><table>
+<tr><th>Paradigma</th><th>Período</th><th>Características</th></tr>
+<tr><td><strong>Exclusão</strong></td><td>Até séc. XIX</td><td>Pessoas com deficiência excluídas da escola e da sociedade</td></tr>
+<tr><td><strong>Segregação/Institucionalização</strong></td><td>Séc. XIX–XX</td><td>Escolas especiais separadas — o "diferente" aprende à parte</td></tr>
+<tr><td><strong>Integração</strong></td><td>Anos 1970–1990</td><td>A pessoa com deficiência se adapta à escola regular — que não precisa mudar</td></tr>
+<tr><td><strong>Inclusão</strong></td><td>Anos 1990–hoje</td><td>A escola se adapta para receber todos — a diferença é enriquecimento, não problema</td></tr>
+</table></div>
+  </div>
+  <div class="topic-nav">
+    <button type="button" class="nav-btn" onclick="showTopic('EI2')">EI02 →</button>
+  </div>
+</section>
+<section id="topic-EI2" class="topic-section" style="display:none">
+  <div class="topic-header">
+    <div class="topic-badge">EI02</div>
+    <h1 class="topic-title">Fundamentos Legais da Educação Inclusiva</h1>
+  </div>
+  <div class="topic-body">
+    <h2>EI.2 FUNDAMENTOS LEGAIS DA EDUCAÇÃO INCLUSIVA NO BRASIL</h2>
+<h3>EI.2.1 Constituição Federal de 1988</h3>
+<p><strong>Art. 205:</strong> Educação como direito de todos — sem exceção.</p>
+<p><strong>Art. 206, I:</strong> Igualdade de condições para acesso e permanência na escola.</p>
+<p><strong>Art. 208, III:</strong> O Estado deve garantir "atendimento educacional especializado aos portadores de deficiência, preferencialmente na rede regular de ensino."</p>
+<div class="callout callout-gold">⭐ <strong>Para concursos:</strong> O termo "preferencialmente na rede regular" do Art. 208, III é a base constitucional da inclusão — o AEE deve ser oferecido preferencialmente no ensino regular, não em substituição a ele.</div>
+<h3>EI.2.2 LDB 9.394/1996 — Capítulo V: Educação Especial</h3>
+<p><strong>Art. 58:</strong> A Educação Especial é a modalidade de educação escolar oferecida preferencialmente na rede regular de ensino para educandos com deficiência, transtornos globais do desenvolvimento e altas habilidades ou superdotação.</p>
+<p><strong>Art. 59:</strong> Os sistemas de ensino assegurarão aos educandos com deficiência, transtornos globais do desenvolvimento e altas habilidades ou superdotação:
+<ul><li>I — Currículos, métodos, técnicas, recursos educativos e organização específicos</li><li>II — Terminalidade específica para quem não possa atingir o nível exigido para conclusão do EF</li><li>III — Professores com especialização adequada em nível médio ou superior para atendimento especializado e professores do ensino regular capacitados para integração</li><li>IV — Educação especial para o trabalho</li><li>V — Acesso igualitário aos benefícios dos programas sociais</li></ul>
+<strong>Art. 60:</strong> Os órgãos normativos dos sistemas de ensino estabelecerão critérios de caracterização das instituições privadas sem fins lucrativos especializadas.</p>
+<h3>EI.2.3 Declaração de Salamanca (1994)</h3>
+<p>Documento internacional produzido na Conferência Mundial sobre Necessidades Educativas Especiais (UNESCO, Salamanca, Espanha, 1994) — marco fundamental da educação inclusiva mundial.</p>
+<p><strong>Princípio central:</strong> "As escolas deveriam acomodar todas as crianças independentemente de suas condições físicas, intelectuais, sociais, emocionais, linguísticas ou outras."</p>
+<p><strong>Escola inclusiva:</strong> Aquela que reconhece e responde às diversas necessidades de seus alunos — adaptando estilos e ritmos diferentes de aprendizagem.</p>
+<p><strong>Influência no Brasil:</strong> A Declaração de Salamanca influenciou diretamente a LDB 1996 e todas as políticas subsequentes de educação especial na perspectiva inclusiva.</p>
+<h3>EI.2.4 Decreto 3.298/1999 — Regulamenta a Lei 7.853/1989</h3>
+<p>Regulamenta a política de integração da pessoa portadora de deficiência. Define os conceitos de:
+<ul><li><strong>Deficiência:</strong> toda perda ou anormalidade de estrutura ou função</li><li><strong>Deficiência permanente:</strong> a que se estabilizou e não é esperada mudança</li><li><strong>Incapacidade:</strong> restrição ou falta de habilidade para atividades consideradas normais</li></ul>
+<h3>EI.2.5 Resolução CNE/CEB 2/2001 — Diretrizes para a Educação Especial</h3></p>
+<p>Institui as Diretrizes Nacionais para a Educação Especial na Educação Básica.</p>
+<p><strong>Conceitos centrais:</strong>
+<ul><li>Os sistemas de ensino devem <strong>matricular todos os alunos</strong> — cabendo às escolas organizar-se para o atendimento dos educandos com necessidades educacionais especiais</li><li><strong>Necessidades educacionais especiais:</strong> dificuldades acentuadas de aprendizagem; limitações comunicativas; altas habilidades/superdotação</li><li>As escolas devem ter professores <strong>capacitados</strong> (com formação em Educação Especial) e <strong>especializados</strong> (com pós-graduação ou formação específica)</li></ul>
+<h3>EI.2.6 Política Nacional de Educação Especial na Perspectiva da Educação Inclusiva (2008)</h3></p>
+<p>Documento do MEC que marca a transição definitiva do modelo de integração para o modelo de inclusão no Brasil.</p>
+<p><strong>Mudança central:</strong> O AEE (Atendimento Educacional Especializado) passa a ser <strong>complementar</strong> ou <strong>suplementar</strong> ao ensino regular — não substitutivo. O aluno com deficiência deve estar matriculado na sala comum e receber AEE no contraturno.</p>
+<p><strong>Público-alvo da Educação Especial:</strong>
+<ul><li>Pessoas com <strong>deficiência</strong> (física, intelectual, visual, auditiva, múltipla)</li><li>Pessoas com <strong>transtornos globais do desenvolvimento</strong> (TEA — Transtorno do Espectro Autista e outros)</li><li>Pessoas com <strong>altas habilidades ou superdotação</strong></li></ul>
+<h3>EI.2.7 Decreto 6.571/2008 → Decreto 7.611/2011 — O AEE</h3></p>
+<p>O <strong>Decreto 7.611/2011</strong> dispõe sobre a Educação Especial e o Atendimento Educacional Especializado.</p>
+<p><strong>Art. 2º — Objetivos do AEE:</strong>
+<ul><li>I: Prover condições de acesso, participação e aprendizagem no ensino regular e garantir serviços de apoio especializados</li><li>II: Garantir a transversalidade das ações da Educação Especial no ensino regular</li><li>III: Fomentar o desenvolvimento de recursos didáticos e pedagógicos</li><li>IV: Assegurar condições para a continuidade de estudos nos demais níveis, etapas e modalidades de ensino</li></ul>
+<strong>Art. 3º — O AEE deve ser realizado:</strong>
+<ul><li>Prioritariamente na <strong>Sala de Recursos Multifuncionais</strong> (SRM) da própria escola ou em escola de referência</li><li>No <strong>contraturno</strong> ao da escolarização regular — é complementar, não substitutivo</li><li>Pode ser realizado também em Centros de AEE ou instituições conveniadas</li></ul>
+<h3>EI.2.8 Lei 12.764/2012 — Lei do Autismo (Berenice Piana)</h3></p>
+<p>Institui a <strong>Política Nacional de Proteção dos Direitos da Pessoa com Transtorno do Espectro Autista (TEA)</strong>.</p>
+<p><strong>Definição:</strong> O TEA é uma síndrome que afeta o neurodesenvolvimento, com comprometimentos nas áreas de comunicação e interação social e padrões restritos e repetitivos de comportamento.</p>
+<p><strong>Direitos garantidos:</strong>
+<ul><li>Diagnóstico precoce</li><li>Atendimento multiprofissional</li><li>Nutrição adequada e terapia nutricional</li><li>Medicamentos</li><li>Informação à família</li><li>Proteção contra abusos e exploração</li></ul>
+<strong>Educação:</strong> A pessoa com TEA é considerada pessoa com deficiência para todos os efeitos legais — tendo direito a AEE, sala comum e, se necessário, profissional de apoio escolar.</p>
+<div class="callout callout-gold">⭐ <strong>Para concursos:</strong> A Lei 12.764/2012 é altamente cobrada. O diagnóstico de TEA não exclui o aluno da sala comum — ele tem direito à educação inclusiva.</div>
+<h3>EI.2.9 Decreto 5.626/2005 — Libras</h3>
+<p>Regulamenta a <strong>Lei 10.436/2002</strong> (que reconheceu a Língua Brasileira de Sinais — Libras — como língua oficial dos surdos no Brasil).</p>
+<p><strong>Pontos centrais para concursos:</strong>
+<ul><li>A Libras é o meio legal de comunicação da comunidade surda brasileira</li><li>As escolas devem oferecer <strong>intérprete de Libras</strong> para alunos surdos na sala comum</li><li>A formação de professores deve incluir Libras como disciplina curricular obrigatória nas licenciaturas e fonoaudiologia</li><li>A <strong>educação bilíngue</strong> para surdos: Libras como primeira língua; português escrito como segunda língua</li></ul>
+<h3>EI.2.10 Lei 13.146/2015 — Lei Brasileira de Inclusão (LBI / Estatuto da Pessoa com Deficiência)</h3></p>
+<p>A LBI é o marco mais recente e mais abrangente da legislação brasileira sobre direitos das pessoas com deficiência — baseada na <strong>Convenção sobre os Direitos das Pessoas com Deficiência da ONU</strong> (ratificada pelo Brasil em 2008, com força de emenda constitucional).</p>
+<p><strong>Modelo social de deficiência:</strong> A deficiência não é uma característica do indivíduo — é o resultado da interação entre a pessoa com impedimento e as <strong>barreiras</strong> (físicas, atitudinais, comunicacionais) que a sociedade impõe. Eliminar as barreiras é responsabilidade da sociedade.</p>
+<p><strong>Definição de deficiência (Art. 2º):</strong> "Considera-se pessoa com deficiência aquela que tem impedimento de longo prazo de natureza física, mental, intelectual ou sensorial, o qual, em interação com uma ou mais barreiras, pode obstruir sua participação plena e efetiva na sociedade em igualdade de condições com as demais pessoas."</p>
+<p><strong>Direito à Educação (Arts. 27-30 da LBI):</strong></p>
+<p><strong>Art. 27:</strong> A educação constitui direito da pessoa com deficiência — assegurando sistema educacional inclusivo em todos os níveis e aprendizado ao longo de toda a vida.</p>
+<p><strong>Art. 28 — Incumbências do poder público:</strong></p>
+<div class="tbl-wrap"><table>
+<tr><th>Inciso</th><th>Incumbência</th></tr>
+<tr><td>I</td><td>Garantia de sistema educacional inclusivo em todos os níveis</td></tr>
+<tr><td>II</td><td>Aprimoramento dos sistemas educacionais para o máximo desenvolvimento de talentos</td></tr>
+<tr><td>III</td><td>Projeto pedagógico que institucionalize o atendimento educacional especializado</td></tr>
+<tr><td>IV</td><td>Oferta de educação bilíngue — Libras como primeira língua e português como segunda</td></tr>
+<tr><td>V</td><td>Adoção de medidas individualizadas e coletivas para assegurar acesso, permanência, participação e aprendizagem</td></tr>
+<tr><td>VI</td><td>Pesquisas voltadas para o desenvolvimento de novos métodos e técnicas pedagógicas</td></tr>
+<tr><td>VII</td><td>Planejamento de estudo de caso — quando recomendado</td></tr>
+<tr><td>VIII</td><td>Participação dos estudantes com deficiência e de suas famílias nas decisões que lhes dizem respeito</td></tr>
+<tr><td>IX</td><td>Adoção de medidas de apoio que favoreçam o desenvolvimento dos aspectos linguísticos, culturais, vocacionais e profissionais</td></tr>
+<tr><td>X</td><td>Adoção de práticas pedagógicas inclusivas pelos programas de formação inicial e continuada de professores</td></tr>
+<tr><td>XI</td><td>Formação e disponibilização de professores para o AEE e outros profissionais de apoio</td></tr>
+<tr><td>XII</td><td>Oferta de ensino da Libras, Braille e outros recursos</td></tr>
+<tr><td>XIII</td><td>Acesso à educação superior</td></tr>
+<tr><td>XIV</td><td>Inclusão em conteúdos curriculares de temas relacionados à deficiência</td></tr>
+<tr><td>XV</td><td>Acesso à modalidade de EJA</td></tr>
+<tr><td>XVI</td><td>Ampliação de atendimento nos anos iniciais do EF</td></tr>
+<tr><td>XVII</td><td>Oferta de profissionais de apoio escolar</td></tr>
+<tr><td>XVIII</td><td>Articulação intersetorial para serviços de saúde</td></tr>
+</table></div>
+<p><strong>Art. 30 — Exame vestibular e concursos:</strong> garantia de recursos de acessibilidade.</p>
+<p><strong>Acessibilidade (Arts. 53-63 da LBI):</strong> Define os 7 tipos de barreiras:</p>
+<div class="tbl-wrap"><table>
+<tr><th>Barreira</th><th>Descrição</th></tr>
+<tr><td>Urbanísticas</td><td>No ambiente urbano</td></tr>
+<tr><td>Arquitetônicas</td><td>Nos edifícios públicos e privados</td></tr>
+<tr><td>Nos transportes</td><td>Em meios de transporte</td></tr>
+<tr><td>Nas comunicações e informação</td><td>Em sistemas de comunicação</td></tr>
+<tr><td>Atitudinais</td><td>Decorrentes de atitudes/comportamentos que prejudicam a participação</td></tr>
+<tr><td>Tecnológicas</td><td>Em tecnologias</td></tr>
+</table></div>
+<p><strong>Tecnologia Assistiva (Art. 3º, III da LBI):</strong> "produtos, equipamentos, dispositivos, recursos, metodologias, estratégias, práticas e serviços que objetivem promover a funcionalidade, relacionada à atividade e à participação da pessoa com deficiência."</p>
+<h3>EI.2.11 Decreto 10.502/2020 e Revisão</h3>
+<p>Em 2020, o governo publicou o Decreto 10.502/2020, que criou a Política Nacional de Educação Especial (PNEE) — com uma mudança polêmica: reintroduziu escolas especiais como opção principal em vez de complementar, contrariando o modelo inclusivo.</p>
+<p>O Decreto 10.502/2020 foi <strong>suspenso pelo STF</strong> em 2020 por liminar, reconhecendo que contrariava a Convenção da ONU (incorporada com força de emenda constitucional). O status legal permanece o da Política Nacional de 2008.</p>
+<div class="callout callout-gold">⭐ <strong>Para concursos:</strong> Saber que o Decreto 10.502/2020 foi suspenso pelo STF — mantendo a Política de 2008 como referência vigente.</div>
+  </div>
+  <div class="topic-nav">
+    <button type="button" class="nav-btn" onclick="showTopic('EI1')">← EI01</button>
+    <button type="button" class="nav-btn" onclick="showTopic('EI3')">EI03 →</button>
+  </div>
+</section>
+<section id="topic-EI3" class="topic-section" style="display:none">
+  <div class="topic-header">
+    <div class="topic-badge">EI03</div>
+    <h1 class="topic-title">Conceitos Centrais da Educação Inclusiva</h1>
+  </div>
+  <div class="topic-body">
+    <h2>EI.3 CONCEITOS CENTRAIS DA EDUCAÇÃO INCLUSIVA</h2>
+<h3>EI.3.1 Desenho Universal para a Aprendizagem (DUA)</h3>
+<p>O <strong>DUA</strong> é um framework pedagógico baseado em princípios da neurociência cognitiva que propõe eliminar barreiras de aprendizagem desde o planejamento, criando materiais e ambientes acessíveis a todos os estudantes:</p>
+<p><strong>Três princípios do DUA:</strong></p>
+<div class="tbl-wrap"><table>
+<tr><th>Princípio</th><th>Redes neurais ativadas</th><th>Pergunta central</th><th>Estratégias</th></tr>
+<tr><td><strong>Múltiplos meios de representação</strong></td><td>Reconhecimento (o "quê" da aprendizagem)</td><td>Como apresentar a informação?</td><td>Texto, áudio, vídeo, imagem, manipulação concreta</td></tr>
+<tr><td><strong>Múltiplos meios de ação e expressão</strong></td><td>Estratégicas (o "como" da aprendizagem)</td><td>Como o aluno demonstra o que sabe?</td><td>Escrita, fala, desenho, construção, tecnologia</td></tr>
+<tr><td><strong>Múltiplos meios de engajamento</strong></td><td>Afetivas (o "porquê" da aprendizagem)</td><td>Como motivar o aluno?</td><td>Escolha, autonomia, relevância, colaboração</td></tr>
+</table></div>
+<p>O DUA não é uma "adaptação para alunos com deficiência" — é um planejamento universal que beneficia todos os alunos, incluindo aqueles com deficiência.</p>
+<h3>EI.3.2 Adaptação Curricular</h3>
+<p>Modificações realizadas para atender às necessidades específicas de determinados alunos:</p>
+<div class="tbl-wrap"><table>
+<tr><th>Tipo</th><th>Descrição</th></tr>
+<tr><td><strong>De grande porte</strong></td><td>Modificações que eliminam conteúdos ou objetivos essenciais — requerem autorização</td></tr>
+<tr><td><strong>De pequeno porte</strong></td><td>Modificações nos procedimentos, materiais ou avaliação — sem alterar objetivos — realizadas pelo professor</td></tr>
+</table></div>
+<p><strong>Diferenciação pedagógica:</strong> O professor cria múltiplas formas de acessar o mesmo conteúdo e demonstrar o aprendizado — sem simplificar o objetivo de aprendizagem.</p>
+<h3>EI.3.3 Acessibilidade</h3>
+<p>Condição para que pessoas com deficiência ou mobilidade reduzida possam utilizar com segurança e autonomia os espaços, meios de comunicação e serviços.</p>
+<p><strong>Dimensões da acessibilidade:</strong>
+<ul><li><strong>Arquitetônica:</strong> rampas, elevadores, banheiros adaptados</li><li><strong>Comunicacional:</strong> Libras, Braille, audiodescrição, legendas</li><li><strong>Metodológica:</strong> estratégias de ensino que alcançam todos os alunos</li><li><strong>Instrumental:</strong> tecnologia assistiva, materiais adaptados</li><li><strong>Atitudinal:</strong> combate ao preconceito — a mais difícil e a mais importante</li></ul>
+<h3>EI.3.4 Tecnologia Assistiva</h3></p>
+<p>Qualquer recurso, estratégia ou serviço que amplia as capacidades funcionais das pessoas com deficiência:</p>
+<ul><li><strong>Comunicação aumentativa e alternativa (CAA):</strong> para alunos com dificuldade de comunicação oral</li><li><strong>Soroban:</strong> ábaco adaptado para cegos</li><li><strong>Braille:</strong> sistema de leitura e escrita tátil para cegos</li><li><strong>Libras:</strong> língua de sinais para surdos</li><li><strong>Ledores e transcritores:</strong> para pessoas cegas em avaliações</li><li><strong>Leitores de tela:</strong> tecnologia digital para cegos</li></ul>
+  </div>
+  <div class="topic-nav">
+    <button type="button" class="nav-btn" onclick="showTopic('EI2')">← EI02</button>
+    <button type="button" class="nav-btn" onclick="showTopic('EI4')">EI04 →</button>
+  </div>
+</section>
+<section id="topic-EI4" class="topic-section" style="display:none">
+  <div class="topic-header">
+    <div class="topic-badge">EI04</div>
+    <h1 class="topic-title">Especificidades por Tipo de Deficiência</h1>
+  </div>
+  <div class="topic-body">
+    <h2>EI.4 PRINCIPAIS ESPECIFICIDADES POR TIPO DE DEFICIÊNCIA</h2>
+<h3>EI.4.1 Deficiência Visual</h3>
+<ul><li><strong>Cegueira:</strong> ausência total de visão ou percepção de luz — uso de Braille, soroban, leitores de tela, audiodescrição</li><li><strong>Baixa visão:</strong> acuidade visual limitada — ampliação de materiais, iluminação adequada, letras ampliadas</li></ul>
+<strong>No contexto escolar:</strong> Materiais em Braille ou ampliados; ledores em avaliações; orientação e mobilidade.
+<h3>EI.4.2 Deficiência Auditiva e Surdez</h3>
+<ul><li><strong>Surdez:</strong> perda auditiva acima de 70 decibéis — comunicação principal via Libras</li><li><strong>Deficiência auditiva:</strong> perda abaixo de 70 decibéis — pode comunicar-se oralmente com apoio</li></ul>
+<strong>No contexto escolar:</strong> Intérprete de Libras; posicionamento favorável para leitura labial; materiais visuais; educação bilíngue (Libras + Português escrito).
+<h3>EI.4.3 Deficiência Intelectual</h3>
+<p>Caracterizada por limitações significativas no funcionamento intelectual e no comportamento adaptativo — presente antes dos 18 anos. Não é "doença" — é uma condição do neurodesenvolvimento.</p>
+<p><strong>No contexto escolar:</strong> Adaptações curriculares de pequeno porte; instruções em etapas; uso de materiais concretos; avaliação contínua e formativa; valorização das capacidades — não apenas das limitações.</p>
+<h3>EI.4.4 Transtorno do Espectro Autista (TEA)</h3>
+<p>O TEA (Lei 12.764/2012) apresenta variações amplas de manifestação. Características centrais:
+<ul><li>Dificuldades de comunicação e interação social</li><li>Padrões restritos e repetitivos de comportamento</li></ul>
+<strong>No contexto escolar:</strong> Rotinas previsíveis e estruturadas; avisos antecipados de mudanças; redução de estímulos sensoriais excessivos; comunicação aumentativa; profissional de apoio quando necessário.</p>
+<h3>EI.4.5 Altas Habilidades / Superdotação</h3>
+<p>Estudantes com desempenho notavelmente superior em uma ou mais áreas — cognitiva, criativa, liderança, psicomotora, artística.</p>
+<p><strong>No contexto escolar:</strong> Aceleração ou enriquecimento curricular; projetos de aprofundamento; mentoria; evitar o aborrecimento pela subdesafio.</p>
+  </div>
+  <div class="topic-nav">
+    <button type="button" class="nav-btn" onclick="showTopic('EI3')">← EI03</button>
+    <button type="button" class="nav-btn" onclick="showTopic('EI5')">EI05 →</button>
+  </div>
+</section>
+<section id="topic-EI5" class="topic-section" style="display:none">
+  <div class="topic-header">
+    <div class="topic-badge">EI05</div>
+    <h1 class="topic-title">O Professor Diante da Diversidade</h1>
+  </div>
+  <div class="topic-body">
+    <h2>EI.5 O PROFESSOR DIANTE DA DIVERSIDADE</h2>
+<h3>EI.5.1 O Papel do Professor de Sala Regular</h3>
+<p>O professor da sala comum tem responsabilidade central na educação inclusiva — não pode delegar ao professor de AEE:</p>
+<ul><li>Conhecer as especificidades de seus alunos com deficiência</li><li>Planejar aulas com DUA — acessíveis a todos</li><li>Articular-se com o professor de AEE e com a equipe multiprofissional</li><li>Adaptar materiais e estratégias sem eliminar objetivos de aprendizagem</li><li>Avaliar de forma diferenciada e formativa</li></ul>
+<h3>EI.5.2 O Profissional de Apoio Escolar</h3>
+<p>Previsto pela LBI (Art. 28, XVII): "profissional de apoio escolar — pessoa que exerce atividades de alimentação, higiene e locomoção do estudante com deficiência e atua em todas as atividades escolares nas quais se fizer necessária."</p>
+<p><strong>Distinção importante:</strong> O profissional de apoio ≠ professor de AEE. O apoio faz as atividades de vida diária (alimentação, higiene, locomoção) — o AEE faz o trabalho pedagógico especializado.</p>
+  </div>
+  <div class="topic-nav">
+    <button type="button" class="nav-btn" onclick="showTopic('EI4')">← EI04</button>
+    <button type="button" class="nav-btn" onclick="showTopic('EI6')">EI06 →</button>
+  </div>
+</section>
+<section id="topic-EI6" class="topic-section" style="display:none">
+  <div class="topic-header">
+    <div class="topic-badge">EI06</div>
+    <h1 class="topic-title">Síntese, Mapas e Tabelas Legislativas</h1>
+  </div>
+  <div class="topic-body">
+    <h2>EI.6 SÍNTESE LEGISLATIVA</h2>
+<div class="tbl-wrap"><table>
+<tr><th>Norma</th><th>Conteúdo Central</th><th>Conceito-chave</th></tr>
+<tr><td><strong>CF/88, Art. 208, III</strong></td><td>AEE preferencialmente na rede regular</td><td>Base constitucional da inclusão</td></tr>
+<tr><td><strong>LDB, Art. 58-60</strong></td><td>Educação Especial como modalidade</td><td>Preferencialmente na rede regular</td></tr>
+<tr><td><strong>Declaração de Salamanca (1994)</strong></td><td>Escola para todos</td><td>Escola inclusiva</td></tr>
+<tr><td><strong>Res. CNE/CEB 2/2001</strong></td><td>Diretrizes para Educação Especial</td><td>NEE, capacitação docente</td></tr>
+<tr><td><strong>Decreto 5.626/2005</strong></td><td>Regulamenta Libras</td><td>Educação bilíngue para surdos</td></tr>
+<tr><td><strong>Lei 12.764/2012</strong></td><td>TEA — Lei do Autismo</td><td>Pessoa com TEA = pessoa com deficiência</td></tr>
+<tr><td><strong>Decreto 7.611/2011</strong></td><td>AEE — complementar/suplementar</td><td>SRM no contraturno</td></tr>
+<tr><td><strong>Lei 13.146/2015 (LBI)</strong></td><td>Estatuto da Pessoa com Deficiência</td><td>Modelo social; barreiras; TA</td></tr>
+<tr><td><strong>BNCC (2017)</strong></td><td>Educação inclusiva como competência transversal</td><td>Diversidade como valor</td></tr>
+</table></div>
+<h2>MAPA MENTAL — EDUCAÇÃO INCLUSIVA</h2>
+<pre class="code">EDUCAÇÃO INCLUSIVA
+│
+├── PARADIGMAS: Exclusão → Segregação → Integração → INCLUSÃO
+│
+├── BASES LEGAIS
+│   ├── CF/88 Art. 208, III: AEE preferencialmente na rede regular
+│   ├── LDB Arts. 58-60: Educação Especial como modalidade
+│   ├── Declaração de Salamanca (1994): escola para todos
+│   ├── Res. CNE/CEB 2/2001: diretrizes para Ed. Especial
+│   ├── Decreto 5.626/2005: Libras e educação bilíngue
+│   ├── Lei 12.764/2012: TEA = pessoa com deficiência
+│   ├── Decreto 7.611/2011: AEE no contraturno — complementar
+│   └── Lei 13.146/2015 (LBI): modelo social, 7 tipos de barreira, TA
+│
+├── PÚBLICO-ALVO DA ED. ESPECIAL
+│   ├── Deficiência (física, intelectual, visual, auditiva, múltipla)
+│   ├── Transtornos Globais do Desenvolvimento (TEA)
+│   └── Altas Habilidades / Superdotação
+│
+├── ATENDIMENTO EDUCACIONAL ESPECIALIZADO (AEE)
+│   ├── Sala de Recursos Multifuncionais (SRM)
+│   ├── Contraturno — complementar/suplementar, não substitutivo
+│   └── Articulação com professor da sala comum
+│
+├── MODELO SOCIAL DE DEFICIÊNCIA (LBI)
+│   ├── Deficiência = impedimento × barreiras
+│   └── Responsabilidade da sociedade de eliminar barreiras
+│
+├── ACESSIBILIDADE
+│   ├── Arquitetônica / Comunicacional / Metodológica / Instrumental / Atitudinal
+│   └── Tecnologia Assistiva (TA): Libras, Braille, CAA, leitores de tela
+│
+├── DESENHO UNIVERSAL PARA A APRENDIZAGEM (DUA)
+│   ├── Múltiplos meios de representação
+│   ├── Múltiplos meios de ação e expressão
+│   └── Múltiplos meios de engajamento
+│
+└── PROFISSIONAL DE APOIO ESCOLAR
+    ├── Alimentação, higiene, locomoção
+    └── ≠ Professor de AEE (que faz trabalho pedagógico)
+</pre>
+<h2>TABELA — PRINCIPAIS LEGISLAÇÕES</h2>
+<div class="tbl-wrap"><table>
+<tr><th>Norma</th><th>Ano</th><th>Conteúdo</th><th>Conceito central</th></tr>
+<tr><td>CF/88, Art. 208, III</td><td>1988</td><td>AEE preferencialmente na rede regular</td><td>Inclusão constitucional</td></tr>
+<tr><td>LDB, Arts. 58-60</td><td>1996</td><td>Educação Especial como modalidade</td><td>Rede regular + AEE</td></tr>
+<tr><td>Declaração de Salamanca</td><td>1994</td><td>Escola inclusiva para todos</td><td>Escola para todos</td></tr>
+<tr><td>Decreto 5.626</td><td>2005</td><td>Regulamenta Libras</td><td>Educação bilíngue</td></tr>
+<tr><td>Política Nacional Ed. Especial</td><td>2008</td><td>AEE complementar, não substitutivo</td><td>Modelo inclusivo</td></tr>
+<tr><td>Decreto 7.611</td><td>2011</td><td>AEE — SRM, contraturno</td><td>AEE ≠ substitutivo</td></tr>
+<tr><td>Lei 12.764</td><td>2012</td><td>Política Nacional do TEA</td><td>TEA = pessoa com deficiência</td></tr>
+<tr><td>Lei 13.146 (LBI)</td><td>2015</td><td>Estatuto da Pessoa com Deficiência</td><td>Modelo social; barreiras; TA</td></tr>
+</table></div>
+<hr>
+  </div>
+  <div class="topic-nav">
+    <button type="button" class="nav-btn" onclick="showTopic('EI5')">← EI05</button>
+    
+  </div>
+</section>
+
+</main>
+
+<script>
+function goToPortal(){
+  window.location.href = "index.html";
+}
+function showHome(){
+  document.getElementById('home-section').style.display='block';
+  document.querySelectorAll('.topic-section').forEach(function(s){ s.style.display='none'; });
+  document.querySelectorAll('.sb-topic').forEach(function(l){ l.classList.remove('active'); });
+  document.getElementById('sb-home-btn').classList.add('active');
+  if (location.hash) {
+    history.replaceState(null, '', location.pathname + location.search);
+  }
+  window.scrollTo(0,0);
+}
+function showTopic(k){
+  document.getElementById('home-section').style.display='none';
+  document.querySelectorAll('.topic-section').forEach(function(s){ s.style.display='none'; });
+  document.querySelectorAll('.sb-topic').forEach(function(l){ l.classList.remove('active'); });
+  document.getElementById('sb-home-btn').classList.remove('active');
+
+  var sec = document.getElementById('topic-' + k);
+  if (sec) sec.style.display = 'block';
+
+  var link = document.querySelector('.sb-topic[href="#topic-' + k + '"]');
+  if (link) link.classList.add('active');
+
+  if (location.hash !== '#topic-' + k) {
+    history.replaceState(null, '', '#topic-' + k);
+  }
+  window.scrollTo(0,0);
+}
+(function(){
+  var h = location.hash.replace('#','');
+  if (h && h.startsWith('topic-')) {
+    showTopic(h.replace('topic-',''));
+  } else {
+    showHome();
+  }
+})();
+</script>
+</body>
+</html>

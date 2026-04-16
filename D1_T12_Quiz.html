@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>T12 Quiz — Avanços, Limites e Perspectivas Históricas | Filosofia SJR 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+
+:root{
+  --bg:#0b0d10;--bg2:#111318;--bg3:#181c22;--bg4:#1e232b;
+  --border:#252b35;--border2:#2d3443;
+  --text:#cdd5e0;--text2:#8a96a8;--text3:#4d5a6e;
+  --gold:#c8a44a;--gold2:#e2c070;--gold3:#f0d490;
+  --blue:#3d8fd1;--green:#3d9e72;--green2:#5ec090;
+  --red:#c05050;--red2:#e07070;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:'Lato',sans-serif;font-size:15px;line-height:1.7;min-height:100vh}
+
+/* HEADER */
+.quiz-header{
+  background:var(--bg2);border-bottom:1px solid var(--border);
+  padding:16px 24px;display:flex;align-items:center;gap:16px;
+  position:sticky;top:0;z-index:50;flex-wrap:wrap;
+}
+.qh-back{
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  color:var(--text3);text-decoration:none;transition:color .2s;white-space:nowrap;
+}
+.qh-back:hover{color:var(--gold)}
+.qh-title{
+  font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:700;color:var(--gold2);
+  flex:1;
+}
+.qh-badge{
+  font-family:'JetBrains Mono',monospace;font-size:10px;
+  color:var(--gold);background:rgba(200,164,74,.12);
+  padding:3px 10px;border-radius:4px;white-space:nowrap;
+}
+.qh-stats{
+  display:flex;gap:16px;flex-wrap:wrap;
+}
+.qh-stat{
+  font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3);
+  white-space:nowrap;
+}
+.qh-stat strong{color:var(--text);font-size:14px}
+
+/* PROGRESS BAR */
+.progress-bar{height:3px;background:var(--border);overflow:hidden}
+.progress-fill{height:100%;background:var(--gold);transition:width .4s ease}
+
+/* FILTERS */
+.filter-bar{
+  padding:14px 24px;background:var(--bg2);border-bottom:1px solid var(--border);
+  display:flex;gap:8px;align-items:center;flex-wrap:wrap;
+}
+.filter-label{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3);margin-right:4px}
+.filter-btn{
+  padding:5px 14px;border-radius:4px;border:1px solid var(--border);
+  background:var(--bg3);color:var(--text2);font-family:'JetBrains Mono',monospace;
+  font-size:11px;cursor:pointer;transition:all .15s;
+}
+.filter-btn:hover{border-color:var(--gold);color:var(--gold)}
+.filter-btn.active{background:rgba(200,164,74,.15);border-color:var(--gold);color:var(--gold)}
+.filter-sep{width:1px;height:20px;background:var(--border);margin:0 4px}
+.toggle-btn{
+  margin-left:auto;padding:5px 14px;border-radius:4px;border:1px solid var(--border2);
+  background:var(--bg3);color:var(--text2);font-family:'JetBrains Mono',monospace;
+  font-size:11px;cursor:pointer;transition:all .15s;
+}
+.toggle-btn:hover{border-color:var(--blue);color:var(--blue)}
+.toggle-btn:disabled{opacity:.45;cursor:not-allowed}
+.toggle-btn:disabled:hover{border-color:var(--border2);color:var(--text2)}
+
+/* CONTENT */
+.quiz-content{padding:24px;max-width:860px;margin:0 auto}
+
+/* QUESTION BLOCK */
+.q-block{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:8px;padding:24px;margin-bottom:18px;
+  transition:border-color .2s;
+}
+.q-block.answered{border-color:var(--border2)}
+.q-meta{display:flex;gap:8px;align-items:center;margin-bottom:12px}
+.q-num{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3)}
+.q-diff{
+  font-family:'JetBrains Mono',monospace;font-size:10px;
+  padding:2px 7px;border-radius:3px;
+}
+.diff-easy{background:rgba(61,158,114,.15);color:var(--green2)}
+.diff-med{background:rgba(61,143,209,.12);color:var(--blue)}
+.diff-hard{background:rgba(192,80,80,.12);color:var(--red2)}
+.q-text{font-size:14.5px;line-height:1.75;margin-bottom:16px;color:var(--text)}
+.q-opts{display:flex;flex-direction:column;gap:8px}
+.q-opt{
+  display:flex;align-items:flex-start;gap:10px;
+  padding:10px 14px;border:1px solid var(--border);
+  border-radius:6px;cursor:pointer;background:var(--bg3);
+  transition:all .15s;
+}
+.q-opt:hover:not(.done){border-color:var(--gold);background:rgba(200,164,74,.05)}
+.q-opt.done{cursor:default}
+.q-opt.sel{border-color:var(--blue)!important;background:rgba(61,143,209,.08)!important}
+.q-opt.correct{border-color:var(--green)!important;background:rgba(61,158,114,.12)!important}
+.q-opt.wrong{border-color:var(--red)!important;background:rgba(192,80,80,.08)!important}
+.opt-letter{
+  font-family:'JetBrains Mono',monospace;font-size:12px;
+  font-weight:500;color:var(--gold);min-width:18px;margin-top:2px;
+}
+.opt-text{font-size:13.5px;color:var(--text);line-height:1.6}
+.q-feedback{
+  margin-top:12px;padding:12px 16px;border-radius:6px;
+  font-size:13px;line-height:1.7;display:none;
+}
+.q-feedback.show{display:block;animation:fadeIn .2s ease}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.fb-correct{background:rgba(61,158,114,.1);border:1px solid rgba(61,158,114,.3);color:var(--green2)}
+.fb-wrong{background:rgba(192,80,80,.08);border:1px solid rgba(192,80,80,.25);color:var(--red2)}
+.fb-label{
+  font-family:'JetBrains Mono',monospace;font-size:10px;
+  text-transform:uppercase;letter-spacing:.8px;display:block;margin-bottom:5px;
+}
+.fb-correct .fb-label{color:var(--green)}
+.fb-wrong .fb-label{color:var(--red)}
+.fb-body{color:var(--text);font-style:italic}
+
+/* SCORE PANEL */
+#score-panel{
+  display:none;background:var(--bg2);border:1px solid var(--border);
+  border-radius:12px;padding:40px;text-align:center;margin:24px;
+}
+#score-panel.show{display:block;animation:fadeIn .4s ease}
+.sc-title{
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;
+}
+.sc-number{
+  font-family:'Cormorant Garamond',serif;font-size:72px;font-weight:700;line-height:1;margin-bottom:8px;
+}
+.sc-approved{color:var(--green2)}
+.sc-failed{color:var(--red2)}
+.sc-pct{font-size:20px;color:var(--text2);margin-bottom:24px}
+.sc-breakdown{display:flex;gap:24px;justify-content:center;flex-wrap:wrap;margin:20px 0}
+.sc-item{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text3)}
+.sc-item strong{color:var(--text);display:block;font-size:18px}
+.sc-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:24px}
+.sc-btn{
+  padding:11px 24px;border-radius:6px;font-family:'JetBrains Mono',monospace;
+  font-size:12px;cursor:pointer;transition:all .2s;border:none;
+}
+.sc-btn-primary{background:var(--gold);color:var(--bg)}
+.sc-btn-primary:hover{opacity:.85}
+.sc-btn-secondary{background:var(--bg3);border:1px solid var(--border);color:var(--text2)}
+.sc-btn-secondary:hover{border-color:var(--gold);color:var(--gold)}
+
+/* BOTTOM NAV */
+.bottom-nav{
+  padding:20px 24px;border-top:1px solid var(--border);
+  display:flex;gap:10px;align-items:center;flex-wrap:wrap;
+}
+.nav-btn{
+  padding:9px 18px;border-radius:6px;
+  background:var(--bg3);border:1px solid var(--border);
+  color:var(--text2);font-family:'JetBrains Mono',monospace;
+  font-size:11px;cursor:pointer;transition:all .2s;text-decoration:none;
+  display:inline-block;
+}
+.nav-btn:hover{border-color:var(--gold);color:var(--gold)}
+.nav-theory{margin-left:auto}
+
+/* STICKY SCORE */
+#sticky{
+  position:fixed;bottom:0;left:0;right:0;
+  background:rgba(17,19,24,.95);border-top:1px solid var(--border);
+  backdrop-filter:blur(8px);
+  padding:10px 24px;display:flex;align-items:center;gap:16px;
+  z-index:50;
+}
+#sticky .ss-txt{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3)}
+#sticky .ss-txt strong{color:var(--gold)}
+.ss-bar{flex:1;height:3px;background:var(--border);border-radius:2px;overflow:hidden}
+.ss-fill{height:100%;background:var(--gold);transition:width .3s}
+
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+
+
+@media (max-width: 720px){
+  .quiz-header,.filter-bar,.bottom-nav,.quiz-content,#sticky{padding-left:16px;padding-right:16px}
+  .qh-title{flex-basis:100%;font-size:17px}
+  .qh-stats{width:100%;gap:12px}
+  .filter-sep{display:none}
+  .toggle-btn{margin-left:0}
+  #score-panel{margin:16px;padding:28px 20px}
+  .sc-number{font-size:56px}
+  .bottom-nav{padding-bottom:84px}
+}
+
+@media (max-width: 520px){
+  .q-block{padding:18px}
+  .q-text{font-size:14px}
+  .opt-text{font-size:13px}
+  #sticky{gap:10px;flex-wrap:wrap}
+  #sticky .ss-txt{width:auto}
+  .ss-bar{order:3;flex-basis:100%}
+}
+
+
+</style>
+</head>
+<body>
+<header class="quiz-header">
+  <a href="D1_Filosofia.html" class="qh-back">← Teoria D1</a>
+  <div class="qh-title">T12 — Avanços, Limites e Perspectivas Históricas</div>
+  <span class="qh-badge">50 questões</span>
+  <div class="qh-stats">
+    <span class="qh-stat"><strong id="hdr-answered">0</strong> respondidas</span>
+    <span class="qh-stat"><strong id="hdr-correct">0</strong> corretas</span>
+    <span class="qh-stat"><strong id="hdr-pct">0%</strong></span>
+  </div>
+</header>
+<div class="progress-bar"><div class="progress-fill" id="prog-bar" style="width:0%"></div></div>
+<div class="filter-bar">
+  <span class="filter-label">Dificuldade:</span>
+  <button type="button" class="filter-btn active" data-filter="all" onclick="setFilter('all',this)">Todas</button>
+  <button type="button" class="filter-btn" data-filter="Fácil" onclick="setFilter('Fácil',this)">Fácil</button>
+  <button type="button" class="filter-btn" data-filter="Média" onclick="setFilter('Média',this)">Média</button>
+  <button type="button" class="filter-btn" data-filter="Difícil" onclick="setFilter('Difícil',this)">Difícil</button>
+  <div class="filter-sep"></div>
+  <button type="button" class="toggle-btn" onclick="toggleErrors()" id="err-btn" style="display:none">↺ Só erros</button>
+</div>
+<div class="quiz-content" id="quiz-content"></div>
+<div id="score-panel">
+  <p class="sc-title">Resultado Final — T12</p>
+  <div class="sc-number" id="sc-num"></div>
+  <p class="sc-pct" id="sc-pct"></p>
+  <div class="sc-breakdown" id="sc-breakdown"></div>
+  <div class="sc-actions">
+    <button type="button" class="sc-btn sc-btn-primary" onclick="resetQuiz()">↺ Refazer</button>
+    <button type="button" class="sc-btn sc-btn-secondary" onclick="reviewErrors()" id="sc-review-btn">Revisar erros</button>
+    <a href="D1_Filosofia.html" class="sc-btn sc-btn-secondary">← Teoria</a>
+  </div>
+</div>
+<div class="bottom-nav">
+  <a href="D1_T11_Quiz.html" class="nav-btn">← T11</a>
+  <a href="D1_Filosofia.html" class="nav-btn nav-theory">📖 Conteúdo T12</a>
+  <a href="D1_T13_Quiz.html" class="nav-btn">T13 →</a>
+</div>
+<div id="sticky">
+  <span class="ss-txt">Acertos: <strong id="st-pts">0</strong> / 50</span>
+  <div class="ss-bar"><div class="ss-fill" id="st-fill" style="width:0%"></div></div>
+  <span class="ss-txt"><strong id="st-pct">0%</strong></span>
+</div>
+<script>
+const QUESTIONS = [{n:1,t:"A **Lei 5.692/1971**, promulgada durante a ditadura militar, teve como efeito direto sobre o ensino de Filosofia:",o:["Tornar a Filosofia obrigatória em todas as séries do Ensino Médio","Substituir a Filosofia e a Sociologia pelas disciplinas de Educação Moral e Cívica (EMC) e Organização Social e Política Brasileira (OSPB)","Criar os primeiros cursos de Licenciatura em Filosofia nas universidades federais","Tornar a Filosofia disciplina optativa no Ensino Fundamental"],a:1,c:"A Lei 5.692/1971 é o marco mais dramático da história do ensino de Filosofia no Brasil: a ditadura militar, temendo o potencial crítico da Filosofia e da Sociologia, as substituiu por disciplinas de doutrinação cívica — a EMC (que pregava os \"valores nacionais\" e a obediência ao Estado) e a OSPB (que descrevia a organização política brasileira de forma acrítica). Isso gerou uma geração de professores e alunos sem formação filosófica e enfraqueceu estruturalmente o campo.",d:"Fácil"},{n:2,t:"A **Lei 11.684/2008** representou um avanço histórico para o ensino de Filosofia porque:",o:["Criou o primeiro curso de doutorado em Filosofia do Brasil","Tornou a Filosofia e a Sociologia disciplinas obrigatórias em todas as séries do Ensino Médio","Tornou a Filosofia obrigatória no Ensino Fundamental","Criou o PNLD para livros de Filosofia"],a:1,c:"A Lei 11.684/2008 — conquista de décadas de luta de professores, pesquisadores e associações como a ANPOF e a SEAF — tornou obrigatória a inclusão da Filosofia e da Sociologia como disciplinas em todas as séries do Ensino Médio. Encerrou o período de ambiguidade criado pela LDB 9.394/1996, que falava em \"conhecimentos de Filosofia necessários ao exercício da cidadania\" sem garantir uma disciplina autônoma com professor especialista.",d:"Fácil"},{n:3,t:"As **Orientações Curriculares para o Ensino Médio — OCEMs/Filosofia** (MEC, 2006) são um documento de referência que defende:",o:["A eliminação da Filosofia do currículo em favor das ciências exatas","Que a Filosofia tem identidade disciplinar própria e o ensino deve incluir o contato com textos filosóficos autênticos — não apenas informações sobre filósofos","Que a Filosofia deve ser ensinada apenas como lógica formal","Que a Filosofia deve ser substituída por Ética e Cidadania"],a:1,c:"As OCEMs/Filosofia são o documento curricular de referência mais importante para o ensino de Filosofia no Brasil. Defendem: (1) identidade disciplinar autônoma — a Filosofia não pode ser reduzida a \"temas transversais\"; (2) contato com textos filosóficos autênticos — mesmo que fragmentos — como componente essencial; (3) foco na problematização filosófica, não na transmissão enciclopédica de informações sobre filósofos.",d:"Fácil"},{n:4,t:"A **Lei 14.892/2024** é relevante para a história do ensino de Filosofia porque:",o:["Criou a disciplina de Filosofia no Ensino Fundamental pela primeira vez","Reintroduziu a obrigatoriedade da Filosofia e da Sociologia no Ensino Médio, revertendo o que a Reforma do EM de 2017 havia feito","Tornou a Filosofia optativa em todos os níveis de ensino","Estabeleceu o concurso público como única forma de seleção de professores de Filosofia"],a:1,c:"A Lei 14.892/2024 encerrou — pelo menos provisoriamente — a disputa gerada pela Lei 13.415/2017 (Reforma do EM), que havia retirado a Filosofia e a Sociologia da lista de componentes obrigatórios autônomos. A mobilização de professores, pesquisadores e associações durante esse período demonstrou a importância da comunidade filosófica na defesa do espaço curricular da disciplina.",d:"Fácil"},{n:5,t:"O **PIBID (Programa Institucional de Bolsas de Iniciação à Docência)** é um avanço na formação de professores de Filosofia porque:",o:["Concede bolsas de pesquisa filosófica pura sem relação com a prática docente","Aproxima os estudantes de Licenciatura em Filosofia da realidade escolar concreta durante a formação — desenvolvendo competências pedagógicas específicas para o ensino de Filosofia","Substitui o estágio obrigatório nos cursos de Licenciatura","É destinado exclusivamente a professores de Filosofia com doutorado"],a:1,c:"O PIBID (criado em 2007 e expandido nos anos seguintes) é um programa que insere estudantes de Licenciatura nas escolas públicas durante a formação, em parceria com professores supervisores. Para a Filosofia, representa um avanço ao criar oportunidade de articulação entre a formação universitária (dominada pelo bacharelado) e a prática docente real — desenvolvendo competências pedagógicas específicas que os cursos de Licenciatura frequentemente negligenciam.",d:"Fácil"},{n:6,t:"O **principal limite estrutural** do ensino de Filosofia nas escolas brasileiras é:",o:["A ausência de professores com formação em Filosofia nas universidades","A carga horária reduzida — geralmente 1 a 2 aulas por semana — insuficiente para o tipo de leitura, investigação e discussão que a Filosofia genuína requer","A proibição do ensino de Filosofia nas escolas privadas","A obrigatoriedade de usar apenas textos filosóficos traduzidos do grego"],a:1,c:"A carga horária é um dos limites mais concretos e mais difíceis de resolver: com 1 ou 2 aulas semanais de 50 minutos, é quase impossível desenvolver o tipo de leitura filosófica lenta, a investigação aprofundada e o debate que a Filosofia genuinamente requer. Por comparação, o Inglês e a Matemática têm frequentemente 4 a 6 aulas semanais. A distribuição da carga horária no currículo reflete escolhas políticas sobre o que é valorizado — e a Filosofia está sistematicamente subv",d:"Fácil"},{n:7,t:"A substituição da Filosofia pela **Educação Moral e Cívica** durante a ditadura tinha como objetivo explícito:",o:["Melhorar a qualidade do ensino de ética nas escolas brasileiras","Formar cidadãos acríticos e obedientes ao regime — o oposto da conscientização freiriana","Introduzir o pensamento positivista no currículo escolar","Cumprir exigências de organismos internacionais de educação"],a:1,c:"A EMC não era uma alternativa à Filosofia — era seu oposto intencional. Enquanto a Filosofia desenvolve o pensamento crítico e a capacidade de questionar, a EMC pregava os \"valores nacionais\", a obediência ao Estado e o anticomunismo. Era a versão curricular da \"educação bancária\" criticada por Freire — com o agravante de que o \"depósito\" era explicitamente ideológico e a serviço do regime autoritário. A comparação entre EMC e educação filosófica genuína é um dado histórico e",d:"Fácil"},{n:8,t:"O crescimento da **Filosofia para Crianças (P4C)** no Brasil representa um avanço porque:",o:["Prova que crianças pequenas podem aprender filosofia universitária","Expande o ensino de Filosofia para além do EM — incluindo o EF e a Educação Infantil — e desenvolve metodologias específicas para diferentes faixas etárias","Substitui completamente as metodologias tradicionais de ensino de Filosofia","É financiado exclusivamente por organizações internacionais sem vínculo com o Brasil"],a:1,c:"O P4C (Philosophy for Children, de Lipman, e suas adaptações brasileiras — incluindo o trabalho de Ann Sharp e dos grupos brasileiros de filosofia com crianças) representa um avanço duplo: (1) amplia o alcance da Filosofia para além do EM — onde ela ainda carece de tradição; (2) desenvolve metodologias específicas para diferentes faixas etárias — especialmente a Comunidade de Investigação — que podem enriquecer o ensino em todos os níveis, inclusive no EF Anos Finais (o foco ",d:"Fácil"},{n:9,t:"A **LDB 9.394/1996** foi um avanço *ambíguo* para o ensino de Filosofia porque:",o:["Tornou a Filosofia obrigatória no EM sem ressalvas","Proibiu o ensino de Filosofia nas escolas públicas","Mencionou os \"conhecimentos de Filosofia necessários ao exercício da cidadania\" — mas de forma ambígua, permitindo interpretações que não garantiam uma disciplina autônoma com professor especialista","Criou a carreira específica de professor de Filosofia nas redes públicas"],a:2,c:"O art. 36, § 1º, III da LDB (9.394/1996) estabelecia que o currículo do EM deveria garantir \"o domínio dos conhecimentos de Filosofia e de Sociologia necessários ao exercício da cidadania\". Essa formulação era ambígua: podia ser interpretada como exigência de disciplina autônoma ou como conteúdo distribuído transversalmente em outras disciplinas. Essa ambiguidade foi usada por estados que não queriam incluir a Filosofia como disciplina obrigatória — o que só foi resolvido def",d:"Fácil"},{n:10,t:"O **PNLD (Programa Nacional do Livro Didático)** representa um avanço para o ensino de Filosofia porque:",o:["Distribui gratuitamente textos dos grandes filósofos clássicos para todos os alunos","Avalia e distribui livros didáticos de Filosofia para as escolas públicas — garantindo acesso a materiais de qualidade avaliada e contribuindo para a padronização mínima do ensino","Proíbe o uso de qualquer material além dos livros aprovados","É exclusivo para o Ensino Superior em Filosofia"],a:1,c:"A inclusão de livros de Filosofia no PNLD — a partir da obrigatoriedade criada pela Lei 11.684/2008 — representou um avanço concreto: garantiu que escolas públicas de todo o Brasil tivessem acesso a materiais didáticos de Filosofia avaliados por especialistas. O processo de avaliação do PNLD criou incentivo para a produção de materiais de maior qualidade e para a discussão sobre o que deve ser o conteúdo e a abordagem do ensino de Filosofia.",d:"Fácil"},{n:11,t:"A **desarticulação entre bacharelado e licenciatura** nos cursos de Filosofia é um limite porque:",o:["Os bacharéis em Filosofia são automaticamente autorizados a lecionar sem formação pedagógica","Os cursos de Licenciatura são organizados como bacharelados com disciplinas pedagógicas adicionadas — sem integração genuína entre conhecimento filosófico e competências docentes","As licenciaturas em Filosofia são mais valorizadas que os bacharelados pelo mercado","O bacharelado em Filosofia não pode ser cursado na mesma universidade que a licenciatura"],a:1,c:"O problema da formação de professores de Filosofia é estrutural: os cursos de Licenciatura em Filosofia tendem a ser organizados como \"bacharelado + pedagogia\" — onde as disciplinas filosóficas (história da filosofia, epistemologia, ética) coexistem com as disciplinas pedagógicas (didática, psicologia da educação, estágio) sem integração real. O resultado é que o licenciando não aprende como transpor o conhecimento filosófico para o contexto escolar — o que exigiria uma didát",d:"Fácil"},{n:12,t:"A **pressão da formação para o mercado de trabalho** representa um limite para o ensino de Filosofia porque:",o:["Os filósofos têm salários mais baixos que outros profissionais","A ideologia do \"capital humano\" — que avalia a educação pela empregabilidade que produz — tende a desvalorizar disciplinas cujos efeitos são difusos, de longo prazo e não diretamente mensuráveis em competências de mercado","A Filosofia não tem nenhuma aplicação no mercado de trabalho","Os empregadores proíbem explicitamente a contratação de filósofos"],a:1,c:"A ideologia do \"capital humano\" (Schultz, Becker) — que define o valor da educação pelo retorno econômico que produz — é estruturalmente adversa à Filosofia. Num currículo organizado por essa lógica, as disciplinas que diretamente contribuem para competências de mercado (Matemática, Inglês, Programação) têm prioridade sobre as que contribuem para a formação humana mais ampla (Filosofia, Arte, Literatura). A reforma do EM de 2017 foi, em parte, expressão dessa lógica.",d:"Fácil"},{n:13,t:"A **inteligência artificial generativa** representa, para o ensino de Filosofia, uma oportunidade específica porque:",o:["Pode substituir o professor de Filosofia em escolas com poucos recursos","Torna urgentes questões filosóficas sobre consciência, pensamento genuíno, criatividade, responsabilidade moral e autonomia — questões que a IA não pode responder mas que são essenciais para entendê-la e regulá-la","Permite que os alunos estudem Filosofia de forma autônoma sem professor","Prova que a Filosofia é irrelevante — a IA resolve todos os problemas filosóficos"],a:1,c:"A IA generativa representa um paradoxo útil para o ensino de Filosofia: pode reproduzir conteúdo filosófico (resumir Kant, explicar o utilitarismo) mas não pode filosofar. Ao mesmo tempo, torna urgentes questões genuinamente filosóficas: o que é pensamento consciente? O que distingue o texto filosófico humano do texto gerado por IA? O que é criatividade? Quem é moralmente responsável pelas decisões de uma IA? Essas são questões da filosofia da mente, da ética e da epistemolog",d:"Fácil"},{n:14,t:"A **ausência de Filosofia como disciplina autônoma no Ensino Fundamental** é um limite porque:",o:["Os alunos do EF não têm capacidade cognitiva para a Filosofia","A Filosofia é reconhecida como relevante para a formação cidadã — e o EF é o período de desenvolvimento de competências fundamentais que o EM apenas consolida","O EF já tem Filosofia integrada à Matemática","A LDB proíbe explicitamente a Filosofia no EF"],a:1,c:"A ausência da Filosofia como componente autônomo no EF é um limite pedagógico e político: se a Filosofia contribui para o desenvolvimento do pensamento crítico, da reflexão ética e da cidadania, não há razão para esperar até o EM para iniciá-la. Pesquisas em desenvolvimento cognitivo (Piaget) e em filosofia para crianças (Lipman) mostram que crianças e pré-adolescentes são capazes de investigação filosófica genuína — e que desenvolvê-la cedo produz resultados duradouros.",d:"Fácil"},{n:15,t:"O crescimento da **pesquisa em ensino de Filosofia** no Brasil — com grupos de pesquisa, periódicos e cursos de pós-graduação específicos — é um avanço porque:",o:["Comprova que a Filosofia é uma ciência exata com resultados verificáveis","Constrói um corpo de conhecimento específico sobre como ensinar Filosofia para adolescentes — distinto da Filosofia acadêmica e da pedagogia geral — que pode orientar a formação de professores e as práticas de sala de aula","Substitui a necessidade de professores bem formados em conteúdo filosófico","Garante automaticamente a qualidade do ensino de Filosofia em todas as escolas"],a:1,c:"A consolidação da pesquisa em ensino de Filosofia (didática da Filosofia, filosofia da educação específica para a Filosofia) é um avanço estrutural: cria um campo de conhecimento especializado que a formação de professores pode incorporar. Sem essa pesquisa, o ensino de Filosofia depende do improviso e da intuição do professor individual. Com ela, há princípios, metodologias e experiências documentadas que podem orientar a prática — sem determinar mecanicamente o que cada pro",d:"Fácil"},{n:16,t:"A trajetória histórica do ensino de Filosofia no Brasil — da inclusão jesuítica à exclusão militar e à reinclusão democrática — demonstra que:",o:["O currículo escolar é determinado apenas por critérios pedagógicos objetivos","O lugar da Filosofia no currículo é objeto de disputa política e cultural — refletindo diferentes concepções sobre o tipo de cidadão e a forma de consciência que a escola deve formar","A Filosofia sempre foi irrelevante para os governantes brasileiros","O ensino de Filosofia no Brasil é mais avançado do que em qualquer outro país"],a:1,c:"A história do ensino de Filosofia no Brasil é um espelho das lutas políticas: os jesuítas usaram a Filosofia (escolástica) para formar a elite colonial; o positivismo republicano a desvalorizou em favor da ciência; a ditadura militar a eliminou por ser \"subversiva\"; a redemocratização a reintroduziu como símbolo da cidadania democrática; a Reforma de 2017 a retirou em nome da eficiência mercadológica; a lei de 2024 a reintroduziu. Nenhum desses movimentos foi puramente pedagó",d:"Média"},{n:17,t:"A crítica de que a **Reforma do Ensino Médio** (Lei 13.415/2017) prejudicou o ensino de Filosofia baseia-se em que:",o:["A reforma aumentou excessivamente a carga horária de Filosofia","Ao reorganizar o EM em \"áreas\" e introduzir os \"itinerários formativos\", a reforma enfraqueceu a identidade disciplinar da Filosofia, facilitando que escolas não garantissem um componente filosófico autônomo e que professores sem formação específica ministrassem \"humanidades\"","A reforma tornou o exame de Filosofia obrigatório no ENEM","A reforma foi elaborada por filósofos que não conheciam a realidade escolar"],a:1,c:"A reforma de 2017 (Novo EM) reorganizou o Ensino Médio em torno de uma Base Comum Curricular e de Itinerários Formativos. Nessa estrutura, as humanidades foram agrupadas numa \"área de Ciências Humanas e Sociais Aplicadas\" — sem garantia de que a Filosofia teria professor especialista, carga horária específica ou programa próprio. A crítica da comunidade filosófica foi que isso diluía a Filosofia — podendo resultar em que \"Ciências Humanas\" fossem ensinadas por qualquer profes",d:"Média"},{n:18,t:"O limite da **avaliação por memorização** no ensino de Filosofia contradiz os próprios objetivos da disciplina porque:",o:["A memorização é tecnicamente impossível em Filosofia — os conceitos são muito complexos","Se o objetivo da Filosofia é desenvolver pensamento crítico, argumentação e investigação, avaliar por memorização de nomes, datas e doutrinas testa exatamente o que a Filosofia *não* visa desenvolver — e incentiva uma relação passiva com o conhecimento filosófico","A memorização é o método mais eficiente para aprender qualquer disciplina","As OCEMs/Filosofia proíbem qualquer forma de avaliação escrita"],a:1,c:"Há uma incoerência pragmática na avaliação filosófica por memorização: a disciplina que defende o pensamento crítico, a investigação e a argumentação avalia seus alunos pela capacidade de recordar que \"Kant nasceu em 1724\" ou que \"o imperativo categórico tem três formulações\". Isso não apenas não testa o que importa — incentiva uma relação com a Filosofia diametralmente oposta ao que a disciplina busca. Uma avaliação coerente com os objetivos filosóficos avalia a qualidade do",d:"Média"},{n:19,t:"A perspectiva de **decolonização do currículo filosófico** — incorporando filosofias africanas, indígenas e latino-americanas — encontra resistência porque:",o:["Essas tradições não têm textos escritos e portanto não podem ser ensinadas","Há resistências práticas (falta de materiais, formação dos professores, tradição estabelecida) e resistências teóricas (debates sobre o que conta como \"filosofia\" versus \"mitologia\" ou \"cosmologia\")","A Lei 10.639/2003 proíbe a inclusão de filosofias africanas no currículo de Filosofia","As filosofias africanas e indígenas são idênticas à filosofia ocidental e portanto redundantes"],a:1,c:"A decolonização do currículo filosófico enfrenta dois tipos de resistência: práticas (falta de materiais adequados, professores sem formação específica nessas tradições, ausência dessas tradições nos livros didáticos aprovados pelo PNLD) e teóricas (o debate sobre se o Ubuntu, as cosmologias ameríndias ou o pensamento de Confúcio são \"filosofia\" ou \"outra coisa\" — debate que ele próprio revela os pressupostos do cânone ocidental sobre o que conta como filosófico).",d:"Média"},{n:20,t:"A perspectiva de **articulação entre Filosofia e crise democrática** — usando a Filosofia como instrumento de educação para a democracia — é fundamentada em:",o:["A ideia de que a democracia é o melhor sistema político — e a Filosofia deve ensiná-lo como verdade","A análise de que democracias requerem cidadãos capazes de pensamento crítico, avaliação de argumentos, reconhecimento de manipulação discursiva e deliberação pública — capacidades que a Filosofia desenvolve especificamente","A proposta de que os professores de Filosofia sejam candidatos políticos","A ideia de que a Filosofia pode resolver a polarização política ensinando a posição correta"],a:1,c:"A conexão entre Filosofia e democracia não é partidária — é estrutural: democracias funcionam melhor quando os cidadãos têm capacidade de avaliar argumentos, reconhecer demagogias, distinguir evidência de opinião e participar de deliberações públicas. Essas são exatamente as capacidades que a Filosofia desenvolve — a epistemologia, a lógica, a ética e a filosofia política têm aplicação direta na vida democrática. A \"banalidade do mal\" de Arendt, a ética discursiva de Habermas",d:"Média"},{n:21,t:"O **anti-intelectualismo** crescente — que inclui hostilidade ao pensamento crítico, à ciência e à filosofia — representa um limite **contextual** para o ensino de Filosofia porque:",o:["Os professores de Filosofia não têm formação para lidar com alunos hostis","Cria um ambiente cultural em que o próprio ato de questionar, duvidar e raciocinar lentamente é visto como suspeito — tornando a sala de aula de Filosofia um espaço de tensão em vez de investigação","Prova que a Filosofia deve ser ensinada de forma mais autoritária","É um problema exclusivamente brasileiro — não existe em outros países"],a:1,c:"O anti-intelectualismo é um fenômeno global que tem efeitos diretos na sala de aula de Filosofia: alunos (e às vezes pais) que questionam a legitimidade de \"questionar crenças\" na escola; professores que recebem ameaças por trabalhar com evolução, diversidade de gênero ou crítica religiosa; gestores que orientam a evitar \"polêmica\". Nesse contexto, o professor de Filosofia que genuinamente cria uma comunidade de investigação filosófica pode ser percebido como \"doutrinador\" ex",d:"Média"},{n:22,t:"A perspectiva de **consolidação da didática da Filosofia como campo específico** é relevante porque:",o:["Tornará o ensino de Filosofia idêntico ao ensino de Matemática ou Ciências","Desenvolverá princípios e metodologias específicas para o ensino de Filosofia — distintas da pedagogia geral — orientando a formação de professores com o que sabemos sobre como alunos aprendem a filosofar","Eliminará a necessidade de formação em Filosofia para professores — bastará dominar a didática","Tornará o ensino de Filosofia mais fácil ao eliminar a leitura de textos difíceis"],a:1,c:"A didática da Filosofia como campo específico — em desenvolvimento no Brasil e internacionalmente — busca compreender como os estudantes aprendem a filosofar: quais estratégias facilitam a entrada nos textos filosóficos, como criar genuínas comunidades de investigação, como avaliar o desenvolvimento do pensamento filosófico, como articular a tradição com os problemas dos alunos. Esse conhecimento específico — diferente da pedagogia geral e da Filosofia acadêmica — é o que a f",d:"Média"},{n:23,t:"A experiência histórica da **Educação Moral e Cívica** (EMC) durante a ditadura é pedagogicamente relevante como exemplo de:",o:["Como a Filosofia pode ser ensinada de forma eficiente com poucos recursos","Como uma disciplina aparentemente \"ética\" pode ser instrumento de doutrinação quando substitui a investigação filosófica genuína por conteúdo ideológico predeterminado e incondicionalmente favorável ao regime","Como a formação cidadã é compatível com regimes autoritários","A EMC foi um avanço pedagógico — produzia alunos mais disciplinados"],a:1,c:"A EMC é o exemplo mais próximo — historicamente e geograficamente — do que a Filosofia *não* é: uma disciplina que \"ensina valores\" de forma impositiva, sem investigação, sem diálogo, sem possibilidade de questionamento. A comparação entre EMC (doutrinação cívica autoritária) e Filosofia genuína (investigação crítica, diálogo, questionamento de pressupostos) é pedagogicamente fundamental: mostra que \"ensinar ética\" e \"filosofar eticamente\" são atividades radicalmente diferent",d:"Média"},{n:24,t:"A perspectiva de **desenvolvimento de materiais didáticos para o EF Anos Finais** é estratégica porque:",o:["Os materiais do EM podem ser simplesmente adaptados para o EF sem modificações","O EF Anos Finais é o nível educacional com maior lacuna em materiais didáticos filosóficos — os materiais existentes são principalmente para o EM, sem adequação à faixa etária, à linguagem e aos interesses de alunos de 11-14 anos","O EF não precisa de materiais didáticos — o professor improvisa com os textos filosóficos originais","A BNCC proibiu o uso de materiais didáticos nas aulas de Filosofia do EF"],a:1,c:"O EF Anos Finais — que inclui o cargo deste concurso — é exatamente o nível onde há maior escassez de materiais filosóficos adequados. Os livros didáticos de Filosofia avaliados pelo PNLD são principalmente para o EM; o P4C tem materiais para a Educação Infantil e os primeiros anos do EF; mas o EF Anos Finais (6º ao 9º) é um \"meio vazio\" — onde alunos de 11 a 15 anos precisam de materiais que sejam simultaneamente filosoficamente rigorosos e pedagogicamente adequados à sua fa",d:"Média"},{n:25,t:"A consolidação das **associações de professores e pesquisadores de Filosofia** — como a ANPOF e a SEAF — é um avanço porque:",o:["Essas associações controlam o currículo nacional de Filosofia","Criam uma comunidade organizada capaz de defender o espaço curricular da Filosofia, promover a formação continuada e produzir pesquisa sobre o ensino — como demonstrado na mobilização contra a Reforma do EM de 2017","Garantem automaticamente a qualidade do ensino de Filosofia em todas as escolas","São exclusivas para filósofos com doutorado — excluem os professores da rede pública"],a:1,c:"A ANPOF (Associação Nacional de Pós-Graduação em Filosofia) e a SEAF (Sociedade de Estudos e Atividades Filosóficas) são exemplos de como a organização coletiva dos professores e pesquisadores de Filosofia é estratégica: foi a mobilização dessas e de outras associações que sustentou a luta pela Lei 11.684/2008 e a resistência à Reforma do EM de 2017, resultando na Lei 14.892/2024. Sem essa organização coletiva, o espaço curricular da Filosofia seria ainda mais vulnerável às p",d:"Média"},{n:26,t:"O surgimento de **periódicos acadêmicos especializados** em ensino de Filosofia — como *Filosofia e Educação* e *Childhood & Philosophy* — é um avanço porque:",o:["Demonstra que o ensino de Filosofia é uma ciência exata com resultados replicáveis","Cria um espaço de publicação e debate para as pesquisas sobre como ensinar Filosofia — contribuindo para a consolidação do campo como área de conhecimento legítima","Substitui a necessidade de publicações filosóficas acadêmicas tradicionais","São destinados exclusivamente a professores universitários — irrelevantes para a escola básica"],a:1,c:"A existência de periódicos especializados em ensino de Filosofia é um indicador da maturidade do campo: permite a publicação, o debate e o acúmulo de conhecimento sobre como ensinar Filosofia — distinto do conhecimento sobre *filosofia* (que é o objeto dos periódicos filosóficos tradicionais). Esses periódicos publicam pesquisas sobre metodologias, sobre o uso de textos específicos em sala, sobre avaliação em Filosofia, sobre formação de professores — um conhecimento que alim",d:"Média"},{n:27,t:"O fato de que o **ENEM** inclui questões de Filosofia — geralmente como \"contexto\" de problemas de outras áreas — representa um limite porque:",o:["O ENEM deveria ter uma seção exclusiva de Filosofia com maior peso","A forma como a Filosofia aparece no ENEM incentiva um ensino superficial e fragmentado — que apresenta ideias filosóficas como \"contexto cultural\" em vez de investigá-las com rigor filosófico genuíno","O ENEM não tem nenhuma questão de Filosofia","O ENEM avalia Filosofia com maior rigor do que qualquer outro componente curricular"],a:1,c:"A presença da Filosofia no ENEM tem efeito ambíguo: por um lado, legitima a disciplina ao incluí-la numa avaliação de alta relevância; por outro, a forma como aparece — geralmente como \"contexto\" para questionar habilidades de leitura ou de interpretação — incentiva um ensino enciclopédico que \"passa\" pelos filósofos sem investigá-los. O professor orientado pelo ENEM tende a ensinar \"o que Nietzsche disse sobre a moral\" em vez de criar condições para que os alunos pensem *com",d:"Média"},{n:28,t:"A perspectiva de que a **crise da democracia pode ser um catalisador** para o ensino de Filosofia se baseia em que:",o:["Crises sempre melhoram o ensino de qualquer disciplina","A crise democrática torna visível para mais pessoas — incluindo gestores educacionais — que capacidades como pensamento crítico, argumentação, reconhecimento de manipulação e deliberação pública não se desenvolvem espontaneamente — e que a Filosofia tem papel específico nesse desenvolvimento","A Filosofia pode resolver sozinha a crise democrática","As crises democráticas sempre levam a maior financiamento da educação"],a:1,c:"Há uma ironia histórica: as crises democráticas — desinformação massiva, polarização, enfraquecimento institucional — tornam mais visível a necessidade do que a Filosofia desenvolve. Quando pessoas acreditam em teorias conspiratórias sem examinar evidências, quando algoritmos substituem a deliberação pública, quando líderes populistas apelam à emoção em vez de argumentos — a demanda por pensamento crítico, avaliação de evidências e argumentação racional se torna urgente. Isso",d:"Média"},{n:29,t:"A iniciativa de **formação continuada de professores de Filosofia** — especialmente em filosofias africanas, indígenas e feministas — é urgente porque:",o:["Os professores de Filosofia que já estão em exercício não têm mais capacidade de aprender","A maioria dos professores de Filosofia em exercício foi formada num currículo predominantemente europeu ocidental — e não tem instrumentos para cumprir as determinações da Lei 10.639/2003 e as demandas por decolonização do currículo","A formação continuada substitui a formação inicial — os professores podem ser formados apenas em serviço","Os professores de Filosofia já dominam todas as tradições filosóficas mundiais"],a:1,c:"A defasagem entre as demandas curriculares contemporâneas (Lei 10.639/2003, perspectiva decolonial, filosofias outras) e a formação que os professores receberam é real e urgente: a maioria dos cursos de Filosofia no Brasil ainda é predominantemente eurocêntrica. Um professor formado numa licenciatura em Filosofia típica terá estudado Platão, Aristóteles, Descartes, Kant e Nietzsche — mas provavelmente não terá tido contato sistemático com a filosofia Ubuntu, com o perspectivi",d:"Média"},{n:30,t:"A perspectiva de que **a Filosofia pode contribuir especificamente para a saúde mental dos adolescentes** — sem ser terapia — é fundamentada em:",o:["A Filosofia tem efeito terapêutico comprovado clinicamente","A reflexão filosófica sobre sentido, identidade, morte, liberdade e florescimento — especialmente nas tradições estoica, existencialista e ética das virtudes — oferece recursos conceituais para os adolescentes elaborarem questões existenciais genuínas que vivenciam","O professor de Filosofia deve assumir o papel de terapeuta","A saúde mental não tem relação com o pensamento filosófico"],a:1,c:"A adolescência é marcada por questões existenciais que são genuinamente filosóficas: \"Quem sou eu?\", \"O que devo fazer com minha vida?\", \"Por que o sofrimento existe?\", \"A morte é o fim?\". A Filosofia — especialmente o existencialismo (Sartre, Camus, Kierkegaard), a ética das virtudes (o que é uma boa vida?), o estoicismo (o que está em meu controle?) — oferece recursos para essas questões que nem a família, nem a religião, nem a ciência fornecem da mesma forma. Isso não tran",d:"Média"},{n:31,t:"O avanço representado pelo **reconhecimento da Filosofia como componente da formação cidadã** na legislação brasileira (LDB, BNCC, OCEMs) é simultaneamente um limite porque:",o:["Esse reconhecimento eliminou qualquer debate sobre o valor da Filosofia","O reconhecimento formal não garante condições reais de implementação — carga horária adequada, professores habilitados, materiais de qualidade e apoio institucional. A distância entre o que a lei diz e o que ocorre na sala de aula é um dos maiores limites do ensino de Filosofia no Brasil","A legislação é excessivamente detalhada — não deixa espaço para a criatividade docente","O reconhecimento formal é suficiente — a implementação é responsabilidade exclusiva do professor"],a:1,c:"A distância entre a lei e a prática é um limite clássico da educação brasileira — e o ensino de Filosofia não é exceção. A Lei 11.684/2008 tornou a Filosofia obrigatória no EM — mas muitas escolas ainda a ensinavam com professores sem habilitação, com carga horária mínima e sem materiais adequados. O mesmo pode ocorrer com a Lei 14.892/2024. A conquista legislativa é necessária mas não suficiente — precisa ser acompanhada de investimento em formação, materiais e condições de ",d:"Média"},{n:32,t:"A trajetória da **Filosofia na educação jesuítica colonial** é relevante para compreender os limites do ensino de Filosofia atual porque:",o:["Os jesuítas criaram o método filosófico mais eficaz — que deve ser restaurado","Demonstra que a Filosofia pode ser instrumento de formação das elites em detrimento das classes populares — e que o ensino de Filosofia democrático e inclusivo é uma conquista histórica recente que precisa ser continuamente defendida","Os jesuítas ensinavam uma Filosofia mais rigorosa do que a ensinada hoje","A escolástica jesuítica é o modelo ideal para o ensino de Filosofia contemporâneo"],a:1,c:"A Filosofia jesuítica colonial era real e rigorosa — mas formava apenas a elite colonial, excluindo sistematicamente indígenas, africanos escravizados, mulheres e as classes populares. O ensino de Filosofia democrático — que inclui todos os alunos, parte de suas realidades, reconhece suas tradições culturais e visa sua emancipação — é uma conquista do século XX e XXI que deve ser continuamente defendida. A história da exclusão alerta que a inclusão formal não é garantia de in",d:"Média"},{n:33,t:"O debate sobre se a **Filosofia deve ter espaço no EF Anos Finais** (6º ao 9º ano) é respondido mais adequadamente pela:",o:["LDB — que proíbe explicitamente a Filosofia no EF","BNCC — que inclui a Filosofia apenas no EM","Pesquisa em desenvolvimento cognitivo e em filosofia para crianças — que demonstra que pré-adolescentes de 11-14 anos têm capacidade para investigação filosófica genuína, tornando o EF Anos Finais um campo estratégico para o desenvolvimento do filosofar","Tradição histórica — que sempre excluiu a Filosofia do EF"],a:2,c:"A questão de se adolescentes de 11-14 anos podem filosofar genuinamente é respondida empiricamente: pesquisas de Piaget sobre o desenvolvimento do pensamento formal (que emerge por volta dos 11-12 anos), as experiências de Lipman com comunidades de investigação no EF, e décadas de prática do P4C em diferentes países mostram que sim — com mediação adequada, alunos nessa faixa etária investigam questões filosóficas genuínas. O EF Anos Finais é uma oportunidade — e o fato de est",d:"Média"},{n:34,t:"A perspectiva de **internacionalização da pesquisa** em ensino de Filosofia — com diálogo entre o Brasil, a Europa, a África e a América Latina — é relevante porque:",o:["Tornará o ensino de Filosofia no Brasil idêntico ao de outros países","Permite que o Brasil aprenda com experiências internacionais (P4C nos EUA, filosofia intercultural na Alemanha, filosofia Ubuntu na África do Sul) e contribua com sua experiência específica (freiriana, decolonial) — enriquecendo o campo globalmente","É irrelevante — o ensino de Filosofia é um problema exclusivamente local","A internacionalização tende a impor o currículo filosófico europeu — é um retrocesso"],a:1,c:"A internacionalização da pesquisa em ensino de Filosofia é uma perspectiva de enriquecimento mútuo: o Brasil pode aprender com experiências internacionais (o P4C americano, a filosofia intercultural europeia, as experiências africanas de integração do Ubuntu ao currículo) e ao mesmo tempo contribuir com o que tem de específico: a pedagogia freiriana, a experiência de ensino de Filosofia em contextos de grande desigualdade social e a reflexão decolonial latino-americana. Esse ",d:"Média"},{n:35,t:"A **precarização do trabalho docente** — que afeta especialmente os professores de Filosofia, frequentemente contratados temporariamente com alta carga horária distribuída por muitas turmas — é um limite porque:",o:["Professores temporários são juridicamente proibidos de ensinar Filosofia","A precarização impede que o professor desenvolva um relacionamento contínuo com os alunos, tenha tempo para planejamento adequado e formação continuada — comprometendo a qualidade do ensino filosófico, que requer continuidade e aprofundamento","Professores temporários ensinam melhor — por serem mais motivados","A precarização não afeta a qualidade do ensino — apenas o bem-estar do professor"],a:1,c:"A precarização é um limite concreto e frequentemente ignorado nos debates sobre ensino de Filosofia: um professor que trabalha em 3 escolas diferentes com 20 turmas cada, num contrato temporário anual, não tem condições de planejar sequências didáticas aprofundadas, construir uma comunidade de investigação que evolua ao longo do ano, ou investir em formação continuada. O ensino de Filosofia de qualidade — que cria comunidades de investigação, trabalha com textos filosóficos, ",d:"Média"},{n:36,t:"Considere as afirmações sobre avanços e limites do ensino de Filosofia no Brasil:  I. A Lei 11.684/2008 foi o único avanço legislativo significativo — a Lei 14.892/2024 foi apenas manutenção do status quo. II. A desarticulação entre bacharelado e licenciatura é um limite estrutural que a simples ampliação do número de licenciados não resolve. III. A inclusão da Filosofia no PNLD é um avanço que contribui para a democratização do acesso a materiais filosóficos nas escolas públicas.  Estão corretas:",o:["Apenas I e II","Apenas II e III","Apenas I e III","I, II e III"],a:1,c:"I é **falsa**: a Lei 14.892/2024 foi um avanço — reverteu um retrocesso real (a Lei 13.415/2017 que havia enfraquecido a obrigatoriedade da Filosofia). Não foi manutenção do status quo — foi conquista de uma luta. II é **verdadeira**: a desarticulação entre bacharelado e licenciatura é um problema qualitativo — mais licenciados formados da mesma forma produce mais professores com o mesmo perfil desarticulado. III é **verdadeira**: o PNLD garante que escolas sem recursos possa",d:"Difícil"},{n:37,t:"A comparação entre a **Educação Moral e Cívica** (EMC) da ditadura e o **\"Escola sem Partido\"** — movimento que defendia a \"neutralidade\" docente e foi objeto de projetos de lei na redemocratização — é filosoficamente relevante porque:",o:["São propostas idênticas — ambas visam o mesmo objetivo","Ambas, de formas diferentes, buscam limitar o pensamento crítico na escola — a EMC por imposição de um conteúdo ideológico específico, o \"Escola sem Partido\" pela proibição de questionar determinadas visões de mundo sob o pretexto de neutralidade","O \"Escola sem Partido\" é um avanço em relação à EMC — porque defende a neutralidade","Não há nenhuma relação entre as duas propostas — são históricas e politicamente incomparáveis"],a:1,c:"A comparação filosófica é rica: ambas as propostas, apesar das aparências contrárias, têm efeito semelhante sobre o ensino de Filosofia. A EMC impunha um conteúdo específico (os \"valores nacionais\" do regime). O \"Escola sem Partido\" — ao tentar proibir o professor de \"impor\" suas visões — na prática limitava a capacidade de questionamento filosófico: como trabalhar a crítica marxista ao capitalismo sem \"impor\" o marxismo? Como trabalhar o existencialismo sem \"impor\" o ateísmo",d:"Difícil"},{n:38,t:"A perspectiva de que a **Filosofia pode contribuir para a formação em ciência de dados e IA** — áreas em crescimento — é fundamentada em:",o:["A Filosofia ensina programação de forma mais eficiente que as ciências da computação","Questões filosóficas são centrais no desenvolvimento ético da IA: o que é uma decisão justa de um algoritmo? Quem é responsável por um erro de um sistema autônomo? O que é privacidade num mundo de dados? Essas questões exigem pensamento filosófico rigoroso","A Filosofia é irrelevante para áreas técnicas — é exclusiva das humanidades","Os programadores de IA já têm formação filosófica suficiente por sua formação técnica"],a:1,c:"O crescimento da IA e da ciência de dados tornou urgentes questões filosoficamente centrais: ética dos algoritmos (discriminação algorítmica, decisões de IA em saúde e justiça), filosofia da mente (a IA pode \"pensar\"? tem \"consciência\"?), epistemologia (o que conta como evidência num sistema de aprendizado de máquina?), filosofia política (quem governa os sistemas de IA? com que legitimidade?). Empresas de tecnologia de ponta contratam filósofos exatamente para essas questões",d:"Difícil"},{n:39,t:"A **resistência de alguns professores de outras áreas** a que a Filosofia ocupe espaço no currículo do EF — preferindo que \"humanidades\" sejam integradas em suas disciplinas — é um limite que revela:",o:["A Filosofia não tem nada a oferecer que as outras disciplinas já não ofereçam","A tensão entre identidade disciplinar e integração curricular: integrar pode enriquecer o ensino, mas quando a \"integração\" significa absorção sem identidade específica, a Filosofia perde o que a torna necessária — o filosofar genuíno, que não ocorre espontaneamente em aulas de História ou Geografia","Os professores de outras áreas têm razão — a Filosofia deve ser eliminada do EF","A tensão é apenas administrativa — sem consequências pedagógicas reais"],a:1,c:"A tensão entre integração e identidade disciplinar é real e pedagogicamente relevante: integrar a Filosofia às Ciências Humanas pode enriquecer o ensino se a Filosofia conservar sua especificidade — seus problemas próprios, seu método, sua exigência de texto e argumento. Mas quando \"integração\" significa que o professor de História \"inclui questões filosóficas\" sem treinamento filosófico específico, o resultado é a diluição — questões filosóficas aparecem mas não são investig",d:"Difícil"},{n:40,t:"A perspectiva de que **alunos de escolas públicas periféricas** têm tanto direito à investigação filosófica quanto alunos de escolas privadas de elite é uma perspectiva de justiça que tem:",o:["Apenas valor retórico — na prática é impossível fazer Filosofia com alunos de baixa renda","Fundamento na filosofia freiriana (a pedagogia do oprimido parte justamente da realidade dos excluídos), na abordagem das capacidades de Nussbaum (a capacidade filosófica como direito humano), e na evidência empírica de que alunos de qualquer origem socioeconômica são capazes de investigação filosófica genuína quando mediados adequadamente","É impossível — a filosofia requer capital cultural que os alunos pobres não têm","Implica que o conteúdo da Filosofia deve ser simplificado para alunos de baixa renda"],a:1,c:"A perspectiva de democratização da Filosofia não é retórica — tem fundamento filosófico (Freire: a educação genuína parte da realidade dos oprimidos; Nussbaum: a razão prática é uma capacidade humana universal que todos têm direito de desenvolver) e evidência empírica (projetos P4C em escolas públicas periféricas no Brasil e no mundo mostram que alunos de qualquer origem são capazes de investigação filosófica genuína). O que muda com o contexto socioeconômico não é a capacida",d:"Difícil"},{n:41,t:"A análise comparativa entre o Brasil e outros países em termos de ensino de Filosofia revela que:",o:["O Brasil é o país com mais horas de Filosofia por semana na educação básica","O Brasil é único no mundo em ter Filosofia obrigatória — todos os outros países a deixam como optativa","Países como França (onde a Philosophie é obrigatória no dernier classe do lycée e componente do Baccalauréat), Itália e vários países africanos têm tradições fortes de ensino de Filosofia — o Brasil se situa num contexto internacional de reconhecimento crescente da Filosofia na educação básica","O Brasil não tem nenhuma tradição de ensino de Filosofia comparável à Europa"],a:2,c:"A Filosofia na educação básica é uma realidade internacional: na França, a Philosophie no terminal do Lycée é uma das disciplinas mais valorizadas (e mais complexas) do sistema educacional — e a dissertação filosófica no Baccalauréat é um rito de passagem cultural. Na Alemanha, Itália, Espanha e Portugal há tradições fortes. Em países africanos como Quênia, Zâmbia e Nigéria há experiências de ensino de Filosofia integradas às tradições filosóficas locais. O Brasil, com sua hi",d:"Difícil"},{n:42,t:"A perspectiva de que a **Filosofia pode ser ensinada de forma \"híbrida\"** — combinando sala de aula presencial com recursos digitais — abre possibilidades porque:",o:["O ensino digital é sempre superior ao presencial em Filosofia","Permite o acesso a textos filosóficos, debates gravados, ferramentas de análise argumentativa e comunidades de investigação online — ampliando os recursos disponíveis sem eliminar a especificidade do diálogo filosófico presencial, que tem dimensões não reproduzíveis digitalmente","Elimina completamente a necessidade de professores presenciais de Filosofia","O ensino híbrido é proibido pela legislação educacional brasileira"],a:1,c:"O ensino híbrido de Filosofia tem potencial específico: o acesso a textos filosóficos completos e gratuitos online (Project Gutenberg, Stanford Encyclopedia of Philosophy, PhilPapers), a vídeos de filósofos comentando suas obras, a ferramentas de mapeamento de argumentos — pode enriquecer o ensino sem substituir o que é insubstituível: o diálogo filosófico presencial, onde a entonação, o gesto, o olhar e a presença corporalcontribuem para a qualidade da investigação. A Filoso",d:"Difícil"},{n:43,t:"A perspectiva de que o **professor de Filosofia do EF Anos Finais** tem um papel específico e diferenciado em relação ao professor do EM é que:",o:["O professor do EF ensina conteúdo mais simples — não precisa de formação filosófica sólida","O professor do EF trabalha com alunos numa fase de desenvolvimento em que questões de identidade, sentido, relacionamento e justiça são especialmente urgentes e vividas — o que oferece pontos de entrada para a investigação filosófica especialmente ricos e ao mesmo tempo exige mediação pedagógica sensível a essa faixa etária específica","O professor do EF deve seguir o mesmo currículo do EM, apenas simplificando","O professor do EF não deve trabalhar com questões existenciais — apenas com lógica e argumentação"],a:1,c:"O EF Anos Finais (11-14 anos) é uma faixa etária filosoficamente rica por razões desenvolvimentais específicas: é a fase em que o pensamento formal começa a se desenvolver (Piaget), em que as questões de identidade se tornam centrais (Erikson), em que a injustiça social começa a ser percebida criticamente e em que as grandes questões existenciais (morte, sentido, liberdade) ganham urgência real. Isso oferece pontos de entrada filosófica especialmente ricos — mas também exige ",d:"Difícil"},{n:44,t:"A análise de que o **avanço legislativo** (Lei 11.684/2008 e Lei 14.892/2024) não garante por si só a qualidade do ensino de Filosofia é fundamentada no conceito de:",o:["\"Lei seca\" — leis que não podem ser cumpridas por falta de recursos","A distinção entre o \"currículo prescrito\" (o que a lei determina), o \"currículo ensinado\" (o que ocorre nas salas de aula) e o \"currículo aprendido\" (o que os alunos efetivamente desenvolvem) — e o fato de que as distâncias entre esses três níveis são frequentemente enormes no Brasil","O princípio de que toda lei educacional é automaticamente cumprida pelas escolas","A ideia de que os professores são os únicos responsáveis pela qualidade do ensino"],a:1,c:"A distinção entre currículo prescrito, ensinado e aprendido (desenvolvida por autores como Goodlad e incorporada pela pesquisa curricular brasileira) é fundamental: a lei diz \"Filosofia obrigatória\" (prescrito) — mas o que ocorre na sala de aula (ensinado) e o que os alunos desenvolvem (aprendido) depende de fatores que a lei não garante: professor habilitado, carga horária adequada, material de qualidade, condições de trabalho, formação continuada, apoio institucional. A con",d:"Difícil"},{n:45,t:"A perspectiva de que o **ensino de Filosofia pode contribuir para a decolonização epistêmica** — indo além da simples inclusão de autores não-ocidentais — implica que:",o:["A Filosofia ocidental deve ser completamente eliminada do currículo","O processo de decolonização epistêmica exige não apenas adicionar autores ao cânone mas questionar as próprias categorias e critérios que definem o que conta como \"filosofia\" — e isso transforma a concepção da própria disciplina","A decolonização é um processo político que não tem impacto no conteúdo filosófico","Apenas professores negros ou indígenas podem ensinar filosofias africanas ou ameríndias"],a:1,c:"A decolonização epistêmica profunda — como proposta por Mignolo, Quijano e outros — não é simplesmente \"adicionar Fanon ao lado de Kant\". É questionar o que determina que Kant é \"filósofo\" mas o pensamento Ubuntu é \"tradição cultural\". É perguntar por que a racionalidade argumentativa europeia é o critério do filosófico — e não a narrativa, o ritmo, a relação com a natureza, as práticas de si coletivas. Isso não elimina a Filosofia ocidental — mas a reposiciona como uma tradi",d:"Difícil"},{n:46,t:"A questão da **avaliação externa** do ensino de Filosofia — como o SAEB (Sistema de Avaliação da Educação Básica) — é problemática porque:",o:["O SAEB avalia a Filosofia com extremo rigor — criando pressão positiva sobre o ensino","O SAEB não avalia Filosofia — e a ausência de avaliação externa pode ser tanto um alívio (sem \"preparação para a prova\") quanto um problema (sem visibilidade, sem dados sobre o que os alunos aprendem)","O SAEB prova que o ensino de Filosofia é de alta qualidade no Brasil","A avaliação externa deve ser abolida em Filosofia — é incompatível com a liberdade filosófica"],a:1,c:"A ausência de Filosofia nas avaliações externas (SAEB, Prova Brasil) é ambígua: por um lado, libera o ensino da pressão de \"preparar para a prova\" — que deforma o ensino de qualquer disciplina ao reduzi-la ao que é avaliável. Por outro, sem dados sobre o aprendizado de Filosofia nas escolas brasileiras, é impossível monitorar o impacto das políticas educacionais, identificar desigualdades e orientar a formação de professores. A invisibilidade nos dados pode contribuir para a ",d:"Difícil"},{n:47,t:"A perspectiva de **desenvolvimento profissional continuado** para professores de Filosofia em exercício — que vai além de cursos pontuais — é mais efetiva quando:",o:["É organizada como palestras de especialistas para grupos grandes de professores","É organizada em comunidades de prática — grupos de professores que se reúnem regularmente para investigar sua própria prática, compartilhar materiais, desenvolver sequências didáticas e refletir coletivamente sobre o ensino de Filosofia","É realizada exclusivamente a distância — cursos online são mais eficientes","É obrigatória e avaliada por testes — o que garante o aprendizado"],a:1,c:"A pesquisa sobre desenvolvimento profissional docente efetivo (Zeichner, Cochran-Smith, Schön) mostra que os modelos mais eficazes são os que organizam professores em comunidades de prática regulares — onde a investigação sobre a própria prática é o motor. Para professores de Filosofia, isso pode incluir: leitura coletiva de textos filosóficos, desenvolvimento colaborativo de sequências didáticas, reflexão sobre casos de sala de aula, análise crítica de materiais. Esse modelo",d:"Difícil"},{n:48,t:"A análise de **Fábio Pestana Ramos** e outros historiadores da educação brasileira sobre a trajetória da Filosofia nas escolas revela que:",o:["O ensino de Filosofia no Brasil sempre foi de excelente qualidade","O ensino de Filosofia no Brasil esteve mais vezes *ausente* que *presente* do currículo da maioria dos estudantes — o que torna a luta pela sua presença uma questão de acesso a direitos educacionais, não apenas de preferência curricular","A Filosofia nunca existiu nos currículos brasileiros antes da Lei 11.684/2008","O ensino de Filosofia foi sempre privilégio exclusivo das escolas privadas"],a:1,c:"A análise histórica do ensino de Filosofia no Brasil revela que, para a maioria dos estudantes — especialmente das classes populares — a Filosofia foi sistematicamente ausente: os jesuítas ensinavam nas escolas de elite; a EMC substituiu a Filosofia para todos durante a ditadura; a ambiguidade da LDB/1996 permitiu a não-implementação em muitos sistemas; mesmo após a Lei 11.684/2008, condições inadequadas limitaram o acesso real. Isso significa que o acesso a uma educação filo",d:"Difícil"},{n:49,t:"A perspectiva de **articulação entre o ensino de Filosofia e as questões ambientais** — especialmente a crise climática — é fundamentada em:",o:["A Filosofia tem mais dados científicos sobre o clima do que as outras disciplinas","A crise climática levanta questões filosóficas centrais — ética do futuro (devemos obrigações às gerações futuras?), ontologia da natureza (a natureza tem valor intrínseco?), epistemologia do risco (como agir sob incerteza científica?), filosofia política (justiça climática global) — que a Filosofia é especificamente equipada para investigar","O ensino de Filosofia deve substituir o de Ciências na discussão do clima","A ética ambiental é demasiado politicamente controversa para ser ensinada em escolas"],a:1,c:"A crise climática é um campo de questões filosóficas urgentes que a Filosofia — especialmente a ética ambiental, a filosofia política e a epistemologia — pode investigar com rigor específico: Hans Jonas (*O Princípio Responsabilidade*, 1979) sobre a ética do futuro e a responsabilidade para com gerações futuras; o debate entre antropocentrismo, biocentrismo e ecocentrismo; a questão da justiça climática global (quem deve pagar pelos danos?); a epistemologia do princípio da pr",d:"Difícil"},{n:50,t:"Um professor de Filosofia concursado em São José de Ribamar quer, em seu primeiro mês de aula, diagnosticar os limites e as perspectivas do ensino de Filosofia em sua escola específica. A abordagem mais filosoficamente fundamentada é:",o:["Aplicar uma prova diagnóstica sobre os filósofos que os alunos conhecem","Observar as condições concretas (carga horária, materiais, perfil dos alunos, contexto comunitário) e dialogar com os alunos sobre suas questões e experiências — usando essa investigação inicial como base para construir um planejamento que articule o rigor filosófico com a realidade local, aplicando o princípio freiriano de partir da realidade dos educandos","Seguir exatamente o livro didático aprovado pelo PNLD — sem adaptações","Ensinar primeiro a história da filosofia completa — e depois perguntar o que os alunos querem investigar"],a:1,c:"Esta questão final integra todos os temas do tópico: os avanços (o concurso existe — há reconhecimento institucional), os limites (carga horária, contexto local, formação) e as perspectivas (construção de uma prática filosófica enraizada na realidade local). A abordagem B aplica o princípio freiriano (partir da realidade dos educandos), respeita o rigor filosófico (articulação com a tradição), e reconhece a especificidade do contexto (São José de Ribamar, seus alunos, sua com",d:"Difícil"}];
+const TOTAL = 50;
+let answers = {};
+let currentFilter = 'all';
+let errorsMode = false;
+
+function getVisible(){
+  if(errorsMode){
+    return QUESTIONS.filter(q=>answers[q.n]!==undefined && answers[q.n]!==q.a);
+  }
+  if(currentFilter==='all') return QUESTIONS;
+  return QUESTIONS.filter(q=>q.d===currentFilter);
+}
+
+function renderQuiz(){
+  const visible = getVisible();
+  const container = document.getElementById('quiz-content');
+  container.innerHTML = '';
+  if(!visible.length){
+    container.innerHTML = '<p style="text-align:center;color:var(--text3);padding:40px;font-family:JetBrains Mono,monospace;font-size:13px;">Nenhuma questão neste filtro.</p>';
+    return;
+  }
+  visible.forEach((q,i)=>{
+    const block = document.createElement('div');
+    block.className = 'q-block' + (answers[q.n]!==undefined?' answered':'');
+    block.id = 'qb-'+q.n;
+    const diffClass = q.d==='Fácil'?'diff-easy':q.d==='Média'?'diff-med':'diff-hard';
+    const done = answers[q.n]!==undefined;
+    block.innerHTML = `
+      <div class="q-meta">
+        <span class="q-num">Q${String(q.n).padStart(2,'0')}</span>
+        <span class="q-diff ${diffClass}">${q.d}</span>
+      </div>
+      <div class="q-text">${q.t}</div>
+      <div class="q-opts" id="opts-${q.n}">
+        ${q.o.map((o,j)=>{
+          let cls='q-opt'+(done?' done':'');
+          if(done){
+            if(j===q.a) cls+=' correct';
+            else if(j===answers[q.n]) cls+=' wrong';
+          }
+          return `<div class="${cls}" ${!done?`onclick="pick(${q.n},${j})"`:''}>
+            <span class="opt-letter">${'ABCD'[j]}</span>
+            <span class="opt-text">${o}</span>
+          </div>`;
+        }).join('')}
+      </div>
+      <div class="q-feedback ${done?(answers[q.n]===q.a?'fb-correct show':'fb-wrong show'):''}" id="fb-${q.n}">
+        <span class="fb-label">${done?(answers[q.n]===q.a?'✓ Correto':'✗ Incorreto — Gabarito: '+'ABCD'[q.a]):'' }</span>
+        <span class="fb-body">${q.c}</span>
+      </div>`;
+    container.appendChild(block);
+  });
+}
+
+function pick(qn, optIdx){
+  if(answers[qn]!==undefined) return;
+  const q = QUESTIONS.find(x=>x.n===qn);
+  answers[qn] = optIdx;
+  const correct = optIdx===q.a;
+  // Style options
+  const opts = document.querySelectorAll('#opts-'+qn+' .q-opt');
+  opts.forEach(o=>o.classList.add('done'));
+  opts[optIdx].classList.add(correct?'correct':'wrong');
+  if(!correct) opts[q.a].classList.add('correct');
+  // Feedback
+  const fb=document.getElementById('fb-'+qn);
+  fb.className='q-feedback show '+(correct?'fb-correct':'fb-wrong');
+  fb.innerHTML=`<span class="fb-label">${correct?'✓ Correto':'✗ Incorreto — Gabarito: '+'ABCD'[q.a]}</span><span class="fb-body">${q.c}</span>`;
+  document.getElementById('qb-'+qn).classList.add('answered');
+  updateStats();
+  if(Object.keys(answers).length===TOTAL) finishQuiz();
+}
+
+function updateStats(){
+  const answered = Object.keys(answers).length;
+  let corr = 0;
+  QUESTIONS.forEach(q => { if (answers[q.n] === q.a) corr++; });
+  const pct = answered ? Math.round(corr / answered * 100) : 0;
+
+  document.getElementById('hdr-answered').textContent = answered;
+  document.getElementById('hdr-correct').textContent = corr;
+  document.getElementById('hdr-pct').textContent = pct + '%';
+  document.getElementById('prog-bar').style.width = (answered / TOTAL * 100) + '%';
+  document.getElementById('st-pts').textContent = corr;
+  document.getElementById('st-fill').style.width = (corr / TOTAL * 100) + '%';
+  document.getElementById('st-pct').textContent = pct + '%';
+
+  syncErrorsButton();
+}
+
+function finishQuiz(){
+  let corr=0;
+  QUESTIONS.forEach(q=>{ if(answers[q.n]===q.a) corr++; });
+  const pct=Math.round(corr/TOTAL*100);
+  const panel=document.getElementById('score-panel');
+  panel.classList.add('show');
+  const numEl=document.getElementById('sc-num');
+  numEl.textContent=corr+'/'+TOTAL;
+  numEl.className='sc-number '+(pct>=70?'sc-approved':'sc-failed');
+  document.getElementById('sc-pct').textContent=pct+'% de acerto';
+  const errs=TOTAL-corr;
+  document.getElementById('sc-breakdown').innerHTML=
+    `<div class="sc-item"><strong>${corr}</strong>Corretas</div>
+     <div class="sc-item"><strong>${errs}</strong>Incorretas</div>
+     <div class="sc-item"><strong>${pct}%</strong>Aproveitamento</div>`;
+  syncErrorsButton();
+  if(errs>0) document.getElementById('sc-review-btn').style.display='inline-block';
+  else document.getElementById('sc-review-btn').style.display='none';
+  panel.scrollIntoView({behavior:'smooth'});
+}
+
+function syncErrorsButton(){
+  const errBtn = document.getElementById('err-btn');
+  const errs = QUESTIONS.filter(q => answers[q.n] !== undefined && answers[q.n] !== q.a).length;
+  const answered = Object.keys(answers).length;
+
+  if (errs > 0) {
+    errBtn.style.display = 'block';
+    errBtn.disabled = false;
+    errBtn.textContent = errorsMode ? '↺ Mostrar todas' : '↺ Só erros';
+  } else {
+    errBtn.style.display = answered === TOTAL ? 'block' : 'none';
+    errBtn.disabled = true;
+    errBtn.textContent = '↺ Só erros';
+  }
+}
+
+function resetQuiz(){
+  answers={};
+  errorsMode=false;
+  currentFilter='all';
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelector('[data-filter="all"]').classList.add('active');
+  document.getElementById('score-panel').classList.remove('show');
+  syncErrorsButton();
+  document.getElementById('hdr-answered').textContent='0';
+  document.getElementById('hdr-correct').textContent='0';
+  document.getElementById('hdr-pct').textContent='0%';
+  document.getElementById('prog-bar').style.width='0%';
+  document.getElementById('st-pts').textContent='0';
+  document.getElementById('st-fill').style.width='0%';
+  document.getElementById('st-pct').textContent='0%';
+  renderQuiz();
+  window.scrollTo(0,0);
+}
+
+function reviewErrors(){
+  errorsMode = true;
+  document.getElementById('score-panel').classList.remove('show');
+  currentFilter = 'all';
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector('[data-filter="all"]').classList.add('active');
+  renderQuiz();
+syncErrorsButton();
+  window.scrollTo(0,0);
+}
+
+function setFilter(f, btn){
+  currentFilter = f;
+  errorsMode = false;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderQuiz();
+syncErrorsButton();
+}
+
+function toggleErrors(){
+  const errs = QUESTIONS.filter(q => answers[q.n] !== undefined && answers[q.n] !== q.a).length;
+  if (!errs) return;
+  errorsMode = !errorsMode;
+  renderQuiz();
+syncErrorsButton();
+}
+
+renderQuiz();
+syncErrorsButton();
+
+</script>
+</body>
+</html>

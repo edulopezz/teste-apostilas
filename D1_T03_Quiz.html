@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>T03 Quiz — Filosofia Medieval: Patrística e Escolástica | Filosofia SJR 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+
+:root{
+  --bg:#0b0d10;--bg2:#111318;--bg3:#181c22;--bg4:#1e232b;
+  --border:#252b35;--border2:#2d3443;
+  --text:#cdd5e0;--text2:#8a96a8;--text3:#4d5a6e;
+  --gold:#c8a44a;--gold2:#e2c070;--gold3:#f0d490;
+  --blue:#3d8fd1;--green:#3d9e72;--green2:#5ec090;
+  --red:#c05050;--red2:#e07070;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:'Lato',sans-serif;font-size:15px;line-height:1.7;min-height:100vh}
+
+/* HEADER */
+.quiz-header{
+  background:var(--bg2);border-bottom:1px solid var(--border);
+  padding:16px 24px;display:flex;align-items:center;gap:16px;
+  position:sticky;top:0;z-index:50;flex-wrap:wrap;
+}
+.qh-back{
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  color:var(--text3);text-decoration:none;transition:color .2s;white-space:nowrap;
+}
+.qh-back:hover{color:var(--gold)}
+.qh-title{
+  font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:700;color:var(--gold2);
+  flex:1;
+}
+.qh-badge{
+  font-family:'JetBrains Mono',monospace;font-size:10px;
+  color:var(--gold);background:rgba(200,164,74,.12);
+  padding:3px 10px;border-radius:4px;white-space:nowrap;
+}
+.qh-stats{
+  display:flex;gap:16px;flex-wrap:wrap;
+}
+.qh-stat{
+  font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3);
+  white-space:nowrap;
+}
+.qh-stat strong{color:var(--text);font-size:14px}
+
+/* PROGRESS BAR */
+.progress-bar{height:3px;background:var(--border);overflow:hidden}
+.progress-fill{height:100%;background:var(--gold);transition:width .4s ease}
+
+/* FILTERS */
+.filter-bar{
+  padding:14px 24px;background:var(--bg2);border-bottom:1px solid var(--border);
+  display:flex;gap:8px;align-items:center;flex-wrap:wrap;
+}
+.filter-label{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3);margin-right:4px}
+.filter-btn{
+  padding:5px 14px;border-radius:4px;border:1px solid var(--border);
+  background:var(--bg3);color:var(--text2);font-family:'JetBrains Mono',monospace;
+  font-size:11px;cursor:pointer;transition:all .15s;
+}
+.filter-btn:hover{border-color:var(--gold);color:var(--gold)}
+.filter-btn.active{background:rgba(200,164,74,.15);border-color:var(--gold);color:var(--gold)}
+.filter-sep{width:1px;height:20px;background:var(--border);margin:0 4px}
+.toggle-btn{
+  margin-left:auto;padding:5px 14px;border-radius:4px;border:1px solid var(--border2);
+  background:var(--bg3);color:var(--text2);font-family:'JetBrains Mono',monospace;
+  font-size:11px;cursor:pointer;transition:all .15s;
+}
+.toggle-btn:hover{border-color:var(--blue);color:var(--blue)}
+.toggle-btn:disabled{opacity:.45;cursor:not-allowed}
+.toggle-btn:disabled:hover{border-color:var(--border2);color:var(--text2)}
+
+/* CONTENT */
+.quiz-content{padding:24px;max-width:860px;margin:0 auto}
+
+/* QUESTION BLOCK */
+.q-block{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:8px;padding:24px;margin-bottom:18px;
+  transition:border-color .2s;
+}
+.q-block.answered{border-color:var(--border2)}
+.q-meta{display:flex;gap:8px;align-items:center;margin-bottom:12px}
+.q-num{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3)}
+.q-diff{
+  font-family:'JetBrains Mono',monospace;font-size:10px;
+  padding:2px 7px;border-radius:3px;
+}
+.diff-easy{background:rgba(61,158,114,.15);color:var(--green2)}
+.diff-med{background:rgba(61,143,209,.12);color:var(--blue)}
+.diff-hard{background:rgba(192,80,80,.12);color:var(--red2)}
+.q-text{font-size:14.5px;line-height:1.75;margin-bottom:16px;color:var(--text)}
+.q-opts{display:flex;flex-direction:column;gap:8px}
+.q-opt{
+  display:flex;align-items:flex-start;gap:10px;
+  padding:10px 14px;border:1px solid var(--border);
+  border-radius:6px;cursor:pointer;background:var(--bg3);
+  transition:all .15s;
+}
+.q-opt:hover:not(.done){border-color:var(--gold);background:rgba(200,164,74,.05)}
+.q-opt.done{cursor:default}
+.q-opt.sel{border-color:var(--blue)!important;background:rgba(61,143,209,.08)!important}
+.q-opt.correct{border-color:var(--green)!important;background:rgba(61,158,114,.12)!important}
+.q-opt.wrong{border-color:var(--red)!important;background:rgba(192,80,80,.08)!important}
+.opt-letter{
+  font-family:'JetBrains Mono',monospace;font-size:12px;
+  font-weight:500;color:var(--gold);min-width:18px;margin-top:2px;
+}
+.opt-text{font-size:13.5px;color:var(--text);line-height:1.6}
+.q-feedback{
+  margin-top:12px;padding:12px 16px;border-radius:6px;
+  font-size:13px;line-height:1.7;display:none;
+}
+.q-feedback.show{display:block;animation:fadeIn .2s ease}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.fb-correct{background:rgba(61,158,114,.1);border:1px solid rgba(61,158,114,.3);color:var(--green2)}
+.fb-wrong{background:rgba(192,80,80,.08);border:1px solid rgba(192,80,80,.25);color:var(--red2)}
+.fb-label{
+  font-family:'JetBrains Mono',monospace;font-size:10px;
+  text-transform:uppercase;letter-spacing:.8px;display:block;margin-bottom:5px;
+}
+.fb-correct .fb-label{color:var(--green)}
+.fb-wrong .fb-label{color:var(--red)}
+.fb-body{color:var(--text);font-style:italic}
+
+/* SCORE PANEL */
+#score-panel{
+  display:none;background:var(--bg2);border:1px solid var(--border);
+  border-radius:12px;padding:40px;text-align:center;margin:24px;
+}
+#score-panel.show{display:block;animation:fadeIn .4s ease}
+.sc-title{
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;
+}
+.sc-number{
+  font-family:'Cormorant Garamond',serif;font-size:72px;font-weight:700;line-height:1;margin-bottom:8px;
+}
+.sc-approved{color:var(--green2)}
+.sc-failed{color:var(--red2)}
+.sc-pct{font-size:20px;color:var(--text2);margin-bottom:24px}
+.sc-breakdown{display:flex;gap:24px;justify-content:center;flex-wrap:wrap;margin:20px 0}
+.sc-item{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text3)}
+.sc-item strong{color:var(--text);display:block;font-size:18px}
+.sc-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:24px}
+.sc-btn{
+  padding:11px 24px;border-radius:6px;font-family:'JetBrains Mono',monospace;
+  font-size:12px;cursor:pointer;transition:all .2s;border:none;
+}
+.sc-btn-primary{background:var(--gold);color:var(--bg)}
+.sc-btn-primary:hover{opacity:.85}
+.sc-btn-secondary{background:var(--bg3);border:1px solid var(--border);color:var(--text2)}
+.sc-btn-secondary:hover{border-color:var(--gold);color:var(--gold)}
+
+/* BOTTOM NAV */
+.bottom-nav{
+  padding:20px 24px;border-top:1px solid var(--border);
+  display:flex;gap:10px;align-items:center;flex-wrap:wrap;
+}
+.nav-btn{
+  padding:9px 18px;border-radius:6px;
+  background:var(--bg3);border:1px solid var(--border);
+  color:var(--text2);font-family:'JetBrains Mono',monospace;
+  font-size:11px;cursor:pointer;transition:all .2s;text-decoration:none;
+  display:inline-block;
+}
+.nav-btn:hover{border-color:var(--gold);color:var(--gold)}
+.nav-theory{margin-left:auto}
+
+/* STICKY SCORE */
+#sticky{
+  position:fixed;bottom:0;left:0;right:0;
+  background:rgba(17,19,24,.95);border-top:1px solid var(--border);
+  backdrop-filter:blur(8px);
+  padding:10px 24px;display:flex;align-items:center;gap:16px;
+  z-index:50;
+}
+#sticky .ss-txt{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3)}
+#sticky .ss-txt strong{color:var(--gold)}
+.ss-bar{flex:1;height:3px;background:var(--border);border-radius:2px;overflow:hidden}
+.ss-fill{height:100%;background:var(--gold);transition:width .3s}
+
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+
+
+@media (max-width: 720px){
+  .quiz-header,.filter-bar,.bottom-nav,.quiz-content,#sticky{padding-left:16px;padding-right:16px}
+  .qh-title{flex-basis:100%;font-size:17px}
+  .qh-stats{width:100%;gap:12px}
+  .filter-sep{display:none}
+  .toggle-btn{margin-left:0}
+  #score-panel{margin:16px;padding:28px 20px}
+  .sc-number{font-size:56px}
+  .bottom-nav{padding-bottom:84px}
+}
+
+@media (max-width: 520px){
+  .q-block{padding:18px}
+  .q-text{font-size:14px}
+  .opt-text{font-size:13px}
+  #sticky{gap:10px;flex-wrap:wrap}
+  #sticky .ss-txt{width:auto}
+  .ss-bar{order:3;flex-basis:100%}
+}
+
+
+</style>
+</head>
+<body>
+<header class="quiz-header">
+  <a href="D1_Filosofia.html" class="qh-back">← Teoria D1</a>
+  <div class="qh-title">T03 — Filosofia Medieval: Patrística e Escolástica</div>
+  <span class="qh-badge">50 questões</span>
+  <div class="qh-stats">
+    <span class="qh-stat"><strong id="hdr-answered">0</strong> respondidas</span>
+    <span class="qh-stat"><strong id="hdr-correct">0</strong> corretas</span>
+    <span class="qh-stat"><strong id="hdr-pct">0%</strong></span>
+  </div>
+</header>
+<div class="progress-bar"><div class="progress-fill" id="prog-bar" style="width:0%"></div></div>
+<div class="filter-bar">
+  <span class="filter-label">Dificuldade:</span>
+  <button type="button" class="filter-btn active" data-filter="all" onclick="setFilter('all',this)">Todas</button>
+  <button type="button" class="filter-btn" data-filter="Fácil" onclick="setFilter('Fácil',this)">Fácil</button>
+  <button type="button" class="filter-btn" data-filter="Média" onclick="setFilter('Média',this)">Média</button>
+  <button type="button" class="filter-btn" data-filter="Difícil" onclick="setFilter('Difícil',this)">Difícil</button>
+  <div class="filter-sep"></div>
+  <button type="button" class="toggle-btn" onclick="toggleErrors()" id="err-btn" style="display:none">↺ Só erros</button>
+</div>
+<div class="quiz-content" id="quiz-content"></div>
+<div id="score-panel">
+  <p class="sc-title">Resultado Final — T03</p>
+  <div class="sc-number" id="sc-num"></div>
+  <p class="sc-pct" id="sc-pct"></p>
+  <div class="sc-breakdown" id="sc-breakdown"></div>
+  <div class="sc-actions">
+    <button type="button" class="sc-btn sc-btn-primary" onclick="resetQuiz()">↺ Refazer</button>
+    <button type="button" class="sc-btn sc-btn-secondary" onclick="reviewErrors()" id="sc-review-btn">Revisar erros</button>
+    <a href="D1_Filosofia.html" class="sc-btn sc-btn-secondary">← Teoria</a>
+  </div>
+</div>
+<div class="bottom-nav">
+  <a href="D1_T02_Quiz.html" class="nav-btn">← T02</a>
+  <a href="D1_Filosofia.html" class="nav-btn nav-theory">📖 Conteúdo T03</a>
+  <a href="D1_T04_Quiz.html" class="nav-btn">T04 →</a>
+</div>
+<div id="sticky">
+  <span class="ss-txt">Acertos: <strong id="st-pts">0</strong> / 50</span>
+  <div class="ss-bar"><div class="ss-fill" id="st-fill" style="width:0%"></div></div>
+  <span class="ss-txt"><strong id="st-pct">0%</strong></span>
+</div>
+<script>
+const QUESTIONS = [{n:1,t:"O período da Filosofia Medieval abrange, aproximadamente:",o:["Do século V a.C. ao século I d.C.","Do século II ao século XV d.C.","Do século XV ao século XVIII d.C.","Do século I ao século V d.C."],a:1,c:"A Filosofia Medieval vai do declínio do mundo greco-romano (séc. II d.C.) até o início do Renascimento (séc. XV). O período anterior é a Filosofia Antiga (pré-socráticos, Platão, Aristóteles); o posterior é a Filosofia Moderna (Descartes em diante).",d:"Fácil"},{n:2,t:"A frase atribuída a Tertuliano \"Credo quia absurdum\" expressa a posição de que:",o:["A fé deve ser provada racionalmente antes de ser aceita","A crença religiosa é válida precisamente porque supera e desafia a razão","A razão é superior à fé como caminho para a verdade","Fé e razão são igualmente válidas e complementares"],a:1,c:"\"Creio porque é absurdo\" — Tertuliano representa o fideísmo extremo: a fé não precisa (e talvez não deva) ser justificada racionalmente. Sua grandeza está exatamente em superar os limites da razão. É a posição oposta à de Tomás de Aquino.",d:"Fácil"},{n:3,t:"\"Crede ut intelligas\" — a fórmula de Santo Agostinho — significa:",o:["\"Entende para depois crer\"","\"Crê para que possas entender\"","\"A razão supera sempre a fé\"","\"Crê apenas no que é racional\""],a:1,c:"A fórmula agostiniana inverte a ordem comum: não se crê porque se entendeu — crê-se primeiro, e a partir dessa fé a razão pode aprofundar e compreender. A fé é o ponto de partida que orienta e ilumina o trabalho da razão.",d:"Fácil"},{n:4,t:"Santo Agostinho realizou uma síntese filosófico-teológica entre o Cristianismo e:",o:["O Estoicismo de Marco Aurélio","O Atomismo de Demócrito","O Neoplatonismo de Plotino","O Aristotelismo de Tomás de Aquino"],a:2,c:"Agostinho leu os neoplatônicos (especialmente Plotino e Porfírio) antes de sua conversão ao Cristianismo, e essa leitura o influenciou profundamente. A teoria da iluminação divina é uma reelaboração cristã da reminiscência platônica, mediada pelo neoplatonismo. Tomás de Aquino (D) é posterior e usa Aristóteles, não Platão.",d:"Fácil"},{n:5,t:"O método filosófico-teológico dominante na Idade Média, desenvolvido nas universidades medievais, chama-se:",o:["Empirismo","Racionalismo","Escolástica","Ceticismo"],a:2,c:"A Escolástica (*scholasticus* = relativo às escolas) é o método que combina leitura de autoridades, levantamento de objeções, resposta fundamentada e refutação das objeções. Tomás de Aquino é seu maior representante. Empirismo e racionalismo são movimentos da Filosofia Moderna (séc. XVII–XVIII).",d:"Fácil"},{n:6,t:"O lema \"Fides quaerens intellectum\" (\"A fé que busca a inteligência\") é associado a:",o:["Tertuliano","Santo Agostinho","Anselmo de Cantuária","Guilherme de Ockham"],a:2,c:"Anselmo de Cantuária (séc. XI) formulou esse lema que define a Escolástica: a fé não abandona a razão — ela a convoca para compreender melhor o que crê. A Filosofia é serva da Teologia (*philosophia ancilla theologiae*) — mas uma serva honrada e necessária.",d:"Fácil"},{n:7,t:"O Argumento Ontológico de Anselmo define Deus como:",o:["O criador do universo material a partir do nada","\"Aquilo maior do qual nada pode ser pensado\"","O Primeiro Motor Imóvel da cadeia de causas","O Ser Necessário que fundamenta todos os seres contingentes"],a:1,c:"A definição de Deus no Argumento Ontológico é: *id quo maius cogitari non potest* — \"aquilo maior do qual nada pode ser pensado.\" A alternativa C é a 1ª/2ª Via de Tomás (argumentos cosmológicos); D é a 3ª Via de Tomás. O argumento de Anselmo é *a priori* (parte do conceito de Deus, não da experiência).",d:"Fácil"},{n:8,t:"Tomás de Aquino é considerado o grande representante da síntese entre o Cristianismo e a filosofia de:",o:["Platão","Aristóteles","Plotino","Epicuro"],a:1,c:"Tomás de Aquino (séc. XIII) realizou a maior síntese medieval entre Aristóteles (redescoberto via traduções árabes) e a teologia cristã. Agostinho (séc. V) fizera a síntese com Platão/neoplatonismo. Plotino é neoplatônico, influência de Agostinho, não de Tomás.",d:"Fácil"},{n:9,t:"A fórmula tomasiana \"Gratia non tollit naturam sed perficit\" significa que:",o:["A graça divina destrói a natureza humana para reconstruí-la espiritualmente","A graça pressupõe e eleva a natureza — fé e razão são complementares, não opostas","A natureza humana é suficiente para alcançar a salvação sem a graça","A fé e a razão são domínios completamente separados e irreconciliáveis"],a:1,c:"\"A graça não destrói a natureza, mas a pressupõe e a aperfeiçoa.\" Esta é a síntese tomasiana: a razão (natureza) é um dom divino — usá-la plenamente é religioso. A teologia revelada (graça) não contradiz a filosofia (natureza) — ela a supera e completa.",d:"Fácil"},{n:10,t:"A Navalha de Ockham é o princípio que afirma:",o:["Quanto mais entidades uma teoria postular, mais verdadeira ela será","Não se devem multiplicar entidades além do necessário","A razão é o único instrumento válido para alcançar a verdade","A fé é superior à razão em todos os domínios do conhecimento"],a:1,c:"*Entia non sunt multiplicanda praeter necessitatem* — a Navalha de Ockham é um princípio de parcimônia: prefira a explicação mais simples que usa menos entidades. É tanto uma ferramenta lógica quanto uma crítica ao realismo excessivo dos universais.",d:"Fácil"},{n:11,t:"No problema dos universais, o **nominalismo** defende que:",o:["Os conceitos universais têm existência real e independente das coisas particulares","Os universais existem nas coisas como sua forma ou essência","Os universais são apenas nomes — somente os particulares existem realmente","Os universais são criações divinas que estruturam o cosmos"],a:2,c:"Nominalismo (*nomen* = nome): universais são apenas sons ou marcas convencionais — não existem na realidade. Só existem coisas individuais e particulares. A alternativa A é o realismo extremo (platônico); B é o realismo moderado (aristotélico-tomasiano).",d:"Fácil"},{n:12,t:"Averróis (Ibn Rushd) é conhecido na história da Filosofia principalmente por:",o:["Ter fundado a primeira universidade islâmica medieval","Ser o maior comentador de Aristóteles e defender a independência entre filosofia e teologia","Ter traduzido as obras de Platão para o árabe","Ter refutado o Argumento Ontológico de Anselmo"],a:1,c:"Averróis foi chamado de \"O Comentador\" (sem complemento) — tamanha era sua autoridade como intérprete de Aristóteles. Sua posição sobre a relação fé-razão (dupla verdade ou separação radical) influenciou profundamente as universidades europeias e gerou o Averroísmo Latino.",d:"Fácil"},{n:13,t:"Para Tomás de Aquino, a existência de Deus pode ser demonstrada:",o:["Apenas pela fé — a razão é incapaz de alcançar verdades sobre Deus","Pelo Argumento Ontológico, a partir do conceito de Deus","A partir de evidências observáveis no mundo natural, por cinco vias de raciocínio","Pela experiência mística direta, inacessível ao raciocínio filosófico"],a:2,c:"As Cinco Vias de Tomás são argumentos *a posteriori* — partem da observação do mundo (movimento, causalidade, contingência, graus de perfeição, finalidade) para concluir pela existência de Deus. O Argumento Ontológico (B) é de Anselmo, *a priori*. Tomás, aliás, rejeitou o argumento ontológico.",d:"Fácil"},{n:14,t:"Maimônides é um filósofo medieval que buscou harmonizar Aristóteles com:",o:["O Corão e a tradição islâmica","A Torah e a tradição judaica","O Novo Testamento e a teologia cristã","Os textos sagrados do budismo oriental"],a:1,c:"Maimônides (Moisés ben Maimom, 1135–1204) foi o maior filósofo judeu medieval. Seu *Guia dos Perplexos* é uma obra de harmonização entre Aristóteles e a tradição judaica — análoga ao que Tomás fez para o Cristianismo e Averróis para o Islamismo.",d:"Fácil"},{n:15,t:"Para Santo Agostinho, o mal não é uma substância criada por Deus, mas sim:",o:["Uma força independente e eterna em oposição ao bem","Uma ausência ou privação do bem (*privatio boni*)","O resultado necessário da imperfeição da criação material","Uma ilusão dos sentidos sem realidade objetiva"],a:1,c:"A teoria agostiniana do mal como *privatio boni* (ausência/privação de bem) resolve o \"problema do mal\": se Deus criou tudo bom, de onde vem o mal? O mal não é uma criatura — é a ausência de bem, como a escuridão é ausência de luz. A causa do mal é o livre-arbítrio, não Deus.",d:"Fácil"},{n:16,t:"A principal diferença entre o Argumento Ontológico de Anselmo e as Cinco Vias de Tomás de Aquino é que:",o:["Anselmo prova a existência de Deus a partir da experiência; Tomás parte do conceito","Anselmo parte do conceito de Deus (*a priori*); Tomás parte da observação do mundo (*a posteriori*)","Anselmo usa lógica formal; Tomás usa revelação bíblica","Anselmo é nominalista; Tomás é realista extremo"],a:1,c:"Esta distinção *a priori* / *a posteriori* é fundamental. Anselmo: Deus é o maior ser concebível → existe necessariamente (puro raciocínio conceitual, sem observação). Tomás: observo o mundo (movimento, causas, contingência) → infiro a existência de um ser que explica o que observo (raciocínio a partir da experiência). Tomás rejeitou o argumento de Anselmo por exatamente essa razão.",d:"Média"},{n:17,t:"A crítica de Gaunilo ao Argumento Ontológico de Anselmo consiste em:",o:["Demonstrar que Deus não pode ser \"o maior ser concebível\" pois o maior seria inconcebível","Mostrar que pelo mesmo raciocínio se poderia provar a existência de uma \"ilha perfeita\"","Afirmar que o argumento viola as regras da lógica aristotélica","Provar que a existência de Deus é artigo de fé e não pode ser objeto de prova racional"],a:1,c:"Gaunilo (monge contemporâneo de Anselmo) formulou a crítica clássica: se o argumento funciona, podemos usá-lo para provar a existência de qualquer ser perfeito imaginado — incluindo uma ilha perfeita. Isso mostra que o argumento tem um defeito: não se pode inferir existência real a partir de conceitos, por mais perfeitos que sejam.",d:"Média"},{n:18,t:"A teoria agostiniana da **iluminação divina** como fonte do conhecimento distingue-se da **reminiscência platônica** porque:",o:["A reminiscência platônica é ativa (a alma recorda); a iluminação é passiva (Deus ilumina)","A iluminação substitui o Mundo das Formas por Deus como fonte das verdades eternas","Platão acreditava na iluminação divina; Agostinho acreditava na reminiscência","A iluminação é um processo racional; a reminiscência é um processo místico"],a:1,c:"Para Platão, as verdades eternas (Formas) existem num mundo inteligível separado, e a alma as recorda. Para Agostinho, as verdades eternas existem no intelecto divino — e Deus ilumina a mente humana para que ela as conheça. A estrutura é semelhante (verdades eternas acessíveis à razão), mas a fonte muda: de Mundo das Formas → mente de Deus.",d:"Média"},{n:19,t:"A 1ª Via de Tomás de Aquino (argumento do movimento) conclui pela existência de um \"Primeiro Motor Imóvel\". O princípio que impede a regressão ao infinito é:",o:["A impossibilidade lógica de que algo exista sem causa","O fato de que um motor que se move necessita de outro motor — e essa cadeia não pode ser infinita","A revelação bíblica de que Deus criou o mundo em seis dias","O princípio de parcimônia (Navalha de Ockham) aplicado à série causal"],a:1,c:"O argumento tomasiano do movimento herdado de Aristóteles: tudo que se move é movido por outro; um motor que ainda está sendo movido não é o motor primeiro; se recuamos indefinidamente na cadeia, nunca há movimento — o que contradiz a experiência. Portanto, deve haver um Primeiro Motor que move sem ser movido. O princípio de Ockham (D) é posterior e de contexto diferente.",d:"Média"},{n:20,t:"O realismo moderado de Tomás de Aquino sobre o problema dos universais afirma que os conceitos universais:",o:["Existem em si mesmos, separados das coisas particulares (como as Formas de Platão)","Existem nas coisas particulares como sua essência ou forma — mas também na mente como conceitos","São apenas nomes convencionais sem correspondência na realidade","Existem apenas na mente divina e são inacessíveis ao intelecto humano"],a:1,c:"O realismo moderado (aristotélico-tomasiano) é a posição intermediária: os universais não existem separadamente (como em Platão) nem são meros nomes (como para Ockham). Eles existem *nas* coisas como sua forma/essência, e a mente humana os abstrai das coisas particulares. É uma solução equilibrada que evita tanto o excessivo platonismo quanto o nominalismo radical.",d:"Média"},{n:21,t:"Para Guilherme de Ockham, a consequência filosófica do nominalismo para a teologia é que:",o:["A existência de Deus pode ser provada racionalmente com mais rigor do que Tomás pensava","A teologia racional é impossível — o conhecimento de Deus depende exclusivamente da fé e da Revelação","O Argumento Ontológico de Anselmo é o único argumento válido para provar Deus","A razão pode alcançar Deus pela via dos universais, que existem na mente divina"],a:1,c:"Se os universais são apenas nomes e só os particulares existem, então todo argumento teológico que usa conceitos universais (como \"ser necessário\", \"ser perfeitíssimo\") não tem referência real. A razão não pode alcançar Deus — conhecemos apenas particulares concretos, e Deus transcende completamente a experiência particular. Restam apenas a fé e a Revelação. Isso é uma ruptura radical com a síntese tomasiana.",d:"Média"},{n:22,t:"A \"Cidade de Deus\" (*De Civitate Dei*) de Agostinho apresenta a história como:",o:["Um progresso linear da humanidade rumo à razão e à liberdade","Um eterno retorno cíclico de grandes impérios que se sucedem","Uma luta entre a Cidade de Deus (amor a Deus) e a Cidade dos Homens (amor próprio)","A revelação progressiva de Deus culminando no Império Romano cristão"],a:2,c:"*De Civitate Dei* (413–426 d.C.) é a primeira grande filosofia da história cristã. Para Agostinho, toda a história humana é o palco de uma luta espiritual entre dois amores: *amor Dei* (que constrói a Cidade de Deus, peregrina neste mundo) e *amor sui* (que constrói a Cidade dos Homens, centrada na autoglorificação). O Império Romano é a Cidade dos Homens, não a de Deus — posição audaciosa escrita após o saque de Roma em 410.",d:"Média"},{n:23,t:"A tese do **Averroísmo Latino** — que perturbou as universidades europeias do séc. XIII — consistia em:",o:["Defender que o Corão é superiora à Bíblia como fonte de verdade","Afirmar que filosofia e teologia podem chegar a conclusões contraditórias, ambas válidas em seus domínios","Propor que toda a filosofia cristã deveria ser substituída pela árabe","Negar a imortalidade da alma individual com base em Aristóteles"],a:1,c:"O Averroísmo Latino (Siger de Brabante, Boécio de Dácia) causou crise nas universidades ao afirmar que a filosofia (seguindo Aristóteles/Averróis) poderia concluir algo diferente da teologia — e ambas seriam verdadeiras em seus respectivos domínios. Isso ameaçava a síntese tomasiana de harmonização. O Bispo de Paris condenou 219 proposições averroístas em 1277. A alternativa D é uma consequência específica, não a tese geral.",d:"Média"},{n:24,t:"A crítica de Kant ao Argumento Ontológico de Anselmo — formulada na *Crítica da Razão Pura* — baseia-se em:",o:["A afirmação de que Deus é inconcebível para a razão humana limitada","O princípio de que \"existência não é um predicado\" — não se pode inferir existência real de um conceito","A demonstração de que o conceito de Deus é contraditório em si mesmo","A tese de que apenas a experiência sensorial pode fundamentar afirmações sobre existência"],a:1,c:"Kant (séc. XVIII) formula a crítica mais influente ao argumento ontológico: existência não é uma propriedade (predicado) que se pode adicionar a um conceito para torná-lo maior. Um ser existente não é \"maior\" do que o mesmo ser apenas concebido — as duas ideias têm o mesmo conteúdo conceitual; o que difere é apenas a relação com o mundo real. Logo, não se pode deduzir existência de conceitos, por mais perfeitos que sejam.",d:"Média"},{n:25,t:"Para Tomás de Aquino, há verdades que estão **acima da razão** mas **não contra a razão**. Exemplos dessas verdades são:",o:["A existência de Deus e a imortalidade da alma","A Santíssima Trindade, a Encarnação e a Ressurreição","O movimento das esferas celestes e a eternidade do mundo","A origem do universo e a natureza do espaço e do tempo"],a:1,c:"Para Tomás, algumas verdades são acessíveis à razão natural (existência de Deus, imortalidade da alma) — são \"preâmbulos da fé.\" Outras verdades (Trindade, Encarnação, Ressurreição) estão acima da razão — não são irracionais, mas superam o que a razão pode alcançar sozinha. Essas só podem ser conhecidas pela Revelação. A fronteira entre razão e fé é, para Tomás, uma fronteira de alcance — não de contradição.",d:"Média"},{n:26,t:"A posição de Agostinho sobre o **tempo**, desenvolvida nas *Confissões* (Livro XI), antecipa debates modernos ao afirmar que:",o:["O tempo é uma realidade objetiva e absoluta, independente da mente","O tempo existe na mente humana — passado é memória, presente é atenção, futuro é expectativa","O tempo foi criado junto com o universo e terminará no Juízo Final","O tempo é uma ilusão produzida pela imperfeição dos sentidos humanos"],a:1,c:"A análise agostiniana do tempo é surpreendentemente moderna. Passado não existe mais (existe como memória), futuro ainda não existe (existe como expectativa), e o presente é o instante fugaz da atenção. O tempo não é uma realidade objetiva externa — é uma estrutura da consciência. Essa análise antecipa Husserl e Heidegger (séc. XX) e a fenomenologia do tempo.",d:"Média"},{n:27,t:"A diferença entre o dualismo platônico (alma × corpo) e a antropologia de Tomás de Aquino (seguindo Aristóteles) é que, para Tomás:",o:["O corpo é um obstáculo à alma que deve ser superado pela ascese espiritual","Alma e corpo são substâncias completamente distintas que se unem acidentalmente","A alma é a forma do corpo — alma e corpo constituem uma unidade substancial","O corpo é mortal e a alma é imortal por natureza, independentemente de Deus"],a:2,c:"Tomás segue o hileomorfismo aristotélico: alma = forma do corpo. Não são duas substâncias separadas (dualismo platônico) — são princípio formal (alma) e princípio material (corpo) de uma única substância humana. Isso tem implicação teológica importante: a ressurreição do corpo faz sentido, pois sem o corpo a alma não está em seu estado natural pleno.",d:"Média"},{n:28,t:"O problema do **livre-arbítrio** em relação à **onisciência divina** é um dos dilemas clássicos da Filosofia Medieval porque:",o:["Se Deus é onisciente (sabe tudo, inclusive o futuro), como o ser humano pode ser livre?","Se o ser humano é livre, então Deus não pode ser onipotente","Se Deus criou o mal, então não pode ser omnibenevolente","Se o ser humano tem livre-arbítrio, então não precisa da graça divina"],a:0,c:"O dilema: se Deus sabe de antemão todas as nossas escolhas (onisciência), então nossas escolhas parecem determinadas — como poderiam ser livres? Se são livres, como Deus pode saber de antemão o que escolheremos? Esse é o problema da compatibilidade entre livre-arbítrio e presciência divina — debatido por Agostinho, Boécio e Tomás. A alternativa C é o \"problema do mal\" — distinto, embora relacionado.",d:"Média"},{n:29,t:"A crítica ao Argumento Ontológico formulada por Gaunilo (contemporâneo de Anselmo) pode ser classificada como:",o:["Uma objeção nominalista sobre a inexistência dos universais","Uma redução ao absurdo (*reductio ad absurdum*): se o argumento vale para Deus, vale para qualquer ser perfeito imaginado","Uma objeção empirista baseada na inexperiência de Deus pelos sentidos","Uma objeção teológica: Deus não pode ser objeto de demonstração racional"],a:1,c:"A crítica de Gaunilo é uma *reductio ad absurdum*: toma o argumento de Anselmo e mostra que ele prova demais. Se o raciocínio fosse válido, poderíamos provar a existência de uma ilha perfeita (a mais perfeita de todas as ilhas concebíveis — logo, deve existir, pois existir é uma perfeição). Como isso é absurdo, o argumento tem um defeito. A objeção empirista (C) é de Hume/Kant — posterior.",d:"Média"},{n:30,t:"A **5ª Via** de Tomás de Aquino — o argumento teleológico — é especialmente relevante no contexto contemporâneo porque:",o:["É a única das Cinco Vias que não depende da física aristotélica","Ressurgiu no debate sobre design inteligente (*Intelligent Design*) na filosofia da ciência","Foi a única aceita por Kant como válida em sua *Crítica da Razão Pura*","É o argumento que fundamenta diretamente a doutrina da Ressurreição"],a:1,c:"O argumento teleológico (seres sem razão agem com finalidade → deve haver uma inteligência ordenadora) é a base filosófica do debate contemporâneo sobre Design Inteligente. Defensores do ID argumentam que a complexidade irredutível dos organismos implica um designer. A comunidade científica e filosófica mainstream rejeita essa conclusão — mas o argumento filosófico subjacente é tomasiano. Kant (C) rejeitou *todas* as provas racionais da existência de Deus.",d:"Média"},{n:31,t:"A distinção escolástica entre **teologia natural** (*theologia naturalis*) e **teologia revelada** (*theologia revelata*) corresponde, em Tomás, a:",o:["Ciência vs. superstição","O que a razão pode demonstrar sobre Deus vs. o que só pode ser conhecido pela Revelação","A teologia praticada pelos filósofos pagãos vs. a teologia dos cristãos","A teologia do Antigo Testamento vs. a teologia do Novo Testamento"],a:1,c:"Teologia natural: uso da razão para conhecer verdades sobre Deus a partir do mundo criado (existência de Deus, atributos gerais como onipotência, eternidade). Teologia revelada: verdades sobre Deus que só podem ser conhecidas pela Revelação (Trindade, Encarnação, Ressurreição). Para Tomás, ambas são válidas e complementares — a natural prepara para a revelada.",d:"Média"},{n:32,t:"O impacto da redescoberta de Aristóteles no Ocidente latino (sécs. XII–XIII), via traduções árabes, foi:",o:["Confirmar imediatamente a síntese agostiniana entre Platão e o Cristianismo","Gerar crise: o aristotelismo (matéria eterna, alma mortal, sem providência individual) parecia incompatível com o Cristianismo","Ser rapidamente rejeitado pelas universidades como heresia islâmica","Ser aceito sem resistência como complemento natural à teologia cristã"],a:1,c:"Aristóteles causou crise nas universidades medievais: ele afirmava que o mundo era eterno (contradiz a criação *ex nihilo*), que a alma individual possivelmente não era imortal, e que não havia providência divina pessoal. Isso era incompatível com a doutrina cristã. A solução de Tomás foi exatamente reconciliar Aristóteles com a fé — mas a crise foi real e levou a condenações.",d:"Média"},{n:33,t:"A posição de Averróis sobre a relação entre filosofia e teologia pode ser descrita como:",o:["A filosofia é serva da teologia e deve subordinar-se às verdades reveladas","Filosofia e teologia são métodos distintos que podem atingir conclusões diferentes, ambas válidas em seus domínios","A teologia deve ser eliminada e substituída pela filosofia racional","Filosofia e teologia chegam sempre às mesmas conclusões por caminhos diferentes"],a:1,c:"Averróis (especialmente na leitura do Averroísmo Latino) defende que a filosofia (seguindo Aristóteles) pode concluir diferentemente da teologia — e que ambas as conclusões são verdadeiras em seus respectivos domínios. Isso é a \"teoria da dupla verdade\" — que Tomás de Aquino rejeitou firmemente, insistindo que não pode haver contradição real entre razão e fé.",d:"Média"},{n:34,t:"Para Agostinho, a pergunta \"O que Deus fazia antes de criar o mundo?\" é:",o:["Uma pergunta legítima que a teologia deve responder com precisão","Mal formulada: o tempo foi criado com o mundo, portanto não havia \"antes\" da criação","A prova de que o mundo é eterno, como afirmava Aristóteles","Uma questão reservada à fé, inacessível à razão filosófica"],a:1,c:"Esta é uma das respostas mais elegantes de Agostinho nas *Confissões*: o tempo foi criado junto com o mundo — não havia tempo \"antes\" da criação. A pergunta pressupõe um \"antes\" temporal que não existia. Deus existe na eternidade (sem passado nem futuro) — o tempo é uma criatura, não uma condição de Deus. Essa análise antecipa debates modernos sobre a origem do universo.",d:"Média"},{n:35,t:"A Navalha de Ockham, como princípio metodológico, antecipa:",o:["O método dialético de Hegel","O empirismo moderno e o princípio científico da parcimônia explicativa","O racionalismo de Descartes e a dúvida metódica","O pragmatismo americano de William James"],a:1,c:"A Navalha de Ockham antecipa o empirismo (Locke, Hume — séc. XVII–XVIII) ao privilegiar a experiência dos particulares sobre entidades abstratas não verificáveis. Na ciência moderna, o princípio da parcimônia (preferir a hipótese mais simples que explica os dados) é um herdeiro direto da Navalha de Ockham. A física moderna usa esse princípio constantemente.",d:"Média"},{n:36,t:"A acusação de que a Filosofia Medieval foi apenas \"serva da teologia\" (*philosophia ancilla theologiae*) e, portanto, não produziu pensamento filosófico genuíno é:",o:["Totalmente correta — o pensamento medieval era apenas repetição de dogmas","Incorreta: o problema fé-razão é genuinamente filosófico, e pensadores como Agostinho, Tomás e Ockham desenvolveram posições originais com rigor argumentativo próprio","Parcialmente correta: alguns medievais foram originais, mas a maioria copiou os gregos sem contribuição nova","Irrelevante — o critério de \"pensamento genuíno\" é moderno e não se aplica à Idade Média"],a:1,c:"A visão da Filosofia Medieval como mera repetição dogmática é um preconceito iluminista. O problema fé-razão é filosoficamente genuíno — não tem resposta óbvia e gera posições sofisticadas e mutuamente críticas. O Argumento Ontológico de Anselmo, as Cinco Vias de Tomás, a Navalha de Ockham e a análise agostiniana do tempo são contribuições originais que influenciaram toda a filosofia posterior.",d:"Difícil"},{n:37,t:"Considere as afirmações:  I. Para Tomás de Aquino, o Argumento Ontológico de Anselmo é o melhor argumento para a existência de Deus. II. As Cinco Vias de Tomás são argumentos *a posteriori*, baseados na observação do mundo. III. Ockham concordava com Tomás sobre a possibilidade de demonstrar racionalmente a existência de Deus.  Estão corretas:",o:["Apenas I e II","Apenas II","Apenas I e III","I, II e III"],a:1,c:"I é **falsa**: Tomás *rejeitou* o Argumento Ontológico de Anselmo — argumentando que não temos conhecimento direto da essência de Deus para partir dela. II é **verdadeira**: as Cinco Vias partem de fatos observáveis (movimento, causas, contingência). III é **falsa**: Ockham, por sua posição nominalista, negava que a razão pudesse demonstrar Deus — restava apenas a fé.",d:"Difícil"},{n:38,t:"A tensão entre **livre-arbítrio humano** e **presciência divina** foi parcialmente resolvida por Agostinho mediante o conceito de:",o:["Deus conhece o futuro como necessário, portanto o livre-arbítrio é ilusão","Deus conhece eternamente as escolhas livres — sua presciência não determina causalmente, mas \"vê\" o que livremente ocorre","O livre-arbítrio foi perdido com o pecado original — resta apenas a graça","A presciência divina se limita aos eventos necessários, não às escolhas livres"],a:1,c:"Agostinho argumenta que Deus existe na eternidade — ele não \"prevê\" o futuro como nós faríamos: ele vê tudo (passado, presente e futuro) em um único ato eterno de conhecimento. Sua presciência não é causal — não determina nossas escolhas, apenas as conhece. É como um observador elevado que vê toda a estrada de uma vez, sem que sua visão determine o caminho que o viajante escolhe livremente. A alternativa C descreve a posição de Agostinho sobre o pecado original — mas não é a ",d:"Difícil"},{n:39,t:"As condenações parisienses de 1277 (Bispo Étienne Tempier condenou 219 proposições) representaram:",o:["A vitória definitiva do nominalismo de Ockham sobre o realismo de Tomás","Uma reação conservadora à ameaça que o aristotelismo e o averroísmo representavam para a ortodoxia cristã","O reconhecimento oficial de que a filosofia era superior à teologia","A proibição do ensino de Platão e Agostinho nas universidades medievais"],a:1,c:"As condenações de 1277 foram uma resposta à crise gerada pela redescoberta de Aristóteles e pelo Averroísmo Latino. Tempier incluiu proposições defendidas ou associadas a Tomás (morto em 1274) — o que gerou controvérsia. As condenações representam a tensão real entre o projeto de harmonização racional da fé (Tomás) e as posições mais conservadoras que queriam limitar a autonomia da filosofia.",d:"Difícil"},{n:40,t:"A contribuição filosófica de Avicena (Ibn Sina) que mais influenciou a Filosofia Ocidental foi:",o:["A distinção entre essência e existência: em Deus elas são idênticas; nas criaturas são distintas","A defesa do nominalismo contra o realismo de Aristóteles","A proposta de que o Corão deve substituir a filosofia grega como única fonte de verdade","A teoria das Cinco Vias como provas da existência de Alá"],a:0,c:"Avicena (Ibn Sina) desenvolveu a distinção entre *essência* (o que uma coisa é) e *existência* (que ela seja). Nas criaturas, essência e existência são distintas — um ser pode ter a essência de \"humano\" sem que isso garanta sua existência (precisa de uma causa). Em Deus, essência e existência são idênticas — ele é o Ser cujo existir é necessário. Tomás de Aquino absorveu e desenvolveu essa distinção, tornando-a central em sua teologia.",d:"Difícil"},{n:41,t:"Para Tomás de Aquino, a **3ª Via** (argumento da contingência) conclui pela existência de um Ser Necessário. A lógica do argumento é:",o:["Se tudo fosse necessário, o mundo seria eterno — o que contradiz a criação","Se tudo fosse contingente (poderia não existir), em algum momento nada teria existido — mas algo existe agora, logo deve haver algo que existe necessariamente","A contingência do mundo prova que Deus escolheu livremente criá-lo","Todo ser contingente pressupõe um ser necessário que seja sua essência"],a:1,c:"O raciocínio: se todos os seres *pudessem* não existir (contingentes), então houve ou haverá um momento em que nenhum deles existiu. Mas se nada existisse, nada poderia começar a existir (pois do nada, nada vem). Como algo existe agora, isso é impossível — logo, deve haver ao menos um ser que *não pode* não existir: um Ser Necessário. A alternativa D descreve a 4ª Via (perfeição), não a 3ª.",d:"Difícil"},{n:42,t:"A posição de Ockham é frequentemente chamada de **via moderna** (*via moderna*), em oposição à **via antiga** (*via antiqua*) de Tomás. Essa terminologia indica que:",o:["Ockham era moderno por defender ideias iluministas avant la lettre","A separação nominalista entre fé e razão abriu caminho para a ciência moderna e a Reforma Protestante","Tomás era antiquado e Ockham representava o progresso filosófico definitivo","O nominalismo era a posição oficial das universidades medievais tardias"],a:1,c:"O nominalismo de Ockham teve consequências históricas enormes: ao separar fé e razão, abriu espaço para que a ciência natural se desenvolva sem depender da teologia (antecipa Galileu, Bacon, Newton). Ao insistir que Deus só pode ser alcançado pela fé pessoal, antecipa a Reforma Protestante (Lutero admirava Ockham). A \"modernidade\" de Ockham está em dissociar o que Tomás havia harmonizado.",d:"Difícil"},{n:43,t:"O conceito de **analogia do ser** (*analogia entis*) em Tomás de Aquino resolve o problema de como podemos falar de Deus usando linguagem humana porque:",o:["Afirma que Deus e as criaturas compartilham completamente as mesmas propriedades","Reconhece que os atributos divinos (bondade, sabedoria, poder) se aplicam a Deus analogicamente — nem de forma unívoca nem equívoca","Propõe que toda linguagem sobre Deus é metafórica e não tem conteúdo real","Afirma que Deus é completamente inefável e não pode ser descrito com nenhuma linguagem"],a:1,c:"O problema da linguagem teológica: quando dizemos \"Deus é bom\", aplicamos a Deus um predicado humano. Mas Deus não é bom como um humano é bom (univocidade) — isso seria antropomorfismo. Mas \"bom\" também não significa algo completamente diferente aplicado a Deus (equivocidade) — isso tornaria toda linguagem teológica sem sentido. A solução de Tomás: analogia — Deus é bom de uma maneira que transcende mas se relaciona com a bondade humana.",d:"Difícil"},{n:44,t:"Um estudante do EF Anos Finais pergunta: \"Por que Deus permite que existam doenças, guerras e sofrimento, se ele é todo-bom e todo-poderoso?\" Qual filósofo medieval fornece a resposta filosófica mais elaborada a essa questão, e qual é o núcleo de sua resposta?",o:["Tomás de Aquino — o sofrimento é necessário para desenvolver as virtudes humanas","Agostinho — o mal é ausência de bem (privatio boni), resultado do livre-arbítrio, não criação de Deus","Anselmo — Deus permite o sofrimento porque ele está além da compreensão humana","Ockham — a pergunta não tem resposta racional; devemos simplesmente crer"],a:1,c:"Esta questão conecta a Filosofia Medieval ao cotidiano dos estudantes do EF Anos Finais. Agostinho é o filósofo que mais desenvolveu o \"problema do mal\": o mal não é uma coisa criada por Deus — é ausência de bem, como a escuridão é ausência de luz. Sua origem está no livre-arbítrio das criaturas, não na vontade de Deus. A alternativa A (Tomás) é uma resposta complementar — a teodiceia do sofrimento como aperfeiçoamento — mas não é o núcleo da resposta medieval ao problema.",d:"Difícil"},{n:45,t:"A redescoberta de Aristóteles no Ocidente medieval ocorreu principalmente por meio de:",o:["Manuscritos preservados em mosteiros irlandeses durante as invasões bárbaras","Traduções do árabe para o latim realizadas principalmente na Península Ibérica (Toledo)","Comerciantes venezianos que trouxeram manuscritos de Constantinopla","A preservação direta nas bibliotecas do Vaticano ao longo de toda a Idade Média"],a:1,c:"A redescoberta de Aristóteles no Ocidente (sécs. XII–XIII) ocorreu principalmente pela **Escola de Tradutores de Toledo** (Espanha muçulmana), onde Aristóteles havia sido preservado, comentado e desenvolvido pelos filósofos árabes (Averróis, Avicena) e judeus (Maimônides). Tradutores como Gerardo de Cremona e Hermano Alemão traduziram do árabe para o latim. Este é um exemplo de que o diálogo entre culturas foi essencial para o desenvolvimento da Filosofia Ocidental.",d:"Difícil"},{n:46,t:"A distinção tomasiana entre **fé** e **opinião** difere da distinção platônica entre ***episteme*** e ***doxa*** porque:",o:["Para Platão, a doxa é superior à episteme; para Tomás, o inverso","Para Tomás, a fé é superior à razão filosófica em certeza — embora não seja demonstrável — porque tem Deus como autor; para Platão, a episteme supera a doxa por ser racional e demonstrável","Para Platão e Tomás, a distinção é idêntica — ambos subordinam a crença ao conhecimento racional","Para Tomás, a fé é idêntica à doxa platônica — ambas são formas inferiores de conhecimento"],a:1,c:"Tomás reelabora a hierarquia do conhecimento: ciência (*scientia*) é conhecimento por demonstração; fé (*fides*) é assentimento pela autoridade de Deus — logo, tem maior certeza que a ciência humana (porque Deus não pode errar ou enganar). Para Platão, *episteme* é superior à *doxa* por ser racional. Para Tomás, a fé supera a razão em autoridade — mesmo não sendo demonstrável — porque sua fonte é divina.",d:"Difícil"},{n:47,t:"A posição de Agostinho sobre a relação entre **graça** e **livre-arbítrio** é paradoxal porque:",o:["Ele afirma que o livre-arbítrio é absoluto e a graça é desnecessária para a salvação","Ele insiste na necessidade absoluta da graça para a salvação, ao mesmo tempo que afirma que o ser humano é responsável por seus pecados — tensão que a Reforma Protestante retomará intensamente","Ele afirma que a graça elimina completamente o livre-arbítrio, tornando o ser humano um instrumento de Deus","Ele resolve o paradoxo afirmando que livre-arbítrio e graça se alternam sem se contradizerem"],a:1,c:"Esta é uma das tensões mais produtivas e irresolvidas do pensamento agostiniano. Agostinho insiste: sem a graça de Deus, o ser humano não pode querer nem praticar o bem (resultado do pecado original que corrompeu a vontade). Mas também insiste: o ser humano é responsável por seus pecados (livre-arbítrio). Como ambos são verdadeiros? Agostinho não resolve completamente — e Lutero, Calvino e os jesuítas retomaram esse debate com intensidade nos séculos XVI–XVII.",d:"Difícil"},{n:48,t:"Considere: o professor de Filosofia quer trabalhar o **Argumento Ontológico de Anselmo** com alunos do EF Anos Finais. A estratégia pedagógica mais adequada é:",o:["Apresentar o argumento como prova definitiva da existência de Deus, confirmada pela teologia","Trabalhar o argumento como exercício de lógica e pensamento abstrato, incluindo as críticas de Gaunilo e Kant, sem impor conclusões religiosas","Evitar o argumento por ser de natureza teológica incompatível com o ensino laico","Apresentar o argumento apenas em sua versão original, sem críticas, para preservar a integridade histórica"],a:1,c:"Esta questão de transposição didática é essencial para o professor de Filosofia no EF. O Argumento Ontológico não precisa ser tratado como prova religiosa (A seria doutrinação) nem evitado (C seria empobrecimento pedagógico). Ele é um exercício extraordinário de pensamento abstrato e lógico — e trabalhar as críticas de Gaunilo e Kant ensina habilidades de argumentação e contraposição que são centrais na formação filosófica.",d:"Difícil"},{n:49,t:"A **5ª Via** de Tomás — o argumento teleológico — é frequentemente comparada ao \"argumento do relojoeiro\" de William Paley (séc. XIX). A diferença filosófica central entre os dois é:",o:["Tomás usa a observação da natureza; Paley usa apenas raciocínio conceitual","Paley argumenta por analogia com artefatos humanos (relógio → relojoeiro); Tomás argumenta pela finalidade intrínseca dos seres naturais sem razão","Tomás conclui por um Deus pessoal; Paley conclui por uma força impessoal","Paley inclui a biologia evolucionária como evidência; Tomás a exclui deliberadamente"],a:1,c:"Paley (séc. XIX): se encontramos um relógio no campo, inferimos um relojoeiro (designer) — assim, a complexidade dos organismos implica um designer. Tomás: seres sem razão (pedras, plantas, animais) agem regularmente para fins — o que não pode ser por acaso; logo, há uma inteligência que os ordena para esses fins. A diferença: Paley usa analogia com artefatos humanos; Tomás usa a finalidade intrínseca dos seres naturais. Darwin responde melhor a Paley (seleção natural explica",d:"Difícil"},{n:50,t:"Um professor de Filosofia no EF Anos Finais planeja uma aula sobre \"Fé e Razão na Idade Média\". Qual abordagem pedagógica melhor reflete os princípios da BNCC e do ensino laico de Filosofia?",o:["Apresentar o Cristianismo medieval como a forma correta de relacionar fé e razão, em detrimento de outras tradições","Evitar completamente o tema por envolver religião em ambiente escolar","Apresentar o problema fé-razão como questão filosófica universal, incluindo perspectivas cristã, islâmica e judaica, estimulando o pensamento crítico e o respeito à diversidade","Centrar a aula exclusivamente no ateísmo e na crítica da razão à religião como posição filosófica mais adequada"],a:2,c:"Esta questão final conecta o conteúdo filosófico medieval à prática docente responsável. A BNCC valoriza o respeito à diversidade cultural e religiosa e o desenvolvimento do pensamento crítico. O ensino laico não é ateísta (D) nem religioso (A) — é plural e crítico. O problema fé-razão pode ser ensinado como questão filosófica genuína, incluindo as tradições islâmica (Averróis) e judaica (Maimônides), enriquecendo a visão dos estudantes sobre a diversidade do pensamento human",d:"Difícil"}];
+const TOTAL = 50;
+let answers = {};
+let currentFilter = 'all';
+let errorsMode = false;
+
+function getVisible(){
+  if(errorsMode){
+    return QUESTIONS.filter(q=>answers[q.n]!==undefined && answers[q.n]!==q.a);
+  }
+  if(currentFilter==='all') return QUESTIONS;
+  return QUESTIONS.filter(q=>q.d===currentFilter);
+}
+
+function renderQuiz(){
+  const visible = getVisible();
+  const container = document.getElementById('quiz-content');
+  container.innerHTML = '';
+  if(!visible.length){
+    container.innerHTML = '<p style="text-align:center;color:var(--text3);padding:40px;font-family:JetBrains Mono,monospace;font-size:13px;">Nenhuma questão neste filtro.</p>';
+    return;
+  }
+  visible.forEach((q,i)=>{
+    const block = document.createElement('div');
+    block.className = 'q-block' + (answers[q.n]!==undefined?' answered':'');
+    block.id = 'qb-'+q.n;
+    const diffClass = q.d==='Fácil'?'diff-easy':q.d==='Média'?'diff-med':'diff-hard';
+    const done = answers[q.n]!==undefined;
+    block.innerHTML = `
+      <div class="q-meta">
+        <span class="q-num">Q${String(q.n).padStart(2,'0')}</span>
+        <span class="q-diff ${diffClass}">${q.d}</span>
+      </div>
+      <div class="q-text">${q.t}</div>
+      <div class="q-opts" id="opts-${q.n}">
+        ${q.o.map((o,j)=>{
+          let cls='q-opt'+(done?' done':'');
+          if(done){
+            if(j===q.a) cls+=' correct';
+            else if(j===answers[q.n]) cls+=' wrong';
+          }
+          return `<div class="${cls}" ${!done?`onclick="pick(${q.n},${j})"`:''}>
+            <span class="opt-letter">${'ABCD'[j]}</span>
+            <span class="opt-text">${o}</span>
+          </div>`;
+        }).join('')}
+      </div>
+      <div class="q-feedback ${done?(answers[q.n]===q.a?'fb-correct show':'fb-wrong show'):''}" id="fb-${q.n}">
+        <span class="fb-label">${done?(answers[q.n]===q.a?'✓ Correto':'✗ Incorreto — Gabarito: '+'ABCD'[q.a]):'' }</span>
+        <span class="fb-body">${q.c}</span>
+      </div>`;
+    container.appendChild(block);
+  });
+}
+
+function pick(qn, optIdx){
+  if(answers[qn]!==undefined) return;
+  const q = QUESTIONS.find(x=>x.n===qn);
+  answers[qn] = optIdx;
+  const correct = optIdx===q.a;
+  // Style options
+  const opts = document.querySelectorAll('#opts-'+qn+' .q-opt');
+  opts.forEach(o=>o.classList.add('done'));
+  opts[optIdx].classList.add(correct?'correct':'wrong');
+  if(!correct) opts[q.a].classList.add('correct');
+  // Feedback
+  const fb=document.getElementById('fb-'+qn);
+  fb.className='q-feedback show '+(correct?'fb-correct':'fb-wrong');
+  fb.innerHTML=`<span class="fb-label">${correct?'✓ Correto':'✗ Incorreto — Gabarito: '+'ABCD'[q.a]}</span><span class="fb-body">${q.c}</span>`;
+  document.getElementById('qb-'+qn).classList.add('answered');
+  updateStats();
+  if(Object.keys(answers).length===TOTAL) finishQuiz();
+}
+
+function updateStats(){
+  const answered = Object.keys(answers).length;
+  let corr = 0;
+  QUESTIONS.forEach(q => { if (answers[q.n] === q.a) corr++; });
+  const pct = answered ? Math.round(corr / answered * 100) : 0;
+
+  document.getElementById('hdr-answered').textContent = answered;
+  document.getElementById('hdr-correct').textContent = corr;
+  document.getElementById('hdr-pct').textContent = pct + '%';
+  document.getElementById('prog-bar').style.width = (answered / TOTAL * 100) + '%';
+  document.getElementById('st-pts').textContent = corr;
+  document.getElementById('st-fill').style.width = (corr / TOTAL * 100) + '%';
+  document.getElementById('st-pct').textContent = pct + '%';
+
+  syncErrorsButton();
+}
+
+function finishQuiz(){
+  let corr=0;
+  QUESTIONS.forEach(q=>{ if(answers[q.n]===q.a) corr++; });
+  const pct=Math.round(corr/TOTAL*100);
+  const panel=document.getElementById('score-panel');
+  panel.classList.add('show');
+  const numEl=document.getElementById('sc-num');
+  numEl.textContent=corr+'/'+TOTAL;
+  numEl.className='sc-number '+(pct>=70?'sc-approved':'sc-failed');
+  document.getElementById('sc-pct').textContent=pct+'% de acerto';
+  const errs=TOTAL-corr;
+  document.getElementById('sc-breakdown').innerHTML=
+    `<div class="sc-item"><strong>${corr}</strong>Corretas</div>
+     <div class="sc-item"><strong>${errs}</strong>Incorretas</div>
+     <div class="sc-item"><strong>${pct}%</strong>Aproveitamento</div>`;
+  syncErrorsButton();
+  if(errs>0) document.getElementById('sc-review-btn').style.display='inline-block';
+  else document.getElementById('sc-review-btn').style.display='none';
+  panel.scrollIntoView({behavior:'smooth'});
+}
+
+function syncErrorsButton(){
+  const errBtn = document.getElementById('err-btn');
+  const errs = QUESTIONS.filter(q => answers[q.n] !== undefined && answers[q.n] !== q.a).length;
+  const answered = Object.keys(answers).length;
+
+  if (errs > 0) {
+    errBtn.style.display = 'block';
+    errBtn.disabled = false;
+    errBtn.textContent = errorsMode ? '↺ Mostrar todas' : '↺ Só erros';
+  } else {
+    errBtn.style.display = answered === TOTAL ? 'block' : 'none';
+    errBtn.disabled = true;
+    errBtn.textContent = '↺ Só erros';
+  }
+}
+
+function resetQuiz(){
+  answers={};
+  errorsMode=false;
+  currentFilter='all';
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelector('[data-filter="all"]').classList.add('active');
+  document.getElementById('score-panel').classList.remove('show');
+  syncErrorsButton();
+  document.getElementById('hdr-answered').textContent='0';
+  document.getElementById('hdr-correct').textContent='0';
+  document.getElementById('hdr-pct').textContent='0%';
+  document.getElementById('prog-bar').style.width='0%';
+  document.getElementById('st-pts').textContent='0';
+  document.getElementById('st-fill').style.width='0%';
+  document.getElementById('st-pct').textContent='0%';
+  renderQuiz();
+  window.scrollTo(0,0);
+}
+
+function reviewErrors(){
+  errorsMode = true;
+  document.getElementById('score-panel').classList.remove('show');
+  currentFilter = 'all';
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector('[data-filter="all"]').classList.add('active');
+  renderQuiz();
+syncErrorsButton();
+  window.scrollTo(0,0);
+}
+
+function setFilter(f, btn){
+  currentFilter = f;
+  errorsMode = false;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderQuiz();
+syncErrorsButton();
+}
+
+function toggleErrors(){
+  const errs = QUESTIONS.filter(q => answers[q.n] !== undefined && answers[q.n] !== q.a).length;
+  if (!errs) return;
+  errorsMode = !errorsMode;
+  renderQuiz();
+syncErrorsButton();
+}
+
+renderQuiz();
+syncErrorsButton();
+
+</script>
+</body>
+</html>

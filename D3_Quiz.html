@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>D3 Quiz — Educação Inclusiva | Filosofia SJR 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+
+:root{
+  --bg:#0b0d10;--bg2:#111318;--bg3:#181c22;--bg4:#1e232b;
+  --border:#252b35;--border2:#2d3443;
+  --text:#cdd5e0;--text2:#8a96a8;--text3:#4d5a6e;
+  --gold:#c8a44a;--gold2:#e2c070;--gold3:#f0d490;
+  --blue:#3d8fd1;--green:#3d9e72;--green2:#5ec090;
+  --red:#c05050;--red2:#e07070;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:'Lato',sans-serif;font-size:15px;line-height:1.7;min-height:100vh}
+
+/* HEADER */
+.quiz-header{
+  background:var(--bg2);border-bottom:1px solid var(--border);
+  padding:16px 24px;display:flex;align-items:center;gap:16px;
+  position:sticky;top:0;z-index:50;flex-wrap:wrap;
+}
+.qh-back{
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  color:var(--text3);text-decoration:none;transition:color .2s;white-space:nowrap;
+}
+.qh-back:hover{color:var(--gold)}
+.qh-title{
+  font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:700;color:var(--gold2);
+  flex:1;
+}
+.qh-badge{
+  font-family:'JetBrains Mono',monospace;font-size:10px;
+  color:var(--gold);background:rgba(200,164,74,.12);
+  padding:3px 10px;border-radius:4px;white-space:nowrap;
+}
+.qh-stats{
+  display:flex;gap:16px;flex-wrap:wrap;
+}
+.qh-stat{
+  font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3);
+  white-space:nowrap;
+}
+.qh-stat strong{color:var(--text);font-size:14px}
+
+/* PROGRESS BAR */
+.progress-bar{height:3px;background:var(--border);overflow:hidden}
+.progress-fill{height:100%;background:var(--gold);transition:width .4s ease}
+
+/* FILTERS */
+.filter-bar{
+  padding:14px 24px;background:var(--bg2);border-bottom:1px solid var(--border);
+  display:flex;gap:8px;align-items:center;flex-wrap:wrap;
+}
+.filter-label{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3);margin-right:4px}
+.filter-btn{
+  padding:5px 14px;border-radius:4px;border:1px solid var(--border);
+  background:var(--bg3);color:var(--text2);font-family:'JetBrains Mono',monospace;
+  font-size:11px;cursor:pointer;transition:all .15s;
+}
+.filter-btn:hover{border-color:var(--gold);color:var(--gold)}
+.filter-btn.active{background:rgba(200,164,74,.15);border-color:var(--gold);color:var(--gold)}
+.filter-sep{width:1px;height:20px;background:var(--border);margin:0 4px}
+.toggle-btn{
+  margin-left:auto;padding:5px 14px;border-radius:4px;border:1px solid var(--border2);
+  background:var(--bg3);color:var(--text2);font-family:'JetBrains Mono',monospace;
+  font-size:11px;cursor:pointer;transition:all .15s;
+}
+.toggle-btn:hover{border-color:var(--blue);color:var(--blue)}
+.toggle-btn:disabled{opacity:.45;cursor:not-allowed}
+.toggle-btn:disabled:hover{border-color:var(--border2);color:var(--text2)}
+
+/* CONTENT */
+.quiz-content{padding:24px;max-width:860px;margin:0 auto}
+
+/* QUESTION BLOCK */
+.q-block{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:8px;padding:24px;margin-bottom:18px;
+  transition:border-color .2s;
+}
+.q-block.answered{border-color:var(--border2)}
+.q-meta{display:flex;gap:8px;align-items:center;margin-bottom:12px}
+.q-num{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3)}
+.q-diff{
+  font-family:'JetBrains Mono',monospace;font-size:10px;
+  padding:2px 7px;border-radius:3px;
+}
+.diff-easy{background:rgba(61,158,114,.15);color:var(--green2)}
+.diff-med{background:rgba(61,143,209,.12);color:var(--blue)}
+.diff-hard{background:rgba(192,80,80,.12);color:var(--red2)}
+.q-text{font-size:14.5px;line-height:1.75;margin-bottom:16px;color:var(--text)}
+.q-opts{display:flex;flex-direction:column;gap:8px}
+.q-opt{
+  display:flex;align-items:flex-start;gap:10px;
+  padding:10px 14px;border:1px solid var(--border);
+  border-radius:6px;cursor:pointer;background:var(--bg3);
+  transition:all .15s;
+}
+.q-opt:hover:not(.done){border-color:var(--gold);background:rgba(200,164,74,.05)}
+.q-opt.done{cursor:default}
+.q-opt.sel{border-color:var(--blue)!important;background:rgba(61,143,209,.08)!important}
+.q-opt.correct{border-color:var(--green)!important;background:rgba(61,158,114,.12)!important}
+.q-opt.wrong{border-color:var(--red)!important;background:rgba(192,80,80,.08)!important}
+.opt-letter{
+  font-family:'JetBrains Mono',monospace;font-size:12px;
+  font-weight:500;color:var(--gold);min-width:18px;margin-top:2px;
+}
+.opt-text{font-size:13.5px;color:var(--text);line-height:1.6}
+.q-feedback{
+  margin-top:12px;padding:12px 16px;border-radius:6px;
+  font-size:13px;line-height:1.7;display:none;
+}
+.q-feedback.show{display:block;animation:fadeIn .2s ease}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.fb-correct{background:rgba(61,158,114,.1);border:1px solid rgba(61,158,114,.3);color:var(--green2)}
+.fb-wrong{background:rgba(192,80,80,.08);border:1px solid rgba(192,80,80,.25);color:var(--red2)}
+.fb-label{
+  font-family:'JetBrains Mono',monospace;font-size:10px;
+  text-transform:uppercase;letter-spacing:.8px;display:block;margin-bottom:5px;
+}
+.fb-correct .fb-label{color:var(--green)}
+.fb-wrong .fb-label{color:var(--red)}
+.fb-body{color:var(--text);font-style:italic}
+
+/* SCORE PANEL */
+#score-panel{
+  display:none;background:var(--bg2);border:1px solid var(--border);
+  border-radius:12px;padding:40px;text-align:center;margin:24px;
+}
+#score-panel.show{display:block;animation:fadeIn .4s ease}
+.sc-title{
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;
+}
+.sc-number{
+  font-family:'Cormorant Garamond',serif;font-size:72px;font-weight:700;line-height:1;margin-bottom:8px;
+}
+.sc-approved{color:var(--green2)}
+.sc-failed{color:var(--red2)}
+.sc-pct{font-size:20px;color:var(--text2);margin-bottom:24px}
+.sc-breakdown{display:flex;gap:24px;justify-content:center;flex-wrap:wrap;margin:20px 0}
+.sc-item{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text3)}
+.sc-item strong{color:var(--text);display:block;font-size:18px}
+.sc-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:24px}
+.sc-btn{
+  padding:11px 24px;border-radius:6px;font-family:'JetBrains Mono',monospace;
+  font-size:12px;cursor:pointer;transition:all .2s;border:none;
+}
+.sc-btn-primary{background:var(--gold);color:var(--bg)}
+.sc-btn-primary:hover{opacity:.85}
+.sc-btn-secondary{background:var(--bg3);border:1px solid var(--border);color:var(--text2)}
+.sc-btn-secondary:hover{border-color:var(--gold);color:var(--gold)}
+
+/* BOTTOM NAV */
+.bottom-nav{
+  padding:20px 24px;border-top:1px solid var(--border);
+  display:flex;gap:10px;align-items:center;flex-wrap:wrap;
+}
+.nav-btn{
+  padding:9px 18px;border-radius:6px;
+  background:var(--bg3);border:1px solid var(--border);
+  color:var(--text2);font-family:'JetBrains Mono',monospace;
+  font-size:11px;cursor:pointer;transition:all .2s;text-decoration:none;
+  display:inline-block;
+}
+.nav-btn:hover{border-color:var(--gold);color:var(--gold)}
+.nav-theory{margin-left:auto}
+
+/* STICKY SCORE */
+#sticky{
+  position:fixed;bottom:0;left:0;right:0;
+  background:rgba(17,19,24,.95);border-top:1px solid var(--border);
+  backdrop-filter:blur(8px);
+  padding:10px 24px;display:flex;align-items:center;gap:16px;
+  z-index:50;
+}
+#sticky .ss-txt{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3)}
+#sticky .ss-txt strong{color:var(--gold)}
+.ss-bar{flex:1;height:3px;background:var(--border);border-radius:2px;overflow:hidden}
+.ss-fill{height:100%;background:var(--gold);transition:width .3s}
+
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+
+
+@media (max-width: 720px){
+  .quiz-header,.filter-bar,.bottom-nav,.quiz-content,#sticky{padding-left:16px;padding-right:16px}
+  .qh-title{flex-basis:100%;font-size:17px}
+  .qh-stats{width:100%;gap:12px}
+  .filter-sep{display:none}
+  .toggle-btn{margin-left:0}
+  #score-panel{margin:16px;padding:28px 20px}
+  .sc-number{font-size:56px}
+  .bottom-nav{padding-bottom:84px}
+}
+
+@media (max-width: 520px){
+  .q-block{padding:18px}
+  .q-text{font-size:14px}
+  .opt-text{font-size:13px}
+  #sticky{gap:10px;flex-wrap:wrap}
+  #sticky .ss-txt{width:auto}
+  .ss-bar{order:3;flex-basis:100%}
+}
+
+
+</style>
+</head>
+<body>
+<header class="quiz-header">
+  <a href="D3_Inclusiva.html" class="qh-back">← Teoria D3</a>
+  <div class="qh-title">D3 — Educação Inclusiva</div>
+  <span class="qh-badge">40 questões</span>
+  <div class="qh-stats">
+    <span class="qh-stat"><strong id="hdr-answered">0</strong> respondidas</span>
+    <span class="qh-stat"><strong id="hdr-correct">0</strong> corretas</span>
+    <span class="qh-stat"><strong id="hdr-pct">0%</strong></span>
+  </div>
+</header>
+<div class="progress-bar"><div class="progress-fill" id="prog-bar" style="width:0%"></div></div>
+<div class="filter-bar">
+  <span class="filter-label">Dificuldade:</span>
+  <button type="button" class="filter-btn active" data-filter="all" onclick="setFilter('all',this)">Todas</button>
+  <button type="button" class="filter-btn" data-filter="Fácil" onclick="setFilter('Fácil',this)">Fácil</button>
+  <button type="button" class="filter-btn" data-filter="Média" onclick="setFilter('Média',this)">Média</button>
+  <button type="button" class="filter-btn" data-filter="Difícil" onclick="setFilter('Difícil',this)">Difícil</button>
+  <div class="filter-sep"></div>
+  <button type="button" class="toggle-btn" onclick="toggleErrors()" id="err-btn" style="display:none">↺ Só erros</button>
+</div>
+<div class="quiz-content" id="quiz-content"></div>
+<div id="score-panel">
+  <p class="sc-title">Resultado Final — D3 Educação Inclusiva</p>
+  <div class="sc-number" id="sc-num"></div>
+  <p class="sc-pct" id="sc-pct"></p>
+  <div class="sc-breakdown" id="sc-breakdown"></div>
+  <div class="sc-actions">
+    <button type="button" class="sc-btn sc-btn-primary" onclick="resetQuiz()">↺ Refazer</button>
+    <button type="button" class="sc-btn sc-btn-secondary" onclick="reviewErrors()" id="sc-review-btn">Revisar erros</button>
+    <a href="D3_Inclusiva.html" class="sc-btn sc-btn-secondary">← Teoria</a>
+  </div>
+</div>
+<div class="bottom-nav">
+  <a href="D2_Quiz.html" class="nav-btn">← D2</a>
+  <a href="D3_Inclusiva.html" class="nav-btn">📖 Conteúdo D3</a>
+  <a href="D4_Gerais.html" class="nav-btn" style="margin-left:auto">D4 →</a>
+</div>
+<div id="sticky">
+  <span class="ss-txt">Acertos: <strong id="st-pts">0</strong> / 40</span>
+  <div class="ss-bar"><div class="ss-fill" id="st-fill" style="width:0%"></div></div>
+  <span class="ss-txt"><strong id="st-pct">0%</strong></span>
+</div>
+<script>
+const QUESTIONS = [{n:1,t:"O Art. 208, III da Constituição Federal de 1988 determina que o Estado deve garantir:",o:["Escolas especiais exclusivas para todos os alunos com deficiência","Atendimento educacional especializado aos portadores de deficiência, **preferencialmente** na rede regular de ensino","Que os alunos com deficiência frequentem exclusivamente as escolas especiais","Que a educação especial seja oferecida apenas no contraturno e fora da escola"],a:1,c:"O Art. 208, III é a base constitucional da educação inclusiva: o AEE deve ser oferecido \"preferencialmente na rede regular de ensino\". O uso de \"preferencialmente\" não significa \"obrigatoriamente\" na rede regular para toda a escolarização — mas indica que a rede regular é o locus principal e preferencial, e que a segregação em escolas especiais não deve ser a norma. O Decreto 7.611/2011 e a Política Nacional de 2008 detalham como o AEE funciona como complemento à escolarizaçã",d:"Fácil"},{n:2,t:"A Lei 13.146/2015 (Lei Brasileira de Inclusão — LBI) adota o modelo social de deficiência, que define deficiência como:",o:["Uma doença que deve ser curada pela medicina para permitir a participação social","Uma limitação intrínseca do indivíduo que o impede de participar da sociedade","O resultado da interação entre o impedimento da pessoa e as barreiras que a sociedade impõe — eliminando barreiras, amplia-se a participação","Uma condição genética transmissível que justifica tratamento diferenciado"],a:2,c:"O Art. 2º da LBI define: \"pessoa com deficiência aquela que tem impedimento de longo prazo de natureza física, mental, intelectual ou sensorial, o qual, em interação com uma ou mais barreiras, pode obstruir sua participação plena e efetiva na sociedade.\" O modelo social inverte o modelo médico: o problema não está apenas na pessoa — está nas barreiras que a sociedade cria. Eliminar barreiras (arquitetônicas, atitudinais, comunicacionais) é responsabilidade social, não médica.",d:"Fácil"},{n:3,t:"A Lei 12.764/2012 (Lei do Autismo) determina que a pessoa com Transtorno do Espectro Autista (TEA):",o:["Deve ser matriculada exclusivamente em escolas especiais — a escola regular não tem condições de atendê-la","É considerada pessoa com deficiência para todos os efeitos legais — tendo direito à educação inclusiva, AEE e profissional de apoio quando necessário","Não tem direito ao AEE — o TEA não é considerado deficiência","Deve ser avaliada individualmente antes de ser admitida na escola regular"],a:1,c:"A Lei 12.764/2012 (Lei Berenice Piana) inclui explicitamente a pessoa com TEA no conceito de pessoa com deficiência para todos os efeitos legais. Isso significa: direito à matrícula na escola regular, direito ao AEE, direito ao profissional de apoio escolar quando as atividades de vida diária exigirem, direito a avaliações adaptadas, entre outros. O diagnóstico de TEA não exclui o aluno da escola regular — ao contrário, assegura sua inclusão nela.",d:"Fácil"},{n:4,t:"O Atendimento Educacional Especializado (AEE), segundo o Decreto 7.611/2011, deve ser realizado:",o:["Na sala comum, durante o horário regular de aulas, em substituição às disciplinas regulares","Prioritariamente na Sala de Recursos Multifuncionais, no **contraturno** ao da escolarização regular — sendo complementar ou suplementar, nunca substitutivo","Exclusivamente em escolas especiais separadas das escolas regulares","Apenas em clínicas e centros de reabilitação fora do ambiente escolar"],a:1,c:"O Decreto 7.611/2011 é claro: o AEE deve ser realizado \"prioritariamente em salas de recursos multifuncionais da própria escola ou em escola de referência da rede pública, no turno inverso ao da escolarização\" (contraturno). É complementar (para alunos com deficiência — complementa a escolarização) ou suplementar (para alunos com altas habilidades — aprofunda e enriquece a escolarização). O mais importante: não é substitutivo — não substitui a escolarização regular.",d:"Fácil"},{n:5,t:"O Decreto 5.626/2005 regulamenta a Lei 10.436/2002 (Libras) e é relevante para o professor porque determina que:",o:["Os professores de surdos devem aprender Libras após a formatura, por conta própria","A Libras deve ser incluída como disciplina curricular obrigatória nos cursos de **Licenciatura** e de **Fonoaudiologia**, e que os sistemas de ensino devem oferecer intérprete de Libras para alunos surdos","Os alunos surdos devem aprender apenas o português oral — Libras é língua não-oficial","Apenas os professores de Educação Especial precisam aprender Libras"],a:1,c:"O Decreto 5.626/2005 tem implicações diretas para a formação docente: inclui Libras como disciplina curricular obrigatória nas licenciaturas (todos os professores em formação devem ter contato com Libras) e nos cursos de fonoaudiologia. Determina também que os sistemas de ensino devem oferecer intérprete de Libras nas salas comuns onde haja alunos surdos. A educação bilíngue para surdos (Libras como primeira língua; português escrito como segunda) é o modelo recomendado.",d:"Fácil"},{n:6,t:"A Declaração de Salamanca (1994) é um marco da educação inclusiva porque:",o:["Criou a primeira lei brasileira de educação especial","Estabeleceu o princípio de que as escolas deveriam acomodar todas as crianças independentemente de suas condições — e que a escola inclusiva é o meio mais eficaz de combater atitudes discriminatórias","Determinou a criação de escolas especiais exclusivas em todos os países signatários","Proibiu a existência de instituições privadas de educação especial em todo o mundo"],a:1,c:"A Declaração de Salamanca (UNESCO, 1994) é o documento internacional mais influente da educação inclusiva. Seu princípio fundamental: toda criança tem características, interesses, habilidades e necessidades de aprendizagem únicas, e os sistemas educativos devem ser projetados para atender a essa gama de diferentes características e necessidades. A \"escola inclusiva\" não é apenas uma questão de direitos — é também a mais eficaz estratégia de combate à discriminação.",d:"Fácil"},{n:7,t:"O Desenho Universal para a Aprendizagem (DUA) beneficia a educação inclusiva porque:",o:["Cria materiais específicos e separados para alunos com deficiência — que não precisam dos mesmos materiais que os demais","Propõe que o planejamento pedagógico já inclua múltiplas formas de representação, ação/expressão e engajamento — tornando o ensino acessível a todos desde o início, sem adaptações posteriores","É uma estratégia exclusiva para alunos com altas habilidades — não se aplica a alunos com deficiência","Simplifica o currículo para torná-lo acessível a todos os alunos — reduzindo o nível de exigência"],a:1,c:"O DUA (Universal Design for Learning) é um framework pedagógico baseado em neurociência que propõe eliminar barreiras de aprendizagem *antes que ocorram*, através de planejamento universal. Os três princípios — múltiplos meios de representação (como apresentar), ação e expressão (como o aluno demonstra) e engajamento (como motivar) — criam um ambiente de aprendizagem flexível que atende à diversidade sem criar materiais segregados ou simplificar o currículo.",d:"Fácil"},{n:8,t:"O profissional de apoio escolar, previsto na LBI (Art. 28, XVII), tem como função:",o:["Substituir o professor de AEE e realizar o trabalho pedagógico especializado","Exercer atividades de alimentação, higiene e locomoção do estudante com deficiência — atuando em todas as atividades escolares nas quais se fizer necessária essa assistência","Avaliar os alunos com deficiência e propor adaptações curriculares","Treinar os professores da sala comum em estratégias de inclusão"],a:1,c:"A LBI diferencia claramente: o profissional de apoio escolar realiza atividades de vida diária (alimentação, higiene, locomoção) — é um apoio para as necessidades funcionais do aluno, não para as pedagógicas. O professor de AEE realiza o trabalho pedagógico especializado na Sala de Recursos Multifuncionais. Confundir os dois papéis é um equívoco frequente — e cobrado em concursos.",d:"Fácil"},{n:9,t:"A tecnologia assistiva, conforme definida pela LBI (Art. 3º, III), inclui:",o:["Apenas dispositivos eletrônicos de alta tecnologia como computadores e tablets","Produtos, equipamentos, dispositivos, recursos, metodologias, estratégias, práticas e serviços que objetivem promover a funcionalidade e a participação da pessoa com deficiência","Apenas recursos médicos e terapêuticos utilizados fora do ambiente escolar","Equipamentos de acessibilidade arquitetônica como rampas e elevadores"],a:1,c:"A definição de tecnologia assistiva na LBI é propositalmente ampla: inclui desde alta tecnologia (leitores de tela, comunicadores eletrônicos) até baixa tecnologia (pranchas de comunicação impressas, engrossadores de lápis, soroban) e recursos humanos e metodológicos (estratégias pedagógicas adaptadas). O conceito central: o que importa é a funcionalidade que promove — não o tipo de tecnologia. Para o professor, isso significa que estratégias pedagógicas adaptadas também são ",d:"Fácil"},{n:10,t:"Os três tipos de público-alvo da Educação Especial, definidos pela Política Nacional de 2008 e reafirmados pela LDB, são:",o:["Alunos com dificuldades de aprendizagem, alunos indisciplinados e alunos com problemas familiares","Pessoas com deficiência, pessoas com transtornos globais do desenvolvimento e pessoas com altas habilidades ou superdotação","Alunos com baixo rendimento escolar, alunos com dificuldades motoras e alunos com problemas de saúde","Alunos cegos, alunos surdos e alunos com deficiência intelectual — apenas essas três categorias"],a:1,c:"A Política Nacional de Educação Especial na Perspectiva da Educação Inclusiva (2008) — reafirmada pelo Decreto 7.611/2011 — define o público-alvo da Educação Especial: (1) pessoas com **deficiência** (física, intelectual, visual, auditiva, múltipla); (2) pessoas com **transtornos globais do desenvolvimento** (TEA e outros); (3) pessoas com **altas habilidades ou superdotação**. Dificuldades de aprendizagem sem essas características não são público-alvo da Educação Especial.",d:"Fácil"},{n:11,t:"A diferença entre o modelo de integração e o modelo de inclusão na educação é que:",o:["São idênticos — apenas com terminologias diferentes de períodos históricos distintos","Na integração, a pessoa com deficiência se adapta à escola (que não precisa mudar); na inclusão, a escola se adapta para receber todas as pessoas (eliminando barreiras)","A inclusão é menos eficaz que a integração — os alunos com deficiência aprendem melhor em ambientes segregados","A integração é o modelo atual no Brasil — a inclusão ainda não foi implementada legalmente"],a:1,c:"A distinção é fundamental: no modelo de integração (predominante até os anos 1990), o aluno com deficiência era \"integrado\" à escola regular desde que conseguisse acompanhar — a escola não mudava, o aluno é que se adaptava. No modelo de inclusão (a partir da Declaração de Salamanca, 1994, e da Política Nacional de 2008), a escola é que se transforma para receber todos — eliminando barreiras arquitetônicas, comunicacionais, metodológicas e atitudinais. A responsabilidade da ad",d:"Fácil"},{n:12,t:"O professor de sala comum tem responsabilidade central na educação inclusiva porque:",o:["Deve assumir sozinho todo o processo de inclusão — sem apoio da equipe multiprofissional","É o responsável por ensinar todos os alunos da sala — incluindo os com deficiência — articulando-se com o professor de AEE, adaptando estratégias e garantindo que o aluno com deficiência tenha acesso ao currículo comum","Deve encaminhar os alunos com deficiência exclusivamente ao professor de AEE — não é sua responsabilidade ensinar alunos com deficiência","Tem responsabilidade menor que o professor de AEE — que é o \"especialista\" e deve conduzir o processo"],a:1,c:"Um dos equívocos mais frequentes na prática escolar é pensar que a inclusão é \"problema do especialista de AEE\". Na perspectiva inclusiva, o professor de sala comum é o responsável por ensinar todos os seus alunos — incluindo os com deficiência. O professor de AEE é um parceiro que oferece suporte especializado no contraturno. A articulação entre os dois é essencial — mas a responsabilidade pedagógica principal com o aluno na sala comum é do professor da sala comum.",d:"Fácil"},{n:13,t:"A LBI (Art. 27) determina que o sistema educacional inclusivo deve ser garantido em \"todos os níveis\" de ensino. Isso implica que:",o:["Apenas o Ensino Fundamental deve ser inclusivo — o EM e a Educação Superior são excluídos","Todos os níveis — Educação Infantil, Fundamental, Médio, Superior e Educação ao Longo da Vida — devem ser organizados para incluir pessoas com deficiência, sem exceção","A inclusão é obrigatória apenas nas escolas públicas — as privadas podem recusar matrículas de pessoas com deficiência","A inclusão é obrigatória apenas para deficiências físicas — deficiências intelectuais justificam o encaminhamento para escolas especiais"],a:1,c:"O Art. 27 da LBI é amplo: \"A educação constitui direito da pessoa com deficiência, assegurados sistema educacional inclusivo em todos os níveis e aprendizado ao longo de toda a vida.\" Isso inclui: Educação Infantil, EF, EM, EJA, Educação Profissional e Educação Superior. As escolas privadas também são obrigadas — a LBI expressamente proibiu a recusa de matrícula por razão de deficiência (Art. 28, §1º). A violação dessa norma é crime (Art. 8º da Lei 7.853/1989).",d:"Fácil"},{n:14,t:"A barreira atitudinal, tipificada na LBI como um dos tipos de barreiras que dificultam a inclusão, é a mais difícil de superar porque:",o:["É a mais cara de ser eliminada — requer grandes investimentos em infraestrutura","Está instalada nas crenças, nos valores e nos comportamentos de pessoas e instituições — e não pode ser eliminada por decreto ou por instalação de rampas","Afeta apenas o acesso físico — não tem impacto sobre a aprendizagem","É um problema exclusivo dos alunos — não envolve os professores ou gestores"],a:1,c:"A barreira atitudinal é a que decorre de atitudes, comportamentos e preconceitos que prejudicam a participação plena das pessoas com deficiência. Um professor que acredita que \"aluno com deficiência intelectual não aprende\" criou uma barreira atitudinal que nenhuma rampa ou intérprete resolve. É a barreira mais difícil porque está internalizada — requer mudança de mentalidade, formação continuada, contato com pessoas com deficiência e reflexão crítica sobre o próprio sistema ",d:"Fácil"},{n:15,t:"O AEE não pode ser substitutivo ao ensino regular. Isso significa que é incorreto afirmar que o aluno com deficiência:",o:["Deve frequentar a sala comum e receber AEE no contraturno","Pode frequentar apenas a Sala de Recursos Multifuncionais, em vez da sala comum","Tem direito tanto à escolarização regular quanto ao AEE complementar","Deve ter seu desenvolvimento acompanhado tanto pelo professor de sala quanto pelo de AEE"],a:1,c:"O AEE é complementar ou suplementar — jamais substitutivo. O aluno com deficiência tem o direito (e a obrigação legal do sistema de garantir) de frequentar a sala comum com seus colegas sem deficiência. A SRM/AEE é um serviço adicional — que oferece recursos, estratégias e apoios específicos para que o aluno possa participar da escolarização regular. Encaminhar o aluno com deficiência apenas para a SRM (em vez da sala comum) é uma prática que contraria a Política Nacional de ",d:"Fácil"},{n:16,t:"A adaptação curricular de pequeno porte difere da adaptação de grande porte porque:",o:["Adaptações de pequeno porte eliminam conteúdos essenciais; as de grande porte apenas ajustam a metodologia","Adaptações de pequeno porte são realizadas pelo professor sem autorização especial, ajustando estratégias e materiais sem alterar os objetivos essenciais; as de grande porte alteram objetivos essenciais e requerem aprovação","As de pequeno porte são exclusivas para alunos com deficiência física; as de grande porte, para deficiência intelectual","São idênticas — a distinção é apenas terminológica sem consequências práticas"],a:1,c:"A distinção entre adaptações de pequeno e grande porte é central na prática inclusiva: adaptações de **pequeno porte** (de responsabilidade do professor) modificam procedimentos, estratégias, recursos e instrumentos de avaliação *sem alterar os objetivos essenciais* de aprendizagem — ex.: permitir que o aluno com paralisia cerebral responda oralmente em vez de por escrito, mas avaliando os mesmos objetivos. Adaptações de **grande porte** alteram os próprios objetivos — elimin",d:"Média"},{n:17,t:"A educação bilíngue para surdos, prevista pelo Decreto 5.626/2005 e pela LBI (Art. 28, IV), consiste em:",o:["Ensinar dois idiomas estrangeiros (inglês e espanhol) para alunos surdos","Oferecer a Libras como primeira língua e o português escrito como segunda língua — respeitando a identidade e a cultura da comunidade surda","Ensinar surdos exclusivamente em português oral — eliminando a Libras como língua de instrução","Criar escolas bilíngues que ensinam simultaneamente em Libras e em inglês"],a:1,c:"A educação bilíngue para surdos reconhece que: (1) a Libras é a língua natural dos surdos — pela via visual-gestual, acessível sem necessidade de audição; (2) o português escrito é a segunda língua — aprendida como língua estrangeira, através da Libras. O modelo bilíngue (Libras + português escrito) é diferente do modelo oralista (que tentava ensinar os surdos a falar) e do modelo de comunicação total (que misturava sinais e fala). O bilinguismo respeita a identidade linguíst",d:"Média"},{n:18,t:"O princípio da não discriminação na educação, garantido pela LBI, implica que as escolas privadas:",o:["Podem recusar matrícula de alunos com deficiência — a recusa é uma prerrogativa de estabelecimentos privados","Não podem recusar matrícula de pessoas com deficiência nem cobrar taxas adicionais por esse atendimento","Podem cobrar taxas adicionais pelo AEE — desde que informem previamente a família","Devem encaminhar alunos com deficiência para escolas públicas especializadas"],a:1,c:"A LBI (Art. 28, §1º) é explícita: \"às instituições privadas, de qualquer nível e modalidade de ensino, aplica-se obrigatoriamente o disposto nos incisos I, II, III, V, VII, VIII, IX, X, XI, XII, XIII, XIV, XV, XVI, XVII e XVIII do caput deste artigo.\" Isso inclui a proibição de recusar matrícula e de cobrar valores adicionais por recursos de acessibilidade. A Lei 7.853/1989 tipifica como crime a recusa de matrícula por razão de deficiência.",d:"Média"},{n:19,t:"A Resolução CNE/CEB 2/2001, ao definir \"necessidades educacionais especiais\", inclui três grupos. O correto é:",o:["Apenas alunos com diagnóstico médico comprovado de deficiência","Dificuldades acentuadas de aprendizagem não relacionadas ou relacionadas a condições, disfunções, limitações ou deficiências; limitações no processo comunicativo; altas habilidades/superdotação","Apenas alunos com deficiência física que precisam de adaptação arquitetônica","Qualquer aluno com dificuldade escolar temporária, incluindo dificuldades por falta de estudos"],a:1,c:"A Resolução CNE/CEB 2/2001 define NEE de forma mais ampla que o conceito atual de público-alvo da Ed. Especial: inclui (I) dificuldades acentuadas de aprendizagem — com ou sem condição orgânica identificada; (II) dificuldades comunicativas que demandam o uso de linguagens e códigos alternativos; (III) altas habilidades/superdotação. Essa definição é mais ampla que a Política Nacional de 2008 — que focou no público-alvo em deficiência, TGD e altas habilidades.",d:"Média"},{n:20,t:"A distinção entre capacitação e especialização docente, relevante para a educação inclusiva, é que:",o:["São sinônimas — apenas terminologias diferentes para o mesmo processo formativo","O professor **capacitado** recebe formação para incluir alunos com NEE em sua sala (geralmente nos cursos regulares); o professor **especializado** tem formação específica em Educação Especial (especialização, mestrado) e é o professor de AEE","O professor especializado trabalha na sala comum; o capacitado trabalha na SRM","A capacitação é superior à especialização — professores capacitados têm mais horas de formação"],a:1,c:"A Resolução CNE/CEB 2/2001 estabelece a distinção: professores **capacitados** são os de ensino regular que tiveram conteúdos de educação especial em sua formação — suficientes para trabalhar com inclusão na sala comum. Professores **especializados** têm formação específica em educação especial (especialização, pós-graduação) — são os que atuam no AEE. O sistema inclusivo precisa de ambos: professores de sala comum capacitados para incluir, e professores de AEE especializados",d:"Média"},{n:21,t:"O professor de Filosofia no EF Anos Finais pode contribuir especificamente para a educação inclusiva ao:",o:["Delegar os alunos com deficiência exclusivamente ao professor de AEE durante as aulas de Filosofia","Usar os fundamentos da Filosofia — igualdade, dignidade, diversidade, alteridade — para promover uma cultura de respeito às diferenças, e aplicar o DUA para garantir que o conteúdo filosófico seja acessível a todos os alunos","Simplificar completamente o conteúdo filosófico para alunos com deficiência — sem apresentar textos ou argumentos complexos","Trabalhar apenas com questões filosóficas abstratas — que naturalmente excluem alunos com deficiência intelectual"],a:1,c:"O professor de Filosofia tem uma contribuição específica e insubstituível para a educação inclusiva: filosoficamente, trabalhando questões sobre dignidade humana, alteridade (o outro como outro — Levinas), igualdade e diferença; pedagogicamente, aplicando o DUA (múltiplas formas de representar os conceitos filosóficos, múltiplas formas de o aluno expressar sua compreensão). A Filosofia não deve ser simplificada para alunos com deficiência — deve ser apresentada de formas aces",d:"Média"},{n:22,t:"A Política Nacional de Educação Especial na Perspectiva da Educação Inclusiva (2008) representou uma mudança em relação à política anterior porque:",o:["Criou as escolas especiais como principal locus do atendimento aos alunos com deficiência","Definiu que o AEE é complementar à escolarização regular — não substitutivo — e que o aluno com deficiência deve estar matriculado na sala comum, recebendo AEE no contraturno","Proibiu completamente a existência de instituições especializadas privadas","Determinou que os alunos com deficiência severa podem frequentar apenas escolas especiais"],a:1,c:"A mudança central da Política Nacional de 2008 foi tornar explícita a distinção entre escolarização (sala comum) e AEE (SRM no contraturno): o aluno com deficiência deve estar matriculado na sala comum E receber AEE complementar. Antes, muitos sistemas consideravam o AEE como substitutivo — o aluno frequentava apenas a sala especial. A Política de 2008 encerrou essa ambiguidade: a inclusão é na sala comum, e o AEE é um suporte adicional.",d:"Média"},{n:23,t:"A Comunicação Aumentativa e Alternativa (CAA) é um recurso de tecnologia assistiva especialmente relevante para:",o:["Alunos com deficiência visual — que precisam de alternativas ao texto escrito","Alunos com dificuldades na comunicação oral ou escrita — como alguns casos de TEA, paralisia cerebral ou deficiência intelectual severa — que precisam de formas alternativas de expressar-se","Alunos surdos — a CAA é sinônimo de Libras","Alunos com altas habilidades — que precisam de formas mais sofisticadas de comunicação"],a:1,c:"A CAA (Comunicação Aumentativa e Alternativa) são recursos, estratégias e tecnologias que suplementam ou substituem a fala e/ou a escrita para pessoas com dificuldades de comunicação. Inclui: pranchas de comunicação com pictogramas (baixa tecnologia), aplicativos de comunicação em tablets (alta tecnologia), gestos e sinais básicos. É especialmente relevante para alunos com TEA que não desenvolveram fala funcional, paralisia cerebral com comprometimento motor da fala, deficiên",d:"Média"},{n:24,t:"O conceito de \"escola para todos\" — presente desde a Declaração de Salamanca e reafirmado pela LBI — implica que a diferença entre os alunos deve ser vista como:",o:["Obstáculo à aprendizagem que deve ser minimizado para garantir eficiência pedagógica","Enriquecimento do processo educativo — a diversidade de características, ritmos e necessidades torna o ambiente escolar mais rico para todos os alunos","Justificativa para a separação: alunos diferentes em ambientes diferentes, para que cada um aprenda em seu ritmo","Um problema administrativo que as secretarias de educação devem resolver — sem implicações pedagógicas"],a:1,c:"A concepção filosófico-pedagógica da Declaração de Salamanca e da perspectiva inclusiva contemporânea: a diversidade é um valor — não um problema. Quando uma sala tem alunos com diferentes ritmos, capacidades, backgrounds culturais e necessidades, isso cria um ambiente mais rico e mais representativo da sociedade real. Aprender a conviver com a diferença é em si uma aprendizagem fundamental para a vida democrática — algo que a educação inclusiva proporciona para *todos* os al",d:"Média"},{n:25,t:"O Art. 59 da LDB garante aos educandos com deficiência, entre outros direitos, a \"terminalidade específica\" que se refere a:",o:["O direito de concluir o EF antes da idade regular — por serem mais capacitados","A possibilidade de encerrar os estudos sem atingir o nível exigido para conclusão do EF, para alunos que, em virtude de suas condições, não possam atingir esse nível — com certificado que especifique as habilidades desenvolvidas","O direito de transferência imediata entre escolas sem necessidade de documentação","A proibição de reprovação dos alunos com deficiência em qualquer nível"],a:1,c:"A \"terminalidade específica\" (Art. 59, II da LDB) é uma alternativa para alunos com deficiência que, mesmo após toda a escolarização, não consigam atingir o nível exigido para conclusão do EF. Nesses casos, recebem um certificado que especifica as habilidades e competências que desenvolveram — sem a conclusão formal do EF. É um instrumento de equidade: reconhece a trajetória e o desenvolvimento do aluno sem submetê-lo indefinidamente a uma métrica que não conseguirá atingir.",d:"Média"},{n:26,t:"A avaliação formativa é especialmente importante na educação inclusiva porque:",o:["Permite classificar os alunos com deficiência em grupos de nível para atendimento diferenciado","Acompanha continuamente o desenvolvimento de cada aluno — identificando progressos e dificuldades específicas — e orienta as adaptações pedagógicas necessárias, respeitando o ritmo e as especificidades de cada um","Substitui a necessidade de adaptações curriculares — a avaliação formativa é suficiente sem outras mudanças","É exclusiva para alunos com deficiência — os demais alunos são avaliados de forma somativa"],a:1,c:"A avaliação formativa é particularmente importante na educação inclusiva porque: (1) acompanha o processo — não apenas o produto; (2) permite identificar as especificidades de cada aluno com deficiência e orientar as adaptações pedagógicas; (3) valoriza os progressos individuais — mesmo que o aluno ainda não tenha atingido os padrões esperados para a série; (4) fornece informações para a articulação entre o professor de sala e o de AEE. A avaliação somativa (nota final) pode ",d:"Média"},{n:27,t:"O modelo de educação inclusiva é diferente do modelo de integração especialmente porque no modelo inclusivo:",o:["Apenas os alunos com deficiências leves podem frequentar a escola regular","A escola regular permanece inalterada — o aluno com deficiência se adapta a ela","A escola se transforma para receber todos — o planejamento é universal, os recursos são adaptados, as atitudes são revistas","A inclusão ocorre apenas nas séries iniciais — no EF Anos Finais e no EM, retorna-se à integração"],a:2,c:"A distinção fundamental: integração → o aluno se adapta à escola; inclusão → a escola se transforma para incluir o aluno. Na inclusão, as mudanças são sistêmicas: planejamento com DUA (para que todos possam acessar desde o início), formação docente, recursos de tecnologia assistiva, adaptações arquitetônicas, mudança de atitudes. Não é a pessoa com deficiência que precisa \"se encaixar\" — é o sistema educacional que precisa se reorganizar.",d:"Média"},{n:28,t:"O professor de Filosofia que deseja aplicar o DUA em suas aulas deve planejar:",o:["Materiais simplificados para os alunos com deficiência e materiais padrão para os demais — separando as turmas","Uma única aula expositiva — que é universal por ser a mesma para todos","Múltiplas formas de apresentar os problemas filosóficos (texto, vídeo, objeto, narrativa), múltiplas formas de o aluno expressar sua compreensão (escrito, oral, desenho, debate) e múltiplas formas de engajar os alunos (escolha, conexão com a realidade, colaboração)","Apenas a adaptação dos instrumentos avaliativos — o planejamento das aulas não precisa mudar"],a:2,c:"A aplicação do DUA ao ensino de Filosofia: (1) múltiplos meios de representação — um problema filosófico pode ser introduzido por texto, cena de filme, música, situação-problema concreta, experimento mental; (2) múltiplos meios de ação e expressão — o aluno pode demonstrar sua compreensão filosófica escrevendo, debatendo oralmente, desenhando um mapa conceitual, gravando um vídeo, encenando um dilema; (3) múltiplos meios de engajamento — oferecer escolha de temas, conectar co",d:"Média"},{n:29,t:"Considere as afirmações sobre educação inclusiva:  I. O AEE pode substituir a matrícula do aluno com deficiência na sala comum — desde que a família consinta. II. Escolas privadas podem cobrar valores adicionais por serviços de acessibilidade para alunos com deficiência. III. O Decreto 10.502/2020, que alterou a Política Nacional de Educação Especial, foi suspenso pelo STF por contrariar a Convenção da ONU sobre Direitos das Pessoas com Deficiência.  Estão corretas:",o:["Apenas I e II","Apenas III","Apenas I e III","I, II e III"],a:1,c:"I é **falsa**: o AEE é complementar — jamais substitutivo ao ensino regular. O consentimento da família não muda essa norma. II é **falsa**: a LBI proíbe explicitamente a cobrança de valores adicionais por acessibilidade nas escolas privadas. III é **verdadeira**: o Decreto 10.502/2020, que introduzia escolas especiais como opção principal (contrariando o modelo inclusivo), foi suspenso pelo STF por ferir a Convenção da ONU sobre Direitos das Pessoas com Deficiência — ratific",d:"Média"},{n:30,t:"A Convenção sobre os Direitos das Pessoas com Deficiência (ONU, aprovada em 2006 e ratificada pelo Brasil em 2008) tem força de emenda constitucional porque:",o:["Foi aprovada pelo Congresso Nacional com maioria simples","O presidente da República a assinou sem necessidade de aprovação pelo Congresso","Foi aprovada pelo Congresso Nacional em dois turnos, em cada Casa, por 3/5 dos votos — seguindo o rito do Art. 5º, §3º da CF, que confere esse status a tratados de direitos humanos aprovados nesse rito","O STF a reconheceu como emenda constitucional por decisão unilateral"],a:2,c:"A Convenção da ONU sobre Direitos das Pessoas com Deficiência foi o primeiro tratado internacional a receber status de emenda constitucional no Brasil — pelo procedimento do Art. 5º, §3º da CF (incluído pela EC 45/2004): tratados de direitos humanos aprovados com quórum de emenda (3/5 dos votos, dois turnos, nas duas Casas do Congresso) têm força equivalente. Isso tem implicação direta para a educação inclusiva: o modelo social de deficiência e o sistema educacional inclusivo",d:"Média"},{n:31,t:"A perspectiva da educação inclusiva — que afirma a responsabilidade da escola de adaptar-se para incluir todos — encontra resistência prática em algumas escolas sob o argumento de que \"o professor não foi preparado para isso\". A resposta mais fundamentada a essa resistência é:",o:["A resistência é válida — a formação docente é insuficiente e a inclusão deve ser adiada até que todos os professores estejam prontos","A falta de formação é um limite real que deve ser reconhecido — mas não justifica a exclusão dos alunos: é responsabilidade do sistema garantir formação continuada, e os alunos têm direito à inclusão agora, não quando o sistema estiver pronto","A inclusão é simples — qualquer professor pode fazê-la sem formação específica","Os alunos com deficiência severa não devem ser incluídos enquanto os professores não estiverem preparados — a inclusão deve ser gradual por tipo de deficiência"],a:1,c:"Essa é uma das tensões mais reais e produtivas da educação inclusiva: o direito do aluno à inclusão existe agora — não é condicionado à preparação do sistema. Ao mesmo tempo, a falta de formação é uma barreira real que não pode ser ignorada. A resposta coerente com a legislação (LBI, Decreto 7.611/2011) e com a ética pedagógica: o direito do aluno não pode ser negado pela insuficiência do sistema — mas o sistema tem a obrigação de prover formação continuada para os professore",d:"Difícil"},{n:32,t:"A teoria histórico-cultural de Vygotsky e a educação inclusiva têm em comum a ênfase em:",o:["A maturação biológica como fator limitante — o desenvolvimento precede a aprendizagem","A interação social e a mediação como motores do desenvolvimento — o aluno com deficiência se desenvolve pelo contato com o outro e pelo apoio de mediadores competentes (professor, colegas), não por isolamento em ambientes segregados","A avaliação padronizada como critério para decidir quem pode aprender","A separação dos alunos por nível de desenvolvimento como condição para a aprendizagem eficaz"],a:1,c:"Vygotsky tinha experiência direta com crianças com deficiência (defectologia) — e sua teoria histórico-cultural tem implicações profundas para a inclusão: a ZDP mostra que o que o aluno com deficiência pode fazer com mediação adequada é muito mais do que o que faz sozinho; a mediação social (professor competente, colegas como pares) é o motor do desenvolvimento; a internalização das funções psicológicas superiores ocorre através da interação. Isso é incompatível com a segrega",d:"Difícil"},{n:33,t:"O princípio da \"equidade\" na educação inclusiva distingue-se do princípio da \"igualdade\" porque:",o:["Igualdade e equidade são sinônimos — as palavras apenas diferem por preferência estilística","Igualdade trata todos da mesma forma; equidade trata diferentemente os diferentes — dando mais suporte a quem mais precisa — para garantir as mesmas condições de participação e aprendizagem","A equidade exige que todos os alunos recebam recursos idênticos — sem distinção","A igualdade é superior à equidade — tratar todos de forma idêntica é mais justo"],a:1,c:"A distinção igualdade/equidade é central na pedagogia inclusiva e frequentemente ilustrada com a metáfora das caixas: igualdade = todos recebem uma caixa da mesma altura para ver o jogo (independentemente de sua estatura); equidade = cada um recebe a caixa que precisa para ver o jogo (quem é mais baixo recebe uma caixa maior). Na educação inclusiva, equidade significa: dar mais recursos, mais suporte e mais adaptações a quem mais precisa — para que todos possam participar com",d:"Difícil"},{n:34,t:"A crítica ao modelo de \"normalização\" na educação especial — que buscava tornar a pessoa com deficiência o mais próximo possível do padrão \"normal\" — é que:",o:["A normalização é o modelo mais avançado de inclusão disponível","O modelo de normalização mantém o problema na pessoa com deficiência — que deve se adaptar ao padrão; o modelo inclusivo identifica o problema nas barreiras sociais e institucionais — que devem ser eliminadas","A normalização é inatingível — logo, deve ser substituída por segregação","A normalização é correta para deficiências físicas mas incorreta para deficiências intelectuais"],a:1,c:"O modelo de normalização (desenvolvido por Wolfensberger nos anos 1970) foi um avanço em relação à mera institucionalização — buscava que pessoas com deficiência levassem vida o mais próximo possível do normal. Mas o modelo social de deficiência (LBI) identificou sua limitação: o problema continua sendo visto como da pessoa (que deve \"normalizar-se\") em vez da sociedade (que deve eliminar barreiras). A perspectiva inclusiva contemporânea vai além: não se trata de \"normalizar\"",d:"Difícil"},{n:35,t:"A articulação entre o professor de AEE e o professor de sala comum é essencial para a inclusão porque:",o:["Um substitui o outro — quando o aluno está na SRM, o professor de sala não precisa se preocupar com ele","O professor de AEE conhece as especificidades do aluno com deficiência e pode orientar o professor de sala sobre estratégias, adaptações e recursos — enquanto o professor de sala conhece o currículo e pode orientar o AEE sobre os objetivos de aprendizagem","A articulação é apenas burocrática — não tem impacto pedagógico real","Apenas o professor de AEE tem responsabilidade pelo aluno com deficiência — o de sala comum não precisa se envolver"],a:1,c:"A articulação entre os dois professores é uma das condições mais importantes para a inclusão efetiva. O professor de AEE: conhece os recursos de tecnologia assistiva, as estratégias específicas para cada deficiência, as necessidades específicas do aluno. O professor de sala: conhece o currículo, os objetivos de aprendizagem, a dinâmica do grupo. A articulação entre eles permite: planejamento conjunto, adaptações coerentes com o currículo, uso de recursos de TA na sala comum, ",d:"Difícil"},{n:36,t:"A perspectiva das altas habilidades e superdotação na educação inclusiva é frequentemente negligenciada porque:",o:["Alunos com altas habilidades não têm direito ao AEE — são bem-sucedidos na escola regular","A inclusão dessas crianças requer reconhecimento de que o subdesafio curricular também é uma forma de exclusão — esses alunos precisam de enriquecimento e aprofundamento curricular para desenvolver seu potencial","As altas habilidades não são consideradas NEE — não pertencem ao público-alvo da Ed. Especial","Alunos com altas habilidades são sempre autossuficientes e não precisam de nenhum apoio"],a:1,c:"Os alunos com altas habilidades/superdotação são público-alvo da Educação Especial (Política Nacional de 2008, Decreto 7.611/2011) — e têm direito ao AEE. Mas sua inclusão é frequentemente negligenciada: a escola tende a se preocupar com quem está abaixo do esperado, ignorando quem está muito acima. O subdesafio sistemático (aulas muito fáceis, conteúdo já dominado) é uma forma de exclusão — que pode levar à desmotivação, ao comportamento disruptivo e ao não-desenvolvimento d",d:"Difícil"},{n:37,t:"O conceito de \"barreiras de aprendizagem e participação\" — introduzido por Ainscow e Booth no *Índice de Inclusão* — vai além do conceito tradicional de \"necessidades especiais\" porque:",o:["Foca no diagnóstico individual da pessoa com deficiência como causa única das dificuldades","Identifica que as dificuldades de aprendizagem e participação surgem da interação entre o aluno e os contextos — escola, currículo, práticas pedagógicas, culturas escolares — e que as barreiras podem ser identificadas e eliminadas por ações coletivas","Restringe o conceito de inclusão às pessoas com diagnóstico médico de deficiência","Argumenta que as barreiras só podem ser eliminadas com grandes investimentos financeiros em infraestrutura"],a:1,c:"O *Índice de Inclusão* (Ainscow e Booth) é um instrumento de autoavaliação escolar que usa o conceito de \"barreiras de aprendizagem e participação\" em vez de \"necessidades especiais\": não há \"necessidades especiais\" — há barreiras que o contexto cria. O problema não está na pessoa (que teria \"necessidades especiais\") — está na interação entre a pessoa e o contexto. Qualquer aluno pode encontrar barreiras no contexto escolar; a inclusão é o processo coletivo de identificar e e",d:"Difícil"},{n:38,t:"A análise filosófica das condições de possibilidade da inclusão — inspirada em Arendt (*A Condição Humana*) — pode ser feita a partir da ideia de que:",o:["A pluralidade humana — o fato de que cada ser humano é único e diferente — não é um obstáculo a superar, mas a condição fundamental da vida em comum","A inclusão é impossível — a diferença impossibilita a vida em comum","A inclusão só é possível quando as diferenças são eliminadas pela normalização","A Filosofia de Arendt é irrelevante para a educação inclusiva — são campos completamente separados"],a:0,c:"A análise arendtiana da pluralidade como condição da ação política — \"os homens, não o Homem, habitam a Terra\" — oferece um fundamento filosófico poderoso para a educação inclusiva: a diversidade de seres humanos (cada um singular e único) não é um problema a resolver, mas a condição fundamental de qualquer vida compartilhada. A escola que inclui não está resolvendo um problema — está reconhecendo a condição humana fundamental: somos plurais. Excluir a diferença não é apenas ",d:"Difícil"},{n:39,t:"A Lei 13.146/2015 (LBI), ao proibir a cobrança de valores adicionais por serviços de acessibilidade em escolas privadas, foi contestada por algumas instituições alegando que isso representaria ônus excessivo. O STF, ao julgar a constitucionalidade da norma, manteve-a porque:",o:["As escolas privadas devem lucrar com a inclusão — a proibição é inconstitucional","A educação é um direito fundamental — e a proibição de cobrança adicional garante que o direito à educação inclusiva não seja condicionado à capacidade financeira das famílias de pessoas com deficiência; o custo da inclusão é responsabilidade social, não um bônus a ser cobrado dos mais vulneráveis","As escolas privadas são menos importantes que as públicas — a norma só se aplica ao setor público","O STF não se pronunciou sobre essa questão — ela permanece em aberto"],a:1,c:"O STF, ao analisar a ADI 5357 (julgada em 2016), decidiu pela constitucionalidade da LBI no que se refere às escolas privadas — incluindo a proibição de cobrança adicional. O fundamento: a educação é um direito fundamental (Art. 205 da CF); o Art. 206, I garante igualdade de condições para o acesso; a Convenção da ONU (emenda constitucional) exige sistema educacional inclusivo. Cobrar adicionalmente pela inclusão transformaria o direito em serviço premium — acessível apenas a",d:"Difícil"},{n:40,t:"Um professor de Filosofia no EF Anos Finais recebe em sua turma um aluno com Transtorno do Espectro Autista (TEA) que tem dificuldade com mudanças de rotina e com estímulos sensoriais excessivos. A abordagem mais coerente com os princípios da educação inclusiva e com o DUA é:",o:["Encaminhar o aluno exclusivamente para o professor de AEE durante todas as aulas de Filosofia","Informar previamente o aluno sobre mudanças na rotina das aulas, reduzir estímulos excessivos, oferecer múltiplas formas de o aluno expressar sua compreensão filosófica (incluindo formas não-verbais), articular-se com o professor de AEE sobre estratégias específicas e incluir o aluno em todas as investigações filosóficas da turma","Simplificar completamente o conteúdo filosófico — o aluno com TEA não tem capacidade de acompanhar a Filosofia","Criar um plano de aula separado para o aluno com TEA — com atividades completamente diferentes das da turma"],a:1,c:"Esta questão final integra os princípios da educação inclusiva com o contexto específico do professor de Filosofia. A abordagem B aplica: (1) conhecimento das especificidades do TEA (previsibilidade, redução de sobrecarga sensorial); (2) DUA (múltiplas formas de expressão que incluam formas não-verbais — o aluno com TEA pode expressar compreensão filosófica através de esquemas visuais, apontamentos, seleção de opções em vez de dissertação); (3) articulação com o AEE; (4) incl",d:"Difícil"}];
+const TOTAL = 40;
+let answers = {};
+let currentFilter = 'all';
+let errorsMode = false;
+
+function getVisible(){
+  if(errorsMode){
+    return QUESTIONS.filter(q=>answers[q.n]!==undefined && answers[q.n]!==q.a);
+  }
+  if(currentFilter==='all') return QUESTIONS;
+  return QUESTIONS.filter(q=>q.d===currentFilter);
+}
+
+function renderQuiz(){
+  const visible = getVisible();
+  const container = document.getElementById('quiz-content');
+  container.innerHTML = '';
+  if(!visible.length){
+    container.innerHTML = '<p style="text-align:center;color:var(--text3);padding:40px;font-family:JetBrains Mono,monospace;font-size:13px;">Nenhuma questão neste filtro.</p>';
+    return;
+  }
+  visible.forEach((q,i)=>{
+    const block = document.createElement('div');
+    block.className = 'q-block' + (answers[q.n]!==undefined?' answered':'');
+    block.id = 'qb-'+q.n;
+    const diffClass = q.d==='Fácil'?'diff-easy':q.d==='Média'?'diff-med':'diff-hard';
+    const done = answers[q.n]!==undefined;
+    block.innerHTML = `
+      <div class="q-meta">
+        <span class="q-num">Q${String(q.n).padStart(2,'0')}</span>
+        <span class="q-diff ${diffClass}">${q.d}</span>
+      </div>
+      <div class="q-text">${q.t}</div>
+      <div class="q-opts" id="opts-${q.n}">
+        ${q.o.map((o,j)=>{
+          let cls='q-opt'+(done?' done':'');
+          if(done){
+            if(j===q.a) cls+=' correct';
+            else if(j===answers[q.n]) cls+=' wrong';
+          }
+          return `<div class="${cls}" ${!done?`onclick="pick(${q.n},${j})"`:''}>
+            <span class="opt-letter">${'ABCD'[j]}</span>
+            <span class="opt-text">${o}</span>
+          </div>`;
+        }).join('')}
+      </div>
+      <div class="q-feedback ${done?(answers[q.n]===q.a?'fb-correct show':'fb-wrong show'):''}" id="fb-${q.n}">
+        <span class="fb-label">${done?(answers[q.n]===q.a?'✓ Correto':'✗ Incorreto — Gabarito: '+'ABCD'[q.a]):'' }</span>
+        <span class="fb-body">${q.c}</span>
+      </div>`;
+    container.appendChild(block);
+  });
+}
+
+function pick(qn, optIdx){
+  if(answers[qn]!==undefined) return;
+  const q = QUESTIONS.find(x=>x.n===qn);
+  answers[qn] = optIdx;
+  const correct = optIdx===q.a;
+  // Style options
+  const opts = document.querySelectorAll('#opts-'+qn+' .q-opt');
+  opts.forEach(o=>o.classList.add('done'));
+  opts[optIdx].classList.add(correct?'correct':'wrong');
+  if(!correct) opts[q.a].classList.add('correct');
+  // Feedback
+  const fb=document.getElementById('fb-'+qn);
+  fb.className='q-feedback show '+(correct?'fb-correct':'fb-wrong');
+  fb.innerHTML=`<span class="fb-label">${correct?'✓ Correto':'✗ Incorreto — Gabarito: '+'ABCD'[q.a]}</span><span class="fb-body">${q.c}</span>`;
+  document.getElementById('qb-'+qn).classList.add('answered');
+  updateStats();
+  if(Object.keys(answers).length===TOTAL) finishQuiz();
+}
+
+function updateStats(){
+  const answered = Object.keys(answers).length;
+  let corr = 0;
+  QUESTIONS.forEach(q => { if (answers[q.n] === q.a) corr++; });
+  const pct = answered ? Math.round(corr / answered * 100) : 0;
+
+  document.getElementById('hdr-answered').textContent = answered;
+  document.getElementById('hdr-correct').textContent = corr;
+  document.getElementById('hdr-pct').textContent = pct + '%';
+  document.getElementById('prog-bar').style.width = (answered / TOTAL * 100) + '%';
+  document.getElementById('st-pts').textContent = corr;
+  document.getElementById('st-fill').style.width = (corr / TOTAL * 100) + '%';
+  document.getElementById('st-pct').textContent = pct + '%';
+
+  syncErrorsButton();
+}
+
+function finishQuiz(){
+  let corr=0;
+  QUESTIONS.forEach(q=>{ if(answers[q.n]===q.a) corr++; });
+  const pct=Math.round(corr/TOTAL*100);
+  const panel=document.getElementById('score-panel');
+  panel.classList.add('show');
+  const numEl=document.getElementById('sc-num');
+  numEl.textContent=corr+'/'+TOTAL;
+  numEl.className='sc-number '+(pct>=70?'sc-approved':'sc-failed');
+  document.getElementById('sc-pct').textContent=pct+'% de acerto';
+  const errs=TOTAL-corr;
+  document.getElementById('sc-breakdown').innerHTML=
+    `<div class="sc-item"><strong>${corr}</strong>Corretas</div>
+     <div class="sc-item"><strong>${errs}</strong>Incorretas</div>
+     <div class="sc-item"><strong>${pct}%</strong>Aproveitamento</div>`;
+  syncErrorsButton();
+  if(errs>0) document.getElementById('sc-review-btn').style.display='inline-block';
+  else document.getElementById('sc-review-btn').style.display='none';
+  panel.scrollIntoView({behavior:'smooth'});
+}
+
+function syncErrorsButton(){
+  const errBtn = document.getElementById('err-btn');
+  const errs = QUESTIONS.filter(q => answers[q.n] !== undefined && answers[q.n] !== q.a).length;
+  const answered = Object.keys(answers).length;
+
+  if (errs > 0) {
+    errBtn.style.display = 'block';
+    errBtn.disabled = false;
+    errBtn.textContent = errorsMode ? '↺ Mostrar todas' : '↺ Só erros';
+  } else {
+    errBtn.style.display = answered === TOTAL ? 'block' : 'none';
+    errBtn.disabled = true;
+    errBtn.textContent = '↺ Só erros';
+  }
+}
+
+function resetQuiz(){
+  answers={};
+  errorsMode=false;
+  currentFilter='all';
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelector('[data-filter="all"]').classList.add('active');
+  document.getElementById('score-panel').classList.remove('show');
+  syncErrorsButton();
+  document.getElementById('hdr-answered').textContent='0';
+  document.getElementById('hdr-correct').textContent='0';
+  document.getElementById('hdr-pct').textContent='0%';
+  document.getElementById('prog-bar').style.width='0%';
+  document.getElementById('st-pts').textContent='0';
+  document.getElementById('st-fill').style.width='0%';
+  document.getElementById('st-pct').textContent='0%';
+  renderQuiz();
+  window.scrollTo(0,0);
+}
+
+function reviewErrors(){
+  errorsMode = true;
+  document.getElementById('score-panel').classList.remove('show');
+  currentFilter = 'all';
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector('[data-filter="all"]').classList.add('active');
+  renderQuiz();
+syncErrorsButton();
+  window.scrollTo(0,0);
+}
+
+function setFilter(f, btn){
+  currentFilter = f;
+  errorsMode = false;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderQuiz();
+syncErrorsButton();
+}
+
+function toggleErrors(){
+  const errs = QUESTIONS.filter(q => answers[q.n] !== undefined && answers[q.n] !== q.a).length;
+  if (!errs) return;
+  errorsMode = !errorsMode;
+  renderQuiz();
+syncErrorsButton();
+}
+
+renderQuiz();
+syncErrorsButton();
+
+</script>
+</body>
+</html>

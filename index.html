@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Apostila Digital — Concurso SJR 2026 · Prof. Filosofia EF Anos Finais</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=JetBrains+Mono:wght@400;500&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b0d10;--bg2:#111318;--bg3:#181c22;--bg4:#1e232b;
+  --border:#252b35;--border2:#2d3443;
+  --text:#cdd5e0;--text2:#8a96a8;--text3:#4d5a6e;
+  --gold:#c8a44a;--gold2:#e2c070;--gold3:#f0d490;
+  --blue:#3d8fd1;--blue2:#5aaee8;
+  --green:#3d9e72;--green2:#5ec090;
+  --red:#c05050;--red2:#e07070;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:'Lato',sans-serif;font-size:15px;line-height:1.75;min-height:100vh}
+
+/* ── HEADER ── */
+.site-header{
+  background:linear-gradient(135deg,var(--bg2) 0%,var(--bg3) 100%);
+  border-bottom:1px solid var(--border);
+  padding:40px 48px 36px;
+  text-align:center;
+}
+.site-kicker{
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  color:var(--gold);text-transform:uppercase;letter-spacing:2.5px;
+  margin-bottom:14px;
+}
+.site-title{
+  font-family:'Cormorant Garamond',serif;font-size:52px;font-weight:700;
+  color:var(--gold2);line-height:1.05;margin-bottom:10px;
+}
+.site-sub{
+  font-size:17px;color:var(--text2);margin-bottom:24px;
+}
+.header-badges{
+  display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:28px;
+}
+.hbadge{
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  padding:5px 14px;border-radius:4px;
+  background:rgba(200,164,74,.1);border:1px solid rgba(200,164,74,.28);
+  color:var(--gold);
+}
+.hbadge.hbadge-red{
+  background:rgba(192,80,80,.1);border-color:rgba(192,80,80,.3);color:var(--red2);
+}
+.hbadge.hbadge-blue{
+  background:rgba(61,143,209,.1);border-color:rgba(61,143,209,.3);color:var(--blue2);
+}
+.header-links{
+  display:flex;gap:12px;justify-content:center;flex-wrap:wrap;
+}
+.hlink{
+  display:inline-flex;align-items:center;gap:7px;
+  padding:10px 20px;border-radius:6px;
+  font-family:'JetBrains Mono',monospace;font-size:12px;
+  text-decoration:none;transition:all .2s;
+}
+.hlink-primary{
+  background:rgba(200,164,74,.16);border:1px solid rgba(200,164,74,.4);
+  color:var(--gold);
+}
+.hlink-primary:hover{background:rgba(200,164,74,.28);color:var(--gold3)}
+.hlink-secondary{
+  background:var(--bg3);border:1px solid var(--border);
+  color:var(--text2);
+}
+.hlink-secondary:hover{border-color:var(--gold);color:var(--gold)}
+
+/* ── MAIN ── */
+.main-wrap{max-width:1100px;margin:0 auto;padding:40px 48px 80px;}
+
+/* ── SECTION HEADERS ── */
+.sec-label{
+  font-family:'JetBrains Mono',monospace;font-size:10px;
+  color:var(--gold);text-transform:uppercase;letter-spacing:2px;
+  margin-bottom:12px;
+}
+.sec-title{
+  font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:700;
+  color:var(--gold2);margin-bottom:24px;
+}
+.section-divider{
+  border:none;border-top:1px solid var(--border);
+  margin:48px 0;
+}
+
+/* ── EXAM COUNTDOWN ── */
+.countdown-block{
+  background:var(--bg2);border:1px solid var(--border);
+  border-left:4px solid var(--gold);
+  border-radius:8px;padding:24px 28px;
+  display:flex;align-items:center;gap:20px;
+  margin-bottom:48px;flex-wrap:wrap;
+}
+.cd-emoji{font-size:32px;}
+.cd-text{}
+.cd-date{
+  font-family:'JetBrains Mono',monospace;font-size:28px;font-weight:500;
+  color:var(--gold2);
+}
+.cd-desc{font-size:13px;color:var(--text2);margin-top:4px;}
+.cd-days{
+  margin-left:auto;text-align:center;
+  background:var(--bg3);border:1px solid var(--border2);
+  border-radius:8px;padding:16px 24px;min-width:110px;
+}
+.cd-num{
+  font-family:'Cormorant Garamond',serif;font-size:48px;font-weight:700;
+  color:var(--red2);line-height:1;
+}
+.cd-unit{
+  font-family:'JetBrains Mono',monospace;font-size:10px;
+  color:var(--text3);text-transform:uppercase;letter-spacing:1px;
+}
+
+/* ── DISCIPLINES GRID ── */
+.disc-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+  gap:20px;margin-bottom:16px;
+}
+.disc-card{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:10px;padding:24px;
+  transition:all .2s;cursor:pointer;
+  text-decoration:none;color:inherit;
+  display:flex;flex-direction:column;gap:0;
+}
+.disc-card:hover{
+  border-color:var(--gold);
+  transform:translateY(-3px);
+  box-shadow:0 12px 32px rgba(0,0,0,.35);
+}
+.dc-header{display:flex;align-items:flex-start;gap:12px;margin-bottom:16px;}
+.dc-code{
+  font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:500;
+  color:var(--gold);min-width:36px;line-height:1;
+  padding-top:2px;
+}
+.dc-info{}
+.dc-label{
+  font-family:'JetBrains Mono',monospace;font-size:10px;
+  color:var(--text3);text-transform:uppercase;letter-spacing:1.5px;
+  margin-bottom:4px;
+}
+.dc-name{
+  font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;
+  color:var(--text);line-height:1.2;
+}
+.dc-meta{
+  display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px;
+}
+.dc-tag{
+  font-family:'JetBrains Mono',monospace;font-size:10px;
+  padding:3px 9px;border-radius:3px;
+  background:rgba(200,164,74,.08);border:1px solid rgba(200,164,74,.2);
+  color:var(--gold);
+}
+.dc-tag.tag-blue{background:rgba(61,143,209,.08);border-color:rgba(61,143,209,.2);color:var(--blue2);}
+.dc-actions{
+  display:flex;gap:8px;flex-wrap:wrap;margin-top:auto;padding-top:16px;
+  border-top:1px solid var(--border);
+}
+.dc-btn{
+  flex:1;padding:8px 12px;border-radius:5px;
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  text-decoration:none;text-align:center;cursor:pointer;
+  transition:all .15s;border:none;
+}
+.dc-btn-theory{background:var(--bg3);border:1px solid var(--border);color:var(--text2);}
+.dc-btn-theory:hover{background:var(--bg4);color:var(--text);border-color:var(--border2);}
+.dc-btn-quiz{background:rgba(200,164,74,.14);border:1px solid rgba(200,164,74,.35);color:var(--gold);}
+.dc-btn-quiz:hover{background:rgba(200,164,74,.24);}
+
+/* ── POINTS SUMMARY ── */
+.points-bar{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:8px;padding:20px 24px;
+  display:flex;gap:0;align-items:stretch;flex-wrap:wrap;
+  margin-top:12px;overflow:hidden;
+}
+.pb-item{
+  flex:1;min-width:120px;padding:8px 20px;
+  text-align:center;border-right:1px solid var(--border);
+}
+.pb-item:last-child{border-right:none;}
+.pb-val{
+  font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:700;
+  color:var(--gold2);line-height:1;margin-bottom:4px;
+}
+.pb-key{
+  font-family:'JetBrains Mono',monospace;font-size:10px;
+  color:var(--text3);text-transform:uppercase;letter-spacing:1px;
+}
+.pb-item.pb-total .pb-val{color:var(--green2);}
+
+/* ── CRONOGRAMA ── */
+.timeline{display:flex;flex-direction:column;gap:0;}
+.tl-item{
+  display:grid;grid-template-columns:160px 1fr;
+  gap:0;position:relative;
+}
+.tl-item::before{
+  content:'';position:absolute;
+  left:159px;top:0;bottom:0;
+  width:1px;background:var(--border);
+}
+.tl-item:first-child .tl-line::before{top:16px;}
+.tl-date{
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  color:var(--text3);padding:14px 20px 14px 0;
+  text-align:right;line-height:1.4;
+  align-self:start;padding-top:16px;
+}
+.tl-body{
+  padding:12px 0 12px 24px;
+  position:relative;
+}
+.tl-body::before{
+  content:'';
+  position:absolute;left:-5px;top:18px;
+  width:10px;height:10px;border-radius:50%;
+  background:var(--border2);border:2px solid var(--bg);
+}
+.tl-event{
+  font-size:14px;color:var(--text);line-height:1.5;
+}
+.tl-item.tl-past .tl-date{color:var(--text3);}
+.tl-item.tl-past .tl-body::before{background:var(--text3);}
+.tl-item.tl-past .tl-event{color:var(--text3);}
+.tl-item.tl-highlight .tl-date{color:var(--gold2);font-weight:500;}
+.tl-item.tl-highlight .tl-body::before{
+  background:var(--gold);border-color:var(--gold3);
+  width:14px;height:14px;left:-7px;top:16px;
+  box-shadow:0 0 12px rgba(200,164,74,.5);
+}
+.tl-item.tl-highlight .tl-event{
+  font-weight:700;color:var(--gold2);font-size:15px;
+}
+.tl-item.tl-near .tl-body::before{background:var(--red2);}
+.tl-item.tl-near .tl-event{color:var(--red2);}
+
+/* ── FOOTER ── */
+.site-footer{
+  border-top:1px solid var(--border);
+  padding:24px 48px;
+  text-align:center;
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  color:var(--text3);line-height:1.8;
+}
+
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+
+@media (max-width:900px){
+  .site-header{padding:28px 24px;}
+  .site-title{font-size:36px}
+  .main-wrap{padding:28px 24px 60px;}
+  .disc-grid{grid-template-columns:1fr}
+  .tl-item{grid-template-columns:120px 1fr}
+  .tl-item::before{left:119px}
+  .points-bar{gap:0}
+  .pb-item{min-width:80px;padding:8px 12px;}
+  .pb-val{font-size:24px}
+  .cd-days{margin-left:0;width:100%;}
+}
+@media (max-width:600px){
+  .site-title{font-size:28px}
+  .header-links{flex-direction:column;align-items:center}
+  .tl-item{grid-template-columns:1fr}
+  .tl-date{padding:14px 0 0;text-align:left;}
+  .tl-item::before{display:none}
+  .tl-body::before{display:none}
+  .tl-body{padding-left:0;padding-top:4px;}
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <p class="site-kicker">Apostila Digital · Concurso Público</p>
+  <h1 class="site-title">SJR 2026</h1>
+  <p class="site-sub">Professor — Ensino Fundamental Anos Finais · Filosofia · Edital Nº 001/2026</p>
+  <div class="header-badges">
+    <span class="hbadge">Banca: Instituto JK</span>
+    <span class="hbadge">15 vagas + 5 CR</span>
+    <span class="hbadge">R$ 6.914,37 / 20h</span>
+    <span class="hbadge hbadge-red">Prova: 12/07/2026</span>
+    <span class="hbadge hbadge-blue">84 pontos possíveis</span>
+  </div>
+  <div class="header-links">
+    <a href="https://institutojkma.org/wp-content/uploads/2026/04/EDITAL-DE-SAO-JOSE-DE-RIBAMAR-VERSAO-PROFESSOR.pdf"
+       target="_blank" class="hlink hlink-primary">📄 Edital Completo (PDF)</a>
+    <a href="https://institutojkma.org/wp-content/uploads/2026/04/EDITAL-DE-SAO-JOSE-DE-RIBAMAR-VERSAO-PROFESSOR.pdf"
+       target="_blank" class="hlink hlink-secondary">📝 Página de Inscrição</a>
+  </div>
+</header>
+
+<main class="main-wrap">
+
+  <!-- COUNTDOWN -->
+  <div class="countdown-block">
+    <span class="cd-emoji">🎯</span>
+    <div class="cd-text">
+      <div class="cd-date">12 de julho de 2026</div>
+      <div class="cd-desc">Aplicação das Provas Objetivas · São José de Ribamar / MA</div>
+    </div>
+    <div class="cd-days">
+      <div class="cd-num" id="days-counter">—</div>
+      <div class="cd-unit">dias restantes</div>
+    </div>
+  </div>
+
+  <!-- DISCIPLINES -->
+  <p class="sec-label">Material de Estudo</p>
+  <h2 class="sec-title">Disciplinas</h2>
+
+  <div class="disc-grid">
+
+    <a href="D1_Filosofia.html" class="disc-card">
+      <div class="dc-header">
+        <div class="dc-code">D1</div>
+        <div class="dc-info">
+          <div class="dc-label">Conhecimentos Específicos</div>
+          <div class="dc-name">Filosofia</div>
+        </div>
+      </div>
+      <div class="dc-meta">
+        <span class="dc-tag">20 questões</span>
+        <span class="dc-tag">2,5 pts cada</span>
+        <span class="dc-tag">50 pts total</span>
+        <span class="dc-tag">13 tópicos</span>
+      </div>
+      <div class="dc-actions">
+        <a href="D1_Filosofia.html" class="dc-btn dc-btn-theory">📖 Apostila</a>
+        <a href="D1_T01_Quiz.html" class="dc-btn dc-btn-quiz">📝 650 questões</a>
+      </div>
+    </a>
+
+    <a href="D2_Pedagogia.html" class="disc-card">
+      <div class="dc-header">
+        <div class="dc-code">D2</div>
+        <div class="dc-info">
+          <div class="dc-label">Conhecimentos Pedagógicos</div>
+          <div class="dc-name">Pedagogia</div>
+        </div>
+      </div>
+      <div class="dc-meta">
+        <span class="dc-tag">9 questões</span>
+        <span class="dc-tag">2,0 pts cada</span>
+        <span class="dc-tag">18 pts total</span>
+        <span class="dc-tag">10 seções</span>
+      </div>
+      <div class="dc-actions">
+        <a href="D2_Pedagogia.html" class="dc-btn dc-btn-theory">📖 Apostila</a>
+        <a href="D2_Quiz.html" class="dc-btn dc-btn-quiz">📝 60 questões</a>
+      </div>
+    </a>
+
+    <a href="D3_Inclusiva.html" class="disc-card">
+      <div class="dc-header">
+        <div class="dc-code">D3</div>
+        <div class="dc-info">
+          <div class="dc-label">Educação Inclusiva</div>
+          <div class="dc-name">Ed. Inclusiva</div>
+        </div>
+      </div>
+      <div class="dc-meta">
+        <span class="dc-tag">5 questões</span>
+        <span class="dc-tag">2,0 pts cada</span>
+        <span class="dc-tag">10 pts total</span>
+        <span class="dc-tag">6 seções</span>
+      </div>
+      <div class="dc-actions">
+        <a href="D3_Inclusiva.html" class="dc-btn dc-btn-theory">📖 Apostila</a>
+        <a href="D3_Quiz.html" class="dc-btn dc-btn-quiz">📝 40 questões</a>
+      </div>
+    </a>
+
+    <div class="disc-card" style="border-style:dashed;opacity:.55;cursor:default;">
+      <div class="dc-header">
+        <div class="dc-code" style="color:var(--text3)">D4</div>
+        <div class="dc-info">
+          <div class="dc-label">Conhecimentos Gerais</div>
+          <div class="dc-name" style="color:var(--text2)">São José de Ribamar</div>
+        </div>
+      </div>
+      <div class="dc-meta">
+        <span class="dc-tag" style="opacity:.5">4 questões</span>
+        <span class="dc-tag" style="opacity:.5">1,5 pts cada</span>
+        <span class="dc-tag" style="opacity:.5">6 pts total</span>
+      </div>
+      <div class="dc-actions">
+        <span class="dc-btn dc-btn-theory" style="opacity:.4;cursor:default">📖 Em breve</span>
+        <span class="dc-btn dc-btn-quiz" style="opacity:.4;cursor:default">📝 Em breve</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- POINTS BAR -->
+  <div class="points-bar">
+    <div class="pb-item"><div class="pb-val">50</div><div class="pb-key">D1 · Filosofia</div></div>
+    <div class="pb-item"><div class="pb-val">18</div><div class="pb-key">D2 · Pedagogia</div></div>
+    <div class="pb-item"><div class="pb-val">10</div><div class="pb-key">D3 · Inclusiva</div></div>
+    <div class="pb-item"><div class="pb-val">6</div><div class="pb-key">D4 · Gerais</div></div>
+    <div class="pb-item pb-total"><div class="pb-val">84</div><div class="pb-key">Total</div></div>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- CRONOGRAMA -->
+  <p class="sec-label">Edital Nº 001/2026 · Anexo I</p>
+  <h2 class="sec-title">Cronograma</h2>
+
+  <div class="timeline">
+
+    <div class="tl-item tl-past">
+      <div class="tl-date">13/04/2026</div>
+      <div class="tl-body"><div class="tl-event">Publicação do Edital</div></div>
+    </div>
+    <div class="tl-item tl-past">
+      <div class="tl-date">14–15/04/2026</div>
+      <div class="tl-body"><div class="tl-event">Prazo para impugnação do Edital</div></div>
+    </div>
+    <div class="tl-item tl-past">
+      <div class="tl-date">22/04/2026</div>
+      <div class="tl-body"><div class="tl-event">Resultado das impugnações · Publicação do Edital Retificado</div></div>
+    </div>
+    <div class="tl-item tl-near">
+      <div class="tl-date">22/04–22/05/2026</div>
+      <div class="tl-body"><div class="tl-event">⏳ Período de Inscrições</div></div>
+    </div>
+    <div class="tl-item tl-near">
+      <div class="tl-date">23–27/04/2026</div>
+      <div class="tl-body"><div class="tl-event">Solicitação de isenção da taxa · Período para vagas PcD</div></div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">Até 06/05/2026</div>
+      <div class="tl-body"><div class="tl-event">Último dia para pagamento de boletos de inscrição</div></div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">08/05/2026</div>
+      <div class="tl-body"><div class="tl-event">Resultado definitivo da lista de isenção</div></div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">18/05/2026</div>
+      <div class="tl-body"><div class="tl-event">Divulgação dos turnos de provas por cargos</div></div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">20/05/2026</div>
+      <div class="tl-body"><div class="tl-event">Último dia para pagamento de boletos</div></div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">22/05/2026</div>
+      <div class="tl-body"><div class="tl-event">Divulgação da Lista Provisória dos candidatos inscritos</div></div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">01/06/2026</div>
+      <div class="tl-body"><div class="tl-event">Divulgação da lista definitiva dos inscritos</div></div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">02/06/2026</div>
+      <div class="tl-body"><div class="tl-event">Edital de Convocação para as Provas Objetivas</div></div>
+    </div>
+    <div class="tl-item tl-highlight">
+      <div class="tl-date">12/07/2026</div>
+      <div class="tl-body"><div class="tl-event">🎯 Aplicação das Provas Objetivas</div></div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">14/07/2026</div>
+      <div class="tl-body"><div class="tl-event">Divulgação do gabarito preliminar</div></div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">05/08/2026</div>
+      <div class="tl-body"><div class="tl-event">Divulgação do gabarito oficial das provas objetivas</div></div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">13/08/2026</div>
+      <div class="tl-body"><div class="tl-event">Edital Preliminar do Resultado da Prova Objetiva</div></div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">28/08/2026</div>
+      <div class="tl-body"><div class="tl-event">Edital de Convocação para Prova de Títulos — Professor</div></div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">01/09/2026</div>
+      <div class="tl-body"><div class="tl-event">Aplicação da Prova de Títulos — Professor</div></div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">07/12/2026</div>
+      <div class="tl-body"><div class="tl-event">Realização da Prova Prática — Professor</div></div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">02/02/2027</div>
+      <div class="tl-body"><div class="tl-event">Edital do Resultado Final</div></div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">12/02/2027</div>
+      <div class="tl-body"><div class="tl-event">Homologação do Concurso</div></div>
+    </div>
+
+  </div>
+
+</main>
+
+<footer class="site-footer">
+  Prof. Filosofia EF Anos Finais · São José de Ribamar / MA<br>
+  Edital Nº 001/2026 · Banca Instituto JK · Prova: 12/07/2026<br>
+  <span style="color:var(--border2)">Material de estudo de uso pessoal — não comercial</span>
+</footer>
+
+<script>
+(function(){
+  var exam = new Date('2026-07-12T08:00:00-03:00');
+  var now  = new Date();
+  var diff = Math.ceil((exam - now) / (1000 * 60 * 60 * 24));
+  var el   = document.getElementById('days-counter');
+  if (el) {
+    if (diff > 0) {
+      el.textContent = diff;
+      el.style.color = diff <= 30 ? 'var(--red2)' : diff <= 90 ? 'var(--gold2)' : 'var(--green2)';
+    } else {
+      el.textContent = '0';
+      el.style.color = 'var(--text3)';
+      el.closest('.countdown-block').querySelector('.cd-desc').textContent = 'Prova realizada';
+    }
+  }
+})();
+</script>
+</body>
+</html>

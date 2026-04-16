@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>D2 Quiz — Conhecimentos Pedagógicos | Filosofia SJR 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+
+:root{
+  --bg:#0b0d10;--bg2:#111318;--bg3:#181c22;--bg4:#1e232b;
+  --border:#252b35;--border2:#2d3443;
+  --text:#cdd5e0;--text2:#8a96a8;--text3:#4d5a6e;
+  --gold:#c8a44a;--gold2:#e2c070;--gold3:#f0d490;
+  --blue:#3d8fd1;--green:#3d9e72;--green2:#5ec090;
+  --red:#c05050;--red2:#e07070;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:'Lato',sans-serif;font-size:15px;line-height:1.7;min-height:100vh}
+
+/* HEADER */
+.quiz-header{
+  background:var(--bg2);border-bottom:1px solid var(--border);
+  padding:16px 24px;display:flex;align-items:center;gap:16px;
+  position:sticky;top:0;z-index:50;flex-wrap:wrap;
+}
+.qh-back{
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  color:var(--text3);text-decoration:none;transition:color .2s;white-space:nowrap;
+}
+.qh-back:hover{color:var(--gold)}
+.qh-title{
+  font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:700;color:var(--gold2);
+  flex:1;
+}
+.qh-badge{
+  font-family:'JetBrains Mono',monospace;font-size:10px;
+  color:var(--gold);background:rgba(200,164,74,.12);
+  padding:3px 10px;border-radius:4px;white-space:nowrap;
+}
+.qh-stats{
+  display:flex;gap:16px;flex-wrap:wrap;
+}
+.qh-stat{
+  font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3);
+  white-space:nowrap;
+}
+.qh-stat strong{color:var(--text);font-size:14px}
+
+/* PROGRESS BAR */
+.progress-bar{height:3px;background:var(--border);overflow:hidden}
+.progress-fill{height:100%;background:var(--gold);transition:width .4s ease}
+
+/* FILTERS */
+.filter-bar{
+  padding:14px 24px;background:var(--bg2);border-bottom:1px solid var(--border);
+  display:flex;gap:8px;align-items:center;flex-wrap:wrap;
+}
+.filter-label{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3);margin-right:4px}
+.filter-btn{
+  padding:5px 14px;border-radius:4px;border:1px solid var(--border);
+  background:var(--bg3);color:var(--text2);font-family:'JetBrains Mono',monospace;
+  font-size:11px;cursor:pointer;transition:all .15s;
+}
+.filter-btn:hover{border-color:var(--gold);color:var(--gold)}
+.filter-btn.active{background:rgba(200,164,74,.15);border-color:var(--gold);color:var(--gold)}
+.filter-sep{width:1px;height:20px;background:var(--border);margin:0 4px}
+.toggle-btn{
+  margin-left:auto;padding:5px 14px;border-radius:4px;border:1px solid var(--border2);
+  background:var(--bg3);color:var(--text2);font-family:'JetBrains Mono',monospace;
+  font-size:11px;cursor:pointer;transition:all .15s;
+}
+.toggle-btn:hover{border-color:var(--blue);color:var(--blue)}
+.toggle-btn:disabled{opacity:.45;cursor:not-allowed}
+.toggle-btn:disabled:hover{border-color:var(--border2);color:var(--text2)}
+
+/* CONTENT */
+.quiz-content{padding:24px;max-width:860px;margin:0 auto}
+
+/* QUESTION BLOCK */
+.q-block{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:8px;padding:24px;margin-bottom:18px;
+  transition:border-color .2s;
+}
+.q-block.answered{border-color:var(--border2)}
+.q-meta{display:flex;gap:8px;align-items:center;margin-bottom:12px}
+.q-num{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3)}
+.q-diff{
+  font-family:'JetBrains Mono',monospace;font-size:10px;
+  padding:2px 7px;border-radius:3px;
+}
+.diff-easy{background:rgba(61,158,114,.15);color:var(--green2)}
+.diff-med{background:rgba(61,143,209,.12);color:var(--blue)}
+.diff-hard{background:rgba(192,80,80,.12);color:var(--red2)}
+.q-text{font-size:14.5px;line-height:1.75;margin-bottom:16px;color:var(--text)}
+.q-opts{display:flex;flex-direction:column;gap:8px}
+.q-opt{
+  display:flex;align-items:flex-start;gap:10px;
+  padding:10px 14px;border:1px solid var(--border);
+  border-radius:6px;cursor:pointer;background:var(--bg3);
+  transition:all .15s;
+}
+.q-opt:hover:not(.done){border-color:var(--gold);background:rgba(200,164,74,.05)}
+.q-opt.done{cursor:default}
+.q-opt.sel{border-color:var(--blue)!important;background:rgba(61,143,209,.08)!important}
+.q-opt.correct{border-color:var(--green)!important;background:rgba(61,158,114,.12)!important}
+.q-opt.wrong{border-color:var(--red)!important;background:rgba(192,80,80,.08)!important}
+.opt-letter{
+  font-family:'JetBrains Mono',monospace;font-size:12px;
+  font-weight:500;color:var(--gold);min-width:18px;margin-top:2px;
+}
+.opt-text{font-size:13.5px;color:var(--text);line-height:1.6}
+.q-feedback{
+  margin-top:12px;padding:12px 16px;border-radius:6px;
+  font-size:13px;line-height:1.7;display:none;
+}
+.q-feedback.show{display:block;animation:fadeIn .2s ease}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.fb-correct{background:rgba(61,158,114,.1);border:1px solid rgba(61,158,114,.3);color:var(--green2)}
+.fb-wrong{background:rgba(192,80,80,.08);border:1px solid rgba(192,80,80,.25);color:var(--red2)}
+.fb-label{
+  font-family:'JetBrains Mono',monospace;font-size:10px;
+  text-transform:uppercase;letter-spacing:.8px;display:block;margin-bottom:5px;
+}
+.fb-correct .fb-label{color:var(--green)}
+.fb-wrong .fb-label{color:var(--red)}
+.fb-body{color:var(--text);font-style:italic}
+
+/* SCORE PANEL */
+#score-panel{
+  display:none;background:var(--bg2);border:1px solid var(--border);
+  border-radius:12px;padding:40px;text-align:center;margin:24px;
+}
+#score-panel.show{display:block;animation:fadeIn .4s ease}
+.sc-title{
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;
+}
+.sc-number{
+  font-family:'Cormorant Garamond',serif;font-size:72px;font-weight:700;line-height:1;margin-bottom:8px;
+}
+.sc-approved{color:var(--green2)}
+.sc-failed{color:var(--red2)}
+.sc-pct{font-size:20px;color:var(--text2);margin-bottom:24px}
+.sc-breakdown{display:flex;gap:24px;justify-content:center;flex-wrap:wrap;margin:20px 0}
+.sc-item{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text3)}
+.sc-item strong{color:var(--text);display:block;font-size:18px}
+.sc-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:24px}
+.sc-btn{
+  padding:11px 24px;border-radius:6px;font-family:'JetBrains Mono',monospace;
+  font-size:12px;cursor:pointer;transition:all .2s;border:none;
+}
+.sc-btn-primary{background:var(--gold);color:var(--bg)}
+.sc-btn-primary:hover{opacity:.85}
+.sc-btn-secondary{background:var(--bg3);border:1px solid var(--border);color:var(--text2)}
+.sc-btn-secondary:hover{border-color:var(--gold);color:var(--gold)}
+
+/* BOTTOM NAV */
+.bottom-nav{
+  padding:20px 24px;border-top:1px solid var(--border);
+  display:flex;gap:10px;align-items:center;flex-wrap:wrap;
+}
+.nav-btn{
+  padding:9px 18px;border-radius:6px;
+  background:var(--bg3);border:1px solid var(--border);
+  color:var(--text2);font-family:'JetBrains Mono',monospace;
+  font-size:11px;cursor:pointer;transition:all .2s;text-decoration:none;
+  display:inline-block;
+}
+.nav-btn:hover{border-color:var(--gold);color:var(--gold)}
+.nav-theory{margin-left:auto}
+
+/* STICKY SCORE */
+#sticky{
+  position:fixed;bottom:0;left:0;right:0;
+  background:rgba(17,19,24,.95);border-top:1px solid var(--border);
+  backdrop-filter:blur(8px);
+  padding:10px 24px;display:flex;align-items:center;gap:16px;
+  z-index:50;
+}
+#sticky .ss-txt{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3)}
+#sticky .ss-txt strong{color:var(--gold)}
+.ss-bar{flex:1;height:3px;background:var(--border);border-radius:2px;overflow:hidden}
+.ss-fill{height:100%;background:var(--gold);transition:width .3s}
+
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+
+
+@media (max-width: 720px){
+  .quiz-header,.filter-bar,.bottom-nav,.quiz-content,#sticky{padding-left:16px;padding-right:16px}
+  .qh-title{flex-basis:100%;font-size:17px}
+  .qh-stats{width:100%;gap:12px}
+  .filter-sep{display:none}
+  .toggle-btn{margin-left:0}
+  #score-panel{margin:16px;padding:28px 20px}
+  .sc-number{font-size:56px}
+  .bottom-nav{padding-bottom:84px}
+}
+
+@media (max-width: 520px){
+  .q-block{padding:18px}
+  .q-text{font-size:14px}
+  .opt-text{font-size:13px}
+  #sticky{gap:10px;flex-wrap:wrap}
+  #sticky .ss-txt{width:auto}
+  .ss-bar{order:3;flex-basis:100%}
+}
+
+
+</style>
+</head>
+<body>
+<header class="quiz-header">
+  <a href="D2_Pedagogia.html" class="qh-back">← Teoria D2</a>
+  <div class="qh-title">D2 — Conhecimentos Pedagógicos</div>
+  <span class="qh-badge">60 questões</span>
+  <div class="qh-stats">
+    <span class="qh-stat"><strong id="hdr-answered">0</strong> respondidas</span>
+    <span class="qh-stat"><strong id="hdr-correct">0</strong> corretas</span>
+    <span class="qh-stat"><strong id="hdr-pct">0%</strong></span>
+  </div>
+</header>
+<div class="progress-bar"><div class="progress-fill" id="prog-bar" style="width:0%"></div></div>
+<div class="filter-bar">
+  <span class="filter-label">Dificuldade:</span>
+  <button type="button" class="filter-btn active" data-filter="all" onclick="setFilter('all',this)">Todas</button>
+  <button type="button" class="filter-btn" data-filter="Fácil" onclick="setFilter('Fácil',this)">Fácil</button>
+  <button type="button" class="filter-btn" data-filter="Média" onclick="setFilter('Média',this)">Média</button>
+  <button type="button" class="filter-btn" data-filter="Difícil" onclick="setFilter('Difícil',this)">Difícil</button>
+  <div class="filter-sep"></div>
+  <button type="button" class="toggle-btn" onclick="toggleErrors()" id="err-btn" style="display:none">↺ Só erros</button>
+</div>
+<div class="quiz-content" id="quiz-content"></div>
+<div id="score-panel">
+  <p class="sc-title">Resultado Final — D2 Pedagogia</p>
+  <div class="sc-number" id="sc-num"></div>
+  <p class="sc-pct" id="sc-pct"></p>
+  <div class="sc-breakdown" id="sc-breakdown"></div>
+  <div class="sc-actions">
+    <button type="button" class="sc-btn sc-btn-primary" onclick="resetQuiz()">↺ Refazer</button>
+    <button type="button" class="sc-btn sc-btn-secondary" onclick="reviewErrors()" id="sc-review-btn">Revisar erros</button>
+    <a href="D2_Pedagogia.html" class="sc-btn sc-btn-secondary">← Teoria</a>
+  </div>
+</div>
+<div class="bottom-nav">
+  <a href="D2_Pedagogia.html" class="nav-btn">📖 Conteúdo D2</a>
+  <a href="D3_Inclusiva.html" class="nav-btn" style="margin-left:auto">D3 →</a>
+</div>
+<div id="sticky">
+  <span class="ss-txt">Acertos: <strong id="st-pts">0</strong> / 60</span>
+  <div class="ss-bar"><div class="ss-fill" id="st-fill" style="width:0%"></div></div>
+  <span class="ss-txt"><strong id="st-pct">0%</strong></span>
+</div>
+<script>
+const QUESTIONS = [{n:1,t:"O condicionamento operante de B. F. Skinner distingue-se do condicionamento clássico de Pavlov porque:",o:["O condicionamento de Skinner envolve reflexos involuntários; o de Pavlov envolve comportamentos voluntários","No condicionamento operante, o comportamento é modelado pelas suas consequências (reforço ou punição); no condicionamento clássico, um estímulo neutro passa a elicitar uma resposta por associação com um estímulo que naturalmente a elicita","O condicionamento de Pavlov é mais eficaz para aprendizagem escolar","São idênticos — Skinner apenas renomeou o trabalho de Pavlov"],a:1,c:"Pavlov descobriu que respostas reflexas involuntárias (salivação) podem ser condicionadas a estímulos neutros (campainha) por associação repetida — condicionamento clássico. Skinner ampliou: comportamentos voluntários (\"operantes\") são moldados pelas consequências que produzem — reforço positivo (adicionar algo agradável) aumenta o comportamento; reforço negativo (retirar algo aversivo) também o aumenta; punição o diminui. Na escola: elogiar uma boa participação (reforço posi",d:"Fácil"},{n:2,t:"A Zona de Desenvolvimento Proximal (ZDP) de Vygotsky é definida como:",o:["O conjunto de habilidades que o aluno nunca conseguirá desenvolver","A distância entre o que o aluno consegue fazer de forma independente e o que consegue fazer com a ajuda de um mediador mais experiente","O nível máximo de desenvolvimento que o aluno pode atingir em sua vida","A zona de conforto do aluno — o que ele prefere fazer espontaneamente"],a:1,c:"A ZDP é o espaço privilegiado do ensino: o que o aluno já faz sozinho está na Zona de Desenvolvimento Real (ZDR) — não precisa de ensino. O que está muito além de suas capacidades — mesmo com ajuda — está fora do alcance. A ZDP é a faixa entre esses extremos: onde o aluno, com mediação adequada (professor, colega mais experiente, material bem estruturado), pode avançar. Para Vygotsky, o bom ensino é aquele que atua na ZDP — provocando desenvolvimento.",d:"Fácil"},{n:3,t:"Segundo a teoria dos estágios de Jean Piaget, os alunos do 6º ao 9º ano do EF (11–14 anos) estão em transição entre:",o:["O estágio sensório-motor e o pré-operatório","O estágio pré-operatório e o operatório concreto","O estágio operatório concreto e o operatório formal","O estágio operatório formal e o pós-formal"],a:2,c:"O estágio operatório concreto (7–12 anos) caracteriza-se pela capacidade de operar logicamente sobre objetos concretos — conservação, reversibilidade, classificação. O operatório formal (a partir dos 11-12 anos) introduz o pensamento hipotético-dedutivo e a abstração — a capacidade de raciocinar sobre possibilidades, não apenas sobre o concreto presente. Os alunos do EF Anos Finais estão exatamente nessa transição — o que tem implicações para o ensino de Filosofia: o pensamen",d:"Fácil"},{n:4,t:"O Artigo 205 da Constituição Federal de 1988 define a educação como:",o:["Responsabilidade exclusiva do Estado — a família não tem obrigações","Direito de todos e dever do Estado e da família, visando o pleno desenvolvimento da pessoa, seu preparo para o exercício da cidadania e sua qualificação para o trabalho","Privilégio dos cidadãos que contribuem com impostos","Responsabilidade exclusiva da família — o Estado tem papel subsidiário"],a:1,c:"O art. 205 da CF é a norma fundamental do direito à educação no Brasil: define a educação como direito de todos (universal), dever compartilhado entre Estado e família (não exclusivo de nenhum dos dois), com três grandes finalidades — desenvolvimento pessoal, cidadania e qualificação para o trabalho. Essa tríade de finalidades é a base sobre a qual toda a legislação educacional infraconstitucional é construída.",d:"Fácil"},{n:5,t:"A pedagogia histórico-crítica de Dermeval Saviani se diferencia da pedagogia tradicional porque:",o:["Rejeita completamente os conteúdos clássicos do saber sistematizado","Parte dos conteúdos clássicos e sistematizados — mas os articula com a perspectiva crítica de transformação social, defendendo que o domínio do saber é um instrumento de luta para as classes populares","Defende que a escola não deve transmitir conteúdos — apenas facilitar o desenvolvimento espontâneo","É idêntica à tendência tecnicista — ambas valorizam a eficiência do processo de ensino"],a:1,c:"A pedagogia histórico-crítica de Saviani — classificada por Libâneo na tendência \"crítico-social dos conteúdos\" — não rejeita o saber sistematizado (como faz a tendência libertária) nem simplesmente o transmite (como faz a tradicional). Ela defende que os conteúdos clássicos — a literatura, a matemática, a filosofia, a história — são conquistas da humanidade que devem ser apropriadas pelas classes populares precisamente para que possam transformar sua condição. O saber é inst",d:"Fácil"},{n:6,t:"O Estatuto da Criança e do Adolescente (ECA, Lei 8.069/1990) é fundamentado na doutrina da:",o:["Situação irregular — crianças são objetos de tutela do Estado quando estão em situação de risco","Proteção integral — crianças e adolescentes são sujeitos de direitos com prioridade absoluta","Proteção seletiva — apenas crianças em situação de vulnerabilidade têm direitos especiais","Proteção familiar — a família é o único responsável pelos direitos da criança"],a:1,c:"O ECA superou a doutrina da \"situação irregular\" (que via a criança pobre como \"menor em situação irregular\" e a submetia à tutela estatal) e adotou a **doutrina da proteção integral**: todas as crianças e adolescentes — independentemente de classe social ou \"situação\" — são sujeitos de direitos com prioridade absoluta de garantia. Isso implica que família, sociedade e Estado são corresponsáveis pela proteção desses direitos.",d:"Fácil"},{n:7,t:"A aprendizagem significativa de David Ausubel difere da aprendizagem mecânica porque:",o:["A aprendizagem significativa é mais rápida — o aluno aprende em menos tempo","Na aprendizagem significativa, a nova informação se ancora em conhecimentos prévios relevantes, gerando compreensão, retenção e transferência; na mecânica, a informação é memorizada sem conexão com conhecimentos prévios","A aprendizagem significativa independe do conteúdo — qualquer conteúdo aprendido de forma prazerosa é significativo","A aprendizagem mecânica é superior para conteúdos técnicos e procedimentais"],a:1,c:"Ausubel: \"Se tivesse que reduzir toda a psicologia educacional a um único princípio, diria o seguinte: o fator isolado mais importante que influencia a aprendizagem é aquilo que o aluno já sabe.\" A aprendizagem significativa ocorre quando nova informação se conecta a *subsunçores* — conceitos âncora já presentes na estrutura cognitiva do aluno. Sem essa ancoragem, a aprendizagem é mecânica (memorização) — pouco retida e mal transferida para novos contextos.",d:"Fácil"},{n:8,t:"A hierarquia das necessidades de Abraham Maslow tem implicação pedagógica direta porque:",o:["Prova que todos os alunos têm as mesmas necessidades em qualquer contexto","Mostra que alunos com necessidades básicas não atendidas (fome, insegurança, violência) têm dificuldade de aprender — pois necessidades fisiológicas e de segurança precedem as de aprendizagem e autorrealização","Demonstra que a motivação extrínseca (recompensas) é suficiente para a aprendizagem","Indica que a autorrealização é o único objetivo válido da educação"],a:1,c:"A pirâmide de Maslow tem aplicação educacional direta: um aluno que chega à escola sem ter dormido (fisiológico), em situação de violência doméstica (segurança) ou que é excluído pelos colegas (pertencimento) dificilmente conseguirá mobilizar energia para a aprendizagem acadêmica — mesmo que o professor prepare aulas excelentes. Isso fundamenta políticas de alimentação escolar (merenda), atendimento psicossocial, e a atenção docente às dimensões não-acadêmicas do aluno.",d:"Fácil"},{n:9,t:"O Projeto Político-Pedagógico (PPP) de uma escola é denominado \"político\" porque:",o:["É elaborado por um partido político vencedor das eleições locais","Expressa uma visão de sociedade, de ser humano e de educação — não é neutro; toda escolha pedagógica implica uma escolha política sobre que tipo de ser humano e de sociedade se quer construir","É um documento de uso exclusivo dos gestores políticos da escola","É financiado pelo governo federal — portanto tem caráter político-administrativo"],a:1,c:"A denominação \"político\" no PPP não tem sentido partidário — tem sentido filosófico-pedagógico: toda opção pedagógica (que conteúdos valorizar, que metodologias usar, como avaliar, como organizar o espaço) implica uma visão de ser humano e de sociedade que se quer construir. A escola que opta pela avaliação formativa tem uma visão de ser humano diferente da que opta pela avaliação classificatória. Reconhecer essa dimensão política é uma das principais contribuições da pedagog",d:"Fácil"},{n:10,t:"O currículo oculto diferencia-se do currículo formal porque:",o:["O currículo oculto é secreto — apenas os gestores o conhecem","O currículo oculto é o que é ensinado implicitamente através das relações, normas e cultura escolar — os valores e expectativas transmitidos sem aparecer no planejamento formal","O currículo oculto contém os conteúdos que a escola decide não ensinar","É idêntico ao currículo real — apenas com outra denominação"],a:1,c:"O currículo oculto — conceito desenvolvido por Philip Jackson (*Life in Classrooms*, 1968) e aprofundado por Apple e Giroux — é o currículo \"invisível\": o que os alunos aprendem através da organização do espaço (fileiras ensinam submissão; círculos ensinam igualdade), das relações de poder (que perguntas são toleradas, quem tem voz), das expectativas diferenciadas por classe, raça e gênero. O aluno aprende não apenas o que está no plano de aula — aprende o que a escola é como",d:"Fácil"},{n:11,t:"A Lei 14.533/2023 (Política Nacional de Educação Digital) institui a PNED estruturada em quatro eixos. Um deles é:",o:["Privatização dos sistemas de tecnologia educacional","Proibição do uso de redes sociais em ambiente escolar","Inclusão digital — garantia de acesso às tecnologias digitais para estudantes e professores","Substituição dos professores por sistemas de inteligência artificial"],a:2,c:"A Lei 14.533/2023 (PNED) estrutura a Política Nacional de Educação Digital em quatro eixos: (1) inclusão digital (acesso às tecnologias para todos); (2) educação digital nas escolas (integração curricular das tecnologias); (3) capacitação e especialização digital (formação docente); (4) pesquisa, desenvolvimento e inovação em tecnologias educacionais. A inclusão digital é o eixo mais fundamental — sem acesso aos dispositivos e à internet, os demais eixos não se efetivam.",d:"Fácil"},{n:12,t:"A avaliação formativa distingue-se da somativa porque:",o:["A formativa ocorre apenas no início do processo; a somativa, apenas no final","A formativa ocorre durante o processo de aprendizagem — com função de orientar e regular o ensino e a aprendizagem; a somativa ocorre ao final — com função de verificar e certificar o nível atingido","A formativa é mais rigorosa — usa apenas provas objetivas","A somativa é proibida pela LDB em favor da avaliação exclusivamente formativa"],a:1,c:"A distinção entre avaliação diagnóstica, formativa e somativa (Scriven, Bloom) é central em pedagogia. A avaliação formativa não é um momento específico — é uma postura durante o processo: observação contínua, feedback imediato, ajuste do ensino em resposta ao que os alunos mostram que ainda não compreenderam. Ela serve ao aluno e ao professor como instrumento de regulação — não ao sistema como instrumento de classificação. A BNCC enfatiza a avaliação formativa como orientado",d:"Fácil"},{n:13,t:"A teoria das inteligências múltiplas de Howard Gardner tem como implicação pedagógica central:",o:["Que os alunos com inteligência lógico-matemática alta são superiores e devem ter atenção prioritária","Que a escola tradicional supervaloriza a inteligência linguística e lógico-matemática — e que uma educação mais justa deve reconhecer e desenvolver os diferentes tipos de inteligência através de estratégias diversificadas","Que cada aluno tem apenas uma inteligência dominante — e o ensino deve se adaptar a ela","Que os testes de QI são suficientes para medir toda a inteligência humana"],a:1,c:"Gardner propôs (contra o modelo do QI único) que a inteligência não é uma — são múltiplas capacidades relativamente independentes. A escola tradicional tende a valorizar apenas a linguística e a lógico-matemática — avaliadas pelos testes convencionais — e a ignorar as demais (musical, espacial, corporal, interpessoal, intrapessoal, naturalista, existencial). Um aluno \"fraco\" em linguagem pode ser notável em corporal-cinestésica ou interpessoal. A implicação pedagógica não é \"",d:"Fácil"},{n:14,t:"O artigo 56 do ECA determina que os dirigentes de estabelecimentos de ensino devem comunicar ao Conselho Tutelar casos de:",o:["Aprovação ou reprovação de alunos em suas respectivas turmas","Maus-tratos, reiteração de faltas injustificadas e evasão escolar envolvendo seus alunos","Qualquer ocorrência disciplinar que envolva aluno menor de 18 anos","Uso de substâncias por alunos maiores de 16 anos — que já têm responsabilidade penal"],a:1,c:"O art. 56 do ECA estabelece obrigações específicas dos estabelecimentos de ensino em relação à proteção dos alunos: comunicar ao Conselho Tutelar casos de (I) maus-tratos envolvendo seus alunos; (II) reiteração de faltas injustificadas e evasão escolar (após esgotamento dos recursos escolares); (III) elevados níveis de repetência. Isso coloca a escola como parceira do sistema de proteção — não como instituição isolada. O professor que suspeita de maus-tratos tem o dever legal",d:"Fácil"},{n:15,t:"A Lei 14.640/2023 (Programa Escola em Tempo Integral) tem como objetivo principal:",o:["Ampliar a jornada escolar para pelo menos 7 horas diárias — com atividades diversificadas além das disciplinas curriculares regulares","Criar escolas privadas com tempo integral subsidiadas pelo governo federal","Reduzir o número de aulas por semana em favor de atividades extracurriculares","Tornar obrigatório o tempo integral para todos os alunos da rede pública até 2030"],a:0,c:"A Lei 14.640/2023 institutiu o Programa Escola em Tempo Integral — que incentiva a ampliação da jornada escolar para pelo menos 7 horas diárias em escolas públicas. Vai além das disciplinas curriculares: inclui atividades culturais, artísticas, esportivas e de orientação de estudos. A meta do PNE (Meta 6) de oferecer educação em tempo integral em 50% das escolas está diretamente relacionada a essa lei.",d:"Fácil"},{n:16,t:"A distinção entre mentalidade fixada e mentalidade de crescimento de Carol Dweck tem implicação pedagógica direta na forma como o professor avalia e dá feedback porque:",o:["Professores com mentalidade de crescimento dão notas mais altas — incentivando os alunos","Elogiar o talento (\"você é inteligente\") tende a desenvolver mentalidade fixada — o aluno evita desafios para não \"perder\" sua reputação de inteligente; elogiar o esforço (\"você se dedicou muito\") tende a desenvolver mentalidade de crescimento","A mentalidade de crescimento só pode ser desenvolvida por alunos com alto QI","A mentalidade fixada é biologicamente determinada — o professor não pode mudá-la"],a:1,c:"Dweck demonstrou empiricamente que o tipo de elogio que o professor oferece tem consequências profundas: alunos elogiados pelo talento (\"você é inteligente\") tendem a evitar desafios — pois um fracasso revelaria que não são tão inteligentes. Alunos elogiados pelo esforço (\"você trabalhou muito nisso\") tendem a abraçar desafios — pois a inteligência é vista como algo que cresce com o esforço. Para o professor de Filosofia, isso implica: valorizar o processo de investigação fil",d:"Fácil"},{n:17,t:"O currículo em espiral de Jerome Bruner propõe que:",o:["O currículo deve avançar linearmente — sem retornar a temas já estudados","Os mesmos conceitos fundamentais podem ser ensinados em diferentes estágios do desenvolvimento, com crescente profundidade e abstração — retornando ao mesmo tema em espiral","O currículo deve seguir a ordem histórica dos descobrimentos científicos e filosóficos","O currículo em espiral é exclusivo para as ciências exatas — as humanidades não têm conceitos suficientemente estruturados"],a:1,c:"Bruner propôs que qualquer ideia genuinamente fundamental pode ser ensinada de forma intelectualmente honesta a qualquer criança — em formas adequadas ao seu estágio de desenvolvimento. O currículo em espiral retorna aos mesmos temas com crescente complexidade: a ideia de \"justiça\" pode ser trabalhada no EF com situações concretas e depois retomada no EM com Rawls e Nozick. O retorno não é repetição — é aprofundamento. Para o ensino de Filosofia, isso significa que conceitos ",d:"Fácil"},{n:18,t:"A tendência pedagógica renovada progressivista (Escola Nova) diferencia-se da tendência tradicional principalmente porque:",o:["A Escola Nova valoriza mais os conteúdos do que os processos","Na Escola Nova, o ponto de partida é o interesse e a experiência do aluno — e o professor é facilitador da aprendizagem ativa, não transmissor de conhecimento pronto","A Escola Nova defende a disciplina rígida como condição da aprendizagem","A Escola Nova é idêntica à tendência tecnicista — ambas valorizam a eficiência do processo"],a:1,c:"A Escola Nova (Dewey, Montessori, Decroly, Kerschensteiner) representou uma revolução copernicana pedagógica: o centro do processo deslocou-se do professor e do conteúdo para o aluno e sua experiência. O interesse do aluno é o motor da aprendizagem; a atividade é preferível à passividade; o professor é facilitador, não transmissor. As críticas à Escola Nova: (1) pode levar à negligência dos conteúdos sistemáticos; (2) é centrada no indivíduo — menos atenta à dimensão social d",d:"Fácil"},{n:19,t:"A gestão democrática do ensino público, princípio constitucional (art. 206, VI, CF) e legal (art. 14, LDB), implica concretamente que:",o:["Os gestores escolares são escolhidos por eleição popular direta de toda a comunidade","A comunidade escolar (professores, funcionários, pais e alunos) participa da elaboração do PPP e dos conselhos escolares — configurando uma gestão compartilhada, não hierárquica e unilateral","Todos os professores têm igual poder de decisão sobre o currículo — sem hierarquia","As decisões são sempre tomadas por votação majoritária — sem papel do diretor"],a:1,c:"A gestão democrática não significa ausência de hierarquia ou que \"todos decidem tudo por votação\". Significa que há mecanismos institucionais de participação: conselhos escolares (com representantes de todos os segmentos), elaboração coletiva do PPP, transparência na gestão dos recursos, eleição direta de diretores (em muitos sistemas). A LDB (art. 14) estabelece que os sistemas de ensino definirão as normas de gestão democrática — garantindo participação dos profissionais da",d:"Fácil"},{n:20,t:"A avaliação diagnóstica é mais bem descrita como:",o:["Uma prova realizada no início do ano para classificar os alunos por nível de desempenho","Um processo de investigação que o professor realiza antes de iniciar uma nova unidade — para identificar o que os alunos já sabem, o que precisam aprender e quais dificuldades têm — orientando o planejamento do ensino","Um instrumento para identificar os alunos com necessidades especiais que precisam de atendimento especializado","A avaliação feita pelo sistema (SAEB, IDEB) para diagnosticar a qualidade da educação nacional"],a:1,c:"A avaliação diagnóstica (Bloom, Scriven) tem função de orientar o planejamento — não de classificar ou certificar. Ao identificar o que os alunos já sabem (conhecimentos prévios, nos termos de Ausubel), o que ainda não sabem e quais são suas dificuldades específicas, o professor pode organizar o ensino de forma mais adequada: partir de onde os alunos realmente estão (não de onde o currículo diz que deveriam estar). Para o ensino de Filosofia, isso pode significar uma roda de ",d:"Fácil"},{n:21,t:"A crítica de Paulo Freire à educação bancária é uma crítica metodológica e política que pode ser aplicada a qualquer disciplina, inclusive à Filosofia, quando:",o:["O professor de Filosofia usa textos filosóficos difíceis — a dificuldade é uma forma de opressão","A aula de Filosofia se reduz à exposição de doutrinas filosóficas para memorização — sem investigação, sem diálogo, sem conexão com a realidade dos alunos — transformando a Filosofia em conteúdo a ser \"depositado\"","O professor de Filosofia tem posições filosóficas próprias e as apresenta aos alunos","A escola cobra notas dos alunos — a avaliação é sempre bancária"],a:1,c:"A crítica freireana à educação bancária se aplica diretamente ao ensino de Filosofia quando este se reduz a: \"No dia 12 de fevereiro de 1809 nasceu Darwin... Agora, diz o Kant que...\" — uma sequência de informações sobre filósofos sem investigação, sem diálogo, sem conexão com questões que os alunos genuinamente têm. A ironia é que a Filosofia — que é por definição investigação crítica — pode ser ensinada de forma completamente anti-filosófica (bancária). A educação problemat",d:"Média"},{n:22,t:"O conceito de mediação em Vygotsky — central para compreender o papel do professor — refere-se a:",o:["O papel do professor como árbitro de conflitos entre alunos","O processo pelo qual o professor (e outros mediadores — colegas, ferramentas culturais, linguagem) interpõe-se entre o aluno e o objeto de conhecimento, criando condições para que o aluno avance na ZDP","A mediação jurídica que resolve conflitos entre escola e família","A influência dos meios de comunicação na aprendizagem dos alunos"],a:1,c:"Para Vygotsky, o ser humano não se relaciona diretamente com o mundo — sempre através de mediadores: instrumentos (ferramentas, linguagem, escrita) e outras pessoas (o professor, os colegas). O professor é o mediador por excelência: ao intervir entre o aluno e o conteúdo de aprendizagem, cria condições para que o aluno avance além do que conseguiria sozinho (ZDP). A linguagem é o mediador mais importante — por isso o diálogo filosófico não é apenas uma estratégia — é a estrut",d:"Média"},{n:23,t:"A Resolução CNE/CEB 7/2010 (Diretrizes Curriculares Nacionais para o EF de 9 anos) é relevante para o professor do EF Anos Finais porque:",o:["Proibiu a avaliação por nota numérica no EF","Estabeleceu as diretrizes que organizam o EF de 9 anos, incluindo princípios como a centralidade do aluno, a integração entre os componentes curriculares e a valorização da diversidade cultural","Tornou a Filosofia obrigatória em todas as séries do EF","Eliminou os ciclos de formação e restaurou a organização por séries anuais"],a:1,c:"A Resolução CNE/CEB 7/2010 fixou as DCN para o EF de 9 anos — que organizou e consolidou a ampliação do EF (de 8 para 9 anos, com entrada obrigatória aos 6 anos). Estabelece princípios como: o aluno como sujeito de direitos e aprendizagens; a integração curricular; a valorização das culturas e identidades locais; a continuidade entre as diferentes etapas. É o documento de referência para a organização curricular do EF.",d:"Média"},{n:24,t:"A pedagogia montessoriana diferencia-se da pedagogia tradicional pela ênfase em:",o:["A transmissão rigorosa dos conteúdos acadêmicos — Montessori valorizava o domínio do saber","O ambiente preparado, a liberdade com responsabilidade, a aprendizagem sensorial e o papel do professor como guia observador — em vez de instrutor","A disciplina rígida e o silêncio como condições da aprendizagem","O uso exclusivo de textos escritos como materiais de aprendizagem"],a:1,c:"Maria Montessori desenvolveu seu método a partir de seu trabalho com crianças com dificuldades de desenvolvimento — e descobriu que um ambiente cuidadosamente preparado com materiais auto-corretivos, liberdade de escolha das atividades e ausência de punição/recompensa produzia engajamento e aprendizagem muito superiores aos métodos tradicionais. O professor montessoriano observa mais do que instrui — e intervém apenas quando necessário para orientar. O método é amplamente usa",d:"Média"},{n:25,t:"A importância dos conhecimentos prévios dos alunos para o planejamento do ensino é fundamentada na teoria de:",o:["Skinner — os comportamentos prévios determinam os futuros","Ausubel — a aprendizagem significativa requer que a nova informação se ancore em subsunçores (conhecimentos prévios relevantes) já presentes na estrutura cognitiva do aluno","Piaget — apenas o estágio de desenvolvimento importa, não o conteúdo prévio","Rogers — o que importa é a relação afetiva, não o conteúdo cognitivo prévio"],a:1,c:"Ausubel: o professor que desconhece os conhecimentos prévios de seus alunos não pode criar as \"pontes cognitivas\" (organizadores prévios) necessárias para a aprendizagem significativa. A avaliação diagnóstica tem exatamente essa função: identificar o que o aluno já sabe para construir o ensino a partir daí. Para o ensino de Filosofia, isso significa que antes de apresentar o \"cogito\" de Descartes, o professor deve investigar o que os alunos já pensam sobre a questão do conhec",d:"Média"},{n:26,t:"A pedagogia freineana de Célestin Freinet contribui para o ensino ao propor:",o:["A instrução programada em módulos — antecipando a pedagogia tecnicista","A pedagogia do trabalho e da expressão — jornal escolar, texto livre, cooperação — que valoriza a expressão genuína dos alunos e a produção coletiva com função real","A memorização dos grandes textos da tradição como base da formação","A avaliação exclusivamente quantitativa como forma de motivação"],a:1,c:"Freinet desenvolveu técnicas pedagógicas que revolucionaram a escola primária: o jornal escolar (as crianças escrevem e publicam um jornal real, para um público real), o texto livre (o aluno escreve sobre o que quer), a correspondência interescolar (troca de cartas com alunos de outras escolas), as cooperativas de classe (autogestão parcial da sala). O princípio unificador: a aprendizagem genuína ocorre quando o produto tem função real — não é exercício artificial. Para o ens",d:"Média"},{n:27,t:"O PNE (Lei 13.005/2014) estabelece como Meta 7 o fomento à qualidade da educação básica medida pelo IDEB. O IDEB é calculado a partir de:",o:["Apenas as notas dos professores em avaliações de formação continuada","A combinação de dados de fluxo escolar (aprovação, reprovação, abandono) e desempenho em avaliações externas (Prova Brasil / SAEB)","O número de computadores por aluno nas escolas públicas","A satisfação dos pais com o atendimento das escolas"],a:1,c:"O IDEB (Índice de Desenvolvimento da Educação Básica), criado em 2007 pelo INEP/MEC, combina dois indicadores: (1) taxas de aprovação (fluxo escolar — a reprovação e o abandono diminuem o IDEB); (2) médias de desempenho na Prova Brasil/SAEB (avaliação de proficiência em Língua Portuguesa e Matemática). A combinação dos dois é importante: uma escola com alta aprovação mas baixo aprendizado (ou o contrário) não terá bom IDEB. A meta do PNE é aumentar progressivamente o IDEB de ",d:"Média"},{n:28,t:"A psicologia humanista de Carl Rogers difere do behaviorismo de Skinner porque:",o:["Rogers estudou apenas adultos; Skinner estudou apenas crianças e animais","Para Rogers, o ser humano tem uma tendência natural ao crescimento e à autorrealização — e o papel do educador é criar condições facilitadoras (autenticidade, empatia, consideração positiva); para Skinner, o comportamento é moldado pelo ambiente através de reforços","Rogers valorizava os testes de inteligência; Skinner os rejeitava","São teorias idênticas — apenas com terminologias diferentes"],a:1,c:"A oposição entre behaviorismo (Skinner) e humanismo (Rogers) é uma das mais fundamentais na psicologia educacional: para Skinner, o ser humano é um organismo cujo comportamento é determinado pelo ambiente — o professor molda o comportamento pelo reforço. Para Rogers, o ser humano tem uma tendência natural ao crescimento (tendência atualizante) — o papel do educador não é moldar, mas criar condições para que essa tendência se realize: relação genuína, empatia, consideração pos",d:"Média"},{n:29,t:"A Lei 14.180/2021 (Política Nacional de Leitura e Escrita) é relevante para o professor de Filosofia porque:",o:["Tornouobrigatória a leitura de textos filosóficos em todas as escolas","Reconheceu a leitura e a escrita como direitos fundamentais e instrumentos de cidadania — fundamentando políticas de incentivo à leitura que incluem a leitura de textos filosóficos como dimensão da formação cultural","Criou uma disciplina específica de Leitura em todos os anos do EF","Proibiu o uso de textos não-literários nas aulas do EF"],a:1,c:"A Lei 14.180/2021 institui a Política Nacional de Leitura e Escrita — reconhecendo a leitura e a escrita como direitos fundamentais para a cidadania, o desenvolvimento pessoal e a participação social. Para o professor de Filosofia, isso fornece um fundamento adicional para o trabalho com textos filosóficos: a leitura de textos filosóficos não é apenas conteúdo da disciplina — é uma dimensão da formação em leitura e escrita que a lei reconhece como direito. Isso inclui o traba",d:"Média"},{n:30,t:"A organização curricular por áreas do conhecimento na BNCC — em vez de disciplinas isoladas — tem como objetivo:",o:["Eliminar todas as disciplinas específicas — substituindo-as por projetos interdisciplinares","Promover a integração entre os componentes curriculares de uma mesma área — garantindo que os alunos percebam as conexões entre as disciplinas e desenvolvam competências mais abrangentes do que qualquer disciplina isolada pode proporcionar","Reduzir a carga horária de cada disciplina para criar mais espaço para atividades extracurriculares","Permitir que qualquer professor ministre qualquer disciplina da área — independentemente de sua formação específica"],a:1,c:"A organização por áreas (Linguagens, Ciências Humanas, Ciências da Natureza, Matemática) na BNCC visa promover a integração curricular — sem eliminar as especificidades de cada componente. A ideia é que os alunos percebam como o pensamento histórico, geográfico, filosófico e sociológico (todos na área de Ciências Humanas) se complementam na compreensão da realidade humana. Isso não significa que qualquer professor da área pode ensinar qualquer componente — a formação específi",d:"Média"},{n:31,t:"O conceito de andaime (*scaffolding*) — derivado da teoria de Vygotsky por Jerome Bruner e David Wood — refere-se a:",o:["A estrutura física da sala de aula que apoia o processo de aprendizagem","O suporte temporário oferecido pelo professor (ou par mais experiente) que possibilita ao aluno realizar uma tarefa além de suas capacidades atuais — e que é gradualmente retirado à medida que o aluno internaliza a habilidade","A sequência rígida de passos que o professor deve seguir para ensinar qualquer conteúdo","O sistema de avaliação que \"sustenta\" o aluno ao longo do processo escolar"],a:1,c:"O andaime (scaffolding) é uma metáfora arquitetônica: assim como o andaime de construção sustenta a estrutura enquanto ela está sendo construída — e é removido quando a estrutura é autossuficiente — o suporte do professor na ZDP sustenta a aprendizagem enquanto o aluno ainda não consegue fazer sozinho. Mas o andaime deve ser progressivamente retirado: um professor que sempre fornece o suporte — mesmo quando o aluno já internalizou a habilidade — cria dependência, não autonomi",d:"Média"},{n:32,t:"A tendência pedagógica libertária — diferente da libertadora freiriana — caracteriza-se por:",o:["Defender a libertação através do conteúdo filosófico e político ensinado pelo professor","Defender a autogestão, a livre organização e a rejeição de qualquer forma de autoridade institucional na escola — a liberdade como ausência de coerção","Ser idêntica à tendência não-diretiva de Rogers — apenas com terminologia diferente","Aceitar a autoridade do professor desde que seja democraticamente eleita pelos alunos"],a:1,c:"A distinção entre tendência libertadora (Freire) e libertária (Freinet, Ferrer y Guardia, Neill) é importante: a libertadora, em Freire, não rejeita o papel diretivo do educador — o professor tem posições, usa conteúdos como mediação da conscientização. A libertária rejeita qualquer forma de autoridade institucional — defende a autogestão radical da escola pelos próprios alunos, sem currículo prescrito, sem avaliações formais, sem hierarquia professor-aluno. Summerhill (A. S.",d:"Média"},{n:33,t:"A progressão continuada — organização escolar que permite o avanço do aluno sem reprovação dentro de um ciclo — foi adotada em alguns sistemas estaduais brasileiros com o objetivo de:",o:["Eliminar qualquer forma de avaliação da aprendizagem — o aluno passa automaticamente sem avaliação","Reduzir a distorção série/idade e a evasão escolar causadas pela reprovação — mantendo que a avaliação continua existindo, mas que a reprovação só ocorre ao final do ciclo","Garantir que todos os alunos recebam a mesma nota independentemente do desempenho","É proibida pela LDB — qualquer sistema de progressão automática viola a lei"],a:1,c:"A progressão continuada não é \"promoção automática\" sem avaliação — é uma reorganização do tempo pedagógico: em vez de avaliar e reprovar/promover ano a ano, o aluno é acompanhado ao longo de um ciclo (ex.: 3 anos) com avaliação contínua, e a reprovação (quando necessária) ocorre ao final do ciclo. O objetivo é reduzir os efeitos perversos da reprovação anual (distorção série/idade, evasão, estigmatização) sem abrir mão da avaliação e da exigência de aprendizagem.",d:"Média"},{n:34,t:"A dimensão afetiva da aprendizagem — enfatizada por Henri Wallon — tem implicações pedagógicas porque:",o:["Alunos que gostam do professor aprendem mais — independentemente da qualidade do ensino","A emoção não é separada da cognição — estados afetivos (ansiedade, interesse, autoestima, pertencimento) afetam diretamente a capacidade de aprendizagem e devem ser considerados no planejamento pedagógico","O professor deve ser exclusivamente afetivo — sem exigências acadêmicas","A afetividade é irrelevante para o aprendizado de conteúdos abstratos como a Filosofia"],a:1,c:"Wallon integrou as dimensões motora, afetiva e cognitiva do desenvolvimento — em oposição à tendência (especialmente piagetiana) de privilegiar a dimensão cognitiva. Para Wallon, a emoção não é um \"ruído\" que atrapalha o pensamento — é constitutiva dele. Um aluno ansioso, com baixa autoestima ou excluído pelo grupo tem sua capacidade cognitiva comprometida — não por falta de esforço, mas por razões afetivas que afetam o funcionamento cognitivo. Isso tem implicações pedagógica",d:"Média"},{n:35,t:"O Plano de Aula como instrumento de planejamento docente deve incluir, entre outros elementos:",o:["Apenas o conteúdo a ser ensinado — os demais elementos são opcionais","Objetivos de aprendizagem, conteúdo, procedimentos metodológicos, recursos didáticos e avaliação — articulados de forma coerente entre si","Apenas a listagem das atividades a serem realizadas — sem especificação de objetivos","A biografia completa dos filósofos que serão abordados na aula"],a:1,c:"O plano de aula é o instrumento de planejamento micro do professor — e deve articular intencionalmente seus elementos: os objetivos (o que o aluno deve aprender) orientam a seleção do conteúdo (o que ensinar) e dos métodos (como ensinar), que devem ser compatíveis com os recursos disponíveis, e a avaliação verifica se os objetivos foram alcançados. A coerência interna é o critério de um bom plano: objetivos, metodologia e avaliação devem estar alinhados — não pode haver objet",d:"Média"},{n:36,t:"Considere as afirmações sobre teorias pedagógicas:  I. Para Piaget, o ensino eficaz deve ser realizado além da ZDP — empurrando o aluno para além do seu estágio atual de desenvolvimento. II. Para Vygotsky, o desenvolvimento precede a aprendizagem — o professor deve esperar o aluno atingir a maturação cognitiva necessária antes de ensinar. III. A teoria de Gardner das inteligências múltiplas questiona a validade dos testes de QI como medida universal da inteligência.  Estão corretas:",o:["Apenas I","Apenas III","Apenas I e II","I, II e III"],a:1,c:"I é **falsa**: a noção de ZDP é de Vygotsky — não de Piaget. Para Piaget, o ensino deve ser adequado ao estágio de desenvolvimento — nem além (frustração) nem aquém (tédio). II é **falsa** e representa exatamente a posição de Piaget — não de Vygotsky. Para Vygotsky, é o contrário: a aprendizagem puxa o desenvolvimento — o ensino na ZDP promove desenvolvimento. III é **verdadeira**: Gardner propôs que a inteligência não é uma capacidade única e geral medida pelo QI — são múlti",d:"Média"},{n:37,t:"A Emília Ferreiro — pesquisadora argentina que investigou a psicogênese da língua escrita — contribuiu para a pedagogia ao demonstrar que:",o:["A criança aprende a ler e escrever por imitação dos adultos — o método mais eficaz é a cópia","A criança constrói hipóteses sobre o sistema de escrita antes de ser formalmente ensinada — e passa por fases previsíveis (pré-silábica, silábica, silábico-alfabética, alfabética) que o professor deve conhecer para intervir adequadamente","Apenas crianças com desenvolvimento neurológico acima da média aprendem a ler espontaneamente","A melhor idade para o início da alfabetização é aos 7 anos — antes disso, o aprendizado é prejudicial"],a:1,c:"Emília Ferreiro (com Ana Teberosky) — baseada no construtivismo piagetiano — demonstrou que a criança não aprende a ler e escrever do zero quando chega à escola: já tem hipóteses sobre o sistema de escrita que constrói de forma ativa. As fases da psicogênese (pré-silábica → silábica → silábico-alfabética → alfabética) descrevem esse processo construtivo. O professor que conhece essas fases pode intervir de forma mais adequada: uma criança na fase silábica não precisa \"começar",d:"Média"},{n:38,t:"A distinção entre PCN (Parâmetros Curriculares Nacionais) e BNCC (Base Nacional Comum Curricular) é que:",o:["Os PCN são documentos legalmente obrigatórios; a BNCC é apenas sugestão","Os PCN foram documentos de referência curricular dos anos 1990 — orientadores, não impositivos; a BNCC (2017) é normativa — define as aprendizagens essenciais que todos os sistemas devem garantir, com força de norma nacional obrigatória","A BNCC substituiu completamente os PCN — que foram revogados por lei","São idênticos — apenas com nomes diferentes em diferentes governos"],a:1,c:"Os PCN (1997–1998) foram elaborados pelo MEC como referências curriculares — não eram normativos: cada estado e município poderia adotar, adaptar ou não utilizá-los. A BNCC (2017-2018) tem natureza jurídica diferente: é normativa, aprovada pelo CNE (Conselho Nacional de Educação), e todos os sistemas de ensino — federal, estaduais e municipais — devem alinhar seus currículos a ela. Isso representa uma mudança de paradigma: da orientação sugestiva à norma obrigatória.",d:"Média"},{n:39,t:"A Educação de Jovens e Adultos (EJA) — modalidade prevista na LDB — tem como princípio central que:",o:["O adulto deve aprender da mesma forma que a criança — apenas com conteúdo diferente","O jovem e o adulto são sujeitos com história, experiências e conhecimentos próprios — e a educação deve partir dessa realidade (princípio andragógico), valorizando o saber construído na vida prática","A EJA deve ser exclusivamente supletiva — compensando o que o adulto não aprendeu na infância","O adulto não tem capacidade de aprender conceitos abstratos — a EJA deve focar apenas em habilidades práticas"],a:1,c:"A EJA — que atende jovens (a partir dos 15 anos) e adultos que não completaram a escolaridade na idade regular — tem fundamentos pedagógicos específicos. Paulo Freire é o principal referencial: o adulto não é uma \"criança grande\" — é um sujeito com história, com saberes construídos na vida prática, com motivações específicas para estudar. A educação que ignora isso (tratando o adulto como aluno do EF regular) é pedagogicamente inadequada. A andragogia (Malcolm Knowles) e a pe",d:"Média"},{n:40,t:"A crítica ao uso acrítico dos testes de inteligência (como o QI) em contexto educacional se baseia em que:",o:["Os testes de QI são matematicamente incorretos — seus resultados não são confiáveis","Os testes medem capacidades que são culturalmente determinadas — favorecendo sistematicamente grupos culturais dominantes; o que é medido como \"inteligência\" reflete padrões culturais específicos, não capacidade universal","Os testes foram inventados por Binet para fins eugênicos — logo, são intrinsecamente ruins","Os professores não têm formação para interpretar os resultados dos testes"],a:1,c:"A crítica mais fundamentada ao QI não é técnica (os testes são bem construídos para o que se propõem a medir) — é epistemológica e cultural: o que os testes medem é culturalmente específico. Crianças de culturas não-ocidentais, de famílias com baixo capital cultural (Bourdieu) ou com formas de inteligência diferentes das linguístico-matemáticas tendem a ter desempenho inferior — não porque são menos inteligentes, mas porque o teste mede um tipo específico de processamento de ",d:"Média"},{n:41,t:"O \"ensino para a compreensão\" (*Teaching for Understanding*) — desenvolvido pelo Projeto Zero de Harvard — e o ensino de Filosofia têm em comum:",o:["Ambos rejeitam a avaliação formal — compreensão e investigação filosófica são incompatíveis com avaliação","A ênfase em desenvolver a capacidade de aplicar o conhecimento a situações novas — ir além da memorização para uma compreensão flexível e transferível","São propostas incompatíveis — o ensino para a compreensão é tecnicista e a Filosofia é humanista","Ambos são válidos apenas para alunos do Ensino Superior"],a:1,c:"O Projeto Zero de Harvard (Perkins, Gardner) desenvolveu o conceito de \"ensino para a compreensão\": compreensão genuína não é memorização — é a capacidade de aplicar o que foi aprendido a situações novas, de explicar com as próprias palavras, de criar analogias e exemplos. Isso converge diretamente com o ensino de Filosofia genuíno: um aluno que \"aprendeu Kant\" mas só consegue repetir \"o imperativo categórico diz que...\" não compreendeu Kant. Compreender Kant é ser capaz de a",d:"Média"},{n:42,t:"A Lei 14.533/2023 (PNED) ao enfatizar a \"inclusão digital\" como eixo central reconhece que, sem acesso às tecnologias, as demais dimensões da educação digital são inviáveis. Isso tem implicação direta para o professor que queira usar as TICs no ensino porque:",o:["O professor deve usar sempre as TICs — independentemente do acesso dos alunos","O professor deve verificar quais recursos tecnológicos seus alunos têm acesso em casa e na escola — e planejar atividades digitais que não pressuponham acesso que nem todos têm, garantindo inclusão digital como pré-condição","As TICs devem ser usadas apenas nas escolas com infraestrutura completa — as demais não precisam","A lei obriga o professor a usar exclusivamente recursos digitais nas aulas"],a:1,c:"A inclusão digital — o acesso às tecnologias como pré-condição — é o primeiro eixo da PNED por uma razão estrutural: de nada adianta propor atividades digitais se os alunos não têm acesso a dispositivos ou internet. No Brasil, as desigualdades de acesso são expressivas — especialmente entre escolas públicas urbanas periféricas e rurais. O professor que planeja atividades online sem verificar o acesso de seus alunos pode inadvertidamente ampliar as desigualdades que a lei pret",d:"Média"},{n:43,t:"A análise de Paulo Freire sobre a relação entre educação e poder — sintetizada na ideia de que a educação nunca é neutra — tem como consequência para o professor de Filosofia que:",o:["O professor deve sempre defender explicitamente posições políticas de esquerda em sala de aula","O professor deve examinar criticamente suas próprias escolhas pedagógicas (que conteúdos incluir, que vozes valorizar, que metodologias usar, como avaliar) — reconhecendo que cada escolha tem dimensão política, e ser honesto sobre esse comprometimento sem transformar a aula em militância partidária","A educação sempre reproduz a ideologia dominante — não há alternativa","O professor neutro é o mais ético — deve evitar qualquer posicionamento político"],a:1,c:"A consequência da análise freiriana não é que o professor deva doutrinar politicamente (A) nem que a educação é sempre mera reprodução (C). É que o professor deve ser consciente de que suas escolhas pedagógicas têm dimensão política — e ser honesto sobre isso. Escolher ensinar apenas a filosofia europeia é uma escolha política; incluir filosofias africanas também é. Avaliar por memorização é político; avaliar por argumentação também é. A consciência crítica das próprias escol",d:"Média"},{n:44,t:"O PPP como instrumento de autonomia escolar — garantido pela LDB (art. 12-14) — contrasta com uma concepção de escola como:",o:["Agência burocrática que executa ordens do sistema — sem poder de deliberação sobre seu próprio projeto educativo","Centro de excelência acadêmica — voltado exclusivamente aos melhores alunos","Organização privada — que define seu projeto sem prestação de contas ao sistema público","Entidade religiosa — que organiza seu projeto em torno de valores confessionais"],a:0,c:"A autonomia garantida pelo PPP se opõe à concepção de escola como mera executora de ordens do sistema central — que define o currículo, os métodos, os horários e os projetos sem participação da comunidade escolar. O PPP reconhece que cada escola tem uma identidade específica, uma realidade local particular e uma comunidade com interesses e necessidades próprias — e que essa especificidade deve ser reconhecida e respeitada no processo educativo. Isso não elimina as normas do s",d:"Média"},{n:45,t:"A andragogia de Malcolm Knowles — teoria da aprendizagem de adultos — propõe que adultos aprendem de forma diferente das crianças porque:",o:["Os adultos têm menor capacidade cognitiva — e precisam de conteúdo mais simples","Os adultos têm: (1) necessidade de saber por que devem aprender; (2) autoconceito de aprendizes independentes; (3) experiências ricas como base; (4) disposição orientada a tarefas e problemas; (5) motivação mais interna que externa","Os adultos aprendem exclusivamente pela experiência — sem necessidade de teoria","Os adultos precisam de mais estrutura e controle do que as crianças"],a:1,c:"Knowles identificou diferenças fundamentais entre a aprendizagem infantil (pedagogia) e adulta (andragogia): os adultos precisam entender *por que* aprendem algo (não apenas aceitar a autoridade do professor); têm autoconceito de aprendizes autônomos; trazem ricas experiências que devem ser valorizadas como recurso; são orientados a problemas práticos mais do que a disciplinas abstratas; têm motivação predominantemente interna. Para a EJA, isso implica metodologias que valori",d:"Média"},{n:46,t:"A análise de Boaventura de Sousa Santos sobre a \"ecologia dos saberes\" — aplicada à pedagogia — propõe que:",o:["Apenas os saberes produzidos pela ciência ocidental moderna têm valor educativo","A educação deve reconhecer a pluralidade de saberes existentes (científicos, indígenas, populares, filosóficos) — articulando-os em diálogo horizontal em vez de hierarquizá-los com o saber científico no topo","Os saberes populares são superiores ao saber científico — e devem substituí-lo no currículo","A ecologia dos saberes é incompatível com o ensino de Filosofia — que é exclusivamente científico"],a:1,c:"Santos propõe uma \"epistemologia do Sul\" que reconhece a pluralidade de formas de conhecimento: o saber científico, os saberes indígenas, os saberes populares, a filosofia, a arte — todos têm validade epistêmica específica e devem ser articulados em diálogo, não hierarquizados com o saber científico no topo. Para a pedagogia, isso implica um currículo que reconhece e articula diferentes formas de conhecimento — convergindo com a perspectiva decolonial (Quijano, Mignolo) e com",d:"Difícil"},{n:47,t:"O conceito de \"zona de desenvolvimento proximal\" de Vygotsky tem sido criticado por alguns pesquisadores porque:",o:["É matematicamente inconsistente — não pode ser calculado com precisão","A metáfora de \"zona\" sugere que há limites nítidos entre o que o aluno pode e não pode fazer — quando na prática o desenvolvimento é mais fluido e contextualmente variável do que a metáfora implica","Contradiz completamente as descobertas de Piaget sobre os estágios — e foi refutado empiricamente","Só se aplica à aprendizagem de línguas — não a outras disciplinas"],a:1,c:"A crítica mais sofisticada à ZDP não é que o conceito esteja errado — é que a metáfora pode ser enganosa: ela sugere uma zona com fronteiras claras, estável e independente do contexto. Na prática, o que um aluno consegue fazer com ajuda varia enormemente conforme: o tipo de ajuda, o contexto, a motivação, a relação com o mediador, o conteúdo específico. Um aluno pode estar numa \"zona proximal\" para um tipo de problema filosófico e não para outro, mesmo que ambos sejam do mesm",d:"Difícil"},{n:48,t:"A avaliação institucional — diferente da avaliação da aprendizagem — é aquela que avalia:",o:["O desempenho individual dos professores — realizada pelo diretor da escola","O funcionamento da escola como um todo — incluindo gestão, currículo, relações, infraestrutura e resultados de aprendizagem — com o objetivo de orientar a melhoria institucional","O sistema de ensino municipal ou estadual — realizada pelo MEC","Os alunos com dificuldades de aprendizagem — para encaminhamento ao AEE"],a:1,c:"A avaliação institucional — prevista no PPP e requerida pelos sistemas de ensino — avalia a escola como organização: Como está sendo implementado o PPP? Os objetivos estão sendo alcançados? A gestão está sendo democrática? As relações são respeitosas? A infraestrutura está adequada? Os resultados de aprendizagem estão satisfatórios? Essa avaliação é distinta da avaliação da aprendizagem (que avalia o aluno) e da avaliação de desempenho do professor — é a escola avaliando a si",d:"Difícil"},{n:49,t:"A formação continuada dos professores — prevista na Meta 15 e Meta 16 do PNE — é reconhecida como essencial porque:",o:["A formação inicial é suficiente — a formação continuada é um luxo","O conhecimento sobre educação e as demandas da prática docente evoluem continuamente — e o professor que parou de aprender após a formação inicial tende a se tornar progressivamente desatualizado em relação às necessidades de seus alunos","A formação continuada substitui a formação inicial — é mais barata e eficiente","A formação continuada é apenas para professores com baixo desempenho nas avaliações externas"],a:1,c:"As Metas 15 e 16 do PNE reconhecem que a formação inicial — por mais sólida que seja — não é suficiente para toda uma carreira docente. A pesquisa educacional evolui, os alunos mudam, as tecnologias se transformam, as demandas da sociedade se modificam. O professor que para de aprender tende a repetir as práticas aprendidas na formação — que podem não ser mais as mais adequadas. A formação continuada não é apenas atualização técnica — é desenvolvimento profissional contínuo q",d:"Difícil"},{n:50,t:"Um professor de Filosofia no EF Anos Finais planeja uma unidade sobre \"O que é conhecimento?\" para alunos de 8º ano (13 anos). Considerando as teorias pedagógicas estudadas, a abordagem mais fundamentada seria:",o:["Começar pela memorização dos epistemólogos (Platão, Descartes, Hume, Kant) e suas posições — para então debater o tema","Partir de uma situação concreta que ative os conhecimentos prévios (Ausubel) — ex.: \"Você pode ter certeza de que não está sonhando agora?\" — investigar colaborativamente na ZDP (Vygotsky), apresentar como a tradição filosófica tratou o problema (método histórico-temático), e avaliar processualmente o desenvolvimento do pensamento (avaliação formativa)","Usar exclusivamente a aula expositiva — os alunos de 13 anos já têm maturidade para absorver conteúdo abstratos sem mediação","Evitar textos filosóficos — substituindo-os por vídeos do YouTube sobre filosofia"],a:1,c:"Esta questão final integra as teorias pedagógicas com o ensino de Filosofia. A abordagem B articula: Ausubel (partir de situação que ativa conhecimentos prévios e cria a \"necessidade\" do conteúdo); Vygotsky (investigação colaborativa na ZDP — o que os alunos não conseguem sozinhos, conseguem com mediação); Piaget (alunos de 13 anos estão no operatório formal emergente — precisam de suporte concreto para o pensamento abstrato); método histórico-temático (a tradição filosófica ",d:"Difícil"},{n:51,t:"A **Lei 15.247/2025** institui o Compromisso Nacional Criança Alfabetizada com o objetivo central de:",o:["Garantir a alfabetização de jovens e adultos até os 30 anos de idade","Assegurar que crianças brasileiras estejam alfabetizadas ao final do **2º ano do Ensino Fundamental**","Garantir a alfabetização de todas as crianças até o final do 5º ano do EF","Criar um currículo nacional único para a Educação Infantil"],a:1,c:"O Art. 5º, inciso I da Lei 15.247/2025 define como objetivo implementar políticas, programas e ações para que as crianças estejam \"alfabetizadas ao final do segundo ano do ensino fundamental\". O inciso II complementa: promover recomposição de aprendizagens prioritariamente para quem não alcançou padrões adequados de alfabetização até o 2º ano. Isso alinha-se à Meta 5 do PNE (alfabetizar até o 3º ano) mas com antecipação — o Compromisso estabelece o 2º ano como referência.",d:"Difícil"},{n:52,t:"Entre os **princípios** do Compromisso Nacional Criança Alfabetizada (Lei 15.247/2025, Art. 3º), está incluído:",o:["A centralização da política de alfabetização exclusivamente no Ministério da Educação","A competição entre escolas como motor da melhoria dos resultados de alfabetização","O respeito à **autonomia pedagógica do professor** e das instituições de ensino","A proibição do pluralismo de concepções pedagógicas para garantir uniformidade"],a:2,c:"O inciso VI do Art. 3º inclui \"o respeito à autonomia pedagógica do professor e das instituições de ensino\" entre os princípios do Compromisso. Isso é relevante para o debate sobre métodos de alfabetização: o Compromisso não impõe um único método (ex.: fônico vs. global) — respeita a autonomia docente e o pluralismo de concepções pedagógicas (inciso IV). Outros princípios incluem: colaboração federativa (I), equidade (III), pluralismo pedagógico (IV), liberdade e tolerância (",d:"Difícil"},{n:53,t:"A **Renalfa** (Rede Nacional de Articulação de Gestão, Formação e Mobilização), instituída pela Lei 15.247/2025, tem como eixos estratégicos de atuação, entre outros:",o:["A privatização dos sistemas de avaliação e a terceirização da formação docente","O desenvolvimento da capacidade profissional dos educadores para a gestão dos processos de ensino e aprendizagem no campo da alfabetização e o monitoramento contínuo dos resultados","A criação de rankings estaduais de alfabetização para estimular a competição entre redes","A aplicação de punições a estados com baixos índices de alfabetização"],a:1,c:"O Art. 19 da Lei 15.247/2025 estabelece três eixos estratégicos da Renalfa: (I) desenvolvimento da capacidade profissional dos educadores e gestores para a gestão dos processos de ensino-aprendizagem em alfabetização e monitoramento dos resultados; (II) desenvolvimento da capacidade das equipes gestoras para construir cultura de sucesso escolar; (III) desenvolvimento da capacidade dos sistemas de ensino de estabelecer processos de articulação técnico-pedagógica e político-ins",d:"Difícil"},{n:54,t:"O **Art. 28 da Lei 15.247/2025** determina que serão estabelecidas estratégias específicas para garantir o direito à alfabetização das **populações específicas**, que incluem, entre outras:",o:["Apenas os alunos de escolas privadas de alto rendimento","Educação de Jovens e Adultos, Educação Especial, Educação Bilíngue de Surdos, Educação do Campo, Educação Escolar Indígena e Educação Escolar Quilombola","Apenas os alunos da zona rural — os da zona urbana são atendidos pelo regime geral","Os alunos do Ensino Médio com defasagem de alfabetização"],a:1,c:"O Art. 28 da Lei 15.247/2025 lista seis modalidades de populações específicas que demandam estratégias complementares: (I) EJA; (II) Educação Especial; (III) Educação Bilíngue de Surdos; (IV) Educação do Campo; (V) Educação Escolar Indígena; (VI) Educação Escolar Quilombola. Para cada uma, as ações incluirão: assistência técnica para formação de profissionais, disponibilização de materiais didáticos e realização de avaliações educacionais adequadas às especificidades de cada ",d:"Difícil"},{n:55,t:"O **Decreto 12.391/2025** institui o Pacto Nacional pela Recomposição das Aprendizagens com dupla finalidade: assegurar padrões adequados de aprendizagem e:",o:["Criar um sistema de avaliação nacional obrigatório para todas as escolas","Mitigar os impactos de eventos que gerem situação de emergência ou calamidade pública reconhecidos pela União na oferta educacional","Privatizar a gestão das escolas públicas com baixo desempenho","Substituir o SAEB por uma nova avaliação nacional criada pelo Pacto"],a:1,c:"O Art. 1º, parágrafo único do Decreto 12.391/2025 define as duas finalidades do Pacto: (I) assegurar padrões adequados de aprendizagem e desenvolvimento dos estudantes da educação básica; e (II) mitigar os impactos de eventos que gerem situação de emergência ou estado de calamidade pública reconhecidos pela União. A segunda finalidade é inédita na legislação educacional e emergiu da experiência da pandemia de COVID-19 — que revelou a vulnerabilidade dos sistemas educacionais ",d:"Difícil"},{n:56,t:"O Decreto 12.391/2025 define **\"recomposição de aprendizagens\"** (Art. 2º, II) como:",o:["A reprovação de alunos com defasagem para que refaçam o ano escolar","O conjunto de práticas pedagógicas e de gestão educacional que visam garantir os direitos de aprendizagem e de desenvolvimento dos estudantes","A aplicação de avaliações nacionais ao final de cada bimestre","A substituição do currículo regular por um currículo simplificado para alunos com defasagem"],a:1,c:"A definição legal de \"recomposição de aprendizagens\" (Art. 2º, II do Decreto 12.391/2025) é ampla: \"conjunto de práticas pedagógicas e de gestão educacional que visam garantir os direitos de aprendizagem e de desenvolvimento dos estudantes\". Não se confunde com reprovação (A) nem com currículo simplificado (D) — é um conjunto de práticas que buscam garantir que todos os estudantes alcancem os padrões adequados de aprendizagem, independentemente de defasagens anteriores.",d:"Difícil"},{n:57,t:"O conceito de **\"resiliência dos sistemas educacionais\"** no Decreto 12.391/2025 (Art. 2º, V) refere-se a:",o:["A capacidade dos alunos de superar dificuldades emocionais na escola","A capacidade institucional de lidar com os impactos de emergências e calamidades públicas, por meio de adaptações na oferta educacional e nos processos de gestão","A resistência das escolas a mudanças pedagógicas propostas pelo MEC","A capacidade dos professores de manter a motivação em condições adversas"],a:1,c:"O Decreto 12.391/2025 define \"resiliência dos sistemas educacionais\" (Art. 2º, V) como a \"capacidade institucional para lidar com os impactos causados por eventos que gerem situação de emergência ou estado de calamidade pública reconhecidos pela União, por meio de adaptações na sua oferta educacional e nos processos de gestão administrativa e pedagógica.\" O eixo VI dos eixos estruturantes é dedicado a esse tema — reconhecendo que os sistemas educacionais precisam desenvolver ",d:"Difícil"},{n:58,t:"Os **seis eixos estruturantes** do Pacto Nacional pela Recomposição das Aprendizagens (Decreto 12.391/2025, Art. 7º) incluem:",o:["Avaliação; Currículo; Organização e mediação pedagógica; Materiais; Desenvolvimento profissional; Gestão educacional","Privatização; Rankings; Competição; Meritocracia; Terceirização; Punição","Alfabetização; Matemática; Ciências; Linguagens; Humanidades; Tecnologia","Diagnóstico; Intervenção; Recuperação; Certificação; Premiação; Punição"],a:0,c:"O Art. 7º do Decreto 12.391/2025 estabelece os seis eixos estruturantes: (I) Avaliação — diagnóstico formativo e contínuo; (II) Currículo — reorganização e priorização; (III) Organização e mediação pedagógica; (IV) Materiais — elaboração e disseminação; (V) Desenvolvimento profissional — formação continuada; (VI) Gestão educacional — resiliência em situações extremas. Cada eixo tem competências específicas definidas nos artigos subsequentes.",d:"Difícil"},{n:59,t:"A **Plataforma de Avaliação e Acompanhamento das Aprendizagens**, prevista no Decreto 12.391/2025, serve para:",o:["Aplicar provas nacionais padronizadas para classificar alunos em grupos de nível","Identificar e diagnosticar a defasagem na aprendizagem e estabelecer mapas de progressão — permitindo que docentes e gestores acompanhem a trajetória de aprendizagem dos estudantes","Substituir o ENEM como principal avaliação do sistema educacional brasileiro","Avaliar o desempenho dos professores para fins de promoção na carreira"],a:1,c:"O Art. 8º, §1º do Decreto 12.391/2025 define a finalidade da Plataforma: \"identificar e diagnosticar a defasagem na aprendizagem e de estabelecer mapa de progressão de aprendizagens.\" A Plataforma é disponibilizada pelo MEC e deve ser usada pelos entes federativos que aderirem ao Pacto para os ciclos de avaliação ao longo do período letivo. Seu propósito é diagnóstico-formativo — não classificatório ou punitivo.",d:"Difícil"},{n:60,t:"A relação entre a **Lei 15.247/2025** (Compromisso Nacional Criança Alfabetizada) e o **Decreto 12.391/2025** (Pacto Nacional pela Recomposição das Aprendizagens) pode ser descrita como:",o:["São normas concorrentes que se contradizem — não podem ser aplicadas simultaneamente","São instrumentos complementares: o Compromisso foca na alfabetização (0–2º ano EF) com meta de alfabetização na idade certa; o Pacto foca na recomposição de aprendizagens para toda a Educação Básica, incluindo alunos com defasagem e situações de emergência","São idênticos — o Decreto apenas regulamenta a Lei sem acrescentar nada novo","O Decreto revoga a Lei — prevalece o regime do Pacto sobre o do Compromisso"],a:1,c:"As duas normas são complementares e formam um sistema coerente de política educacional: a Lei 15.247/2025 tem foco específico na alfabetização na idade certa (até o 2º ano do EF) — sua meta é prevenir a defasagem desde o início. O Decreto 12.391/2025 tem escopo mais amplo — toda a Educação Básica — e foco na recomposição das aprendizagens de quem já tem defasagem, incluindo a dimensão de resiliência frente a emergências. Juntos, formam uma política que atua preventivamente (C",d:"Difícil"}];
+const TOTAL = 60;
+let answers = {};
+let currentFilter = 'all';
+let errorsMode = false;
+
+function getVisible(){
+  if(errorsMode){
+    return QUESTIONS.filter(q=>answers[q.n]!==undefined && answers[q.n]!==q.a);
+  }
+  if(currentFilter==='all') return QUESTIONS;
+  return QUESTIONS.filter(q=>q.d===currentFilter);
+}
+
+function renderQuiz(){
+  const visible = getVisible();
+  const container = document.getElementById('quiz-content');
+  container.innerHTML = '';
+  if(!visible.length){
+    container.innerHTML = '<p style="text-align:center;color:var(--text3);padding:40px;font-family:JetBrains Mono,monospace;font-size:13px;">Nenhuma questão neste filtro.</p>';
+    return;
+  }
+  visible.forEach((q,i)=>{
+    const block = document.createElement('div');
+    block.className = 'q-block' + (answers[q.n]!==undefined?' answered':'');
+    block.id = 'qb-'+q.n;
+    const diffClass = q.d==='Fácil'?'diff-easy':q.d==='Média'?'diff-med':'diff-hard';
+    const done = answers[q.n]!==undefined;
+    block.innerHTML = `
+      <div class="q-meta">
+        <span class="q-num">Q${String(q.n).padStart(2,'0')}</span>
+        <span class="q-diff ${diffClass}">${q.d}</span>
+      </div>
+      <div class="q-text">${q.t}</div>
+      <div class="q-opts" id="opts-${q.n}">
+        ${q.o.map((o,j)=>{
+          let cls='q-opt'+(done?' done':'');
+          if(done){
+            if(j===q.a) cls+=' correct';
+            else if(j===answers[q.n]) cls+=' wrong';
+          }
+          return `<div class="${cls}" ${!done?`onclick="pick(${q.n},${j})"`:''}>
+            <span class="opt-letter">${'ABCD'[j]}</span>
+            <span class="opt-text">${o}</span>
+          </div>`;
+        }).join('')}
+      </div>
+      <div class="q-feedback ${done?(answers[q.n]===q.a?'fb-correct show':'fb-wrong show'):''}" id="fb-${q.n}">
+        <span class="fb-label">${done?(answers[q.n]===q.a?'✓ Correto':'✗ Incorreto — Gabarito: '+'ABCD'[q.a]):'' }</span>
+        <span class="fb-body">${q.c}</span>
+      </div>`;
+    container.appendChild(block);
+  });
+}
+
+function pick(qn, optIdx){
+  if(answers[qn]!==undefined) return;
+  const q = QUESTIONS.find(x=>x.n===qn);
+  answers[qn] = optIdx;
+  const correct = optIdx===q.a;
+  // Style options
+  const opts = document.querySelectorAll('#opts-'+qn+' .q-opt');
+  opts.forEach(o=>o.classList.add('done'));
+  opts[optIdx].classList.add(correct?'correct':'wrong');
+  if(!correct) opts[q.a].classList.add('correct');
+  // Feedback
+  const fb=document.getElementById('fb-'+qn);
+  fb.className='q-feedback show '+(correct?'fb-correct':'fb-wrong');
+  fb.innerHTML=`<span class="fb-label">${correct?'✓ Correto':'✗ Incorreto — Gabarito: '+'ABCD'[q.a]}</span><span class="fb-body">${q.c}</span>`;
+  document.getElementById('qb-'+qn).classList.add('answered');
+  updateStats();
+  if(Object.keys(answers).length===TOTAL) finishQuiz();
+}
+
+function updateStats(){
+  const answered = Object.keys(answers).length;
+  let corr = 0;
+  QUESTIONS.forEach(q => { if (answers[q.n] === q.a) corr++; });
+  const pct = answered ? Math.round(corr / answered * 100) : 0;
+
+  document.getElementById('hdr-answered').textContent = answered;
+  document.getElementById('hdr-correct').textContent = corr;
+  document.getElementById('hdr-pct').textContent = pct + '%';
+  document.getElementById('prog-bar').style.width = (answered / TOTAL * 100) + '%';
+  document.getElementById('st-pts').textContent = corr;
+  document.getElementById('st-fill').style.width = (corr / TOTAL * 100) + '%';
+  document.getElementById('st-pct').textContent = pct + '%';
+
+  syncErrorsButton();
+}
+
+function finishQuiz(){
+  let corr=0;
+  QUESTIONS.forEach(q=>{ if(answers[q.n]===q.a) corr++; });
+  const pct=Math.round(corr/TOTAL*100);
+  const panel=document.getElementById('score-panel');
+  panel.classList.add('show');
+  const numEl=document.getElementById('sc-num');
+  numEl.textContent=corr+'/'+TOTAL;
+  numEl.className='sc-number '+(pct>=70?'sc-approved':'sc-failed');
+  document.getElementById('sc-pct').textContent=pct+'% de acerto';
+  const errs=TOTAL-corr;
+  document.getElementById('sc-breakdown').innerHTML=
+    `<div class="sc-item"><strong>${corr}</strong>Corretas</div>
+     <div class="sc-item"><strong>${errs}</strong>Incorretas</div>
+     <div class="sc-item"><strong>${pct}%</strong>Aproveitamento</div>`;
+  syncErrorsButton();
+  if(errs>0) document.getElementById('sc-review-btn').style.display='inline-block';
+  else document.getElementById('sc-review-btn').style.display='none';
+  panel.scrollIntoView({behavior:'smooth'});
+}
+
+function syncErrorsButton(){
+  const errBtn = document.getElementById('err-btn');
+  const errs = QUESTIONS.filter(q => answers[q.n] !== undefined && answers[q.n] !== q.a).length;
+  const answered = Object.keys(answers).length;
+
+  if (errs > 0) {
+    errBtn.style.display = 'block';
+    errBtn.disabled = false;
+    errBtn.textContent = errorsMode ? '↺ Mostrar todas' : '↺ Só erros';
+  } else {
+    errBtn.style.display = answered === TOTAL ? 'block' : 'none';
+    errBtn.disabled = true;
+    errBtn.textContent = '↺ Só erros';
+  }
+}
+
+function resetQuiz(){
+  answers={};
+  errorsMode=false;
+  currentFilter='all';
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelector('[data-filter="all"]').classList.add('active');
+  document.getElementById('score-panel').classList.remove('show');
+  syncErrorsButton();
+  document.getElementById('hdr-answered').textContent='0';
+  document.getElementById('hdr-correct').textContent='0';
+  document.getElementById('hdr-pct').textContent='0%';
+  document.getElementById('prog-bar').style.width='0%';
+  document.getElementById('st-pts').textContent='0';
+  document.getElementById('st-fill').style.width='0%';
+  document.getElementById('st-pct').textContent='0%';
+  renderQuiz();
+  window.scrollTo(0,0);
+}
+
+function reviewErrors(){
+  errorsMode = true;
+  document.getElementById('score-panel').classList.remove('show');
+  currentFilter = 'all';
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector('[data-filter="all"]').classList.add('active');
+  renderQuiz();
+syncErrorsButton();
+  window.scrollTo(0,0);
+}
+
+function setFilter(f, btn){
+  currentFilter = f;
+  errorsMode = false;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderQuiz();
+syncErrorsButton();
+}
+
+function toggleErrors(){
+  const errs = QUESTIONS.filter(q => answers[q.n] !== undefined && answers[q.n] !== q.a).length;
+  if (!errs) return;
+  errorsMode = !errorsMode;
+  renderQuiz();
+syncErrorsButton();
+}
+
+renderQuiz();
+syncErrorsButton();
+
+</script>
+</body>
+</html>

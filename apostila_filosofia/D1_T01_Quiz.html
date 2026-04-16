@@ -70,6 +70,8 @@ body{background:var(--bg);color:var(--text);font-family:'Lato',sans-serif;font-s
   font-size:11px;cursor:pointer;transition:all .15s;
 }
 .toggle-btn:hover{border-color:var(--blue);color:var(--blue)}
+.toggle-btn:disabled{opacity:.45;cursor:not-allowed}
+.toggle-btn:disabled:hover{border-color:var(--border2);color:var(--text2)}
 
 /* CONTENT */
 .quiz-content{padding:24px;max-width:860px;margin:0 auto}
@@ -184,6 +186,28 @@ body{background:var(--bg);color:var(--text);font-family:'Lato',sans-serif;font-s
 ::-webkit-scrollbar{width:5px}
 ::-webkit-scrollbar-track{background:var(--bg)}
 ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+
+
+@media (max-width: 720px){
+  .quiz-header,.filter-bar,.bottom-nav,.quiz-content,#sticky{padding-left:16px;padding-right:16px}
+  .qh-title{flex-basis:100%;font-size:17px}
+  .qh-stats{width:100%;gap:12px}
+  .filter-sep{display:none}
+  .toggle-btn{margin-left:0}
+  #score-panel{margin:16px;padding:28px 20px}
+  .sc-number{font-size:56px}
+  .bottom-nav{padding-bottom:84px}
+}
+
+@media (max-width: 520px){
+  .q-block{padding:18px}
+  .q-text{font-size:14px}
+  .opt-text{font-size:13px}
+  #sticky{gap:10px;flex-wrap:wrap}
+  #sticky .ss-txt{width:auto}
+  .ss-bar{order:3;flex-basis:100%}
+}
+
 </style>
 </head>
 <body>
@@ -202,12 +226,12 @@ body{background:var(--bg);color:var(--text);font-family:'Lato',sans-serif;font-s
 
 <div class="filter-bar">
   <span class="filter-label">Dificuldade:</span>
-  <button class="filter-btn active" data-filter="all" onclick="setFilter('all',this)">Todas</button>
-  <button class="filter-btn" data-filter="Fácil" onclick="setFilter('Fácil',this)">Fácil</button>
-  <button class="filter-btn" data-filter="Média" onclick="setFilter('Média',this)">Média</button>
-  <button class="filter-btn" data-filter="Difícil" onclick="setFilter('Difícil',this)">Difícil</button>
+  <button type="button" class="filter-btn active" data-filter="all" onclick="setFilter('all',this)">Todas</button>
+  <button type="button" class="filter-btn" data-filter="Fácil" onclick="setFilter('Fácil',this)">Fácil</button>
+  <button type="button" class="filter-btn" data-filter="Média" onclick="setFilter('Média',this)">Média</button>
+  <button type="button" class="filter-btn" data-filter="Difícil" onclick="setFilter('Difícil',this)">Difícil</button>
   <div class="filter-sep"></div>
-  <button class="toggle-btn" onclick="toggleErrors()" id="err-btn" style="display:none">↺ Só erros</button>
+  <button type="button" class="toggle-btn" onclick="toggleErrors()" id="err-btn" style="display:none">↺ Só erros</button>
 </div>
 
 <div class="quiz-content" id="quiz-content"></div>
@@ -217,8 +241,8 @@ body{background:var(--bg);color:var(--text);font-family:'Lato',sans-serif;font-s
   <p class="sc-pct" id="sc-pct"></p>
   <div class="sc-breakdown" id="sc-breakdown"></div>
   <div class="sc-actions">
-    <button class="sc-btn sc-btn-primary" onclick="resetQuiz()">↺ Refazer</button>
-    <button class="sc-btn sc-btn-secondary" onclick="reviewErrors()" id="sc-review-btn">Revisar erros</button>
+    <button type="button" class="sc-btn sc-btn-primary" onclick="resetQuiz()">↺ Refazer</button>
+    <button type="button" class="sc-btn sc-btn-secondary" onclick="reviewErrors()" id="sc-review-btn">Revisar erros</button>
     <a href="D1_Filosofia.html" class="sc-btn sc-btn-secondary">← Teoria</a>
   </div>
 </div>
@@ -311,19 +335,20 @@ function pick(qn, optIdx){
 }
 
 function updateStats(){
-  const answered=Object.keys(answers).length;
-  const correct=Object.values(answers).filter((v,i)=>v===QUESTIONS[i]?.a).length;
-  // Recalculate correctly
-  let corr=0;
-  QUESTIONS.forEach(q=>{ if(answers[q.n]===q.a) corr++; });
-  const pct=answered?Math.round(corr/answered*100):0;
-  document.getElementById('hdr-answered').textContent=answered;
-  document.getElementById('hdr-correct').textContent=corr;
-  document.getElementById('hdr-pct').textContent=pct+'%';
-  document.getElementById('prog-bar').style.width=(answered/TOTAL*100)+'%';
-  document.getElementById('st-pts').textContent=corr;
-  document.getElementById('st-fill').style.width=(corr/TOTAL*100)+'%';
-  document.getElementById('st-pct').textContent=pct+'%';
+  const answered = Object.keys(answers).length;
+  let corr = 0;
+  QUESTIONS.forEach(q => { if (answers[q.n] === q.a) corr++; });
+  const pct = answered ? Math.round(corr / answered * 100) : 0;
+
+  document.getElementById('hdr-answered').textContent = answered;
+  document.getElementById('hdr-correct').textContent = corr;
+  document.getElementById('hdr-pct').textContent = pct + '%';
+  document.getElementById('prog-bar').style.width = (answered / TOTAL * 100) + '%';
+  document.getElementById('st-pts').textContent = corr;
+  document.getElementById('st-fill').style.width = (corr / TOTAL * 100) + '%';
+  document.getElementById('st-pct').textContent = pct + '%';
+
+  syncErrorsButton();
 }
 
 function finishQuiz(){
@@ -341,10 +366,26 @@ function finishQuiz(){
     `<div class="sc-item"><strong>${corr}</strong>Corretas</div>
      <div class="sc-item"><strong>${errs}</strong>Incorretas</div>
      <div class="sc-item"><strong>${pct}%</strong>Aproveitamento</div>`;
-  document.getElementById('err-btn').style.display=errs>0?'block':'none';
+  syncErrorsButton();
   if(errs>0) document.getElementById('sc-review-btn').style.display='inline-block';
   else document.getElementById('sc-review-btn').style.display='none';
   panel.scrollIntoView({behavior:'smooth'});
+}
+
+function syncErrorsButton(){
+  const errBtn = document.getElementById('err-btn');
+  const errs = QUESTIONS.filter(q => answers[q.n] !== undefined && answers[q.n] !== q.a).length;
+  const answered = Object.keys(answers).length;
+
+  if (errs > 0) {
+    errBtn.style.display = 'block';
+    errBtn.disabled = false;
+    errBtn.textContent = errorsMode ? '↺ Mostrar todas' : '↺ Só erros';
+  } else {
+    errBtn.style.display = answered === TOTAL ? 'block' : 'none';
+    errBtn.disabled = true;
+    errBtn.textContent = '↺ Só erros';
+  }
 }
 
 function resetQuiz(){
@@ -354,7 +395,7 @@ function resetQuiz(){
   document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
   document.querySelector('[data-filter="all"]').classList.add('active');
   document.getElementById('score-panel').classList.remove('show');
-  document.getElementById('err-btn').style.display='none';
+  syncErrorsButton();
   document.getElementById('hdr-answered').textContent='0';
   document.getElementById('hdr-correct').textContent='0';
   document.getElementById('hdr-pct').textContent='0%';
@@ -367,29 +408,35 @@ function resetQuiz(){
 }
 
 function reviewErrors(){
-  errorsMode=true;
+  errorsMode = true;
   document.getElementById('score-panel').classList.remove('show');
-  currentFilter='all';
-  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  currentFilter = 'all';
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
   document.querySelector('[data-filter="all"]').classList.add('active');
   renderQuiz();
+syncErrorsButton();
   window.scrollTo(0,0);
 }
 
 function setFilter(f, btn){
-  currentFilter=f;
-  errorsMode=false;
-  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  currentFilter = f;
+  errorsMode = false;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   renderQuiz();
+syncErrorsButton();
 }
 
 function toggleErrors(){
-  errorsMode=!errorsMode;
+  const errs = QUESTIONS.filter(q => answers[q.n] !== undefined && answers[q.n] !== q.a).length;
+  if (!errs) return;
+  errorsMode = !errorsMode;
   renderQuiz();
+syncErrorsButton();
 }
 
 renderQuiz();
+syncErrorsButton();
 </script>
 </body>
 </html>

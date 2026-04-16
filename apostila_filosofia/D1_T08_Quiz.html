@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>T08 Quiz — A Filosofia das Ciências no Século XX | Filosofia SJR 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b0d10;--bg2:#111318;--bg3:#181c22;--bg4:#1e232b;
+  --border:#252b35;--border2:#2d3443;
+  --text:#cdd5e0;--text2:#8a96a8;--text3:#4d5a6e;
+  --gold:#c8a44a;--gold2:#e2c070;--gold3:#f0d490;
+  --blue:#3d8fd1;--green:#3d9e72;--green2:#5ec090;
+  --red:#c05050;--red2:#e07070;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:'Lato',sans-serif;font-size:15px;line-height:1.7;min-height:100vh}
+.quiz-header{background:var(--bg2);border-bottom:1px solid var(--border);padding:16px 24px;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:50;flex-wrap:wrap;}
+.qh-back{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3);text-decoration:none;transition:color .2s;white-space:nowrap;}
+.qh-back:hover{color:var(--gold)}
+.qh-title{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:700;color:var(--gold2);flex:1;}
+.qh-badge{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--gold);background:rgba(200,164,74,.12);padding:3px 10px;border-radius:4px;white-space:nowrap;}
+.qh-stats{display:flex;gap:16px;flex-wrap:wrap;}
+.qh-stat{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3);white-space:nowrap;}
+.qh-stat strong{color:var(--text);font-size:14px}
+.progress-bar{height:3px;background:var(--border);overflow:hidden}
+.progress-fill{height:100%;background:var(--gold);transition:width .4s ease}
+.filter-bar{padding:14px 24px;background:var(--bg2);border-bottom:1px solid var(--border);display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+.filter-label{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3);margin-right:4px}
+.filter-btn{padding:5px 14px;border-radius:4px;border:1px solid var(--border);background:var(--bg3);color:var(--text2);font-family:'JetBrains Mono',monospace;font-size:11px;cursor:pointer;transition:all .15s;}
+.filter-btn:hover{border-color:var(--gold);color:var(--gold)}
+.filter-btn.active{background:rgba(200,164,74,.15);border-color:var(--gold);color:var(--gold)}
+.filter-sep{width:1px;height:20px;background:var(--border);margin:0 4px}
+.toggle-btn{margin-left:auto;padding:5px 14px;border-radius:4px;border:1px solid var(--border2);background:var(--bg3);color:var(--text2);font-family:'JetBrains Mono',monospace;font-size:11px;cursor:pointer;transition:all .15s;}
+.toggle-btn:hover{border-color:var(--blue);color:var(--blue)}
+.toggle-btn:disabled{opacity:.45;cursor:not-allowed}
+.toggle-btn:disabled:hover{border-color:var(--border2);color:var(--text2)}
+.quiz-content{padding:24px;max-width:860px;margin:0 auto}
+.q-block{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:24px;margin-bottom:18px;transition:border-color .2s;}
+.q-block.answered{border-color:var(--border2)}
+.q-meta{display:flex;gap:8px;align-items:center;margin-bottom:12px}
+.q-num{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3)}
+.q-diff{font-family:'JetBrains Mono',monospace;font-size:10px;padding:2px 7px;border-radius:3px;}
+.diff-easy{background:rgba(61,158,114,.15);color:var(--green2)}
+.diff-med{background:rgba(61,143,209,.12);color:var(--blue)}
+.diff-hard{background:rgba(192,80,80,.12);color:var(--red2)}
+.q-text{font-size:14.5px;line-height:1.75;margin-bottom:16px;color:var(--text)}
+.q-opts{display:flex;flex-direction:column;gap:8px}
+.q-opt{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border:1px solid var(--border);border-radius:6px;cursor:pointer;background:var(--bg3);transition:all .15s;}
+.q-opt:hover:not(.done){border-color:var(--gold);background:rgba(200,164,74,.05)}
+.q-opt.done{cursor:default}
+.q-opt.correct{border-color:var(--green)!important;background:rgba(61,158,114,.12)!important}
+.q-opt.wrong{border-color:var(--red)!important;background:rgba(192,80,80,.08)!important}
+.opt-letter{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500;color:var(--gold);min-width:18px;margin-top:2px;}
+.opt-text{font-size:13.5px;color:var(--text);line-height:1.6}
+.q-feedback{margin-top:12px;padding:12px 16px;border-radius:6px;font-size:13px;line-height:1.7;display:none;}
+.q-feedback.show{display:block;animation:fadeIn .2s ease}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.fb-correct{background:rgba(61,158,114,.1);border:1px solid rgba(61,158,114,.3);color:var(--green2)}
+.fb-wrong{background:rgba(192,80,80,.08);border:1px solid rgba(192,80,80,.25);color:var(--red2)}
+.fb-label{font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.8px;display:block;margin-bottom:5px;}
+.fb-correct .fb-label{color:var(--green)}
+.fb-wrong .fb-label{color:var(--red)}
+.fb-body{color:var(--text);font-style:italic}
+#score-panel{display:none;background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:40px;text-align:center;margin:24px;}
+#score-panel.show{display:block;animation:fadeIn .4s ease}
+.sc-title{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;}
+.sc-number{font-family:'Cormorant Garamond',serif;font-size:72px;font-weight:700;line-height:1;margin-bottom:8px;}
+.sc-approved{color:var(--green2)}
+.sc-failed{color:var(--red2)}
+.sc-pct{font-size:20px;color:var(--text2);margin-bottom:24px}
+.sc-breakdown{display:flex;gap:24px;justify-content:center;flex-wrap:wrap;margin:20px 0}
+.sc-item{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text3)}
+.sc-item strong{color:var(--text);display:block;font-size:18px}
+.sc-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:24px}
+.sc-btn{padding:11px 24px;border-radius:6px;font-family:'JetBrains Mono',monospace;font-size:12px;cursor:pointer;transition:all .2s;border:none;}
+.sc-btn-primary{background:var(--gold);color:var(--bg)}
+.sc-btn-primary:hover{opacity:.85}
+.sc-btn-secondary{background:var(--bg3);border:1px solid var(--border);color:var(--text2)}
+.sc-btn-secondary:hover{border-color:var(--gold);color:var(--gold)}
+.bottom-nav{padding:20px 24px;border-top:1px solid var(--border);display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+.nav-btn{padding:9px 18px;border-radius:6px;background:var(--bg3);border:1px solid var(--border);color:var(--text2);font-family:'JetBrains Mono',monospace;font-size:11px;cursor:pointer;transition:all .2s;text-decoration:none;display:inline-block;}
+.nav-btn:hover{border-color:var(--gold);color:var(--gold)}
+.nav-theory{margin-left:auto}
+#sticky{position:fixed;bottom:0;left:0;right:0;background:rgba(17,19,24,.95);border-top:1px solid var(--border);backdrop-filter:blur(8px);padding:10px 24px;display:flex;align-items:center;gap:16px;z-index:50;}
+#sticky .ss-txt{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3)}
+#sticky .ss-txt strong{color:var(--gold)}
+.ss-bar{flex:1;height:3px;background:var(--border);border-radius:2px;overflow:hidden}
+.ss-fill{height:100%;background:var(--gold);transition:width .3s}
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+@media (max-width: 720px){
+  .quiz-header,.filter-bar,.bottom-nav,.quiz-content,#sticky{padding-left:16px;padding-right:16px}
+  .qh-title{flex-basis:100%;font-size:17px}
+  .qh-stats{width:100%;gap:12px}
+  .filter-sep{display:none}
+  .toggle-btn{margin-left:0}
+  #score-panel{margin:16px;padding:28px 20px}
+  .sc-number{font-size:56px}
+  .bottom-nav{padding-bottom:84px}
+}
+@media (max-width: 520px){
+  .q-block{padding:18px}
+  .q-text{font-size:14px}
+  .opt-text{font-size:13px}
+  #sticky{gap:10px;flex-wrap:wrap}
+  #sticky .ss-txt{width:auto}
+  .ss-bar{order:3;flex-basis:100%}
+}
+</style>
+</head>
+<body>
+<header class="quiz-header">
+  <a href="D1_Filosofia.html" class="qh-back">← Teoria D1</a>
+  <div class="qh-title">T08 — A Filosofia das Ciências no Século XX</div>
+  <span class="qh-badge">50 questões</span>
+  <div class="qh-stats">
+    <span class="qh-stat"><strong id="hdr-answered">0</strong> respondidas</span>
+    <span class="qh-stat"><strong id="hdr-correct">0</strong> corretas</span>
+    <span class="qh-stat"><strong id="hdr-pct">0%</strong></span>
+  </div>
+</header>
+<div class="progress-bar"><div class="progress-fill" id="prog-bar" style="width:0%"></div></div>
+<div class="filter-bar">
+  <span class="filter-label">Dificuldade:</span>
+  <button type="button" class="filter-btn active" data-filter="all" onclick="setFilter('all',this)">Todas</button>
+  <button type="button" class="filter-btn" data-filter="Fácil" onclick="setFilter('Fácil',this)">Fácil</button>
+  <button type="button" class="filter-btn" data-filter="Média" onclick="setFilter('Média',this)">Média</button>
+  <button type="button" class="filter-btn" data-filter="Difícil" onclick="setFilter('Difícil',this)">Difícil</button>
+  <div class="filter-sep"></div>
+  <button type="button" class="toggle-btn" onclick="toggleErrors()" id="err-btn" style="display:none">↺ Só erros</button>
+</div>
+<div class="quiz-content" id="quiz-content"></div>
+<div id="score-panel">
+  <p class="sc-title">Resultado Final — T08</p>
+  <div class="sc-number" id="sc-num"></div>
+  <p class="sc-pct" id="sc-pct"></p>
+  <div class="sc-breakdown" id="sc-breakdown"></div>
+  <div class="sc-actions">
+    <button type="button" class="sc-btn sc-btn-primary" onclick="resetQuiz()">↺ Refazer</button>
+    <button type="button" class="sc-btn sc-btn-secondary" onclick="reviewErrors()" id="sc-review-btn">Revisar erros</button>
+    <a href="D1_Filosofia.html" class="sc-btn sc-btn-secondary">← Teoria</a>
+  </div>
+</div>
+<div class="bottom-nav">
+  <a href="D1_T07_Quiz.html" class="nav-btn">← T07</a>
+  <a href="D1_Filosofia.html" class="nav-btn nav-theory">📖 Conteúdo T08</a>
+  <a href="D1_T09_Quiz.html" class="nav-btn">T09 →</a>
+</div>
+<div id="sticky">
+  <span class="ss-txt">Acertos: <strong id="st-pts">0</strong> / 50</span>
+  <div class="ss-bar"><div class="ss-fill" id="st-fill" style="width:0%"></div></div>
+  <span class="ss-txt"><strong id="st-pct">0%</strong></span>
+</div>
+<script>
+const QUESTIONS = [{n:1,t:"O **Princípio da Verificabilidade**, formulado pelo Círculo de Viena, afirma que uma afirmação tem sentido cognitivo apenas se é:",o:["Formulada por um especialista reconhecido pela comunidade científica","Analiticamente verdadeira ou empiricamente verificável","Aceita pela maioria dos cientistas de uma época","Consistente com o paradigma científico dominante"],a:1,c:"O Princípio da Verificabilidade é o critério do Positivismo Lógico: afirmações significativas (cognitivamente) são ou analíticas (verdadeiras por definição — lógica e matemática) ou sinteticamente verificáveis pela experiência. Afirmações metafísicas, éticas e teológicas — que não satisfazem nenhum dos critérios — são \"sem sentido cognitivo\" (*sinnlos*), não falsas, apenas vazias de conteúdo informativo.",d:"Fácil"},{n:2,t:"Para Karl Popper, o critério que distingue ciência de pseudociência é a:",o:["Verificabilidade — teorias científicas podem ser confirmadas pela experiência","Falsificabilidade — teorias científicas podem, em princípio, ser refutadas por observações","Aceitação pela comunidade científica — ciência é o que os cientistas reconhecem como tal","Utilidade prática — ciência é o que produz resultados tecnológicos aplicáveis"],a:1,c:"O critério popperiano de demarcação é a falsificabilidade: uma teoria é científica se existe pelo menos uma observação ou experimento possível que poderia refutá-la. Isso resolve o problema da indução (não precisamos verificar infinitos casos) e distingue a física de Einstein (falsificável — fez previsões específicas que poderiam ter falhado) da psicanálise freudiana (infalsificável — qualquer resultado é compatível com ela).",d:"Fácil"},{n:3,t:"Segundo Popper, a **psicanálise freudiana** é um exemplo de pseudociência porque:",o:["Suas terapias não produzem resultados práticos para os pacientes","Não é aceita pela maioria dos psicólogos acadêmicos contemporâneos","É infalsificável — qualquer comportamento humano pode ser explicado por ela sem que nenhuma observação possa refutá-la","Foi desenvolvida por um médico, não por um cientista treinado em física"],a:2,c:"Popper observou que qualquer comportamento humano — generosidade ou avareza, coragem ou covardia, amor ou ódio — pode ser explicado pela psicanálise freudiana. A teoria é tão flexível que nada pode refutá-la. Para Popper, isso não é uma virtude — é uma fraqueza fatal: se nada pode refutar uma teoria, ela não diz nada de informativo sobre o mundo. Ser infalsificável é ser pseudocientífico.",d:"Fácil"},{n:4,t:"O conceito de **paradigma**, central na filosofia de Thomas Kuhn, refere-se a:",o:["Um experimento crucial que define o rumo de uma ciência","O conjunto de compromissos compartilhados por uma comunidade científica — problemas legítimos, métodos aceitos e padrões de solução","Uma teoria científica que foi universalmente verificada","O conjunto de dados empíricos disponíveis para uma geração de cientistas"],a:1,c:"O paradigma kuhniano é mais do que uma teoria — é o conjunto de pressupostos, valores, exemplares (soluções-modelo) e compromissos que uma comunidade científica compartilha e que define o que conta como problema legítimo, método aceitável e solução satisfatória. É a \"lente\" através da qual os cientistas veem e investigam o mundo.",d:"Fácil"},{n:5,t:"A fase de **ciência normal**, no modelo de Kuhn, é caracterizada por:",o:["Questionamento radical dos pressupostos do paradigma dominante","Trabalho rotineiro de resolução de quebra-cabeças dentro do paradigma estabelecido","Revolução e substituição do paradigma antigo por um novo","Competição entre escolas científicas sem paradigma estabelecido"],a:1,c:"Na ciência normal, os cientistas trabalham *dentro* do paradigma — não questionam seus pressupostos fundamentais, mas resolvem os problemas (*puzzles* = quebra-cabeças) que o paradigma define como solucionáveis. É como jogar um jogo pelas regras estabelecidas. A revolução científica ocorre quando as regras do jogo precisam mudar.",d:"Fácil"},{n:6,t:"O conceito de **incomensurabilidade** em Kuhn significa que:",o:["Paradigmas diferentes não podem ser medidos em termos de progresso científico absoluto — são incomparáveis por usarem conceitos e critérios diferentes","As teorias científicas não podem ser medidas matematicamente","Cientistas de diferentes países não conseguem se comunicar sobre seus resultados","As leis científicas são inválidas fora do contexto experimental em que foram criadas"],a:0,c:"A incomensurabilidade é o aspecto mais polêmico de Kuhn: paradigmas diferentes não compartilham os mesmos conceitos, problemas e critérios de avaliação. A \"massa\" de Newton e a \"massa\" de Einstein não são o mesmo conceito; os problemas que Ptolomeu considerava centrais não são os mesmos que Copérnico priorizava. Logo, não há uma posição neutra de onde comparar objetivamente os dois paradigmas.",d:"Fácil"},{n:7,t:"A frase **\"Anything goes\"** (\"Tudo vale\"), de Paul Feyerabend, expressa a tese de que:",o:["A ciência é superior a todas as outras formas de conhecimento humano","Não existe um método científico único e universal — o pluralismo metodológico é necessário para o progresso científico","Qualquer crença é igualmente válida — não há diferença entre ciência e mito","Os cientistas podem usar qualquer meio, incluindo fraude, para produzir resultados"],a:1,c:"\"Anything goes\" não é uma afirmação de que tudo é igualmente verdadeiro (C — isso seria relativismo radical que Feyerabend não defendia). É uma conclusão metodológica: a história da ciência mostra que nenhum método único explica o progresso científico. Galileu violou as regras do método científico proposto pelos filósofos — e avançou a ciência. Logo, impor um método único prejudica o progresso.",d:"Fácil"},{n:8,t:"O **Círculo de Viena** foi um grupo de filósofos e cientistas que desenvolveu o Positivismo Lógico. Um de seus membros mais importantes foi:",o:["Karl Popper","Thomas Kuhn","Rudolf Carnap","Paul Feyerabend"],a:2,c:"Rudolf Carnap (1891–1970) foi um dos membros centrais do Círculo de Viena. Karl Popper (A) foi um crítico do Círculo de Viena — embora tenha sido influenciado por ele e vivido em Viena, nunca foi membro. Kuhn (B) e Feyerabend (D) são filósofos posteriores — críticos do projeto positivista.",d:"Fácil"},{n:9,t:"Para Popper, uma teoria científica nunca pode ser **provada** definitivamente verdadeira porque:",o:["Os cientistas são falíveis e cometem erros de observação","Toda teoria universal implica infinitas previsões — e nenhuma quantidade finita de confirmações pode prová-la para todos os casos possíveis","A realidade muda constantemente, tornando qualquer teoria obsoleta","Os instrumentos de medição são sempre imprecisos"],a:1,c:"O problema da indução (herdado de Hume): uma lei universal (\"Todos os corvos são pretos\") implica que *todos* os corvos — passados, presentes e futuros — são pretos. Para prová-la definitivamente, precisaríamos observar todos os corvos possíveis — infinitos. Isso é impossível. Por isso, para Popper, as teorias científicas são sempre *corroboradas* (sobreviveram às tentativas de refutação) — nunca *provadas*.",d:"Fácil"},{n:10,t:"O conceito de **programa de pesquisa** de Lakatos inclui um **núcleo firme** (*hard core*) que é:",o:["O conjunto de hipóteses centrais da teoria, protegido por convenção — os cientistas não o abandonam diante de anomalias","O conjunto de dados experimentais que confirmam definitivamente a teoria","A parte mais recente e inovadora de um programa científico","O grupo de cientistas mais influentes que controlam o programa"],a:0,c:"O núcleo firme de Lakatos é o análogo ao paradigma de Kuhn — mas mais preciso: é o conjunto de hipóteses centrais que os cientistas, por convenção metodológica, decidem não abandonar diante de anomalias. Em vez de abandonar o núcleo, modificam as hipóteses auxiliares do cinturão protetor. O programa só é abandonado quando o cinturão protetor esgota sua capacidade de gerar novas previsões (programa degenerativo).",d:"Fácil"},{n:11,t:"A **revolução científica**, no modelo de Kuhn, ocorre quando:",o:["Um novo equipamento tecnológico permite observações mais precisas","O governo aumenta o financiamento para a pesquisa científica básica","Anomalias acumuladas provocam uma crise e um novo paradigma substitui o antigo","Os cientistas mais velhos morrem e os jovens trazem novas ideias"],a:2,c:"A revolução científica kuhniana não é simplesmente uma descoberta nova — é uma mudança de paradigma: o conjunto de pressupostos, problemas e métodos que orientam uma comunidade científica é substituído por outro. O gatilho é o acúmulo de anomalias que o paradigma vigente não consegue acomodar — gerando uma crise que abre espaço para a emergência de um novo paradigma.",d:"Fácil"},{n:12,t:"O **realismo científico** afirma que:",o:["As teorias científicas são apenas instrumentos para fazer previsões — não descrevem a realidade","As teorias científicas descrevem aproximadamente a realidade, inclusive suas entidades não observáveis (elétrons, quarks)","A ciência produz verdades absolutas e definitivas sobre o mundo","Apenas as observações diretas têm valor científico — entidades não observáveis são ficções"],a:1,c:"O realismo científico afirma que teorias bem-sucedidas descrevem (aproximadamente) a realidade — inclusive entidades não diretamente observáveis como elétrons, genes e buracos negros. O argumento central: seria um \"milagre\" inexplicável que a física quântica fizesse previsões tão precisas se os elétrons não existissem de alguma forma. A alternativa A é o instrumentalismo (ou antirrealismo).",d:"Fácil"},{n:13,t:"O **problema da subdeterminação** das teorias pelos dados afirma que:",o:["Sempre existe uma única teoria correta para um conjunto de dados","Múltiplas teorias incompatíveis entre si podem explicar igualmente bem o mesmo conjunto de dados","Os dados empíricos são sempre suficientes para determinar qual teoria é verdadeira","As teorias determinam quais dados são relevantes — portanto determinam a experiência"],a:1,c:"A subdeterminação (*underdetermination*) é um problema clássico: para qualquer conjunto finito de dados, existem infinitas teorias que os explicam igualmente bem. Os dados não \"escolhem\" uma teoria — há sempre múltiplas teorias empíricamente equivalentes. Isso significa que a escolha entre teorias envolve critérios não-empíricos (simplicidade, elegância, coerência com outras teorias) — o que tem implicações para o debate entre realismo e instrumentalismo.",d:"Fácil"},{n:14,t:"A **metáfora do barco de Neurath** descreve a ciência como:",o:["Uma embarcação que navega sempre em águas calmas graças ao método científico","Um barco que deve ser reconstruído enquanto navega — nunca há uma plataforma firme de onde partir do zero","Uma frota de navios independentes (ciências separadas) sem comunicação entre si","Um barco construído pelos filósofos que os cientistas apenas tripulam"],a:1,c:"A metáfora de Neurath (membro do Círculo de Viena) é uma das mais belas da filosofia da ciência: não existe um fundamento absolutamente seguro a partir do qual reconstruir o conhecimento do zero (como Descartes queria). A ciência é como um barco que só pode ser reformado enquanto navega — substituímos uma prancha por vez, enquanto o restante nos sustenta. É uma imagem do falibilismo e do progresso incremental.",d:"Fácil"},{n:15,t:"A **Escola de Edimburgo** e o Programa Forte da Sociologia do Conhecimento Científico, associados a **David Bloor**, argumentam que:",o:["O conhecimento científico é produzido exclusivamente pela lógica e pela observação, sem influências sociais","Tanto as crenças científicas consideradas verdadeiras quanto as falsas devem ser explicadas pelos mesmos tipos de causas sociais, culturais e psicológicas","A ciência é superior a qualquer outra forma de conhecimento por ser objetiva e neutra","Os fatores sociais explicam apenas as crenças falsas — as crenças verdadeiras são explicadas pela razão"],a:1,c:"O \"Programa Forte\" de Bloor tem quatro princípios: causalidade (explica as crenças pelas suas causas); imparcialidade (explica tanto as crenças verdadeiras quanto as falsas); simetria (usa os mesmos tipos de explicação para ambas); reflexividade (aplica-se a si mesmo). A simetria é o ponto mais radical: não há razão para explicar as crenças falsas pelos fatores sociais e as verdadeiras pela \"razão pura\" — ambas devem ser explicadas pelos mesmos tipos de causas.",d:"Fácil"},{n:16,t:"O **problema da auto-refutação** do Princípio da Verificabilidade consiste em que:",o:["O princípio contradiz as descobertas da física quântica sobre a observação","O próprio Princípio da Verificabilidade não é nem analítico nem empiricamente verificável — logo, pela sua própria regra, seria sem sentido cognitivo","O princípio não foi verificado por nenhum experimento científico controlado","Os membros do Círculo de Viena não chegaram a acordo sobre sua formulação precisa"],a:1,c:"Esta é a crítica mais devastadora ao Positivismo Lógico — e foi levantada quase imediatamente. O Princípio da Verificabilidade (\"uma afirmação é significativa apenas se analítica ou verificável\") é ele mesmo significativo? Não é analítico (não é verdadeiro por definição). Não é empiricamente verificável (como você verificaria que *toda* afirmação significativa deve ser verificável?). Logo, pela sua própria regra, seria sem sentido — a regra se auto-refuta.",d:"Média"},{n:17,t:"A distinção popperiana entre **corroboração** e **verificação** é que:",o:["Corroboração é provisória — uma teoria sobreviveu aos testes, mas pode ser refutada amanhã; verificação seria prova definitiva — que Popper diz ser impossível","Corroboração é mais fraca que verificação — teorias corroboradas são menos confiáveis","Verificação é o objetivo da ciência; corroboração é apenas um estágio intermediário","São sinônimos — Popper usa os dois termos de forma intercambiável"],a:0,c:"Para Popper, verificação (prova definitiva) é logicamente impossível — nenhuma quantidade de confirmações prova universalmente uma teoria. Corroboração é o que podemos fazer: uma teoria é corroborada se sobreviveu a sérias tentativas de refutação. Quanto mais ousada a previsão e mais rigoroso o teste que sobreviveu, maior a corroboração. Mas a teoria permanece sempre *provisoriamente* aceita — pode ser refutada por um teste futuro.",d:"Média"},{n:18,t:"Kuhn afirma que os **cientistas da ciência normal** resistem a anomalias e não abandonam o paradigma diante delas porque:",o:["São conservadores por natureza e resistem a qualquer mudança","As anomalias são esperadas em qualquer paradigma — o problema está no experimentador, não no paradigma, até que provado ao contrário","O financiamento científico incentiva a confirmação do paradigma, não sua refutação","São incapazes de imaginar alternativas ao paradigma em que foram treinados"],a:1,c:"Para Kuhn, a resistência às anomalias não é irracionalidade — é a atitude metodologicamente saudável durante a ciência normal. Quando um resultado não se encaixa no paradigma, a resposta normal (e correta na maioria dos casos) é suspeitar do experimento, do equipamento ou da interpretação — não do paradigma. Afinal, o paradigma tem um historial de sucesso; o experimento individual pode estar errado. Só quando as anomalias se acumulam e resistem a todas as tentativas de acomod",d:"Média"},{n:19,t:"A crítica de Lakatos a Popper — que o falsificacionismo é **\"ingênuo\"** (*naive falsificationism*) — baseia-se em que:",o:["Popper nunca entendeu realmente como a ciência funciona","A história da ciência mostra que os cientistas não abandonam teorias a cada refutação — e isso é racional, não irracional","O falsificacionismo é logicamente incoerente — a refutação não é mais certa que a verificação","Popper ignorou o papel das matemáticas na ciência"],a:1,c:"Lakatos identificou o problema central do falsificacionismo popperiano: ele prescreve que uma teoria deve ser abandonada diante de uma refutação. Mas a história mostra que os melhores cientistas *não* fazem isso — e com razão. Newton ignorou anomalias durante décadas (a órbita da Lua não batia com as previsões iniciais); Einstein ignorou o experimento de Kaufmann que \"refutava\" a relatividade especial. Lakatos defende que isso foi racional — os cientistas sabiam que o program",d:"Média"},{n:20,t:"A contribuição de **Galileu** na análise de Feyerabend demonstra que:",o:["O método científico rigoroso levou Galileu a suas descobertas","Galileu seguiu o falsificacionismo de Popper — e por isso teve sucesso","Galileu violou sistematicamente as regras metodológicas propostas pelos filósofos — e isso foi necessário para seu sucesso","O método indutivo de Bacon foi essencial para as descobertas de Galileu"],a:2,c:"Feyerabend analisa detalhadamente o caso de Galileu: ele ignorou anomalias (a física aristotélica ainda explicava melhor a queda dos corpos na época), usou propaganda retórica para convencer (o *Diálogo* é um texto persuasivo, não um relatório científico), apelou para o telescópio (instrumento cuja confiabilidade não estava filosoficamente estabelecida), e violou o princípio da parsimônia (o sistema de Copérnico era mais complicado que o ptolemaico na época). Se Galileu tives",d:"Média"},{n:21,t:"O **argumento do \"não milagre\"** em favor do realismo científico afirma que:",o:["A ciência é um milagre cultural inexplicável pela razão","Seria um milagre inexplicável que as teorias científicas fizessem previsões tão precisas sobre fenômenos não observados se não descrevessem aproximadamente a realidade","Deus garantiu o sucesso da ciência — sem esse milagre, a ciência não funcionaria","As coincidências entre previsões teóricas e resultados experimentais são milagrosas"],a:1,c:"O argumento do \"não milagre\" (*no miracles argument*) é a defesa mais poderosa do realismo científico: a física quântica prevê com precisão de 1 parte em 10 bilhões; a relatividade geral prevê a curvatura da luz com exatidão impressionante. Se os elétrons, quarks e campos gravitacionais não existissem de alguma forma, seria um milagre inexplicável que as teorias sobre eles funcionassem tão bem. O sucesso preditivo da ciência é melhor explicado pelo realismo (as teorias aproxi",d:"Média"},{n:22,t:"A **meta-indução pessimista** (*pessimistic meta-induction*) — argumento antirrealista clássico — afirma que:",o:["A ciência progride muito lentamente — o pessimismo sobre o progresso é justificado","A história da ciência é um cemitério de teorias bem-sucedidas mas depois refutadas — logo, nossas teorias atuais, por mais bem-sucedidas que sejam, provavelmente também são falsas","Os cientistas são em geral pessimistas sobre o futuro de suas teorias","A indução é um método pessimista — sempre produz conclusões provisórias e insatisfatórias"],a:1,c:"O argumento antirrealista: o éter foi a teoria dominante sobre a propagação da luz — e foi refutado. O flogisto explicou a combustão por mais de um século — e foi refutado. A mecânica newtoniana foi a maior conquista científica da humanidade — e foi parcialmente refutada pela relatividade e pela quântica. Indutivamente: nossas melhores teorias atuais (mecânica quântica, relatividade geral) provavelmente também serão refutadas. Logo, não devemos ser realistas sobre suas entida",d:"Média"},{n:23,t:"A noção de **hipóteses auxiliares** no modelo de Lakatos explica por que cientistas racionais não abandonam sua teoria central diante de anomalias, mas:",o:["Modificam as hipóteses periféricas (cinturão protetor) para acomodar a anomalia sem comprometer o núcleo","Ignoram completamente as anomalias até que se tornem impossíveis de ignorar","Substituem imediatamente a teoria central por uma nova","Apelam à autoridade dos paradigmas históricos para justificar a anomalia"],a:0,c:"O cinturão protetor (*protective belt*) de Lakatos é o conjunto de hipóteses auxiliares que podem ser modificadas para acomodar anomalias sem comprometer o núcleo firme. Quando os planetas não se movem exatamente como previsto pela mecânica newtoniana, os astrônomos não abandonam Newton — postulam a existência de um planeta desconhecido perturbando a órbita. Isso protege o núcleo. O truque é que essas modificações devem ser *progressivas* (gerar novas previsões confirmadas) —",d:"Média"},{n:24,t:"A posição de Kuhn de que a **escolha entre paradigmas** envolve fatores não puramente racionais — persuasão, conversão, valores estéticos — foi criticada por **Popper** como:",o:["Correta — Popper concordou que a ciência não é puramente racional","Relativista — se a escolha entre paradigmas não é racional, a ciência não é objetiva","Conservadora — Kuhn seria um defensor do status quo paradigmático","Excessivamente otimista sobre a racionalidade dos cientistas"],a:1,c:"Popper criticou duramente Kuhn: se a escolha entre paradigmas envolve conversão e persuasão — não apenas razão e evidência — então a ciência não é objetiva e racional. A incomensurabilidade implica que não há critério racional para comparar paradigmas — o que, para Popper, é uma forma de irracionalismo perigoso. Kuhn respondeu que havia critérios de avaliação (precisão, consistência, abrangência, simplicidade, fecundidade) — mas que cientistas podem pesá-los diferentemente, o",d:"Média"},{n:25,t:"O **falsificacionismo** de Popper tem implicações para a **democracia** porque:",o:["Popper defendia que apenas cientistas deveriam governar — como Platão propôs","A \"sociedade aberta\" funciona como a ciência: permite crítica, revisão e correção de erros — em oposição às sociedades \"fechadas\" (totalitarismos) que, como as pseudociências, são imunes à crítica","Popper acreditava que a democracia deveria ser falsificada e substituída por um sistema melhor","A política deve seguir o método científico — cada lei deve ser um experimento falsificável"],a:1,c:"Em *A Sociedade Aberta e seus Inimigos* (1945), Popper aplica o falsificacionismo à teoria política: uma sociedade democrática liberal é \"aberta\" — permite a crítica das políticas, sua revisão e correção de erros sem derramamento de sangue (eleições). Sociedades totalitárias (nazismo, stalinismo) são \"fechadas\" — como as pseudociências, são imunes à crítica. Popper via o totalitarismo como a versão política da pseudociência.",d:"Média"},{n:26,t:"A **física de Einstein** é, para Popper, o exemplo perfeito de ciência genuína porque:",o:["Foi aceita imediatamente por toda a comunidade científica após sua publicação","Einstein fez previsões precisas e arriscadas (curvatura da luz pelo Sol, desvio do periélio de Mercúrio) que poderiam ter refutado a teoria — e foram confirmadas","A relatividade não tem anomalias conhecidas — é uma teoria perfeita","Einstein seguiu rigorosamente o método indutivo de Bacon para chegar às suas conclusões"],a:1,c:"A relatividade geral fez previsões precisas e *ousadas*: a luz proveniente de estrelas distantes deveria ser desviada pelo campo gravitacional do Sol em 1,75 segundos de arco. Se a observação da expedição de Eddington (1919) tivesse dado um resultado diferente, a relatividade seria refutada. A ousadia da previsão e a precisão do resultado esperado tornam a relatividade general o exemplo mais convincente de teoria científica genuína, segundo Popper.",d:"Média"},{n:27,t:"O **instrumentalismo** científico — posição que afirma que as teorias são apenas instrumentos preditivos, não descrições da realidade — foi defendido por:",o:["Popper — que considerava as teorias como descrições provisórias da realidade","Alguns neopositivistas e filósofos como Bas van Fraassen (antirrealismo construtivo)","Kuhn — que acreditava que os paradigmas descrevem a realidade","Feyerabend — que via as teorias como ferramentas políticas de poder"],a:1,c:"O instrumentalismo é a posição antirrealista de que as teorias científicas são apenas ferramentas para organizar a experiência e fazer previsões — não revelam a estrutura real do mundo. Bas van Fraassen desenvolveu o \"empirismo construtivo\": só devemos acreditar no que as teorias dizem sobre o *observável* — não sobre entidades não-observáveis como elétrons ou quarks. Popper (A) era realista — acreditava que as teorias aproximam-se da verdade (*verossimilitude*).",d:"Média"},{n:28,t:"A diferença entre um programa de pesquisa **progressivo** e um **degenerativo**, segundo Lakatos, é que:",o:["O progressivo tem mais cientistas; o degenerativo tem menos","O progressivo gera novas previsões confirmadas; o degenerativo apenas acomoda resultados já conhecidos com hipóteses ad hoc","O progressivo usa matemática avançada; o degenerativo usa métodos qualitativos","O progressivo foi iniciado por gênios; o degenerativo por cientistas mediocres"],a:1,c:"Um programa progressivo é aquele em que as modificações do cinturão protetor levam a *novas* previsões testáveis que são confirmadas — o programa cresce em poder explicativo. Um programa degenerativo modifica o cinturão protetor apenas para acomodar resultados *já conhecidos* — é \"salvo\" retroativamente, não avança. A física newtoniana era progressiva (previu Netuno); a teoria do flogisto tornou-se degenerativa (precisou de ad hocs crescentes para acomodar a oxidação dos meta",d:"Média"},{n:29,t:"A crítica de Feyerabend à **ideia de que a ciência é epistemicamente superior** a outros sistemas de conhecimento baseia-se em:",o:["A ciência produz menos resultados práticos do que a medicina tradicional","Numa sociedade democrática e plural, nenhum sistema de conhecimento pode reivindicar autoridade epistêmica exclusiva — incluindo a ciência ocidental","A ciência é controlada pelas corporações e portanto não é confiável","Os cientistas são pessoas comuns sujeitas às mesmas ilusões que todos os outros"],a:1,c:"Feyerabend em *A Ciência em uma Sociedade Livre* (1978) argumenta que a separação entre Estado e Igreja — conquistada com dificuldade — deve ser complementada por uma separação entre Estado e Ciência. Numa democracia, os cidadãos têm o direito de escolher seus sistemas de crença e cura (medicina tradicional, homeopatia, etc.) sem que o Estado imponha a ciência ocidental como único conhecimento legítimo. Isso não nega os sucessos da ciência — nega seu monopólio epistêmico numa",d:"Média"},{n:30,t:"A **\"virada linguística\"** no Positivismo Lógico — especialmente em Wittgenstein e Carnap — representou:",o:["A tentativa de eliminar a filosofia reduzindo-a à análise da linguagem científica","A afirmação de que toda filosofia é apenas análise da linguagem — os problemas filosóficos são confusões linguísticas a serem dissolvidas","A proposta de criar uma linguagem científica universal que substituísse todas as línguas naturais","A ideia de que as línguas naturais são superiores às linguagens formais para a ciência"],a:1,c:"O Positivismo Lógico propunha que muitos (ou todos) os problemas filosóficos tradicionais não são problemas genuínos — são confusões causadas pelo mau uso da linguagem. Wittgenstein no *Tractatus*: \"Os limites da minha linguagem são os limites do meu mundo.\" Carnap tentou construir uma linguagem lógica perfeita que eliminasse as confusões da metafísica. A filosofia se torna análise da linguagem científica — não investigação metafísica.",d:"Média"},{n:31,t:"A posição de Popper de que a **ciência começa com problemas**, não com observações — em oposição ao indutivismo de Bacon — implica que:",o:["Os cientistas só observam o que procuram — a teoria precede a observação","A observação é mais importante que a teoria na ciência","Os problemas científicos são criados pelos governos que financiam a ciência","A indução é mais confiável que a dedução no método científico"],a:0,c:"Popper inverteu o modelo indutivista (observação → teoria): os cientistas não começam \"observando neutralmente\" — começam com problemas e hipóteses ousadas que orientam o que observam. Toda observação é \"carregada de teoria\" (*theory-laden*): o que um médico \"vê\" num eletrocardiograma, um leigo não vê — mesmo olhando para o mesmo papel. A teoria precede e orienta a observação. Isso tem implicações importantes: a ciência não é simplesmente \"coleta de fatos\".",d:"Média"},{n:32,t:"O conceito kuhniano de **\"exemplar\"** (*exemplar*) — parte do paradigma — refere-se a:",o:["O cientista mais famoso de uma comunidade científica","Soluções-modelo concretas de problemas — exemplos paradigmáticos de como fazer ciência que os estudantes aprendem e que orientam a pesquisa futura","O livro-texto mais importante de uma disciplina científica","O equipamento experimental mais avançado disponível para uma comunidade científica"],a:1,c:"Nos *Posfácios* de 1969 à *Estrutura das Revoluções Científicas*, Kuhn esclareceu que \"paradigma\" tem dois sentidos: o amplo (matriz disciplinar — conjunto de comprometimentos compartilhados) e o específico (*exemplar* — soluções-modelo concretas). Os *exemplares* são os problemas e soluções que os estudantes aprendem ao longo do treinamento científico — e que os orientam a ver e resolver problemas de forma similar. É o aprendizado implícito por imitação, não apenas por regra",d:"Média"},{n:33,t:"A **Revolução Copernicana** — substituição do geocentrismo pelo heliocentrismo — serve como exemplo de:",o:["Falsificação popperiana — o geocentrismo foi refutado por um único experimento decisivo","Revolução científica kuhniana — substituição de um paradigma por outro, acompanhada de crise, resistência e incomensurabilidade parcial","Programa de pesquisa progressivo de Lakatos — Copérnico apenas ampliou o cinturão protetor ptolemaico","\"Anything goes\" de Feyerabend — a revolução ocorreu por fatores puramente irracionais"],a:1,c:"A Revolução Copernicana é o exemplo paradigmático (no sentido ordinário) de revolução científica kuhniana: o paradigma ptolemaico (geocêntrico) acumulou anomalias crescentes; uma crise se instalou; Copérnico propôs o helio centrismo; houve enorme resistência (por razões religiosas, filosóficas E científicas — o sistema de Copérnico era mais complicado que o de Ptolomeu na época!); depois de Galileu, Kepler e Newton, o novo paradigma consolidou-se. O processo durou mais de 100",d:"Média"},{n:34,t:"A proposta do **Programa Forte** de Bloor de explicar simetricamente crenças científicas verdadeiras e falsas pelos mesmos tipos de causas sociais é controversa porque:",o:["Implica que a ciência não é melhor que o mito — toda crença tem a mesma validade","Desafia a ideia de que verdades científicas são explicadas pela \"razão\" enquanto falsidades são explicadas por \"fatores sociais\" — exigindo consistência metodológica","Contradiz as descobertas empíricas da sociologia da ciência","Foi refutada por experimentos controlados sobre o comportamento dos cientistas"],a:1,c:"O Programa Forte não diz que ciência e mito são igualmente válidos (A — isso seria relativismo extremo que Bloor não defendia). Diz que a *explicação* das crenças deve ser simétrica: não é consistente explicar crenças \"falsas\" (alquimia, flogisto) por fatores sociais e psicológicos, mas explicar crenças \"verdadeiras\" (mecânica quântica) pela \"razão pura\". Ambas devem ser explicadas pelos mesmos tipos de fatores causais — incluindo fatores sociais. Isso não implica que ciência",d:"Média"},{n:35,t:"A crítica de **Imre Lakatos** a Kuhn é que o modelo das revoluções científicas é:",o:["Excessivamente racional — Kuhn subestimou o papel das emoções na ciência","Irracional (*mob psychology*) — sem critérios objetivos para avaliar quando mudar de paradigma, a escolha vira psicologia de massa","Muito conservador — Kuhn superestimou a estabilidade dos paradigmas","Excessivamente empirista — Kuhn ignorou o papel da matemática na ciência"],a:1,c:"Lakatos criticou Kuhn com a famosa expressão *mob psychology* (\"psicologia de massa\"): se a escolha entre paradigmas não pode ser feita com base em critérios objetivos (dada a incomensurabilidade), então a adoção de um novo paradigma é uma questão de persuasão, conversão e pressão social — como o comportamento de uma multidão. Para Lakatos, isso é inaceitável como descrição da racionalidade científica. Sua proposta (programas de pesquisa progressivos vs. degenerativos) oferec",d:"Média"},{n:36,t:"Considere as afirmações:  I. Para Popper, uma teoria deve ser abandonada imediatamente quando uma observação a contradiz. II. Para Kuhn, os cientistas da ciência normal não questionam o paradigma diante de anomalias — e isso é racional. III. Para Lakatos, o núcleo firme de um programa de pesquisa é modificado quando o programa torna-se degenerativo.  Estão corretas:",o:["Apenas I e II","Apenas II","Apenas I e III","I, II e III"],a:1,c:"I é **falsa**: o falsificacionismo \"ingênuo\" diria isso, mas o próprio Popper reconhecia hipóteses auxiliares e não exigia abandono imediato — além disso, Lakatos chamou de \"ingênuo\" exatamente esse falsificacionismo estrito. II é **verdadeira**: para Kuhn, resistir às anomalias durante a ciência normal é racional — o paradigma tem um historial de sucesso que justifica persistência. III é **falsa**: para Lakatos, o núcleo firme é protegido por convenção *mesmo quando o progra",d:"Difícil"},{n:37,t:"A **\"crise da física clássica\"** no final do século XIX — que levou à relatividade e à mecânica quântica — serve como exemplo kuhniano de:",o:["Falsificação popperiana bem-sucedida — um único experimento refutou Newton","Acumulação de anomalias que o paradigma newtoniano não conseguia acomodar (radiação do corpo negro, efeito fotoelétrico, espectro atômico), gerando crise e subsequente revolução paradigmática","Programa de pesquisa progressivo de Lakatos — Einstein apenas ampliou o cinturão protetor newtoniano","Exemplo de \"anything goes\" de Feyerabend — Einstein usou métodos não-científicos"],a:1,c:"A crise da física clássica é um exemplo perfeito do ciclo kuhniano. O paradigma newtoniano acumulou anomalias que não conseguia resolver: a radiação do corpo negro (o ultravioleta catastrófico previa infinita emissão de radiação), o efeito fotoelétrico (a luz age como partícula, não como onda), os espectros atômicos discretos. Nenhuma modificação do paradigma clássico resolvia essas anomalias. Einstein (relatividade) e Planck/Bohr (quântica) propuseram novos paradigmas — a ma",d:"Difícil"},{n:38,t:"O debate entre **realismo científico** e **instrumentalismo** tem implicações diretas para a questão de se devemos acreditar que:",o:["A física é mais \"real\" que a biologia — as ciências têm diferentes graus de realidade","Entidades não observáveis postuladas pelas teorias científicas (elétrons, quarks, genes) existem realmente, ou apenas servem como ferramentas preditivas sem correspondência real","Os instrumentos científicos (microscópios, aceleradores) distorcem a realidade que observam","A matemática é mais confiável que a física experimental"],a:1,c:"O debate realismo/instrumentalismo é central para a questão do que a ciência nos diz sobre a realidade. Um realista acredita que quando a física diz que os elétrons têm tal carga e massa, está descrevendo entidades reais — mesmo que não observáveis diretamente. Um instrumentalista diz: não sabemos se elétrons \"realmente existem\" — o conceito é uma ferramenta que nos permite fazer previsões; não devemos comprometer-nos com sua existência real.",d:"Difícil"},{n:39,t:"A defesa de Feyerabend do **pluralismo epistêmico** — incluindo medicina tradicional, astrologia e outros sistemas — foi criticada como:",o:["Excessivamente racional — Feyerabend subestimou o papel das emoções no conhecimento","Inconsistente com a prática científica real — os cientistas nunca usam métodos não-científicos","Democraticamente ingênua — dá igual validade a sistemas de conhecimento que causam dano à saúde","Excessivamente conservadora — defende tradições em vez do progresso"],a:2,c:"A crítica mais séria a Feyerabend: o pluralismo epistêmico pode ser perigoso. Se a medicina tradicional tem direito ao mesmo status epistêmico que a medicina baseada em evidências, então pacientes podem ser prejudicados por tratamentos ineficazes ou perigosos. A democracia epistêmica tem limites quando alguns \"sistemas de conhecimento\" causam danos demonstráveis (vacinas vs. antivacinismo, por exemplo). Feyerabend responderia que é o Estado — não o mercado epistêmico — que de",d:"Difícil"},{n:40,t:"A posição de **Thomas Kuhn** sobre o progresso científico — de que a ciência não converge necessariamente para a verdade — difere de Popper porque:",o:["Kuhn acredita que a ciência não progride; Popper acredita que sim","Popper acredita que a ciência se aproxima progressivamente da verdade (*verossimilitude*); Kuhn é cético sobre essa narrativa — os paradigmas são substituídos, mas não necessariamente por teorias mais \"verdadeiras\"","Kuhn acredita que a ciência chegará à verdade absoluta; Popper acha que não","Ambos concordam sobre o progresso — diferem apenas sobre o método"],a:1,c:"Popper desenvolveu o conceito de *verossimilitude* (semelhança com a verdade): as teorias científicas aproximam-se progressivamente da verdade — não chegam lá, mas cada teoria refutada e substituída nos aproxima mais. Kuhn é mais cético: quando um paradigma substitui outro, é difícil dizer que o novo é \"mais verdadeiro\" — especialmente dado a incomensurabilidade. Os paradigmas são diferentes — são necessariamente melhores? A questão permanece aberta.",d:"Difícil"},{n:41,t:"O conceito de **\"observação carregada de teoria\"** (*theory-laden observation*), desenvolvido por **Norwood Russell Hanson** e incorporado por Popper e Kuhn, implica que:",o:["As observações científicas confirmam sempre as teorias que os cientistas já têm","Nenhuma observação é \"pura\" ou neutra — toda percepção é interpretada através de um quadro teórico prévio","Os instrumentos científicos distorcem a realidade e devemos desconfiar das observações","A teoria é mais importante que a observação — a observação deve ser ignorada quando contradiz a teoria"],a:1,c:"A observação carregada de teoria (*theory-laden*): o que um astrônomo \"vê\" ao olhar para uma galáxia distante não é o mesmo que um indígena amazônico \"vê\" — mesmo que o estímulo retinal seja idêntico. A interpretação é mediada pelo treinamento teórico. Isso não significa que toda observação confirma qualquer teoria (A) nem que a observação seja inútil (D). Significa que não existe o \"dado puro\" positivista — toda observação já é interpretação dentro de um quadro teórico.",d:"Difícil"},{n:42,t:"O **\"problema de Duhem-Quine\"** afirma que quando uma teoria é testada e o resultado contradiz a previsão, a situação é logicamente ambígua porque:",o:["É sempre possível saber com certeza qual parte da teoria estava errada","A refutação pode recair sobre qualquer hipótese auxiliar, sobre a teoria central, sobre as condições iniciais ou sobre o próprio instrumento de medição — não é logicamente possível determinar qual parte estava errada","O experimento sempre prova que a teoria central é falsa","A situação mostra que o cientista cometeu um erro de cálculo"],a:1,c:"O problema de Duhem-Quine é uma das críticas mais poderosas ao falsificacionismo simples. Quando testamos uma teoria T e o resultado O não ocorre, o que foi refutado? A teoria T? Uma das hipóteses auxiliares H1, H2, H3 que usamos no teste? As condições iniciais C? O instrumento de medição? Logicamente, qualquer uma dessas hipóteses pode ser a responsável pelo resultado negativo. Isso explica por que os cientistas racionalmente não abandonam teorias centrais a cada resultado n",d:"Difícil"},{n:43,t:"A proposta de Carnap de eliminar a **metafísica** como \"sem sentido\" foi ela mesma posteriormente criticada por **Quine** no ensaio *Dois Dogmas do Empirismo* (1951), que argumentou:",o:["A metafísica é mais científica do que Carnap pensava","A distinção entre afirmações \"analíticas\" (lógicas) e \"sintéticas\" (empíricas) — pressuposta pelo verificacionismo — não pode ser mantida de forma clara, minando o projeto positivista de eliminar a metafísica","O verificacionismo era correto mas mal aplicado pelos membros do Círculo de Viena","A metafísica deve ser mantida porque tem valor estético, mesmo sem valor cognitivo"],a:1,c:"O ataque de Quine ao Positivismo Lógico é interno: os positivistas pressupõem que podemos distinguir claramente entre afirmações analíticas (verdadeiras por definição — \"todo solteiro é não-casado\") e sintéticas (verificáveis empiricamente). Quine argumenta que essa distinção não pode ser mantida claramente — toda afirmação enfrenta a experiência como um \"todo\" (holismo de Quine). Se a distinção analítico/sintético não é clara, o critério de verificabilidade perde sua base — ",d:"Difícil"},{n:44,t:"Um professor de Filosofia no EF Anos Finais quer discutir **\"O que é ciência?\"** usando o critério de Popper para analisar o **terraplanismo**. A abordagem mais rigorosa é:",o:["Dizer simplesmente que o terraplanismo é \"burro\" e foi refutado há séculos","Usar o critério da falsificabilidade: o terraplanismo faz previsões falsificáveis? Se sim, foram testadas? Se não, é pseudociência. Mostrar como previsões do modelo esférico (curvatura da Terra, fusos horários, fases da Lua) são falsificáveis e confirmadas.","Apresentar autoridades científicas que dizem que a Terra é redonda","Proibir a discussão por ser uma teoria obviamente falsa que não merece atenção filosófica"],a:1,c:"A abordagem popperiana é pedagogicamente poderosa: não é \"a autoridade disse\" (argumento de autoridade) nem \"é óbvio\" (dogmatismo). É: o terraplanismo faz previsões que são testáveis e falsificáveis? Algumas previsões terraplanistas são testáveis — e foram refutadas (Polaris não deveria ser visível no hemisfério sul; a curvatura da Terra é observável por qualquer um com equipamento básico). A física do modelo esférico faz previsões precisas e ousadas (trajetórias de satélites",d:"Difícil"},{n:45,t:"O conceito kuhniano de **\"resolução de quebra-cabeças\"** (*puzzle-solving*) durante a ciência normal implica que:",o:["A ciência normal é uma atividade lúdica sem relevância para o progresso científico","Os cientistas durante a ciência normal resolvem problemas bem definidos com ferramentas estabelecidas pelo paradigma — mas não questionam as regras do jogo","Os cientistas sempre criam novos paradigmas durante a resolução de problemas rotineiros","A ciência normal é o período mais criativo — quando os maiores avanços ocorrem"],a:1,c:"A metáfora do quebra-cabeça (*puzzle*) é precisa: num quebra-cabeça, o resultado final é conhecido (a imagem na caixa), as peças são definidas, e a habilidade está em encaixá-las corretamente — não em criar novas peças ou questionar se a imagem na caixa é a correta. A ciência normal tem a mesma estrutura: o paradigma define o \"resultado esperado\", e os cientistas buscam os métodos para obtê-lo. Isso não é demérito — é o que permite o progresso incremental eficiente. A revoluç",d:"Difícil"},{n:46,t:"A **sociologia do conhecimento científico** (SCC) — especialmente o Programa Forte de Bloor — foi criticada por **Popper** e pelos **racionalistas** porque:",o:["Ela é muito abstrata e não estuda a ciência real concretamente","Ao explicar o conhecimento científico pelos fatores sociais, ela ameaça tornar impossível a distinção entre conhecimento e crença — levando ao relativismo","Ela é desnecessária — os sociólogos não têm as ferramentas para estudar a ciência","Ela confirma o falsificacionismo popperiano ao mostrar que a ciência é um processo social"],a:1,c:"A crítica ao Programa Forte é que, ao explicar o conhecimento científico pelos mesmos fatores sociais que explicam crenças falsas, ele ameaça a distinção entre verdade e falsidade, entre conhecimento justificado e crença arbitrária. Se a aceitação de uma teoria pelos cientistas é explicada por interesses sociais e não pela adequação à realidade, o que faz a ciência ser diferente de qualquer outra ideologia? Para os racionalistas, a SCC comete uma falácia genética: explicar a ",d:"Difícil"},{n:47,t:"A proposta de **Ian Hacking** (*Representar e Intervir*, 1983) de que podemos ter **realismo sobre entidades** sem ser **realistas sobre teorias** significa que:",o:["Podemos acreditar que os elétrons existem (porque interagimos com eles em experimentos) sem comprometer-nos com que nossas teorias sobre eles sejam verdadeiras","As teorias são mais reais que as entidades que postulam","Devemos ser realistas sobre teorias mas não sobre entidades","O realismo é impossível em qualquer nível — nem sobre teorias nem sobre entidades"],a:0,c:"Hacking propôs uma distinção sutil: podemos ter boas razões para acreditar na existência de entidades teóricas (como os elétrons) sem comprometer-nos com que nossas *teorias* sobre elas sejam verdadeiras. Por que? Porque *manipulamos* os elétrons — usamos sua carga elétrica para construir equipamentos, aceleramos elétrons em colisores, os injetamos em memórias de computador. Quando você *manipula* uma entidade para produzir efeitos em outra parte do mundo, é muito mais difíci",d:"Difícil"},{n:48,t:"A proposta de **unidade da ciência** do Positivismo Lógico — que todas as ciências podem ser reduzidas à física — foi criticada pelos **filósofos das ciências especiais** (biologia, psicologia, ciências sociais) porque:",o:["A física é inferior à biologia em rigor metodológico","As ciências especiais possuem leis e conceitos próprios irredutíveis à física — como \"seleção natural\", \"crença\" ou \"norma social\" — que não podem ser expressos em termos puramente físicos sem perda de conteúdo explicativo","A unificação da ciência levaria à eliminação das universidades e dos departamentos acadêmicos especializados","A física não é suficientemente rigorosa para servir como base de outras ciências"],a:1,c:"O debate sobre a unidade da ciência é um dos mais importantes da filosofia da ciência contemporânea. O reducionismo físico diz que, em princípio, todos os fenômenos são fisicamente realizados e portanto redutíveis à física. Os anti-reducionistas apontam que as leis e conceitos das ciências especiais têm autonomia explanatória: \"seleção natural\" não pode ser substituída por uma descrição física das interações moleculares sem perda explanatória. Fenômenos como a evolução, a cog",d:"Difícil"},{n:49,t:"O **problema da demarcação** — distinguir ciência de pseudociência — permanece filosoficamente **não resolvido** porque:",o:["Os filósofos da ciência nunca se interessaram por essa questão fundamental","Cada critério proposto (verificabilidade, falsificabilidade, consenso, progressividade) tem contraexemplos e limitações — nenhum distingue perfeitamente ciência de não-ciência","A distinção entre ciência e pseudociência é objetiva e clara — a filosofia apenas documenta o óbvio","A questão foi resolvida por Popper com o critério da falsificabilidade — os demais critérios são supérfluos"],a:1,c:"O problema da demarcação permanece aberto — e sua abertura é filosoficamente produtiva. Verificabilidade: auto-refuta-se. Falsificabilidade: a astrologia pode ser considerada falsificável (e foi falsificada) enquanto a física de string é quase não-falsificável — nenhum dos dois resulta na classificação intuitiva \"correta\". Consenso: a pressão social não é critério epistêmico. Progressividade (Lakatos): quando declarar degenerativo? A situação real da demarcação é que ela é *g",d:"Difícil"},{n:50,t:"Um professor de Filosofia no EF Anos Finais quer usar o modelo de Kuhn para explicar por que **o consenso científico sobre o aquecimento global** é confiável. A abordagem mais rigorosa é:",o:["Dizer que \"97% dos cientistas concordam\" — e portanto deve ser verdade","Explicar que o consenso climático representa a ciência normal de um paradigma consolidado: o modelo tem alto poder preditivo, explica todas as anomalias conhecidas, sobreviveu a décadas de tentativas de refutação por cientistas céticos, e nenhum programa rival produziu melhor capacidade explicativa","Afirmar que qualquer dúvida sobre o consenso climático é pseudociência e deve ser silenciada","Ignorar o tema por envolver política — filosofia da ciência deve ser neutra"],a:1,c:"Esta questão final integra Kuhn à educação para a cidadania. O argumento do \"97% concordam\" (A) é argumentum ad populum — não é o motivo filosófico correto para confiar no consenso. A abordagem B usa o modelo kuhniano corretamente: o consenso climático representa a ciência normal de um paradigma consolidado — não porque a maioria diz, mas porque o modelo tem alto poder explicativo, sobreviveu a décadas de testes rigorosos e nenhum programa rival produziu capacidade explicativ",d:"Difícil"}];
+const TOTAL = 50;
+let answers = {};
+let currentFilter = 'all';
+let errorsMode = false;
+
+function getVisible(){
+  if(errorsMode){
+    return QUESTIONS.filter(q=>answers[q.n]!==undefined && answers[q.n]!==q.a);
+  }
+  if(currentFilter==='all') return QUESTIONS;
+  return QUESTIONS.filter(q=>q.d===currentFilter);
+}
+
+function renderQuiz(){
+  const visible = getVisible();
+  const container = document.getElementById('quiz-content');
+  container.innerHTML = '';
+  if(!visible.length){
+    container.innerHTML = '<p style="text-align:center;color:var(--text3);padding:40px;font-family:JetBrains Mono,monospace;font-size:13px;">Nenhuma questão neste filtro.</p>';
+    return;
+  }
+  visible.forEach((q,i)=>{
+    const block = document.createElement('div');
+    block.className = 'q-block' + (answers[q.n]!==undefined?' answered':'');
+    block.id = 'qb-'+q.n;
+    const diffClass = q.d==='Fácil'?'diff-easy':q.d==='Média'?'diff-med':'diff-hard';
+    const done = answers[q.n]!==undefined;
+    block.innerHTML = `
+      <div class="q-meta">
+        <span class="q-num">Q${String(q.n).padStart(2,'0')}</span>
+        <span class="q-diff ${diffClass}">${q.d}</span>
+      </div>
+      <div class="q-text">${q.t}</div>
+      <div class="q-opts" id="opts-${q.n}">
+        ${q.o.map((o,j)=>{
+          let cls='q-opt'+(done?' done':'');
+          if(done){
+            if(j===q.a) cls+=' correct';
+            else if(j===answers[q.n]) cls+=' wrong';
+          }
+          return `<div class="${cls}" ${!done?`onclick="pick(${q.n},${j})"`:''}>
+            <span class="opt-letter">${'ABCD'[j]}</span>
+            <span class="opt-text">${o}</span>
+          </div>`;
+        }).join('')}
+      </div>
+      <div class="q-feedback ${done?(answers[q.n]===q.a?'fb-correct show':'fb-wrong show'):''}" id="fb-${q.n}">
+        <span class="fb-label">${done?(answers[q.n]===q.a?'✓ Correto':'✗ Incorreto — Gabarito: '+'ABCD'[q.a]):'' }</span>
+        <span class="fb-body">${q.c}</span>
+      </div>`;
+    container.appendChild(block);
+  });
+}
+
+function pick(qn, optIdx){
+  if(answers[qn]!==undefined) return;
+  const q = QUESTIONS.find(x=>x.n===qn);
+  answers[qn] = optIdx;
+  const correct = optIdx===q.a;
+  // Style options
+  const opts = document.querySelectorAll('#opts-'+qn+' .q-opt');
+  opts.forEach(o=>o.classList.add('done'));
+  opts[optIdx].classList.add(correct?'correct':'wrong');
+  if(!correct) opts[q.a].classList.add('correct');
+  // Feedback
+  const fb=document.getElementById('fb-'+qn);
+  fb.className='q-feedback show '+(correct?'fb-correct':'fb-wrong');
+  fb.innerHTML=`<span class="fb-label">${correct?'✓ Correto':'✗ Incorreto — Gabarito: '+'ABCD'[q.a]}</span><span class="fb-body">${q.c}</span>`;
+  document.getElementById('qb-'+qn).classList.add('answered');
+  updateStats();
+  if(Object.keys(answers).length===TOTAL) finishQuiz();
+}
+
+function syncErrorsButton(){
+  const errBtn = document.getElementById('err-btn');
+  const errs = QUESTIONS.filter(q => answers[q.n] !== undefined && answers[q.n] !== q.a).length;
+  const answered = Object.keys(answers).length;
+
+  if (errs > 0) {
+    errBtn.style.display = 'block';
+    errBtn.disabled = false;
+    errBtn.textContent = errorsMode ? '↺ Mostrar todas' : '↺ Só erros';
+  } else {
+    errBtn.style.display = answered === TOTAL ? 'block' : 'none';
+    errBtn.disabled = true;
+    errBtn.textContent = '↺ Só erros';
+  }
+}
+
+function updateStats(){
+  const answered = Object.keys(answers).length;
+  let corr = 0;
+  QUESTIONS.forEach(q => { if (answers[q.n] === q.a) corr++; });
+  const pct = answered ? Math.round(corr / answered * 100) : 0;
+
+  document.getElementById('hdr-answered').textContent = answered;
+  document.getElementById('hdr-correct').textContent = corr;
+  document.getElementById('hdr-pct').textContent = pct + '%';
+  document.getElementById('prog-bar').style.width = (answered / TOTAL * 100) + '%';
+  document.getElementById('st-pts').textContent = corr;
+  document.getElementById('st-fill').style.width = (corr / TOTAL * 100) + '%';
+  document.getElementById('st-pct').textContent = pct + '%';
+
+  syncErrorsButton();
+}
+
+function finishQuiz(){
+  let corr=0;
+  QUESTIONS.forEach(q=>{ if(answers[q.n]===q.a) corr++; });
+  const pct=Math.round(corr/TOTAL*100);
+  const panel=document.getElementById('score-panel');
+  panel.classList.add('show');
+  const numEl=document.getElementById('sc-num');
+  numEl.textContent=corr+'/'+TOTAL;
+  numEl.className='sc-number '+(pct>=70?'sc-approved':'sc-failed');
+  document.getElementById('sc-pct').textContent=pct+'% de acerto';
+  const errs=TOTAL-corr;
+  document.getElementById('sc-breakdown').innerHTML=
+    `<div class="sc-item"><strong>${corr}</strong>Corretas</div>
+     <div class="sc-item"><strong>${errs}</strong>Incorretas</div>
+     <div class="sc-item"><strong>${pct}%</strong>Aproveitamento</div>`;
+  syncErrorsButton();
+  if(errs>0) document.getElementById('sc-review-btn').style.display='inline-block';
+  else document.getElementById('sc-review-btn').style.display='none';
+  panel.scrollIntoView({behavior:'smooth'});
+}
+
+function resetQuiz(){
+  answers={};
+  errorsMode=false;
+  currentFilter='all';
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelector('[data-filter="all"]').classList.add('active');
+  document.getElementById('score-panel').classList.remove('show');
+  syncErrorsButton();
+  document.getElementById('hdr-answered').textContent='0';
+  document.getElementById('hdr-correct').textContent='0';
+  document.getElementById('hdr-pct').textContent='0%';
+  document.getElementById('prog-bar').style.width='0%';
+  document.getElementById('st-pts').textContent='0';
+  document.getElementById('st-fill').style.width='0%';
+  document.getElementById('st-pct').textContent='0%';
+  renderQuiz();
+  window.scrollTo(0,0);
+}
+
+function reviewErrors(){
+  errorsMode = true;
+  document.getElementById('score-panel').classList.remove('show');
+  currentFilter = 'all';
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector('[data-filter="all"]').classList.add('active');
+  renderQuiz();
+  syncErrorsButton();
+  window.scrollTo(0,0);
+}
+
+function setFilter(f, btn){
+  currentFilter = f;
+  errorsMode = false;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderQuiz();
+  syncErrorsButton();
+}
+
+function toggleErrors(){
+  const errs = QUESTIONS.filter(q => answers[q.n] !== undefined && answers[q.n] !== q.a).length;
+  if (!errs) return;
+  errorsMode = !errorsMode;
+  renderQuiz();
+  syncErrorsButton();
+}
+
+renderQuiz();
+syncErrorsButton();
+</script>
+</body>
+</html>

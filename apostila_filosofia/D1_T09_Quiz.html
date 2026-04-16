@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>T09 Quiz — Fenomenologia e Existencialismo | Filosofia SJR 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b0d10;--bg2:#111318;--bg3:#181c22;--bg4:#1e232b;
+  --border:#252b35;--border2:#2d3443;
+  --text:#cdd5e0;--text2:#8a96a8;--text3:#4d5a6e;
+  --gold:#c8a44a;--gold2:#e2c070;--gold3:#f0d490;
+  --blue:#3d8fd1;--green:#3d9e72;--green2:#5ec090;
+  --red:#c05050;--red2:#e07070;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:'Lato',sans-serif;font-size:15px;line-height:1.7;min-height:100vh}
+.quiz-header{background:var(--bg2);border-bottom:1px solid var(--border);padding:16px 24px;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:50;flex-wrap:wrap;}
+.qh-back{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3);text-decoration:none;transition:color .2s;white-space:nowrap;}
+.qh-back:hover{color:var(--gold)}
+.qh-title{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:700;color:var(--gold2);flex:1;}
+.qh-badge{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--gold);background:rgba(200,164,74,.12);padding:3px 10px;border-radius:4px;white-space:nowrap;}
+.qh-stats{display:flex;gap:16px;flex-wrap:wrap;}
+.qh-stat{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3);white-space:nowrap;}
+.qh-stat strong{color:var(--text);font-size:14px}
+.progress-bar{height:3px;background:var(--border);overflow:hidden}
+.progress-fill{height:100%;background:var(--gold);transition:width .4s ease}
+.filter-bar{padding:14px 24px;background:var(--bg2);border-bottom:1px solid var(--border);display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+.filter-label{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3);margin-right:4px}
+.filter-btn{padding:5px 14px;border-radius:4px;border:1px solid var(--border);background:var(--bg3);color:var(--text2);font-family:'JetBrains Mono',monospace;font-size:11px;cursor:pointer;transition:all .15s;}
+.filter-btn:hover{border-color:var(--gold);color:var(--gold)}
+.filter-btn.active{background:rgba(200,164,74,.15);border-color:var(--gold);color:var(--gold)}
+.filter-sep{width:1px;height:20px;background:var(--border);margin:0 4px}
+.toggle-btn{margin-left:auto;padding:5px 14px;border-radius:4px;border:1px solid var(--border2);background:var(--bg3);color:var(--text2);font-family:'JetBrains Mono',monospace;font-size:11px;cursor:pointer;transition:all .15s;}
+.toggle-btn:hover{border-color:var(--blue);color:var(--blue)}
+.toggle-btn:disabled{opacity:.45;cursor:not-allowed}
+.toggle-btn:disabled:hover{border-color:var(--border2);color:var(--text2)}
+.quiz-content{padding:24px;max-width:860px;margin:0 auto}
+.q-block{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:24px;margin-bottom:18px;transition:border-color .2s;}
+.q-block.answered{border-color:var(--border2)}
+.q-meta{display:flex;gap:8px;align-items:center;margin-bottom:12px}
+.q-num{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3)}
+.q-diff{font-family:'JetBrains Mono',monospace;font-size:10px;padding:2px 7px;border-radius:3px;}
+.diff-easy{background:rgba(61,158,114,.15);color:var(--green2)}
+.diff-med{background:rgba(61,143,209,.12);color:var(--blue)}
+.diff-hard{background:rgba(192,80,80,.12);color:var(--red2)}
+.q-text{font-size:14.5px;line-height:1.75;margin-bottom:16px;color:var(--text)}
+.q-opts{display:flex;flex-direction:column;gap:8px}
+.q-opt{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border:1px solid var(--border);border-radius:6px;cursor:pointer;background:var(--bg3);transition:all .15s;}
+.q-opt:hover:not(.done){border-color:var(--gold);background:rgba(200,164,74,.05)}
+.q-opt.done{cursor:default}
+.q-opt.correct{border-color:var(--green)!important;background:rgba(61,158,114,.12)!important}
+.q-opt.wrong{border-color:var(--red)!important;background:rgba(192,80,80,.08)!important}
+.opt-letter{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500;color:var(--gold);min-width:18px;margin-top:2px;}
+.opt-text{font-size:13.5px;color:var(--text);line-height:1.6}
+.q-feedback{margin-top:12px;padding:12px 16px;border-radius:6px;font-size:13px;line-height:1.7;display:none;}
+.q-feedback.show{display:block;animation:fadeIn .2s ease}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.fb-correct{background:rgba(61,158,114,.1);border:1px solid rgba(61,158,114,.3);color:var(--green2)}
+.fb-wrong{background:rgba(192,80,80,.08);border:1px solid rgba(192,80,80,.25);color:var(--red2)}
+.fb-label{font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.8px;display:block;margin-bottom:5px;}
+.fb-correct .fb-label{color:var(--green)}
+.fb-wrong .fb-label{color:var(--red)}
+.fb-body{color:var(--text);font-style:italic}
+#score-panel{display:none;background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:40px;text-align:center;margin:24px;}
+#score-panel.show{display:block;animation:fadeIn .4s ease}
+.sc-title{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;}
+.sc-number{font-family:'Cormorant Garamond',serif;font-size:72px;font-weight:700;line-height:1;margin-bottom:8px;}
+.sc-approved{color:var(--green2)}
+.sc-failed{color:var(--red2)}
+.sc-pct{font-size:20px;color:var(--text2);margin-bottom:24px}
+.sc-breakdown{display:flex;gap:24px;justify-content:center;flex-wrap:wrap;margin:20px 0}
+.sc-item{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text3)}
+.sc-item strong{color:var(--text);display:block;font-size:18px}
+.sc-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:24px}
+.sc-btn{padding:11px 24px;border-radius:6px;font-family:'JetBrains Mono',monospace;font-size:12px;cursor:pointer;transition:all .2s;border:none;}
+.sc-btn-primary{background:var(--gold);color:var(--bg)}
+.sc-btn-primary:hover{opacity:.85}
+.sc-btn-secondary{background:var(--bg3);border:1px solid var(--border);color:var(--text2)}
+.sc-btn-secondary:hover{border-color:var(--gold);color:var(--gold)}
+.bottom-nav{padding:20px 24px;border-top:1px solid var(--border);display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+.nav-btn{padding:9px 18px;border-radius:6px;background:var(--bg3);border:1px solid var(--border);color:var(--text2);font-family:'JetBrains Mono',monospace;font-size:11px;cursor:pointer;transition:all .2s;text-decoration:none;display:inline-block;}
+.nav-btn:hover{border-color:var(--gold);color:var(--gold)}
+.nav-theory{margin-left:auto}
+#sticky{position:fixed;bottom:0;left:0;right:0;background:rgba(17,19,24,.95);border-top:1px solid var(--border);backdrop-filter:blur(8px);padding:10px 24px;display:flex;align-items:center;gap:16px;z-index:50;}
+#sticky .ss-txt{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3)}
+#sticky .ss-txt strong{color:var(--gold)}
+.ss-bar{flex:1;height:3px;background:var(--border);border-radius:2px;overflow:hidden}
+.ss-fill{height:100%;background:var(--gold);transition:width .3s}
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+@media (max-width: 720px){
+  .quiz-header,.filter-bar,.bottom-nav,.quiz-content,#sticky{padding-left:16px;padding-right:16px}
+  .qh-title{flex-basis:100%;font-size:17px}
+  .qh-stats{width:100%;gap:12px}
+  .filter-sep{display:none}
+  .toggle-btn{margin-left:0}
+  #score-panel{margin:16px;padding:28px 20px}
+  .sc-number{font-size:56px}
+  .bottom-nav{padding-bottom:84px}
+}
+@media (max-width: 520px){
+  .q-block{padding:18px}
+  .q-text{font-size:14px}
+  .opt-text{font-size:13px}
+  #sticky{gap:10px;flex-wrap:wrap}
+  #sticky .ss-txt{width:auto}
+  .ss-bar{order:3;flex-basis:100%}
+}
+</style>
+</head>
+<body>
+<header class="quiz-header">
+  <a href="D1_Filosofia.html" class="qh-back">← Teoria D1</a>
+  <div class="qh-title">T09 — Fenomenologia e Existencialismo</div>
+  <span class="qh-badge">50 questões</span>
+  <div class="qh-stats">
+    <span class="qh-stat"><strong id="hdr-answered">0</strong> respondidas</span>
+    <span class="qh-stat"><strong id="hdr-correct">0</strong> corretas</span>
+    <span class="qh-stat"><strong id="hdr-pct">0%</strong></span>
+  </div>
+</header>
+<div class="progress-bar"><div class="progress-fill" id="prog-bar" style="width:0%"></div></div>
+<div class="filter-bar">
+  <span class="filter-label">Dificuldade:</span>
+  <button type="button" class="filter-btn active" data-filter="all" onclick="setFilter('all',this)">Todas</button>
+  <button type="button" class="filter-btn" data-filter="Fácil" onclick="setFilter('Fácil',this)">Fácil</button>
+  <button type="button" class="filter-btn" data-filter="Média" onclick="setFilter('Média',this)">Média</button>
+  <button type="button" class="filter-btn" data-filter="Difícil" onclick="setFilter('Difícil',this)">Difícil</button>
+  <div class="filter-sep"></div>
+  <button type="button" class="toggle-btn" onclick="toggleErrors()" id="err-btn" style="display:none">↺ Só erros</button>
+</div>
+<div class="quiz-content" id="quiz-content"></div>
+<div id="score-panel">
+  <p class="sc-title">Resultado Final — T09</p>
+  <div class="sc-number" id="sc-num"></div>
+  <p class="sc-pct" id="sc-pct"></p>
+  <div class="sc-breakdown" id="sc-breakdown"></div>
+  <div class="sc-actions">
+    <button type="button" class="sc-btn sc-btn-primary" onclick="resetQuiz()">↺ Refazer</button>
+    <button type="button" class="sc-btn sc-btn-secondary" onclick="reviewErrors()" id="sc-review-btn">Revisar erros</button>
+    <a href="D1_Filosofia.html" class="sc-btn sc-btn-secondary">← Teoria</a>
+  </div>
+</div>
+<div class="bottom-nav">
+  <a href="D1_T08_Quiz.html" class="nav-btn">← T08</a>
+  <a href="D1_Filosofia.html" class="nav-btn nav-theory">📖 Conteúdo T09</a>
+  <a href="D1_T10_Quiz.html" class="nav-btn">T10 →</a>
+</div>
+<div id="sticky">
+  <span class="ss-txt">Acertos: <strong id="st-pts">0</strong> / 50</span>
+  <div class="ss-bar"><div class="ss-fill" id="st-fill" style="width:0%"></div></div>
+  <span class="ss-txt"><strong id="st-pct">0%</strong></span>
+</div>
+<script>
+const QUESTIONS = [{n:1,t:"O conceito de **intencionalidade**, central na fenomenologia de Husserl, afirma que:",o:["A consciência tem intenções morais que orientam o comportamento","Toda consciência é consciência *de* algo — ela sempre se dirige a um objeto","A consciência é uma substância imaterial separada do mundo","A mente intenciona criar o mundo material pela força do pensamento"],a:1,c:"A intencionalidade — herdada de Brentano e radicalizada por Husserl — é a estrutura fundamental da consciência: ela nunca existe \"vazia\" ou \"pura\" — sempre se dirige intencionalmente a um objeto (real, imaginado, lembrado, desejado). Não existe \"consciência de nada\" — toda consciência é consciência *de* algo. Isso supera tanto o idealismo (que isola a consciência) quanto o realismo ingênuo (que a ignora).",d:"Fácil"},{n:2,t:"A **epoché** fenomenológica de Husserl consiste em:",o:["Negar que o mundo externo existe — é um ato de ceticismo radical","Suspender temporariamente a crença natural na existência do mundo para examinar como ele aparece à consciência","Colocar entre parênteses a consciência para estudar o mundo objetivo","Eliminar todas as emoções para alcançar um conhecimento puramente racional"],a:1,c:"A epoché (do grego: suspensão, abstenção) não nega a existência do mundo — \"coloca entre parênteses\" (*einklammerung*) a tese natural de sua existência. O objetivo é examinar o *como* o mundo aparece à consciência, antes de qualquer teoria científica ou filosófica que o interprete. É um método de investigação — não uma posição metafísica sobre a existência do mundo.",d:"Fácil"},{n:3,t:"O conceito de ***Dasein*** em Heidegger refere-se a:",o:["A alma imortal do ser humano, separada do corpo","O ser humano enquanto ser que se preocupa com seu próprio ser e que existe no mundo","A consciência pura, anterior a qualquer experiência","O sujeito transcendental que organiza a experiência, como em Kant"],a:1,c:"*Dasein* (ser-aí): o ser humano não como sujeito epistemológico (Descartes, Kant) nem como consciência intencional (Husserl), mas como o único ente para quem seu próprio ser é uma questão — que existe sempre situado num mundo concreto, numa herança histórica, projetando-se para possibilidades futuras. O *Dasein* não está *no* mundo como um objeto — ele é fundamentalmente *ser-no-mundo*.",d:"Fácil"},{n:4,t:"A tese existencialista central de Sartre — **\"a existência precede a essência\"** — significa que:",o:["O ser humano existe antes de qualquer definição do que ele deve ser — e constrói sua essência pelas escolhas","A existência biológica precede o desenvolvimento da consciência humana","O ser humano existe no mundo antes de existir na consciência dos outros","A essência humana é determinada pela existência histórica da espécie"],a:0,c:"Ao contrário dos objetos fabricados (onde a essência — o propósito — precede a existência), o ser humano não tem uma natureza ou essência predefinida. Primeiro existe — é lançado no mundo — e depois, pelas suas escolhas concretas, constrói o que é. Não há \"natureza humana\" que determine o que ele deva ser. Isso é a base da liberdade radical e da responsabilidade absoluta no existencialismo sartriano.",d:"Fácil"},{n:5,t:"Para Sartre, a **má-fé** (*mauvaise foi*) é:",o:["A tendência humana para o pecado, herdada da tradição cristã","A tentativa de fugir da liberdade tratando-se como coisa determinada — como se não fosse livre","O comportamento desonesto nas relações interpessoais","A recusa de assumir os valores da comunidade a que se pertence"],a:1,c:"A má-fé sartriana é uma categoria ontológica — não moral simples. É a tentativa de fazer-se em-si quando se é para-si: tratar-se como objeto determinado (\"sou assim, não posso mudar\", \"não tenho escolha\") para fugir da angústia da liberdade radical. O garçom que age exageradamente \"como garçom\", negando que poderia ser outra coisa, está em má-fé. Toda má-fé é, para Sartre, uma ilusão — o para-si nunca pode ser verdadeiramente em-si.",d:"Fácil"},{n:6,t:"Simone de Beauvoir, em *O Segundo Sexo*, afirma que \"Não se nasce mulher — torna-se.\" Essa frase expressa que:",o:["A feminilidade é uma essência biológica que se desenvolve com a maturidade","A feminilidade é uma construção histórica, social e cultural imposta às mulheres — não uma essência natural","As mulheres se tornam mulheres somente quando assumem papéis maternais","A identidade feminina é construída pelas escolhas individuais sem influência social"],a:1,c:"Beauvoir aplica o existencialismo sartriano (\"existência precede essência\") ao gênero: não existe uma \"essência feminina\" natural e predeterminada. O que chamamos de \"feminilidade\" é um conjunto de papéis, comportamentos e expectativas construídos historicamente pela cultura patriarcal e impostos às mulheres — não uma expressão de uma natureza biológica inevitável. A liberação feminina consiste em recusar essa essência imposta e assumir a própria subjetividade.",d:"Fácil"},{n:7,t:"O **absurdo**, segundo Albert Camus, surge de:",o:["A irracionalidade do comportamento humano em sociedade","O confronto entre a busca humana de sentido e o silêncio irracional do mundo","A contradição entre fé religiosa e razão filosófica","A impossibilidade de comunicação genuína entre os seres humanos"],a:1,c:"O absurdo camusiano não é uma propriedade do ser humano nem do mundo — é relacional: surge do encontro entre o ser humano que busca sentido, clareza e propósito, e o mundo que é indiferente, silencioso e sem resposta. O universo não é irracional — simplesmente não é racional. E o ser humano não pode parar de buscar. Dessa tensão irredutível nasce o absurdo.",d:"Fácil"},{n:8,t:"O **ser-para-a-morte** (*Sein-zum-Tode*) em Heidegger refere-se a:",o:["A tendência suicida que Heidegger identifica como estrutura da existência","O fato de que a morte é a possibilidade mais própria, insubstituível e certa do *Dasein* — e que confrontá-la autenticamente é condição da existência autêntica","A preocupação excessiva com a morte que impede o *Dasein* de viver plenamente","A crença na imortalidade da alma que transcende a morte biológica"],a:1,c:"O ser-para-a-morte não é morbidez nem suicídio — é o reconhecimento de que a morte é a possibilidade mais *própria* (só eu posso morrer minha morte), *insubstituível* (ninguém pode morrer por mim), *certa* (inevitável) e *indeterminada* (não sabemos quando). Confrontar essa possibilidade autenticamente — não fugir dela no cotidiano inautêntico — liberta o *Dasein* para apropriar-se de sua existência como sua.",d:"Fácil"},{n:9,t:"Para Merleau-Ponty, \"não tenho um corpo — sou meu corpo\" significa que:",o:["O corpo é mais importante que a mente na vida humana","O corpo vivido é o modo fundamental de ser-no-mundo — não um objeto que a consciência possui, mas o sujeito encarnado que somos","A consciência é redutível aos processos corporais físicos","O dualismo cartesiano é correto — mente e corpo são inseparáveis"],a:1,c:"Merleau-Ponty supera o dualismo cartesiano (mente vs. corpo) sem cair no materialismo reducionista (consciência = processos físicos). O corpo vivido (*corps propre*) é o sujeito encarnado: não é objeto no espaço (como uma mesa), mas o ponto zero a partir do qual o espaço é experienciado. O esquema corporal — o saber prático pré-reflexivo que o corpo tem de suas capacidades — mostra que o corpo \"pensa\" antes de qualquer reflexão intelectual.",d:"Fácil"},{n:10,t:"Kierkegaard é considerado o **precursor do existencialismo** principalmente porque:",o:["Desenvolveu a fenomenologia que Husserl sistematizou no século XX","Criticou o sistema hegeliano por esquecer o indivíduo existente concreto e analisou a angústia da liberdade individual","Foi o primeiro a usar a palavra \"existencialismo\" para descrever sua filosofia","Influenciou diretamente Sartre, que traduziu suas obras para o francês"],a:1,c:"Kierkegaard (séc. XIX) antecipou temas existencialistas fundamentais: a crítica à filosofia de sistemas (Hegel) que esquece o indivíduo concreto; a análise da angústia como vertigem da liberdade; os três estágios da existência; a importância da escolha e do comprometimento pessoal. Sua insistência em que a filosofia deve partir do indivíduo singular — não do sistema abstrato — é o gesto inaugural do existencialismo.",d:"Fácil"},{n:11,t:"A frase de Sartre **\"o inferno são os outros\"** (*l'enfer, c'est les autres*) significa que:",o:["As relações humanas são sempre destrutivas e devem ser evitadas","O olhar do outro inevitavelmente objetifica o sujeito — a relação com o outro é sempre potencialmente ameaçadora para a liberdade","A sociedade é a causa de todos os males — o ser humano isolado é naturalmente bom","Os outros nos julgam pelo que fazemos — e esse julgamento nos condena"],a:1,c:"A frase vem da peça *Entre Quatro Paredes* (1944) e é frequentemente mal interpretada. Não significa que os outros são maus — significa que a relação com o outro é estruturalmente conflituosa: o olhar do outro me objetifica (transforma-me em objeto de seu mundo), me \"fixa\" numa identidade que eu não escolhi. Cada um quer ser sujeito e tende a fazer do outro um objeto. Isso não impossibilita as relações — mas as torna inevitavelmente tensas e potencialmente alienantes.",d:"Fácil"},{n:12,t:"O conceito de **inautenticidade** em Heidegger, expresso pelo **\"se\"** (*das Man*), refere-se a:",o:["A falsidade deliberada e mentira consciente do *Dasein* em suas relações","O modo de existência em que o *Dasein* se dissolve no impessoal — vivendo como \"todo mundo vive\", pensando o que \"todo mundo pensa\"","A recusa do *Dasein* de enfrentar a morte como possibilidade real","O modo de existência do filósofo que se distancia do cotidiano para pensar"],a:1,c:"*Das Man* (literalmente \"o se\" — como em \"se faz isso\", \"todo mundo faz assim\") é o modo cotidiano e predominante de existência inautêntica: o *Dasein* se dilui no impessoal, age conforme as normas não-examinadas do \"a gente\", foge da responsabilidade de suas próprias escolhas. Não é uma falha moral individual — é uma estrutura ontológica do *Dasein* que pode ser superada pela autenticidade (assumir a própria existência como sua).",d:"Fácil"},{n:13,t:"Os **três estágios da existência** de Kierkegaard são, em ordem crescente:",o:["Ético, estético, religioso","Estético, ético, religioso","Religioso, ético, estético","Estético, religioso, ético"],a:1,c:"A ordem kierkegaardiana é: estético (prazer, sensorialidade, dispersão) → ético (dever moral, comprometimento, responsabilidade) → religioso (salto de fé, relação singular com Deus). Cada estágio supera o anterior por ser mais comprometido e menos disperso — mas a passagem não é automática nem racional: do ético ao religioso há um \"salto\" que não pode ser justificado racionalmente.",d:"Fácil"},{n:14,t:"O **mundo-da-vida** (*Lebenswelt*) em Husserl refere-se a:",o:["O mundo criado pela ciência moderna para substituir o mundo cotidiano","O mundo pré-científico da experiência cotidiana — o chão sobre o qual as ciências constroem suas abstrações","O mundo dos valores e da ética, separado do mundo da natureza","O mundo histórico-social em que cada *Dasein* se encontra lançado"],a:1,c:"O *Lebenswelt* (mundo-da-vida) é o mundo da experiência cotidiana pré-reflexiva — percebido, vivido, habitado — antes de qualquer teorização científica. A crise das ciências europeias consiste, para Husserl, em que a ciência esqueceu que suas construções abstratas (partículas, campos, equações) são construídas sobre esse chão do mundo-da-vida e a ele devem prestar contas. Retornar ao mundo-da-vida é o programa fenomenológico tardio de Husserl.",d:"Fácil"},{n:15,t:"Para Camus, o **suicídio filosófico** — que ele recusa — refere-se a:",o:["O suicídio físico motivado por razões filosóficas profundas","O \"salto\" para a fé religiosa ou para um sistema filosófico que forneça sentido transcendente, evitando assim o enfrentamento honesto do absurdo","A tentativa de provar filosoficamente que a vida não tem valor","A destruição da filosofia pela ciência positivista"],a:1,c:"Camus usa \"suicídio filosófico\" para descrever a evasão intelectual do absurdo: em vez de enfrenta-lo com lucidez, o ser humano \"salta\" para um sistema de sentido transcendente (Deus, o Absoluto, a Revolução) que dissolve artificialmente a tensão absurda. Kierkegaard, para Camus, cometeu suicídio filosófico ao propor o \"salto de fé\" religioso. Para Camus, qualquer evasão do absurdo — incluindo a fé — é desonestidade intelectual.",d:"Fácil"},{n:16,t:"A distinção sartriana entre **ser-em-si** e **ser-para-si** implica que a consciência humana é fundamentalmente:",o:["Substância sólida e determinada, como os objetos materiais","Negatividade e falta — ela não é o que é e é o que não é, sempre projetando-se além de si mesma","Idêntica a si mesma, como o Ser de Parmênides","Uma forma do ser-em-si enriquecida pela experiência"],a:1,c:"O ser-para-si é a consciência: diferentemente do ser-em-si (que é o que é, idêntico a si mesmo — \"a pedra é pedra\"), a consciência humana é sempre distância de si mesma. Ela \"não é o que é\" (nunca é plenamente presente a si — há sempre uma distância reflexiva) e \"é o que não é\" (projeta-se para possibilidades que ainda não são). Essa estrutura de negatividade é o que torna a consciência livre — e ao mesmo tempo fonte de angústia.",d:"Média"},{n:17,t:"A análise de Heidegger do **\"cuidado\"** (*Sorge*) como estrutura fundamental do *Dasein* significa que:",o:["O ser humano é essencialmente um ser cuidadoso e atencioso com os outros","O *Dasein* está sempre antecipando suas possibilidades, situado numa herança histórica e ocupado com as coisas do mundo — o cuidado unifica esses três momentos temporais","O ser humano deve dedicar-se ao autocuidado físico e mental","O *Dasein* cuida dos outros como condição para sua própria autenticidade"],a:1,c:"O *Sorge* (cuidado) em Heidegger é uma categoria ontológica — não psicológica. É a estrutura formal que unifica os três momentos da temporalidade do *Dasein*: projetar-se para possibilidades (futuro), estar-lançado numa situação que não escolheu (passado/facticidade) e ocupar-se com as coisas do mundo (presente). O cuidado é o modo fundamental como o *Dasein* existe — antes de qualquer preocupação específica.",d:"Média"},{n:18,t:"A diferença entre a **angústia** (*Angst*) heideggeriana e o **medo** comum é que:",o:["O medo é mais intenso que a angústia","O medo tem um objeto determinado; a angústia não tem objeto — ela revela o nada e a falta de fundamento da existência","A angústia é patológica; o medo é uma emoção saudável","O medo é existencial; a angústia é apenas psicológica"],a:1,c:"O medo é sempre *de* algo determinado (tenho medo da cobra, da altura, do exame). A angústia (*Angst*) não tem objeto — ela revela o *nada*, a ausência de fundamento necessário da existência. É a disposição fundamental que confronta o *Dasein* com sua liberdade radical e sua finitude. Por isso a angústia abre a possibilidade da autenticidade — enquanto o cotidiano inautêntico foge dela mergulhando na tagarelice e na distração.",d:"Média"},{n:19,t:"A análise de Beauvoir da **mulher como \"Outro\"** na cultura patriarcal deriva de:",o:["A teoria psicanalítica de Freud sobre a inveja do pênis","A dialética do reconhecimento de Hegel — aplicada à relação entre os sexos: o homem é o sujeito (o \"Um\"), a mulher é o Outro (o que se define em relação ao sujeito)","A teoria marxista sobre a divisão sexual do trabalho","A fenomenologia de Husserl sobre a constituição do objeto pela consciência"],a:1,c:"Beauvoir usa explicitamente a dialética hegeliana do reconhecimento: na relação entre sujeitos, cada consciência quer ser reconhecida como o sujeito primário — e tende a fazer do outro seu Outro. Na cultura patriarcal, o homem ocupa sistematicamente a posição de sujeito universal (o humano padrão), e a mulher é definida como o Outro — o desvio, o segundo, o definido em relação ao primeiro. Isso não é \"natural\" — é histórico e, portanto, mutável.",d:"Média"},{n:20,t:"O **\"salto de fé\"** (*spring*) de Kierkegaard, que leva do estágio ético ao religioso, é assim chamado porque:",o:["É fácil e natural — como um salto atlético bem treinado","É irracional — não pode ser justificado por argumentos racionais; é uma decisão que ultrapassa o universal ético","É gradual — como um salto em câmera lenta, de passo em passo","É impossível para a maioria das pessoas — apenas os gênios filosóficos o realizam"],a:1,c:"O \"salto\" kierkegaardiano é por definição irracional — não no sentido de ser estúpido, mas no sentido de que não pode ser justificado por argumentos da razão ética universal. A relação de Abraão com Deus (o paradigma do estágio religioso) exige que ele transgredisse a lei moral universal (não matar) por obediência a Deus. Isso não pode ser \"explicado\" racionalmente — é um salto além do racional. Para Kierkegaard, é a mais alta forma de existência; para Camus, é suicídio filos",d:"Média"},{n:21,t:"A crítica de Heidegger à **tradição filosófica ocidental** como \"esquecimento do ser\" significa que:",o:["Os filósofos ocidentais nunca discutiram a questão do ser","A filosofia ocidental estudou os entes (as coisas que são) mas esqueceu a questão mais fundamental: o que é o Ser mesmo — o horizonte dentro do qual qualquer ente pode aparecer","A ciência ocidental destruiu o ser pela técnica moderna","A filosofia esqueceu que o ser humano tem corpo — privilegiou a razão abstrata"],a:1,c:"Para Heidegger, a história da filosofia ocidental desde Platão é uma história do \"esquecimento do ser\" (*Seinsvergessenheit*): os filósofos trataram o ser como se fosse um ente entre outros (o ente supremo, a substância, o sujeito transcendental) — mas nunca perguntaram o que é o *Ser* ele mesmo, enquanto horizonte de toda aparição de entes. A metafísica ocidental é uma \"onto-teologia\" — busca um ente supremo (Deus, Substância, Espírito) que \"fundamente\" os outros entes, sem ",d:"Média"},{n:22,t:"A proposta de Merleau-Ponty de que a **percepção** é primária sobre o pensamento abstrato implica que:",o:["A ciência é desnecessária — a percepção cotidiana é suficiente","O conhecimento científico e filosófico são abstrações construídas sobre o chão da experiência perceptiva corporal, que é mais fundamental","A percepção é mais confiável que o raciocínio lógico em todas as situações","O ser humano deve voltar a um estado \"natural\" pré-intelectual"],a:1,c:"Merleau-Ponty não rejeita a ciência — a coloca em seu lugar: as abstrações científicas são construídas sobre a experiência perceptiva corporal que as precede e as sustenta. A física de partículas é construída sobre a experiência de um corpo que percebe, manipula e experimenta o mundo. Ignorar esse chão fenomenológico gera a \"crise das ciências\" (Husserl) — a ilusão de que as abstrações são mais reais que a experiência vivida que as torna possíveis.",d:"Média"},{n:23,t:"A resposta de Camus ao absurdo — a **revolta lúcida** — consiste em:",o:["Aceitar que a vida não tem sentido e viver passivamente essa constatação","Criar um sistema filosófico que supere o absurdo pela razão","Viver plenamente o absurdo — manter a tensão entre a busca de sentido e o silêncio do mundo, sem evasão, sem resignação e sem desespero","Transformar o absurdo em arte — a única saída autêntica para a condição humana"],a:2,c:"A revolta lúcida de Camus é a terceira via entre o suicídio (físico ou filosófico) e a resignação passiva. Não é melancolia — é uma postura de *desafio* ao absurdo: o ser humano reconhece o absurdo sem tentar dissolvê-lo (evasão filosófica) e sem ceder ao desespero. É a recusa simultânea do sentido transcendente e do niilismo — a afirmação da vida precisamente na condição absurda. Sísifo é feliz porque *revolta-se* a cada rolada da pedra.",d:"Média"},{n:24,t:"A análise de Sartre de que o ser humano está **\"condenado a ser livre\"** implica que:",o:["A liberdade é uma punição — o ser humano preferiria ser determinado","Mesmo não escolher é uma escolha — não há escape da responsabilidade pela própria existência","O ser humano é livre apenas em situações extremas — normalmente é determinado pelo social","A liberdade é uma ilusão que o ser humano projeta sobre sua existência determinada"],a:1,c:"\"Condenado\" porque não escolhemos ser livres — a liberdade é nossa condição estrutural, não uma opção. Não podemos *não* escolher: mesmo a inação, a submissão, a adaptação passiva são escolhas. Por isso a liberdade é ao mesmo tempo nossa grandeza e nosso fardo — não há como transferir a responsabilidade para Deus, para a natureza, para a história ou para a sociedade. A má-fé é exatamente a tentativa de escapar dessa responsabilidade radical.",d:"Média"},{n:25,t:"Para Husserl, a diferença entre **noema** e **noese** pode ser ilustrada assim:",o:["Noema é o objeto físico; noese é a percepção sensorial que o capta","Noese é o ato intencional da consciência (perceber, lembrar, imaginar); noema é o conteúdo intencional — o objeto como aparece à consciência no ato","Noema é o conceito abstrato; noese é a imagem mental concreta","Noese e noema são sinônimos — Husserl os usa de forma intercambiável"],a:1,c:"A correlação noese/noema é central na fenomenologia husserliana: todo ato intencional (*noese*) tem um conteúdo intencional (*noema*) — o \"sentido\" do objeto como é dado à consciência naquele ato. Perceber uma maçã e lembrar de uma maçã são noeses diferentes — mas o noema (a maçã como objeto intencional) pode ser o mesmo. O noema não é o objeto físico real — é o objeto *como* aparece, com toda a sua camada de significado intencional.",d:"Média"},{n:26,t:"O **\"Lebenswelt\"** husserliano é relevante para a crítica da ciência moderna porque:",o:["Prova que a ciência é superior à experiência cotidiana","Mostra que a ciência natural esqueceu seu fundamento na experiência vivida — tratando suas construções abstratas (átomos, campos) como mais reais que o mundo percebido","Demonstra que a percepção cotidiana é suficiente para o conhecimento — a ciência é supérflua","Justifica o retorno à filosofia medieval como alternativa à ciência moderna"],a:1,c:"Husserl em *A Crise das Ciências Europeias* (1936) diagnostica que a ciência moderna, ao matematizar a natureza (Galileu), esqueceu que suas equações e modelos são construídos sobre o mundo-da-vida pré-científico. Quando a física descreve a água como H₂O e campos de força, ela abstrai da experiência vivida da água — fria, molhada, refrescante. Essa abstração é legítima e útil — mas quando esquece seu fundamento, gera a ilusão de que as equações são mais reais que a experiênci",d:"Média"},{n:27,t:"A análise de Heidegger das **ferramentas** (*Zeug*) e do \"estar-à-mão\" (*Zuhandenheit*) ilustra a primazia do mundo prático sobre o teórico porque:",o:["Heidegger acreditava que o trabalho manual é superior ao trabalho intelectual","A ferramenta em uso desaparece da consciência — o martelo que uso não é um \"objeto\" que observo, mas uma extensão do meu projeto; só quando quebra é que se torna \"objeto\" de observação teórica","Heidegger seguia Marx na valorização do trabalho produtivo","O mundo prático é mais fácil de analisar fenomenologicamente que o teórico"],a:1,c:"A análise heideggeriana das ferramentas é um dos momentos mais fenomenologicamente ricos de *Ser e Tempo*: quando uso um martelo, ele não é um \"objeto\" que observo (isso é o modo teórico — *Vorhandenheit*, \"estar-diante-da-mão\"). Ele é transparente — desaparece no uso enquanto me orienta para o projeto (pregar o prego). Só quando quebra é que se torna objeto de atenção teórica. Isso mostra que o modo originário de relação com o mundo é prático e cuidativo — não teórico e cont",d:"Média"},{n:28,t:"A contribuição de Beauvoir para o feminismo vai além de Sartre ao:",o:["Rejeitar completamente o existencialismo sartriano","Mostrar que a liberdade individual não é suficiente para a emancipação feminina — as condições materiais e sociais estruturais limitam concretamente as possibilidades das mulheres","Propor que as mulheres são naturalmente mais livres que os homens","Afirmar que as diferenças biológicas justificam a divisão sexual do trabalho"],a:1,c:"Beauvoir radicaliza Sartre ao mostrar que a liberdade abstrata (sartriana) não basta para a emancipação feminina: se uma mulher tem todas as \"liberdades\" formais mas vive numa sociedade que a define como Outro, que limita suas oportunidades econômicas, educacionais e políticas, sua \"liberdade\" é abstrata. A emancipação requer transformação das condições materiais e culturais que produzem a mulher como Outro — não apenas a afirmação individual da liberdade. Isso aproxima Beauv",d:"Média"},{n:29,t:"A análise de Kierkegaard do **estágio estético** da existência identifica como seu problema fundamental:",o:["O prazer é imoral — deve ser superado pela razão","O estágio estético leva inevitavelmente ao tédio e à dispersão — a falta de comprometimento destrói a possibilidade de uma vida com sentido","O prazer é sempre ilusório — a realidade é inevitavelmente dolorosa","O estágio estético é bom em si mesmo, mas deve ser complementado pelo ético"],a:1,c:"Para Kierkegaard, o problema do estágio estético não é moral — é existencial: a vida centrada no prazer, na beleza e na intensidade sensorial é dispersa, sem comprometimento, sempre buscando a próxima novidade para escapar do tédio. O Don Juan (personagem paradigmático do estágio estético) busca incessantemente novas conquistas precisamente porque nenhuma satisfaz — é a insaciabilidade do desejo sem comprometimento. O tédio que resulta aponta para a necessidade de uma escolha",d:"Média"},{n:30,t:"O conceito de **\"estar-lançado\"** (*Geworfenheit*) em Heidegger descreve o fato de que o *Dasein*:",o:["É lançado para o futuro pelas suas escolhas e projetos","Encontra-se sempre já situado numa situação histórica, cultural e corporal que não escolheu — mas que é a condição de qualquer projeto","É lançado no mundo pelo nascimento e deve construir seu mundo do zero","Se lança sobre as possibilidades do futuro sem nenhuma ancoragem no passado"],a:1,c:"*Geworfenheit* (estar-lançado) é a facticidade do *Dasein*: ele não escolheu nascer, não escolheu sua época histórica, sua cultura, sua língua, seu corpo. Está sempre *já aí*, numa situação que não determinou. Mas esse estar-lançado não é uma prisão — é a condição concreta a partir da qual o projeto (projeção para possibilidades) é possível. Projeto sem facticidade seria fantasia; facticidade sem projeto seria resignação. A tensão entre os dois é a estrutura da existência.",d:"Média"},{n:31,t:"A **fenomenologia** de Husserl difere do **positivismo lógico** do Círculo de Viena porque:",o:["Husserl rejeitava completamente a ciência — os positivistas a celebravam","Husserl buscava descrever a estrutura da experiência vivida; os positivistas buscavam eliminar tudo que não é verificável empiricamente — incluindo a experiência subjetiva como objeto filosófico legítimo","Husserl era racionalista; os positivistas eram empiristas","São idênticos — ambos buscavam o rigor científico na filosofia"],a:1,c:"Husserl e os positivistas compartilham o desejo de rigor filosófico — mas chegam a conclusões opostas. Os positivistas querem eliminar a experiência subjetiva como não-científica. Husserl quer justamente retornar à experiência subjetiva como o chão sobre o qual a ciência é construída. Para Husserl, a fenomenologia é mais rigorosa que a ciência natural — porque examina as condições de possibilidade de qualquer experiência, incluindo a experiência científica.",d:"Média"},{n:32,t:"A noção de **projeto** (*Entwurf*) em Heidegger e a de **liberdade radical** em Sartre compartilham a ideia de que:",o:["O ser humano pode escolher qualquer coisa — não há limites para a escolha humana","O ser humano é fundamentalmente orientado para o futuro — é o único ser que se constitui projetando-se para possibilidades que ainda não são","O projeto e a liberdade são ilusões — o ser humano é determinado pelas suas condições","O futuro é mais real que o presente — o ser humano vive antecipadamente"],a:1,c:"Tanto Heidegger quanto Sartre compartilham a ênfase na orientação futura da existência humana: o *Dasein* existe projetando-se para possibilidades (*Entwurf*); o para-si sartriano é sempre \"o que não é ainda\" — projetando-se além de si mesmo. Isso não significa que o ser humano pode escolher *qualquer coisa* (A — isso ignoraria a facticidade/situação concreta); significa que o ser humano é fundamentalmente aberto e não-determinado, sempre além de si mesmo.",d:"Média"},{n:33,t:"A **responsabilidade radical** que decorre da liberdade sartriana implica que:",o:["Cada indivíduo é responsável apenas por suas ações pessoais diretas","Ao escolher como agir, o ser humano escolhe o tipo de ser humano que afirma que todos deveriam ser — a escolha individual tem dimensão universal","A responsabilidade moral é impossível numa perspectiva ateísta","A responsabilidade só existe perante os outros — não perante si mesmo"],a:1,c:"Sartre, em *O Existencialismo é um Humanismo* (1945), argumenta que ao escolher, não escolhemos apenas para nós — escolhemos o tipo de pessoa que afirmamos que vale a pena ser, que todos deveriam ser. Se escolho casar, afirmo que o casamento é um valor; se escolho ser militante, afirmo que o engajamento político é um valor. A escolha individual tem sempre uma dimensão de legislação universal — eco (secular) do imperativo categórico kantiano.",d:"Média"},{n:34,t:"O existencialismo sartriano é frequentemente descrito como um **humanismo** porque:",o:["Acredita que a natureza humana é essencialmente boa e benevolente","Afirma que o ser humano é o único fundamento de si mesmo — não há Deus, natureza ou determinismo que o defina — e por isso é responsável absoluto de si e do mundo","Defende que o ser humano deve ser o centro das preocupações políticas do Estado","Propõe que a filosofia deve servir ao bem-estar humano concreto"],a:1,c:"Sartre em *O Existencialismo é um Humanismo* (1945) responde às críticas de que o existencialismo seria niilista e desesperado: ao contrário, é a filosofia que coloca o ser humano como único responsável por si mesmo — sem Deus que o determine, sem natureza que o fixe. Isso não é niilismo — é a máxima afirmação da dignidade humana. O ser humano não tem desculpas — e é exatamente nisso que reside sua grandeza.",d:"Média"},{n:35,t:"A **temporalidade** em Heidegger — a unidade extática de futuro, passado e presente — difere da concepção científica do tempo porque:",o:["Heidegger acredita que o tempo passa mais lentamente para o *Dasein* que para os objetos físicos","O tempo heideggeriano não é uma série linear de \"agoras\" mensuráveis — é a estrutura existencial do *Dasein* que projeta, retém e se ocupa simultaneamente","Heidegger rejeita que o passado tenha alguma influência sobre o presente e o futuro","O tempo científico é subjetivo; o tempo heideggeriano é objetivo"],a:1,c:"O tempo da física é uma série de instantes (\"agoras\") mensuráveis pelo relógio — homogêneos e exteriores ao ser humano. O tempo heideggeriano é *existencial*: o *Dasein* não está \"no\" tempo como um objeto numa série — ele *é* temporal. Ele existe extaindo-se no futuro (projeto), recuperando seu passado (herança, facticidade) e se ocupando do presente — tudo simultaneamente. O relógio mede o tempo do Universo; a temporalidade descreve o modo como o *Dasein* existe.",d:"Média"},{n:36,t:"Considere as afirmações:  I. Para Sartre, o ser-em-si tem consciência de suas possibilidades e pode escolher livremente. II. Para Heidegger, a autenticidade exige que o *Dasein* supere completamente o *das Man* e exista sem qualquer influência do cotidiano. III. Para Beauvoir, a emancipação feminina requer tanto a afirmação individual da liberdade quanto a transformação das condições sociais e materiais.  Estão corretas:",o:["Apenas I e II","Apenas III","Apenas I e III","I, II e III"],a:1,c:"I é **falsa**: o ser-em-si é exatamente o contrário — não tem consciência nem possibilidade. É idêntico a si mesmo, sem negatividade (pedra, mesa). A consciência e a liberdade são características do ser-para-si. II é **falsa**: para Heidegger, a autenticidade não é uma supressão do *das Man* — isso seria impossível. O *Dasein* sempre existe no cotidiano. A autenticidade é um *modificar* o modo de existir no cotidiano — assumindo-o como seu, em vez de nele se dissipar. III é *",d:"Difícil"},{n:37,t:"A crítica de **Heidegger à técnica moderna** — desenvolvida em obras como *A Questão da Técnica* (1954) — afirma que:",o:["A tecnologia é simplesmente uma ferramenta neutra que depende do uso que lhe damos","A técnica moderna constitui um modo específico de revelar o mundo — o \"enquadramento\" (*Gestell*) — que transforma tudo em \"fundo de reserva\" explorável, incluindo o ser humano","A tecnologia é o maior avanço da humanidade — Heidegger a celebrava","A técnica é um produto do capitalismo e deve ser abolida com ele"],a:1,c:"A crítica heideggeriana à técnica vai além da preocupação ambiental ou social: a técnica moderna (diferente da techné grega) não é apenas um instrumento — é um modo de revelar (des-encobrir) o mundo que o transforma em recurso explorável. A hidrelétrica no Rio Reno revela o rio como \"fundo de reserva\" (*Bestand*) de energia — apagando sua dimensão de paisagem, história, mistério. Quando o ser humano é também tratado como \"recurso humano\", a técnica o engloba a ele mesmo. É um",d:"Difícil"},{n:38,t:"A tensão entre **Camus** e **Sartre** sobre o engajamento político — que levou à ruptura pessoal e filosófica entre os dois — pode ser descrita como:",o:["Camus era marxista; Sartre era liberal — a disputa era política-partidária","Sartre aceitou o terror revolucionário como instrumento de emancipação histórica; Camus recusou — argumentando que os fins não justificam os meios e que a revolta deve ser permanente e sem transcendência","Camus era cristão; Sartre era ateu — a disputa era sobre o fundamento da moral","Ambos concordavam sobre a necessidade da Revolução — discordavam apenas sobre os métodos"],a:1,c:"A ruptura Camus-Sartre (após *O Homem Revoltado* de Camus, 1951) é uma das mais importantes da filosofia do séc. XX. Camus argumentou que qualquer revolução que aceita o terror como instrumento trai seus próprios ideais — incluindo a revolução comunista soviética. Sartre (então próximo do Partido Comunista Francês) defendia que o terror revolucionário era historicamente necessário para a emancipação. Para Camus, isso era a repetição do \"suicídio filosófico\" — a submissão a um",d:"Difícil"},{n:39,t:"A análise de Merleau-Ponty do **membro fantasma** — a experiência de dor em um membro que foi amputado — ilustra filosoficamente que:",o:["A dor é uma ilusão — toda percepção é construída pela mente","O esquema corporal persiste além da alteração física — mostrando que o corpo vivido não se reduz ao corpo orgânico e que a consciência encarnada tem uma dimensão que ultrapassa o corpo biológico imediato","O sistema nervoso é capaz de produzir sensações sem estímulo real","A mente é separada do corpo — como Descartes afirmou"],a:1,c:"O membro fantasma é um dos exemplos mais ricos da fenomenologia do corpo de Merleau-Ponty: a pessoa amputada continua \"sentindo\" o membro porque o esquema corporal — o saber prático do corpo sobre suas capacidades e limites — não foi atualizado com a amputação. O corpo vivido (o corpo como habitamos e experienciamos) é mais persistente e mais fundamental que o corpo biológico (o organismo físico). Isso mostra que a experiência corporal não é simplesmente idêntica ao estado fí",d:"Difícil"},{n:40,t:"A filosofia de Heidegger sobre a **morte** difere da abordagem **epicurista** clássica (\"quando a morte é, eu não sou; quando eu sou, a morte não é\") porque:",o:["Heidegger acredita que há vida após a morte; Epicuro negava","Para Heidegger, a morte não é um evento futuro que me atinge eventualmente — é uma possibilidade que *já me constitui agora*, como ser-para-a-morte, orientando o modo como existo no presente","Epicuro aceitava a angústia da morte; Heidegger a rejeitava","Heidegger e Epicuro concordam — ambos defendiam ignorar a morte para viver plenamente"],a:1,c:"O argumento epicurista dissolve o problema da morte: não há razão para temer o que não experienciaremos. Heidegger não fala do medo da dor ou do nada pós-morte — fala da morte como possibilidade existencial: enquanto existo, estou sempre morrendo (*Sein-zum-Tode*). A morte é a possibilidade que orienta e ilumina todas as outras possibilidades — confrontá-la autenticamente (não fugi-la) transforma o modo como me relaciono com minha existência *agora*. A diferença é temporal: E",d:"Difícil"},{n:41,t:"A **hermenêutica** de Hans-Georg Gadamer (*Verdade e Método*, 1960) — herdeira da fenomenologia hermenêutica de Heidegger — afirma que:",o:["Todo conhecimento é objetivo e independente do intérprete","A compreensão nunca parte do zero — sempre ocorre dentro de uma \"pré-compreensão\" histórica (*Vorverständnis*), e a interpretação é a \"fusão de horizontes\" entre o horizonte do texto e o do intérprete","A interpretação correta de um texto é aquela que recupera a intenção original do autor","A hermenêutica é apenas uma técnica para interpretar textos bíblicos"],a:1,c:"Gadamer desenvolve a hermenêutica filosófica a partir de Heidegger: todo ato de compreensão ocorre dentro de uma \"situação hermenêutica\" — o intérprete não é neutro, mas traz seus \"pré-conceitos\" (no sentido positivo: pré-compreensões herdadas da tradição). A compreensão genuína é a \"fusão de horizontes\" (*Horizontverschmelzung*): o horizonte do texto (ou da obra) e o horizonte do intérprete se fundem numa nova compreensão que não era nem apenas o texto nem apenas o intérpret",d:"Difícil"},{n:42,t:"A **crítica feminista** à fenomenologia de Husserl e Heidegger aponta que:",o:["Esses filósofos eram explicitamente misóginos em suas obras","O \"sujeito\" fenomenológico — o *Dasein*, a consciência intencional — é apresentado como universal mas implicitamente masculino: as análises ignoram como a experiência do corpo feminino, da gravidez e das relações de cuidado constitui formas diferentes de ser-no-mundo","A fenomenologia é incompatível com o feminismo — deve ser substituída","Beauvoir refutou completamente Husserl e Heidegger em *O Segundo Sexo*"],a:1,c:"Filósofas como Iris Marion Young (\"Throwing Like a Girl\", 1980) e Sandra Bartky desenvolveram a crítica: o *Dasein* heideggeriano e a consciência husserliana são apresentados como universais, mas suas análises concretas (das ferramentas, do espaço, do corpo em movimento) implicitamente assumem o corpo masculino como norma. A experiência feminina do corpo — a gravidez, a amamentação, a objetificação do olhar masculino, a limitação do espaço social — constitui formas de ser-no-",d:"Difícil"},{n:43,t:"A análise camusiana do mito de **Sísifo** pode ser relacionada ao existencialismo de **Sartre** e ao de **Kierkegaard** porque:",o:["Todos os três propõem o mesmo tipo de resposta ao absurdo","Sísifo como herói absurdo (Camus) não faz o salto de fé (Kierkegaard) nem nega a liberdade pela má-fé (Sartre) — mas assume lucidamente sua condição sem transcendência e sem evasão","Todos os três rejeitam o conceito de absurdo como filosoficamente irrelevante","Kierkegaard e Sartre concordam com Camus sobre a inutilidade da fé religiosa"],a:1,c:"A comparação é iluminadora: Kierkegaard proporia que Sísifo deveria fazer o \"salto de fé\" — confiar que Deus dará sentido ao absurdo (como Abraão confiou que Deus devolveria Isaac). Sartre diria que Sísifo deve assumir sua liberdade radical e criar sentido pelas suas escolhas engajadas. Camus propõe que Sísifo não precisa de Deus nem de criação de sentido — a revolta lúcida diante do absurdo *já é* a resposta: ele rola a pedra sabendo que ela vai rolar de volta, sem ilusão e ",d:"Difícil"},{n:44,t:"A distinção heideggeriana entre **\"estar-à-mão\"** (*Zuhandenheit*) e **\"estar-diante-da-mão\"** (*Vorhandenheit*) tem implicações para a filosofia da ciência porque:",o:["Mostra que a ciência é mais fundamental que a prática cotidiana","A atitude científica teórica — que transforma o mundo em \"objetos diante da mão\" para observar e medir — é uma forma derivada e deficiente de relação com o mundo, que pressupõe e obscurece o modo prático originário de estar-à-mão","A prática cotidiana é inferior à teoria científica — Heidegger celebrava a ciência","Ciência e prática são dois mundos completamente separados sem relação"],a:1,c:"A análise heideggeriana inverte a prioridade usual: a teoria científica (que observa objetos como \"coisas diante da mão\") não é mais fundamental — é derivada do modo prático de habitar o mundo (onde as ferramentas estão \"à mão\", transparentes no uso). A física que trata a pedra como \"objeto com massa M\" pressupõe — e obscurece — a experiência originária da pedra como obstáculo, material de construção, instrumento de defesa. Isso não invalida a física — mas mostra seu caráter ",d:"Difícil"},{n:45,t:"O conceito de **\"ser-com\"** (*Mitsein*) em Heidegger tem uma implicação importante para a crítica ao individualismo liberal porque:",o:["Heidegger defende o comunitarismo político e rejeita os direitos individuais","A intersubjetividade não é derivada — o *Dasein* não é primeiro um indivíduo isolado que depois \"entra em relação\" com outros; ele é originariamente ser-com, e a solidão é uma modificação deficiente desse ser-com","Os outros são obstáculos à autenticidade — a autenticidade é solitária","O ser-com é idêntico à vontade geral de Rousseau"],a:1,c:"O *Mitsein* (ser-com) é uma estrutura existencial originária do *Dasein* — não uma adição posterior. O liberalismo contratualista (Hobbes, Locke) imagina indivíduos pré-sociais que depois entram em relação. Heidegger inverte: o *Dasein* sempre já existe em relação aos outros — mesmo a solidão é uma modificação do ser-com (estar sozinho *diante de* outros que estão ausentes). Isso tem implicações para a ética e a política: a responsabilidade com os outros não é algo que assumi",d:"Difícil"},{n:46,t:"A **\"destruição\"** (*Destruktion*) da história da filosofia proposta por Heidegger não é uma rejeição do passado filosófico, mas:",o:["A crítica de que a filosofia ocidental é completamente sem valor","Um desmontar rigoroso das camadas de interpretação que cobriram as questões originárias da filosofia, para retornar às experiências fundamentais que as motivaram","A proposta de substituir toda a filosofia ocidental pela ontologia fundamental","Uma crítica especificamente ao hegelianismo como forma de historicismo"],a:1,c:"*Destruktion* (destruição/desconstrução) é um dos conceitos metodológicos mais importantes de Heidegger: não é destruição no sentido de rejeição, mas um desmonte (*Abbau*) das camadas de interpretação que sedimentaram sobre as questões originárias da filosofia. A fenomenologia heideggeriana busca retornar às experiências vivas que motivaram as questões metafísicas — antes que elas fossem fixadas em respostas dogmáticas. Derrida desenvolverá a \"desconstrução\" a partir desse co",d:"Difícil"},{n:47,t:"A análise da **\"náusea\"** no romance filosófico de Sartre (*A Náusea*, 1938) ilustra o encontro com o:",o:["Asco social diante da hipocrisia burguesa","Ser-em-si em sua pura contingência — a existência bruta dos objetos sem razão de ser, revelada quando a familiaridade cotidiana desaparece","Angústia diante da própria liberdade radical","Nojo físico causado por uma experiência sensorial desagradável"],a:1,c:"Em *A Náusea*, o personagem Roquentin experimenta a náusea ao contemplar uma raiz de castanheira no jardim: de repente, a familiaridade desaparece e ele se confronta com a pura contingência da existência — a coisa simplesmente *está aí*, sem razão, sem propósito, absurdamente presente. Isso é o encontro com o ser-em-si em sua brutalidade: a existência antes de qualquer significado que nós lhe atribuímos. A náusea é a tonalidade afetiva que revela a contingência radical de tod",d:"Difícil"},{n:48,t:"O **existencialismo cristão** de **Gabriel Marcel** — em contraste com o existencialismo ateu de Sartre — propõe que:",o:["A existência humana só tem sentido dentro de uma comunidade religiosa","O \"ser\" não é opaco e contingente (como para Sartre) — é participação no Ser divino; a fidelidade, a esperança e o amor são categorias ontológicas fundamentais que revelam o ser","A existência precede a essência — mas a essência é dada por Deus após a morte","A angústia é resolvida pela fé — e Sartre estava errado sobre a liberdade"],a:1,c:"Marcel (1889–1973) é o principal representante do existencialismo cristão francês. Em oposição ao existencialismo ateu (Sartre, Camus), Marcel propõe que o ser não é simplesmente contingente e sem sentido — é participação no Ser divino. Categorias como fidelidade (comprometimento que transcende o momento), esperança (abertura para o que transcende o possível calculável) e amor (relação que reconhece o outro como mistério, não como problema a resolver) revelam dimensões do ser",d:"Difícil"},{n:49,t:"A reflexão de Paul Ricoeur (*Tempo e Narrativa*, 1983–1985) sobre **identidade narrativa** desenvolve a fenomenologia da temporalidade de Heidegger ao propor que:",o:["A identidade humana é uma ficção — não há \"si mesmo\" permanente","A identidade pessoal é constituída pela narrativa — é a resposta à pergunta \"quem sou eu?\" através da história que conto sobre mim mesmo, que integra passado, presente e projeto futuro numa unidade","A narrativa é apenas uma forma de arte sem valor filosófico","A identidade é determinada pelo passado — o futuro não tem papel na constituição do si mesmo"],a:1,c:"Ricoeur propõe que o *quem* do ser humano não é uma substância permanente nem um feixe caótico de experiências — é uma *identidade narrativa*: nos constituímos como selves ao contar histórias sobre nós mesmos que integram o que fomos, somos e queremos ser. A narrativa articula a temporalidade heideggeriana (futuro, passado, presente) numa unidade vivida. Isso tem implicações para a ética (somos responsáveis pelo que nossa narrativa faz de nós e dos outros), para a psicologia ",d:"Difícil"},{n:50,t:"Um professor de Filosofia no EF Anos Finais quer trabalhar o existencialismo de Sartre com adolescentes usando a situação concreta de **pressão de grupo e conformismo**. A abordagem mais filosoficamente rica é:",o:["Dizer que ceder à pressão de grupo é sempre errado — a filosofia condena o conformismo","Usar a distinção sartriana entre autenticidade e má-fé: a pressão de grupo é uma forma de *das Man* (Heidegger) ou de má-fé (Sartre) — não porque seja sempre \"errada\", mas porque exige reflexão: \"Estou agindo assim porque escolho genuinamente ou porque é o que 'todo mundo faz'?\" — desenvolvendo a consciência da liberdade e da responsabilidade","Afirmar que Sartre defendia o individualismo absoluto — cada um deve sempre agir contra o grupo","Evitar o tema por ser excessivamente abstrato para adolescentes"],a:1,c:"Esta questão de transposição didática conecta fenomenologia/existencialismo à vida real dos adolescentes. A pressão de grupo — usar certa roupa, consumir certo conteúdo, tratar determinadas pessoas de certa forma — é a forma adolescente do *das Man* heideggeriano e da má-fé sartriana. A abordagem filosófica não é moralizar (A — \"é errado\") mas provocar reflexão sobre a *origem* das escolhas: é uma escolha genuína ou é \"porque todo mundo faz\"? Essa pergunta é a pergunta filosó",d:"Difícil"}];
+const TOTAL = 50;
+let answers = {};
+let currentFilter = 'all';
+let errorsMode = false;
+
+function getVisible(){
+  if(errorsMode){
+    return QUESTIONS.filter(q=>answers[q.n]!==undefined && answers[q.n]!==q.a);
+  }
+  if(currentFilter==='all') return QUESTIONS;
+  return QUESTIONS.filter(q=>q.d===currentFilter);
+}
+
+function renderQuiz(){
+  const visible = getVisible();
+  const container = document.getElementById('quiz-content');
+  container.innerHTML = '';
+  if(!visible.length){
+    container.innerHTML = '<p style="text-align:center;color:var(--text3);padding:40px;font-family:JetBrains Mono,monospace;font-size:13px;">Nenhuma questão neste filtro.</p>';
+    return;
+  }
+  visible.forEach((q,i)=>{
+    const block = document.createElement('div');
+    block.className = 'q-block' + (answers[q.n]!==undefined?' answered':'');
+    block.id = 'qb-'+q.n;
+    const diffClass = q.d==='Fácil'?'diff-easy':q.d==='Média'?'diff-med':'diff-hard';
+    const done = answers[q.n]!==undefined;
+    block.innerHTML = `
+      <div class="q-meta">
+        <span class="q-num">Q${String(q.n).padStart(2,'0')}</span>
+        <span class="q-diff ${diffClass}">${q.d}</span>
+      </div>
+      <div class="q-text">${q.t}</div>
+      <div class="q-opts" id="opts-${q.n}">
+        ${q.o.map((o,j)=>{
+          let cls='q-opt'+(done?' done':'');
+          if(done){
+            if(j===q.a) cls+=' correct';
+            else if(j===answers[q.n]) cls+=' wrong';
+          }
+          return `<div class="${cls}" ${!done?`onclick="pick(${q.n},${j})"`:''}>
+            <span class="opt-letter">${'ABCD'[j]}</span>
+            <span class="opt-text">${o}</span>
+          </div>`;
+        }).join('')}
+      </div>
+      <div class="q-feedback ${done?(answers[q.n]===q.a?'fb-correct show':'fb-wrong show'):''}" id="fb-${q.n}">
+        <span class="fb-label">${done?(answers[q.n]===q.a?'✓ Correto':'✗ Incorreto — Gabarito: '+'ABCD'[q.a]):'' }</span>
+        <span class="fb-body">${q.c}</span>
+      </div>`;
+    container.appendChild(block);
+  });
+}
+
+function pick(qn, optIdx){
+  if(answers[qn]!==undefined) return;
+  const q = QUESTIONS.find(x=>x.n===qn);
+  answers[qn] = optIdx;
+  const correct = optIdx===q.a;
+  // Style options
+  const opts = document.querySelectorAll('#opts-'+qn+' .q-opt');
+  opts.forEach(o=>o.classList.add('done'));
+  opts[optIdx].classList.add(correct?'correct':'wrong');
+  if(!correct) opts[q.a].classList.add('correct');
+  // Feedback
+  const fb=document.getElementById('fb-'+qn);
+  fb.className='q-feedback show '+(correct?'fb-correct':'fb-wrong');
+  fb.innerHTML=`<span class="fb-label">${correct?'✓ Correto':'✗ Incorreto — Gabarito: '+'ABCD'[q.a]}</span><span class="fb-body">${q.c}</span>`;
+  document.getElementById('qb-'+qn).classList.add('answered');
+  updateStats();
+  if(Object.keys(answers).length===TOTAL) finishQuiz();
+}
+
+function syncErrorsButton(){
+  const errBtn = document.getElementById('err-btn');
+  const errs = QUESTIONS.filter(q => answers[q.n] !== undefined && answers[q.n] !== q.a).length;
+  const answered = Object.keys(answers).length;
+
+  if (errs > 0) {
+    errBtn.style.display = 'block';
+    errBtn.disabled = false;
+    errBtn.textContent = errorsMode ? '↺ Mostrar todas' : '↺ Só erros';
+  } else {
+    errBtn.style.display = answered === TOTAL ? 'block' : 'none';
+    errBtn.disabled = true;
+    errBtn.textContent = '↺ Só erros';
+  }
+}
+
+function updateStats(){
+  const answered = Object.keys(answers).length;
+  let corr = 0;
+  QUESTIONS.forEach(q => { if (answers[q.n] === q.a) corr++; });
+  const pct = answered ? Math.round(corr / answered * 100) : 0;
+
+  document.getElementById('hdr-answered').textContent = answered;
+  document.getElementById('hdr-correct').textContent = corr;
+  document.getElementById('hdr-pct').textContent = pct + '%';
+  document.getElementById('prog-bar').style.width = (answered / TOTAL * 100) + '%';
+  document.getElementById('st-pts').textContent = corr;
+  document.getElementById('st-fill').style.width = (corr / TOTAL * 100) + '%';
+  document.getElementById('st-pct').textContent = pct + '%';
+
+  syncErrorsButton();
+}
+
+function finishQuiz(){
+  let corr=0;
+  QUESTIONS.forEach(q=>{ if(answers[q.n]===q.a) corr++; });
+  const pct=Math.round(corr/TOTAL*100);
+  const panel=document.getElementById('score-panel');
+  panel.classList.add('show');
+  const numEl=document.getElementById('sc-num');
+  numEl.textContent=corr+'/'+TOTAL;
+  numEl.className='sc-number '+(pct>=70?'sc-approved':'sc-failed');
+  document.getElementById('sc-pct').textContent=pct+'% de acerto';
+  const errs=TOTAL-corr;
+  document.getElementById('sc-breakdown').innerHTML=
+    `<div class="sc-item"><strong>${corr}</strong>Corretas</div>
+     <div class="sc-item"><strong>${errs}</strong>Incorretas</div>
+     <div class="sc-item"><strong>${pct}%</strong>Aproveitamento</div>`;
+  syncErrorsButton();
+  if(errs>0) document.getElementById('sc-review-btn').style.display='inline-block';
+  else document.getElementById('sc-review-btn').style.display='none';
+  panel.scrollIntoView({behavior:'smooth'});
+}
+
+function resetQuiz(){
+  answers={};
+  errorsMode=false;
+  currentFilter='all';
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelector('[data-filter="all"]').classList.add('active');
+  document.getElementById('score-panel').classList.remove('show');
+  syncErrorsButton();
+  document.getElementById('hdr-answered').textContent='0';
+  document.getElementById('hdr-correct').textContent='0';
+  document.getElementById('hdr-pct').textContent='0%';
+  document.getElementById('prog-bar').style.width='0%';
+  document.getElementById('st-pts').textContent='0';
+  document.getElementById('st-fill').style.width='0%';
+  document.getElementById('st-pct').textContent='0%';
+  renderQuiz();
+  window.scrollTo(0,0);
+}
+
+function reviewErrors(){
+  errorsMode = true;
+  document.getElementById('score-panel').classList.remove('show');
+  currentFilter = 'all';
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector('[data-filter="all"]').classList.add('active');
+  renderQuiz();
+  syncErrorsButton();
+  window.scrollTo(0,0);
+}
+
+function setFilter(f, btn){
+  currentFilter = f;
+  errorsMode = false;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderQuiz();
+  syncErrorsButton();
+}
+
+function toggleErrors(){
+  const errs = QUESTIONS.filter(q => answers[q.n] !== undefined && answers[q.n] !== q.a).length;
+  if (!errs) return;
+  errorsMode = !errorsMode;
+  renderQuiz();
+  syncErrorsButton();
+}
+
+renderQuiz();
+syncErrorsButton();
+</script>
+</body>
+</html>

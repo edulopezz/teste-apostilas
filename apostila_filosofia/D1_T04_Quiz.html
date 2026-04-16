@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>T04 Quiz — Empirismo e Racionalismo | Filosofia SJR 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b0d10;--bg2:#111318;--bg3:#181c22;--bg4:#1e232b;
+  --border:#252b35;--border2:#2d3443;
+  --text:#cdd5e0;--text2:#8a96a8;--text3:#4d5a6e;
+  --gold:#c8a44a;--gold2:#e2c070;--gold3:#f0d490;
+  --blue:#3d8fd1;--green:#3d9e72;--green2:#5ec090;
+  --red:#c05050;--red2:#e07070;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:'Lato',sans-serif;font-size:15px;line-height:1.7;min-height:100vh}
+.quiz-header{background:var(--bg2);border-bottom:1px solid var(--border);padding:16px 24px;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:50;flex-wrap:wrap;}
+.qh-back{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3);text-decoration:none;transition:color .2s;white-space:nowrap;}
+.qh-back:hover{color:var(--gold)}
+.qh-title{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:700;color:var(--gold2);flex:1;}
+.qh-badge{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--gold);background:rgba(200,164,74,.12);padding:3px 10px;border-radius:4px;white-space:nowrap;}
+.qh-stats{display:flex;gap:16px;flex-wrap:wrap;}
+.qh-stat{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3);white-space:nowrap;}
+.qh-stat strong{color:var(--text);font-size:14px}
+.progress-bar{height:3px;background:var(--border);overflow:hidden}
+.progress-fill{height:100%;background:var(--gold);transition:width .4s ease}
+.filter-bar{padding:14px 24px;background:var(--bg2);border-bottom:1px solid var(--border);display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+.filter-label{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3);margin-right:4px}
+.filter-btn{padding:5px 14px;border-radius:4px;border:1px solid var(--border);background:var(--bg3);color:var(--text2);font-family:'JetBrains Mono',monospace;font-size:11px;cursor:pointer;transition:all .15s;}
+.filter-btn:hover{border-color:var(--gold);color:var(--gold)}
+.filter-btn.active{background:rgba(200,164,74,.15);border-color:var(--gold);color:var(--gold)}
+.filter-sep{width:1px;height:20px;background:var(--border);margin:0 4px}
+.toggle-btn{margin-left:auto;padding:5px 14px;border-radius:4px;border:1px solid var(--border2);background:var(--bg3);color:var(--text2);font-family:'JetBrains Mono',monospace;font-size:11px;cursor:pointer;transition:all .15s;}
+.toggle-btn:hover{border-color:var(--blue);color:var(--blue)}
+.toggle-btn:disabled{opacity:.45;cursor:not-allowed}
+.toggle-btn:disabled:hover{border-color:var(--border2);color:var(--text2)}
+.quiz-content{padding:24px;max-width:860px;margin:0 auto}
+.q-block{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:24px;margin-bottom:18px;transition:border-color .2s;}
+.q-block.answered{border-color:var(--border2)}
+.q-meta{display:flex;gap:8px;align-items:center;margin-bottom:12px}
+.q-num{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3)}
+.q-diff{font-family:'JetBrains Mono',monospace;font-size:10px;padding:2px 7px;border-radius:3px;}
+.diff-easy{background:rgba(61,158,114,.15);color:var(--green2)}
+.diff-med{background:rgba(61,143,209,.12);color:var(--blue)}
+.diff-hard{background:rgba(192,80,80,.12);color:var(--red2)}
+.q-text{font-size:14.5px;line-height:1.75;margin-bottom:16px;color:var(--text)}
+.q-opts{display:flex;flex-direction:column;gap:8px}
+.q-opt{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border:1px solid var(--border);border-radius:6px;cursor:pointer;background:var(--bg3);transition:all .15s;}
+.q-opt:hover:not(.done){border-color:var(--gold);background:rgba(200,164,74,.05)}
+.q-opt.done{cursor:default}
+.q-opt.correct{border-color:var(--green)!important;background:rgba(61,158,114,.12)!important}
+.q-opt.wrong{border-color:var(--red)!important;background:rgba(192,80,80,.08)!important}
+.opt-letter{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500;color:var(--gold);min-width:18px;margin-top:2px;}
+.opt-text{font-size:13.5px;color:var(--text);line-height:1.6}
+.q-feedback{margin-top:12px;padding:12px 16px;border-radius:6px;font-size:13px;line-height:1.7;display:none;}
+.q-feedback.show{display:block;animation:fadeIn .2s ease}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.fb-correct{background:rgba(61,158,114,.1);border:1px solid rgba(61,158,114,.3);color:var(--green2)}
+.fb-wrong{background:rgba(192,80,80,.08);border:1px solid rgba(192,80,80,.25);color:var(--red2)}
+.fb-label{font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.8px;display:block;margin-bottom:5px;}
+.fb-correct .fb-label{color:var(--green)}
+.fb-wrong .fb-label{color:var(--red)}
+.fb-body{color:var(--text);font-style:italic}
+#score-panel{display:none;background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:40px;text-align:center;margin:24px;}
+#score-panel.show{display:block;animation:fadeIn .4s ease}
+.sc-title{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;}
+.sc-number{font-family:'Cormorant Garamond',serif;font-size:72px;font-weight:700;line-height:1;margin-bottom:8px;}
+.sc-approved{color:var(--green2)}
+.sc-failed{color:var(--red2)}
+.sc-pct{font-size:20px;color:var(--text2);margin-bottom:24px}
+.sc-breakdown{display:flex;gap:24px;justify-content:center;flex-wrap:wrap;margin:20px 0}
+.sc-item{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text3)}
+.sc-item strong{color:var(--text);display:block;font-size:18px}
+.sc-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:24px}
+.sc-btn{padding:11px 24px;border-radius:6px;font-family:'JetBrains Mono',monospace;font-size:12px;cursor:pointer;transition:all .2s;border:none;}
+.sc-btn-primary{background:var(--gold);color:var(--bg)}
+.sc-btn-primary:hover{opacity:.85}
+.sc-btn-secondary{background:var(--bg3);border:1px solid var(--border);color:var(--text2)}
+.sc-btn-secondary:hover{border-color:var(--gold);color:var(--gold)}
+.bottom-nav{padding:20px 24px;border-top:1px solid var(--border);display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+.nav-btn{padding:9px 18px;border-radius:6px;background:var(--bg3);border:1px solid var(--border);color:var(--text2);font-family:'JetBrains Mono',monospace;font-size:11px;cursor:pointer;transition:all .2s;text-decoration:none;display:inline-block;}
+.nav-btn:hover{border-color:var(--gold);color:var(--gold)}
+.nav-theory{margin-left:auto}
+#sticky{position:fixed;bottom:0;left:0;right:0;background:rgba(17,19,24,.95);border-top:1px solid var(--border);backdrop-filter:blur(8px);padding:10px 24px;display:flex;align-items:center;gap:16px;z-index:50;}
+#sticky .ss-txt{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3)}
+#sticky .ss-txt strong{color:var(--gold)}
+.ss-bar{flex:1;height:3px;background:var(--border);border-radius:2px;overflow:hidden}
+.ss-fill{height:100%;background:var(--gold);transition:width .3s}
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+@media (max-width: 720px){
+  .quiz-header,.filter-bar,.bottom-nav,.quiz-content,#sticky{padding-left:16px;padding-right:16px}
+  .qh-title{flex-basis:100%;font-size:17px}
+  .qh-stats{width:100%;gap:12px}
+  .filter-sep{display:none}
+  .toggle-btn{margin-left:0}
+  #score-panel{margin:16px;padding:28px 20px}
+  .sc-number{font-size:56px}
+  .bottom-nav{padding-bottom:84px}
+}
+@media (max-width: 520px){
+  .q-block{padding:18px}
+  .q-text{font-size:14px}
+  .opt-text{font-size:13px}
+  #sticky{gap:10px;flex-wrap:wrap}
+  #sticky .ss-txt{width:auto}
+  .ss-bar{order:3;flex-basis:100%}
+}
+</style>
+</head>
+<body>
+<header class="quiz-header">
+  <a href="D1_Filosofia.html" class="qh-back">← Teoria D1</a>
+  <div class="qh-title">T04 — Empirismo e Racionalismo</div>
+  <span class="qh-badge">50 questões</span>
+  <div class="qh-stats">
+    <span class="qh-stat"><strong id="hdr-answered">0</strong> respondidas</span>
+    <span class="qh-stat"><strong id="hdr-correct">0</strong> corretas</span>
+    <span class="qh-stat"><strong id="hdr-pct">0%</strong></span>
+  </div>
+</header>
+<div class="progress-bar"><div class="progress-fill" id="prog-bar" style="width:0%"></div></div>
+<div class="filter-bar">
+  <span class="filter-label">Dificuldade:</span>
+  <button type="button" class="filter-btn active" data-filter="all" onclick="setFilter('all',this)">Todas</button>
+  <button type="button" class="filter-btn" data-filter="Fácil" onclick="setFilter('Fácil',this)">Fácil</button>
+  <button type="button" class="filter-btn" data-filter="Média" onclick="setFilter('Média',this)">Média</button>
+  <button type="button" class="filter-btn" data-filter="Difícil" onclick="setFilter('Difícil',this)">Difícil</button>
+  <div class="filter-sep"></div>
+  <button type="button" class="toggle-btn" onclick="toggleErrors()" id="err-btn" style="display:none">↺ Só erros</button>
+</div>
+<div class="quiz-content" id="quiz-content"></div>
+<div id="score-panel">
+  <p class="sc-title">Resultado Final — T04</p>
+  <div class="sc-number" id="sc-num"></div>
+  <p class="sc-pct" id="sc-pct"></p>
+  <div class="sc-breakdown" id="sc-breakdown"></div>
+  <div class="sc-actions">
+    <button type="button" class="sc-btn sc-btn-primary" onclick="resetQuiz()">↺ Refazer</button>
+    <button type="button" class="sc-btn sc-btn-secondary" onclick="reviewErrors()" id="sc-review-btn">Revisar erros</button>
+    <a href="D1_Filosofia.html" class="sc-btn sc-btn-secondary">← Teoria</a>
+  </div>
+</div>
+<div class="bottom-nav">
+  <a href="D1_T03_Quiz.html" class="nav-btn">← T03</a>
+  <a href="D1_Filosofia.html" class="nav-btn nav-theory">📖 Conteúdo T04</a>
+  <a href="D1_T05_Quiz.html" class="nav-btn">T05 →</a>
+</div>
+<div id="sticky">
+  <span class="ss-txt">Acertos: <strong id="st-pts">0</strong> / 50</span>
+  <div class="ss-bar"><div class="ss-fill" id="st-fill" style="width:0%"></div></div>
+  <span class="ss-txt"><strong id="st-pct">0%</strong></span>
+</div>
+<script>
+const QUESTIONS = [{n:1,t:"O problema epistemológico central da Filosofia Moderna consiste em:",o:["Como harmonizar fé e razão dentro da tradição cristã","Qual é a origem, o alcance e os limites do conhecimento humano","Qual é o princípio (*arché*) fundamental da realidade natural","Como organizar uma cidade justa baseada na virtude"],a:1,c:"A Filosofia Medieval perguntava como harmonizar fé e razão (A). A Filosofia Antiga perguntava sobre o *arché* (C) ou sobre a cidade justa (D). A Modernidade desloca o problema para a epistemologia: o que podemos conhecer, como e com que grau de certeza?",d:"Fácil"},{n:2,t:"A frase \"Penso, logo existo\" (*cogito ergo sum*), de Descartes, representa:",o:["O resultado final de um silogismo dedutivo","A primeira certeza indubitável que sobrevive à dúvida metódica","A prova de que o pensamento é superior ao corpo","A definição cartesiana de consciência"],a:1,c:"O *cogito* não é um silogismo — é uma intuição imediata. Ao duvidar de tudo, Descartes percebe que o próprio ato de duvidar (que é uma forma de pensar) prova que existe um ser pensante. Isso não pode ser negado nem pelo gênio maligno: para ser enganado, preciso existir e pensar.",d:"Fácil"},{n:3,t:"A posição de que a mente humana, ao nascer, é como uma tábula rasa — sem nenhum conteúdo inato — é defendida por:",o:["René Descartes","Gottfried Leibniz","John Locke","Baruch de Spinoza"],a:2,c:"A metáfora da *tábula rasa* (lousa em branco) é de **Locke** — ela expressa a tese empirista de que não existem ideias inatas: todo conteúdo da mente vem da experiência. Descartes e Leibniz (A e B) são racionalistas que afirmam a existência de ideias inatas. Spinoza (D) é monista, mas também racionalista.",d:"Fácil"},{n:4,t:"O Racionalismo moderno tem como modelo ideal de conhecimento:",o:["A biologia e as ciências da vida","A história e suas narrativas","A matemática e a geometria","A teologia e a revelação"],a:2,c:"Os racionalistas admiravam a matemática por produzir verdades necessárias e universais pela razão pura — sem depender de observação empírica. 2 + 2 = 4 é verdadeiro em qualquer lugar e em qualquer tempo, e não precisamos verificar empiricamente. Esse é o modelo de conhecimento que buscavam para a filosofia.",d:"Fácil"},{n:5,t:"A \"dúvida metódica\" de Descartes é chamada de \"metódica\" porque:",o:["É uma dúvida definitiva e permanente sobre a possibilidade do conhecimento","É uma estratégia provisória e sistemática para encontrar certezas absolutas","Foi desenvolvida seguindo o método indutivo de Francis Bacon","Se aplica apenas às questões científicas, não às filosóficas"],a:1,c:"\"Metódica\" = aplicada como método, provisoriamente. Descartes não era cético — ele queria exatamente o oposto: encontrar certezas absolutas. A dúvida é a ferramenta para chegar a essas certezas: tudo o que sobreviver à dúvida mais radical é absolutamente certo. É o oposto do ceticismo permanente.",d:"Fácil"},{n:6,t:"O Empirismo afirma que toda ideia legítima deve poder ser rastreada até:",o:["Um princípio racional inato presente na mente desde o nascimento","Uma impressão sensorial correspondente","Uma verdade revelada pela religião ou pela tradição","Um axioma matemático demonstrável pela razão pura"],a:1,c:"Esta é a regra empirista fundamental de Hume: se uma ideia não pode ser rastreada até uma impressão sensorial, ela é vazia — especulação sem conteúdo real. É o critério que Hume usa para criticar conceitos como \"substância\", \"causalidade necessária\" e \"eu permanente\".",d:"Fácil"},{n:7,t:"Para David Hume, quando observamos que \"A causa B\" (por exemplo, \"fogo causa calor\"), o que realmente percebemos é:",o:["A conexão necessária entre o fogo e o calor, garantida pela razão","Apenas a conjunção constante dos dois eventos — nunca a \"causação\" em si","Uma ideia inata de causalidade que a razão impõe aos dados sensoriais","A substância do fogo gerando necessariamente a substância do calor"],a:1,c:"A crítica de Hume à causalidade é central em seu empirismo: nunca percebemos a \"força\" ou \"necessidade\" que liga causa e efeito — percebemos apenas que A e B ocorrem juntos regularmente (conjunção constante). A ideia de necessidade causal é um hábito mental que formamos ao observar regularidades — não uma percepção real.",d:"Fácil"},{n:8,t:"O dualismo cartesiano divide a realidade em:",o:["*Res cogitans* (coisa pensante) e *res extensa* (coisa extensa)","Mônadas e substâncias compostas","Impressões e ideias","Atributos e substâncias"],a:0,c:"Descartes propõe dois tipos de substância: *res cogitans* (mente, alma, pensamento — imaterial, não ocupa espaço) e *res extensa* (corpo, matéria, mundo físico — ocupa espaço, divisível). Essa divisão gera o problema mente-corpo: como duas substâncias radicalmente distintas interagem? Mônadas (B) é Leibniz; impressões e ideias (C) é Hume; atributos e substâncias (D) é Spinoza.",d:"Fácil"},{n:9,t:"A frase \"Esse est percipi\" (\"Ser é ser percebido\"), de George Berkeley, expressa a tese de que:",o:["O ser humano só existe enquanto é percebido pelos outros","Os objetos materiais existem apenas enquanto são percebidos por alguma mente","A percepção é inferior ao conhecimento racional das essências","Deus percebe o mundo e por isso o cria continuamente"],a:1,c:"Berkeley leva o empirismo à conclusão mais radical: se só conhecemos nossas percepções, não há razão para postular uma \"matéria\" independente das percepções. Os objetos existem como percepções — quando não os percebemos, existem porque Deus os percebe. Isso é idealismo: a realidade é mental, não material.",d:"Fácil"},{n:10,t:"John Locke distingue qualidades primárias de qualidades secundárias. As qualidades primárias são aquelas que:",o:["Dependem do sujeito que percebe — variam conforme o observador","Existem no objeto independentemente de qualquer observador","São mais importantes para a estética do que para a ciência","Foram criadas por Deus como estrutura da percepção humana"],a:1,c:"Qualidades primárias (extensão, figura, número, movimento) existem no objeto mesmo sem observador. Qualidades secundárias (cor, som, sabor, odor) são poderes do objeto de produzir certas sensações em nós — mas não existem no objeto como as percebemos (o limão tem o poder de causar a sensação de amarelo, mas o \"amarelo\" não está no limão como está a forma oval).",d:"Fácil"},{n:11,t:"O \"Princípio da Razão Suficiente\", formulado por Leibniz, afirma que:",o:["A razão humana é suficiente para alcançar todo conhecimento possível","Nada existe sem uma razão suficiente para existir e ser como é","A fé é suficiente para a salvação, dispensando a razão filosófica","Os axiomas matemáticos são suficientes para fundamentar toda a filosofia"],a:1,c:"O Princípio da Razão Suficiente é um dos princípios metafísicos fundamentais de Leibniz: nada é sem razão (*nihil est sine ratione*). Tudo que existe tem uma explicação de por que existe e por que é assim e não de outra forma. Isso implica que o universo é racional — não arbitrário — e que a tarefa da filosofia é encontrar essas razões.",d:"Fácil"},{n:12,t:"O \"problema da indução\" (ou problema de Hume) consiste em:",o:["A dificuldade de induzir pessoas a aceitar conclusões filosóficas","A impossibilidade de justificar racionalmente a inferência de regularidades futuras a partir de regularidades passadas","O problema de como generalizar leis matemáticas a partir de casos específicos","A dificuldade de aplicar o método dedutivo às ciências naturais"],a:1,c:"Hume identificou que a indução (inferir \"o Sol sempre nascerá porque sempre nasceu até hoje\") não tem justificação racional: o futuro pode ser diferente do passado. A regularidade observada no passado não garante logicamente a regularidade futura. Este problema questiona o fundamento do método científico empírico e permanece sem solução definitiva na filosofia da ciência.",d:"Fácil"},{n:13,t:"O filósofo que afirmou que existe apenas uma única substância — que pode ser chamada de \"Deus\" ou \"Natureza\" (*Deus sive Natura*) — foi:",o:["René Descartes","Gottfried Leibniz","Baruch de Spinoza","David Hume"],a:2,c:"O monismo de Spinoza é a posição mais radical do racionalismo: existe apenas uma substância (Deus/Natureza), da qual pensamento e extensão são apenas dois dos infinitos atributos. Isso resolve o problema do dualismo cartesiano (como mente e corpo interagem?) — porque eles são dois aspectos da mesma realidade, não duas substâncias distintas.",d:"Fácil"},{n:14,t:"Francis Bacon identificou quatro tipos de preconceitos que distorcem o conhecimento, chamados de \"ídolos\". O \"ídolo do foro\" refere-se a:",o:["Preconceitos derivados do temperamento individual de cada pessoa","Distorções causadas pela linguagem e pelas palavras que não têm referência real","A aceitação dogmática de sistemas filosóficos estabelecidos","Tendências da natureza humana em geral que levam a erros sistemáticos"],a:1,c:"Os quatro ídolos de Bacon: Da Caverna (individual — cada um tem sua \"caverna\" de preconceitos pessoais); Da Tribo (natureza humana em geral — tendências comuns a todos os humanos); Do Foro (linguagem — palavras sem referência real que geram debates falsos); Do Teatro (sistemas filosóficos aceitos dogmaticamente). A alternativa D descreve o ídolo da Tribo.",d:"Fácil"},{n:15,t:"Para Descartes, as ideias inatas são aquelas que:",o:["A criança aprende nos primeiros anos de vida pela imitação","A mente possui antes e independentemente de qualquer experiência sensorial","São comuns a todas as culturas humanas por terem origem religiosa","A razão deduz a partir de princípios matemáticos"],a:1,c:"Ideias inatas no racionalismo cartesiano são aquelas que a mente traz consigo — não adquiridas pela experiência, mas presentes na estrutura da razão. Exemplos: a ideia de Deus (ser infinito e perfeitíssimo), as verdades matemáticas (um triângulo tem três ângulos que somam 180°), as noções comuns (tudo tem uma causa). Locke criticou exatamente essa tese.",d:"Fácil"},{n:16,t:"A crítica de Locke às \"ideias inatas\" cartesianas baseia-se no argumento de que:",o:["As ideias matemáticas não são realmente universais — variam entre culturas","Se ideias inatas existissem, deveriam ser universalmente presentes em todos os humanos — inclusive crianças e povos sem cultura filosófica, o que não ocorre","Descartes não demonstrou adequadamente que o *cogito* é uma ideia inata","As ideias inatas contradizem a doutrina cristã da criação da alma por Deus"],a:1,c:"O argumento de Locke é empírico: se ideias como \"identidade\" ou \"Deus\" fossem inatas, todos os seres humanos as teriam desde o nascimento — inclusive crianças que não sabem falar e povos sem filosofia. Mas não as têm. Logo, não são inatas. A resposta dos racionalistas seria que as ideias inatas não são conscientes desde o nascimento — são disposições ou capacidades que se desenvolvem com o uso da razão.",d:"Média"},{n:17,t:"O \"gênio maligno\" (*malin génie*) na filosofia de Descartes é um recurso intelectual que serve para:",o:["Explicar a origem do mal moral no mundo criado por Deus","Radicalizar a dúvida ao máximo, questionando até as verdades matemáticas","Demonstrar que Satanás existe como entidade oposta a Deus","Criticar os filósofos escolásticos que enganavam seus alunos"],a:1,c:"O gênio maligno é uma hipótese filosófica — não uma crença religiosa. Descartes supõe (provisoriamente): \"E se existisse um ser onipotente e malicioso que me engana em tudo — inclusive quando faço 2 + 2?\" Isso radicaliza a dúvida ao máximo: mesmo as evidências matemáticas poderiam ser ilusões impostas pelo gênio. O que sobreviver a essa dúvida máxima é absolutamente certo.",d:"Média"},{n:18,t:"A diferença entre o monismo de Spinoza e o dualismo de Descartes implica que, para Spinoza:",o:["O problema mente-corpo de Descartes é um pseudoproblema — mente e corpo são aspectos da mesma substância","A mente é superior ao corpo e deve suprimi-lo para alcançar o conhecimento","O corpo é a única realidade — a mente é apenas uma função cerebral","Mente e corpo são duas substâncias distintas que interagem pela glândula pineal"],a:0,c:"Para Descartes, mente e corpo são substâncias distintas — o que gera o problema: como interagem? Para Spinoza, o problema não existe: mente (atributo pensamento) e corpo (atributo extensão) são dois modos de uma única substância (Deus/Natureza). Não há interação entre dois entes distintos — há uma única realidade vista sob dois aspectos. A glândula pineal (D) é a resposta *cartesiana* ao problema — não a de Spinoza.",d:"Média"},{n:19,t:"Para Hume, a ideia de \"eu\" como entidade permanente e idêntica a si mesma ao longo do tempo é:",o:["Uma ideia inata que a razão produz independentemente da experiência","Uma ficção — quando entramos em nós mesmos, encontramos apenas um feixe de percepções em mudança","Uma certeza imediata equivalente ao *cogito* de Descartes","Uma verdade demonstrável pela análise lógica da consciência"],a:1,c:"Hume aplica sua regra empirista ao \"eu\": qual impressão corresponde à ideia de um eu permanente? Quando introspeccionamos, encontramos apenas um fluxo de percepções — pensamentos, sensações, emoções — em constante mudança. Nunca encontramos um \"eu\" permanente por trás dessas percepções. O \"eu\" é uma ficção útil construída pela memória e pelo hábito — não uma substância real.",d:"Média"},{n:20,t:"A afirmação de que Kant foi \"despertado do sono dogmático\" por Hume indica que:",o:["Hume provou definitivamente que o conhecimento é impossível, e Kant o aceitou","A crítica de Hume à causalidade e à indução mostrou a Kant que o racionalismo precisava ser reformulado","Hume e Kant concordavam completamente sobre a teoria do conhecimento","Kant rejeitou totalmente o empirismo após ler Hume"],a:1,c:"Kant reconhecia que Hume havia colocado um problema real e sério: se toda certeza deve vir da experiência, como justificamos o princípio de causalidade (que usamos constantemente na ciência)? O racionalismo dogmático simplesmente afirmava que a razão conhece — sem explicar *como*. Hume mostrou que o empirismo puro não resolve o problema. Kant precisou formular uma terceira via (Tópico 5).",d:"Média"},{n:21,t:"A distinção entre \"conhecimento *a priori*\" e \"conhecimento *a posteriori*\" é fundamental na Filosofia Moderna. Qual das seguintes afirmações é correta?",o:["Conhecimento *a priori* depende da experiência; *a posteriori* é independente dela","Conhecimento *a priori* é independente da experiência; *a posteriori* depende dela","Ambos dependem da experiência — a distinção é apenas de grau","Conhecimento *a priori* é infalível; *a posteriori* é sempre falso"],a:1,c:"*A priori* = anterior à experiência, independente dela — verdades matemáticas são o exemplo típico: \"7 + 5 = 12\" é verdadeiro sem precisarmos contar sete e cinco coisas. *A posteriori* = posterior à experiência, dependente dela — \"A água ferve a 100°C ao nível do mar\" só podemos saber pela observação. Racionalistas privilegiam o *a priori*; empiristas, o *a posteriori*.",d:"Média"},{n:22,t:"O empirismo de Berkeley leva a uma conclusão aparentemente paradoxal: ao negar a matéria independente da percepção, ele se torna:",o:["Um materialista radical que nega a existência da mente","Um idealista que afirma que a realidade é essencialmente mental","Um cético que nega a possibilidade de qualquer conhecimento","Um dualista que separa mente e matéria mais radicalmente que Descartes"],a:1,c:"Berkeley é um empirista idealista — o paradoxo é que o empirismo (que começa pelos sentidos e pela experiência) leva, em Berkeley, a negar a matéria independente. Se só conhecemos nossas percepções, a \"matéria\" como substância independente é uma entidade desnecessária — e deve ser cortada pela navalha da parcimônia. O que resta são mentes (humanas e divina) e suas percepções.",d:"Média"},{n:23,t:"A crítica de Hume à ideia de \"substância\" baseia-se no argumento de que:",o:["A substância é uma ideia inata que não pode vir da experiência","Nunca percebemos uma substância — percebemos apenas qualidades, e a \"substância\" é apenas o nome que damos ao agrupamento de qualidades","A substância existe, mas é incognoscível pelos sentidos humanos limitados","O conceito de substância é útil para a ciência, mesmo que não seja diretamente perceptível"],a:1,c:"Hume aplica sua regra: qual impressão corresponde à ideia de \"substância\"? Quando percebo uma maçã, percebo cor vermelha, forma redonda, sabor doce, textura lisa. Nunca percebo uma \"substância-maçã\" por trás dessas qualidades. Logo, a ideia de substância não tem impressão correspondente — é uma ficção filosófica. Esta crítica influenciou todo o empirismo posterior e a filosofia analítica.",d:"Média"},{n:24,t:"A teoria das mônadas de Leibniz afirma que as mônadas \"não têm janelas\". Isso significa que:",o:["As mônadas existem no escuro, sem acesso à luz da razão","As mônadas não se comunicam diretamente entre si — cada uma é um ponto de vista fechado sobre o universo","As mônadas são invisíveis aos sentidos humanos, como os átomos de Demócrito","As mônadas existem apenas na mente de Deus, sem realidade independente"],a:1,c:"\"Sem janelas\" é a metáfora de Leibniz para a autossuficiência das mônadas: cada mônada é um ponto de vista único e completo sobre o universo, sem receber influência causal de outras mônadas. Como então elas \"interagem\"? Por harmonia pré-estabelecida: Deus criou cada mônada de modo que seus estados internos se correspondam perfeitamente com os das outras — como dois relógios sincronizados sem se tocar.",d:"Média"},{n:25,t:"A Revolução Científica (Copérnico, Galileu, Newton) contribuiu para o surgimento da Filosofia Moderna principalmente porque:",o:["Demonstrou que a Filosofia era desnecessária — a ciência resolvia todos os problemas","Levantou urgentemente a questão do método correto para produzir conhecimento e dos fundamentos do saber científico","Confirmou as posições da Escolástica medieval sobre a natureza","Eliminou o problema do ceticismo ao fornecer verdades absolutas sobre o cosmos"],a:1,c:"A Revolução Científica não eliminou a Filosofia — a tornou mais urgente. Como Galileu sabia que a Terra se movia, contrariando os sentidos e a tradição? Qual era o método que produzia esse conhecimento? Como justificar o uso da matemática para descrever a natureza? Essas perguntas são filosóficas — e foram o motor do racionalismo (Descartes tentou fundar a ciência nova) e do empirismo (Bacon e Locke tentaram analisar o método científico).",d:"Média"},{n:26,t:"O problema filosófico conhecido como \"problema mente-corpo\" foi gerado diretamente pelo dualismo cartesiano porque:",o:["Descartes não conseguiu explicar como a mente imaterial pode interagir causalmente com o corpo material","Descartes identificou mente e corpo com a mesma substância, gerando confusão ontológica","Descartes negou a existência do corpo, gerando o problema de como explicar a experiência física","Descartes afirmou que mente e corpo são idênticos, contradizendo a experiência cotidiana"],a:0,c:"Se mente (*res cogitans*) e corpo (*res extensa*) são substâncias radicalmente distintas (uma imaterial e sem extensão, outra material e extensa), como elas interagem? Como minha decisão mental (quero levantar o braço) move meu braço físico? Descartes propôs a glândula pineal como ponto de contato — resposta insatisfatória que os sucessores buscaram superar. Spinoza eliminou o problema com o monismo; Leibniz com a harmonia pré-estabelecida.",d:"Média"},{n:27,t:"Para Hume, o princípio de causalidade (toda causa tem um efeito) é:",o:["Uma verdade *a priori* demonstrável pela razão pura","Uma verdade *a posteriori* diretamente observável nos experimentos","Um hábito mental formado pela observação de conjunções constantes de eventos","Uma ideia inata presente em todas as mentes humanas desde o nascimento"],a:2,c:"Hume distingue: a razão pura (A) não pode demonstrar que toda causa tem efeito — isso não é analiticamente verdadeiro. Os sentidos (B) não percebem a \"causação\" — percebem apenas eventos que se sucedem. A causalidade não é inata (D — isso seria racionalismo). O que resta: é um hábito. Ao ver A e B conjuntos repetidamente, a mente forma o hábito de esperar B quando vê A — e chama isso de \"causalidade\".",d:"Média"},{n:28,t:"A posição de Locke de que \"qualidades secundárias\" (cor, som, sabor) dependem do sujeito que percebe tem implicações para o ensino de ciências porque:",o:["Implica que a ciência deve ignorar as qualidades secundárias por serem subjetivas","Sugere que o conhecimento científico objetivo deve focar nas qualidades primárias (matematizáveis)","Prova que todo conhecimento é relativo ao sujeito e não tem valor objetivo","Demonstra que os sentidos são completamente confiáveis para o conhecimento científico"],a:1,c:"A distinção lockiana antecipa e fundamenta philosophicamente a Revolução Científica de Galileu: a ciência matemática da natureza foca nas qualidades primárias (extensão, massa, velocidade — matematizáveis) e trata as qualidades secundárias (cor, calor como sensação) como subjetivas. Isso não é relativismo (C) — é uma distinção entre o que é objetivo (matematizável) e o que é sujeito-dependente.",d:"Média"},{n:29,t:"A posição de Spinoza de que \"Deus é Natureza\" (*Deus sive Natura*) foi interpretada como panteísmo e gerou sua excomunhão. A razão filosófica central para essa posição era:",o:["Spinoza acreditava que Deus havia criado a natureza material e depois se retirado","Spinoza aplicou a definição de substância (aquilo que existe por si mesmo e se concebe por si mesmo) e concluiu que só pode haver uma substância — que é Deus/Natureza","Spinoza era materialista e identificou Deus com a matéria física","Spinoza seguiu a tradição mística judaica da cabala, que identificava Deus com o cosmos"],a:1,c:"O monismo de Spinoza segue uma lógica rigorosa: substância = aquilo que existe por si mesmo, sem depender de outro. Se existissem duas substâncias (como em Descartes — mente e matéria), cada uma deveria ser definida em relação à outra — contradizendo a definição. Logo, só pode haver uma substância, infinita e absolutamente autossuficiente: Deus/Natureza. O argumento é racional, não místico (D).",d:"Média"},{n:30,t:"A diferença entre o método **dedutivo** (racionalismo) e o método **indutivo** (empirismo) pode ser resumida como:",o:["O dedutivo parte de casos particulares para leis gerais; o indutivo parte de princípios gerais para casos particulares","O dedutivo parte de princípios gerais para conclusões particulares certas; o indutivo parte de casos particulares para generalizações prováveis","O dedutivo é usado apenas em matemática; o indutivo é usado apenas em filosofia","O dedutivo produz conhecimento provável; o indutivo produz conhecimento certo"],a:1,c:"Dedução: de premissas gerais (todos os homens são mortais; Sócrates é homem) para conclusões particulares necessárias (Sócrates é mortal). Se as premissas são verdadeiras e o raciocínio válido, a conclusão é certa. Indução: de casos particulares observados (este cisne é branco, este cisne é branco...) para generalizações (todos os cisnes são brancos) — que são prováveis, não certas (pode haver um cisne negro não observado ainda).",d:"Média"},{n:31,t:"A crítica de Hume ao conceito de \"eu permanente\" tem relação com debates contemporâneos sobre:",o:["A neurociência e o estudo do cérebro como sede da identidade","A economia e o conceito de interesse individual","A política e a noção de cidadania","A biologia e a evolução da consciência"],a:0,c:"A crítica humiana ao \"eu permanente\" ressurge nos debates contemporâneos de neurociência e filosofia da mente: neurocientistas como Antonio Damasio e filósofos como Daniel Dennett argumentam que o \"eu\" é uma construção do cérebro — um narrativa que o cérebro cria sobre si mesmo — não uma substância permanente. A convergência entre Hume (séc. XVIII) e a neurociência contemporânea é notável.",d:"Média"},{n:32,t:"A tese de que \"o melhor dos mundos possíveis\" foi criado por Deus, defendida por Leibniz, foi satirizada por Voltaire em *Cândido* por ser:",o:["Ateísta e contrária à tradição cristã","Otimista ao ponto de ignorar o sofrimento e o mal presentes no mundo real","Excessivamente pessimista sobre as capacidades da razão humana","Contrária ao princípio da razão suficiente do próprio Leibniz"],a:1,c:"*Cândido* (1759) de Voltaire foi escrito em resposta ao terremoto de Lisboa (1755) — um dos maiores desastres naturais da história europeia, com dezenas de milhares de mortos. Como um Deus bom e onipotente permite isso? Voltaire ridicularizou Leibniz por meio do personagem Dr. Pangloss, que insiste que \"tudo está bem no melhor dos mundos possíveis\" mesmo diante de catástrofes. A crítica é à desconexão entre o otimismo metafísico e a realidade do sofrimento.",d:"Média"},{n:33,t:"Qual é a relação filosófica entre o empirismo de Hume e o desenvolvimento do método científico moderno?",o:["Hume demonstrou que o método científico é absolutamente confiável e não requer justificação filosófica","Hume mostrou que o método científico (baseado na indução) não tem fundamento racional absoluto — o que não o invalida, mas limita suas pretensões de certeza","Hume rejeitou completamente o método científico como forma de conhecimento","Hume demonstrou que apenas a dedução matemática pode fundamentar o método científico"],a:1,c:"A contribuição de Hume para a filosofia da ciência é profunda: ele mostrou que a indução (base do método experimental) não tem justificação racional absolutamente certa. Isso não invalida a ciência — mas modifica suas pretensões: a ciência não produz certezas absolutas, mas generalizações prováveis que funcionam enquanto não são refutadas. Popper, no séc. XX, desenvolveria o falsificacionismo como resposta a esse problema.",d:"Média"},{n:34,t:"Para Descartes, a prova da existência de Deus a partir da ideia de um ser infinito na mente finita pode ser classificada como:",o:["Um argumento ontológico *a priori*, idêntico ao de Anselmo","Um argumento cosmológico *a posteriori* baseado na observação do mundo","Um argumento *a priori* que parte da ideia de Deus presente na mente (mas distinto do argumento ontológico de Anselmo)","Um argumento teleológico baseado na ordem e finalidade do cosmos"],a:2,c:"Descartes usa um argumento diferente do de Anselmo: parte da ideia de um ser infinito que encontra em sua mente finita. Uma mente finita não poderia ter gerado por si mesma a ideia de infinito — logo, essa ideia deve ter uma causa adequada: um ser realmente infinito (Deus). É *a priori* (parte de ideias, não de observação) mas distinto do ontológico (não parte da definição de Deus, mas da ideia de infinito em uma mente finita).",d:"Média"},{n:35,t:"O conceito de \"harmonia pré-estabelecida\" de Leibniz resolve o problema mente-corpo cartesiano ao propor que:",o:["Mente e corpo são a mesma substância vista de ângulos diferentes","Mente e corpo não interagem causalmente — Deus criou-os de modo que se correspondam perfeitamente desde o início","A glândula pineal serve como ponto de contato entre mente e corpo","O corpo é apenas uma ideia na mente, como Berkeley propôs"],a:1,c:"Leibniz soluciona o problema cartesiano sem postular interação causal entre substâncias distintas: Deus criou cada mônada (incluindo as mônadas \"mentais\" e as mônadas \"corporais\") de modo que seus estados se correspondam perfeitamente — como dois relógios sincronizados que mostram a mesma hora sem se influenciar. A \"interação\" é uma correspondência pré-programada, não uma causalidade real.",d:"Média"},{n:36,t:"Considere as afirmações:  I. Para Descartes, o *cogito* prova a existência da alma imortal. II. Para Hume, a ideia de \"eu permanente\" não tem impressão correspondente e é uma ficção. III. Para Locke, o eu é constituído pela continuidade da memória — não por uma substância imaterial.  Estão corretas:",o:["Apenas I e II","Apenas II e III","Apenas I e III","I, II e III"],a:1,c:"I é **parcialmente incorreta**: o *cogito* prova a existência de uma *res cogitans* (coisa pensante) — mas não necessariamente que ela é imortal. A imortalidade da alma é demonstrada por Descartes em outras partes das *Meditações*, não pelo *cogito* diretamente. II é **correta**: Hume critica o eu permanente por falta de impressão correspondente. III é **correta**: Locke propõe na sua análise da identidade pessoal que o que nos torna \"o mesmo eu\" ao longo do tempo é a continu",d:"Difícil"},{n:37,t:"A tese de Berkeley \"Esse est percipi\" é filosoficamente mais próxima do:",o:["Materialismo de Hobbes — que reduz tudo à matéria","Racionalismo de Descartes — que privilegia a mente sobre o corpo","Idealismo posterior de Kant — que afirma que o espaço e o tempo são formas da intuição do sujeito","Ceticismo de Hume — que nega a possibilidade de qualquer conhecimento"],a:2,c:"Berkeley e Kant compartilham o \"idealismo\" — a ideia de que a realidade conhecida é, em aspectos importantes, estruturada pela mente do sujeito (não simplesmente dada independentemente). Berkeley: os objetos são ideias na mente. Kant: espaço, tempo e categorias são formas que o sujeito impõe à experiência. A diferença: Berkeley é empirista e usa Deus como garantia; Kant é transcendental e usa as estruturas *a priori* do sujeito.",d:"Difícil"},{n:38,t:"A solução de Descartes para o problema do gênio maligno — recorrer à veracidade de Deus — foi criticada por gerar um **círculo vicioso** (\"círculo cartesiano\"). Esse círculo consiste em:",o:["Descartes usa Deus para garantir a razão, mas usa a razão para provar Deus — tornando o argumento circular","Descartes prova o *cogito* a partir de Deus, e Deus a partir do *cogito*","A dúvida metódica é usada para provar que a dúvida é impossível","Descartes prova que os sentidos são confiáveis usando apenas os sentidos"],a:0,c:"O \"círculo cartesiano\" é uma das objeções clássicas ao sistema de Descartes: ele usa suas \"percepções claras e distintas\" (produto da razão) para provar Deus — mas usa Deus (ser veraz) para garantir que suas percepções claras e distintas são confiáveis. A razão garante Deus, e Deus garante a razão — um círculo vicioso. Descartes tentou responder, mas a objeção permanece como um dos problemas mais debatidos em sua obra.",d:"Difícil"},{n:39,t:"A distinção de Hume entre \"relações de ideias\" e \"questões de fato\" (conhecida como a \"bifurcação de Hume\") implica que:",o:["Todo conhecimento pode ser dividido em matemático (necessário) ou empírico (provável) — e que as afirmações metafísicas não se encaixam em nenhuma das categorias","As relações de ideias são sempre falsas; as questões de fato são sempre verdadeiras","O conhecimento matemático depende da experiência tanto quanto o conhecimento empírico","A metafísica é tão confiável quanto a matemática quando usada com rigor"],a:0,c:"A bifurcação de Hume é um critério de significado: afirmações significativas são ou \"relações de ideias\" (matemática e lógica — necessárias e certas, mas não informam sobre o mundo) ou \"questões de fato\" (informações sobre o mundo — baseadas na experiência, prováveis). Afirmações metafísicas como \"Deus existe\", \"a substância existe\", \"a vontade é livre\" não se encaixam em nenhuma categoria — logo, são sem sentido cognitivo. Isso antecipa o positivismo lógico do Círculo de Vie",d:"Difícil"},{n:40,t:"O racionalismo de Leibniz afirma que existem dois tipos de verdades: \"verdades de razão\" e \"verdades de fato\". A diferença fundamental é:",o:["Verdades de razão são contingentes; verdades de fato são necessárias","Verdades de razão são necessárias (negá-las é contraditório); verdades de fato são contingentes (poderiam ser diferentes)","Verdades de razão vêm da experiência; verdades de fato vêm da razão pura","Verdades de razão são mais certas; verdades de fato são completamente incertas"],a:1,c:"Verdades de razão (ex.: o triângulo tem três lados): negá-las é contraditório — são necessárias e universais. Verdades de fato (ex.: César cruzou o Rubicão): verdadeiras, mas poderiam ter sido diferentes — são contingentes. Essa distinção de Leibniz é análoga à distinção de Hume entre relações de ideias e questões de fato — e antecipa a distinção kantiana entre juízos analíticos e sintéticos.",d:"Difícil"},{n:41,t:"Um professor de Filosofia no EF Anos Finais quer trabalhar o *cogito* de Descartes com seus alunos. A estratégia pedagógica mais adequada é:",o:["Pedir que os alunos memorizem a frase \"Penso, logo existo\" e a citem em prova","Propor um exercício: \"Tente duvidar de tudo — o que você não consegue duvidar?\" e usar as respostas para chegar coletivamente ao *cogito*","Explicar que o *cogito* prova definitivamente que a alma é imortal","Evitar o *cogito* por ser excessivamente abstrato para alunos do EF Anos Finais"],a:1,c:"Esta questão de transposição didática é central para o professor de Filosofia no EF. O *cogito* não deve ser memorizado (A — ensino mecânico) nem evitado (D — subestima os alunos). A estratégia B é maiêutica — faz os alunos chegarem à conclusão por si mesmos, o que é pedagogicamente mais poderoso e conecta Descartes ao método socrático. É também alinhada com as metodologias ativas da BNCC.",d:"Difícil"},{n:42,t:"O empirismo de Hume, ao afirmar que a causalidade é apenas um hábito mental, gerou implicações para a **filosofia da religião** porque:",o:["Provou definitivamente a existência de Deus por meio do argumento cosmológico","Tornou questionáveis argumentos teológicos baseados na causalidade (como as Cinco Vias de Tomás)","Demonstrou que a fé religiosa é mais confiável que o conhecimento racional","Permitiu a Hume defender o milagre como categoria racional legítima"],a:1,c:"As Cinco Vias de Tomás são argumentos causais: toda causa tem um efeito, toda coisa movida tem um motor... Hume mina esse fundamento: se \"causalidade\" é apenas hábito mental sem necessidade racional, argumentos teológicos baseados em causalidade perdem seu poder demonstrativo. Além disso, Hume escreveu *Diálogos sobre a Religião Natural* e *Sobre os Milagres* criticando diretamente os argumentos teístas — tornando-se um dos maiores críticos filosóficos da religião.",d:"Difícil"},{n:43,t:"A oposição entre Racionalismo continental e Empirismo britânico pode ser parcialmente explicada por diferenças de **contexto científico**:",o:["Os racionalistas continentais admiravam a física de Newton; os empiristas britânicos admiravam a matemática de Leibniz","Os racionalistas eram influenciados pela matemática (Descartes e Leibniz eram matemáticos); os empiristas eram influenciados pela física experimental e pela medicina","O contexto científico era irrelevante para o debate filosófico entre as duas tradições","Ambas as tradições rejeitavam a Revolução Científica como ameaça à tradição filosófica"],a:1,c:"Descartes criou a geometria analítica; Leibniz co-inventou o cálculo — sua orientação matemática influencia diretamente o modelo racionalista de conhecimento. Locke era amigo do médico Thomas Sydenham e do físico Robert Boyle; Hume escreveu numa tradição de filosofia natural experimental. Os empiristas britânicos olhavam para a prática científica de observação e experimentação, não para a demonstração matemática.",d:"Difícil"},{n:44,t:"A posição de Spinoza de que a liberdade humana não é ausência de determinação, mas conhecimento da necessidade que nos determina, implica que:",o:["O ser humano é completamente livre para escolher qualquer ação","A liberdade aumenta com o entendimento das causas que nos movem — o sábio age \"livremente\" porque compreende por que age como age","A liberdade humana é uma ilusão completa — tudo é determinado pela substância única","A liberdade só é possível após a morte, quando a alma se separa do corpo"],a:1,c:"O conceito de liberdade de Spinoza é contra-intuitivo mas profundo: somos determinados pelas causas que nos movem (paixões, instintos, pressões externas) — isso é servidão. O sábio que *compreende* essas causas age a partir de sua própria natureza racional — isso é liberdade. É uma liberdade não como ausência de causas, mas como autodeterminação racional. Esse conceito influenciará Hegel e Marx.",d:"Difícil"},{n:45,t:"A \"Navalha de Ockham\" (séc. XIV) e o princípio metodológico do empirismo moderno compartilham qual elemento?",o:["A defesa das ideias inatas como fundamento do conhecimento","A preferência pela explicação mais simples e a eliminação de entidades desnecessárias","A afirmação de que a fé é superior à razão como fonte de verdade","A demonstração de que o mundo material não existe independentemente da percepção"],a:1,c:"A Navalha de Ockham (não multiplicar entidades além do necessário) e o empirismo moderno compartilham o princípio de parcimônia: prefira a explicação mais econômica que dê conta dos fatos observados. Berkeley usa esse princípio contra a \"matéria\" (entidade desnecessária — a percepção é suficiente). Hume usa contra a \"substância\" e o \"eu permanente\". É uma linha filosófica coerente da Idade Média ao Empirismo.",d:"Difícil"},{n:46,t:"O paradoxo do empirismo de Berkeley pode ser formulado assim: ao usar argumentos empíricos para negar a matéria, ele acaba defendendo uma posição que se parece mais com o:",o:["Materialismo de Hobbes","Ceticismo de Pirro","Idealismo do racionalismo platônico","Positivismo do séc. XIX"],a:2,c:"O paradoxo: Berkeley começa como empirista (só conhecemos nossas percepções) e chega ao idealismo (a realidade é mental — Deus e mentes finitas). Isso o aproxima, inesperadamente, do idealismo platônico (a realidade verdadeira é ideal/mental, não material). A diferença: Platão defende o mundo das Formas acessível pela razão; Berkeley defende as ideias percebidas pelas mentes. Mas ambos subordinam a realidade à mente.",d:"Difícil"},{n:47,t:"A crítica de Hume à metafísica — de que ela produz afirmações que não são nem relações de ideias nem questões de fato — antecipa diretamente o **positivismo lógico** do Círculo de Viena (séc. XX), que propunha:",o:["Que toda afirmação filosófica deve ser verificável empiricamente ou analítica — caso contrário, é sem sentido cognitivo","Que a filosofia deve se limitar às questões morais e políticas","Que a ciência e a filosofia são atividades completamente distintas e irreconciliáveis","Que apenas a matemática produz conhecimento verdadeiro"],a:0,c:"O Círculo de Viena (Schlick, Carnap, Wittgenstein) formulou o \"princípio da verificabilidade\": uma afirmação tem sentido cognitivo se e somente se é analítica (verdadeira por definição) ou empiricamente verificável. Afirmações metafísicas (\"Deus existe\", \"a vontade é livre\") não satisfazem nenhum dos critérios — logo, são sem sentido. Isso é a radicalização do critério de Hume aplicado ao programa do empirismo lógico.",d:"Difícil"},{n:48,t:"Considere a seguinte situação pedagógica: um estudante do EF Anos Finais diz \"Só acredito no que vejo\". O professor de Filosofia reconhece que essa é uma versão ingênua do empirismo. A resposta filosófica mais adequada é:",o:["Concordar plenamente, pois é exatamente a tese do empirismo filosófico rigoroso","Perguntar: \"Você já viu a gravidade? A eletricidade? O amor? Você acredita neles?\" — para mostrar que mesmo o empirismo precisa de elaboração teórica além da percepção direta","Responder que a razão é mais confiável que os sentidos, adotando a posição racionalista","Afirmar que a religião supera tanto os sentidos quanto a razão como fonte de verdade"],a:1,c:"Esta é uma questão de transposição didática. A resposta B usa o método socrático: uma pergunta que leva o estudante a perceber a complexidade da própria posição. \"Só acredito no que vejo\" é empirismo ingênuo — mas a ciência postula entidades não diretamente observáveis (gravidade, campos eletromagnéticos, quarks). Mesmo o empirismo sofisticado vai além da percepção imediata. A pergunta não invalida o empirismo — o aprofunda.",d:"Difícil"},{n:49,t:"A frase de Kant \"Hume me despertou do sono dogmático\" tem um significado técnico preciso: o \"sono dogmático\" era:",o:["A crença religiosa dogmática da Escolástica medieval, criticada pelo empirismo","A aceitação acrítica do racionalismo — a suposição de que a razão pode conhecer a realidade sem questionamento de seus próprios limites","O ceticismo excessivo que impedia Kant de fazer afirmações filosóficas","A confiança excessiva nos sentidos própria do empirismo britânico"],a:1,c:"\"Sono dogmático\" = aceitar sem questionamento que a razão pode produzir conhecimento metafísico (sobre Deus, alma, liberdade, mundo como totalidade) sem investigar se a razão é realmente capaz disso e quais são seus limites. Hume mostrou que conceitos fundamentais (causalidade, substância, eu) não têm fundamento empírico sólido — o que forçou Kant a perguntar: \"Quais são as condições de possibilidade do conhecimento?\" (Tópico 5).",d:"Difícil"},{n:50,t:"Um professor de Filosofia no EF Anos Finais quer usar o debate Racionalismo × Empirismo para desenvolver o **pensamento crítico** dos alunos sobre **fake news** e desinformação. Qual dos tópicos deste debate é mais diretamente relevante?",o:["O dualismo cartesiano mente-corpo","O monismo de Spinoza sobre a única substância","O problema da indução de Hume: a regularidade passada não garante verdades futuras","A harmonia pré-estabelecida de Leibniz entre as mônadas"],a:2,c:"O problema da indução de Hume é diretamente relevante para o pensamento crítico sobre desinformação: só porque uma informação foi repetida muitas vezes (regularidade passada), isso não a torna verdadeira. \"Todo mundo diz que X\" não é evidência de que X é verdadeiro. Isso conecta o problema filosófico ao cotidiano dos estudantes e às habilidades de avaliação de evidências previstas na BNCC — tornando a filosofia moderna imediatamente relevante.",d:"Difícil"}];
+const TOTAL = 50;
+let answers = {};
+let currentFilter = 'all';
+let errorsMode = false;
+
+function getVisible(){
+  if(errorsMode){
+    return QUESTIONS.filter(q=>answers[q.n]!==undefined && answers[q.n]!==q.a);
+  }
+  if(currentFilter==='all') return QUESTIONS;
+  return QUESTIONS.filter(q=>q.d===currentFilter);
+}
+
+function renderQuiz(){
+  const visible = getVisible();
+  const container = document.getElementById('quiz-content');
+  container.innerHTML = '';
+  if(!visible.length){
+    container.innerHTML = '<p style="text-align:center;color:var(--text3);padding:40px;font-family:JetBrains Mono,monospace;font-size:13px;">Nenhuma questão neste filtro.</p>';
+    return;
+  }
+  visible.forEach((q,i)=>{
+    const block = document.createElement('div');
+    block.className = 'q-block' + (answers[q.n]!==undefined?' answered':'');
+    block.id = 'qb-'+q.n;
+    const diffClass = q.d==='Fácil'?'diff-easy':q.d==='Média'?'diff-med':'diff-hard';
+    const done = answers[q.n]!==undefined;
+    block.innerHTML = `
+      <div class="q-meta">
+        <span class="q-num">Q${String(q.n).padStart(2,'0')}</span>
+        <span class="q-diff ${diffClass}">${q.d}</span>
+      </div>
+      <div class="q-text">${q.t}</div>
+      <div class="q-opts" id="opts-${q.n}">
+        ${q.o.map((o,j)=>{
+          let cls='q-opt'+(done?' done':'');
+          if(done){
+            if(j===q.a) cls+=' correct';
+            else if(j===answers[q.n]) cls+=' wrong';
+          }
+          return `<div class="${cls}" ${!done?`onclick="pick(${q.n},${j})"`:''}>
+            <span class="opt-letter">${'ABCD'[j]}</span>
+            <span class="opt-text">${o}</span>
+          </div>`;
+        }).join('')}
+      </div>
+      <div class="q-feedback ${done?(answers[q.n]===q.a?'fb-correct show':'fb-wrong show'):''}" id="fb-${q.n}">
+        <span class="fb-label">${done?(answers[q.n]===q.a?'✓ Correto':'✗ Incorreto — Gabarito: '+'ABCD'[q.a]):'' }</span>
+        <span class="fb-body">${q.c}</span>
+      </div>`;
+    container.appendChild(block);
+  });
+}
+
+function pick(qn, optIdx){
+  if(answers[qn]!==undefined) return;
+  const q = QUESTIONS.find(x=>x.n===qn);
+  answers[qn] = optIdx;
+  const correct = optIdx===q.a;
+  // Style options
+  const opts = document.querySelectorAll('#opts-'+qn+' .q-opt');
+  opts.forEach(o=>o.classList.add('done'));
+  opts[optIdx].classList.add(correct?'correct':'wrong');
+  if(!correct) opts[q.a].classList.add('correct');
+  // Feedback
+  const fb=document.getElementById('fb-'+qn);
+  fb.className='q-feedback show '+(correct?'fb-correct':'fb-wrong');
+  fb.innerHTML=`<span class="fb-label">${correct?'✓ Correto':'✗ Incorreto — Gabarito: '+'ABCD'[q.a]}</span><span class="fb-body">${q.c}</span>`;
+  document.getElementById('qb-'+qn).classList.add('answered');
+  updateStats();
+  if(Object.keys(answers).length===TOTAL) finishQuiz();
+}
+
+function syncErrorsButton(){
+  const errBtn = document.getElementById('err-btn');
+  const errs = QUESTIONS.filter(q => answers[q.n] !== undefined && answers[q.n] !== q.a).length;
+  const answered = Object.keys(answers).length;
+
+  if (errs > 0) {
+    errBtn.style.display = 'block';
+    errBtn.disabled = false;
+    errBtn.textContent = errorsMode ? '↺ Mostrar todas' : '↺ Só erros';
+  } else {
+    errBtn.style.display = answered === TOTAL ? 'block' : 'none';
+    errBtn.disabled = true;
+    errBtn.textContent = '↺ Só erros';
+  }
+}
+
+function updateStats(){
+  const answered = Object.keys(answers).length;
+  let corr = 0;
+  QUESTIONS.forEach(q => { if (answers[q.n] === q.a) corr++; });
+  const pct = answered ? Math.round(corr / answered * 100) : 0;
+
+  document.getElementById('hdr-answered').textContent = answered;
+  document.getElementById('hdr-correct').textContent = corr;
+  document.getElementById('hdr-pct').textContent = pct + '%';
+  document.getElementById('prog-bar').style.width = (answered / TOTAL * 100) + '%';
+  document.getElementById('st-pts').textContent = corr;
+  document.getElementById('st-fill').style.width = (corr / TOTAL * 100) + '%';
+  document.getElementById('st-pct').textContent = pct + '%';
+
+  syncErrorsButton();
+}
+
+function finishQuiz(){
+  let corr=0;
+  QUESTIONS.forEach(q=>{ if(answers[q.n]===q.a) corr++; });
+  const pct=Math.round(corr/TOTAL*100);
+  const panel=document.getElementById('score-panel');
+  panel.classList.add('show');
+  const numEl=document.getElementById('sc-num');
+  numEl.textContent=corr+'/'+TOTAL;
+  numEl.className='sc-number '+(pct>=70?'sc-approved':'sc-failed');
+  document.getElementById('sc-pct').textContent=pct+'% de acerto';
+  const errs=TOTAL-corr;
+  document.getElementById('sc-breakdown').innerHTML=
+    `<div class="sc-item"><strong>${corr}</strong>Corretas</div>
+     <div class="sc-item"><strong>${errs}</strong>Incorretas</div>
+     <div class="sc-item"><strong>${pct}%</strong>Aproveitamento</div>`;
+  syncErrorsButton();
+  if(errs>0) document.getElementById('sc-review-btn').style.display='inline-block';
+  else document.getElementById('sc-review-btn').style.display='none';
+  panel.scrollIntoView({behavior:'smooth'});
+}
+
+function resetQuiz(){
+  answers={};
+  errorsMode=false;
+  currentFilter='all';
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelector('[data-filter="all"]').classList.add('active');
+  document.getElementById('score-panel').classList.remove('show');
+  syncErrorsButton();
+  document.getElementById('hdr-answered').textContent='0';
+  document.getElementById('hdr-correct').textContent='0';
+  document.getElementById('hdr-pct').textContent='0%';
+  document.getElementById('prog-bar').style.width='0%';
+  document.getElementById('st-pts').textContent='0';
+  document.getElementById('st-fill').style.width='0%';
+  document.getElementById('st-pct').textContent='0%';
+  renderQuiz();
+  window.scrollTo(0,0);
+}
+
+function reviewErrors(){
+  errorsMode = true;
+  document.getElementById('score-panel').classList.remove('show');
+  currentFilter = 'all';
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector('[data-filter="all"]').classList.add('active');
+  renderQuiz();
+  syncErrorsButton();
+  window.scrollTo(0,0);
+}
+
+function setFilter(f, btn){
+  currentFilter = f;
+  errorsMode = false;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderQuiz();
+  syncErrorsButton();
+}
+
+function toggleErrors(){
+  const errs = QUESTIONS.filter(q => answers[q.n] !== undefined && answers[q.n] !== q.a).length;
+  if (!errs) return;
+  errorsMode = !errorsMode;
+  renderQuiz();
+  syncErrorsButton();
+}
+
+renderQuiz();
+syncErrorsButton();
+</script>
+</body>
+</html>

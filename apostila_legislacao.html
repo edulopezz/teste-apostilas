@@ -1,0 +1,2208 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Apostila — Legislação e Normas | Engenheiro Civil · UFMA 2026</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300;1,400&family=JetBrains+Mono:wght@400;600&display=swap');
+
+  :root {
+    --bg: #0f1117;
+    --surface: #171b26;
+    --surface2: #1e2330;
+    --border: #2a3042;
+    --accent: #e8a838;
+    --accent2: #5b8dee;
+    --accent3: #4ec9a0;
+    --danger: #e05c5c;
+    --text: #d6dae8;
+    --text-dim: #8a90a4;
+    --text-bright: #f0f3ff;
+    --red: #ff6b6b;
+    --orange: #ffa94d;
+    --yellow: #ffe066;
+    --green: #69db7c;
+    --blue: #74c0fc;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Source Serif 4', Georgia, serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.75;
+    font-size: 16px;
+  }
+
+  /* ── CAPA ─────────────────────────────────────────────── */
+  .cover {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 4rem 2rem;
+    background: radial-gradient(ellipse 80% 60% at 50% 40%, #1e2a4a 0%, #0f1117 70%);
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+  .cover::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(0deg, transparent, transparent 59px, #1a2035 60px),
+                repeating-linear-gradient(90deg, transparent, transparent 59px, #1a2035 60px);
+    opacity: .25;
+  }
+  .cover-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .75rem;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: rgba(232,168,56,.12);
+    border: 1px solid rgba(232,168,56,.3);
+    padding: .35rem 1rem;
+    border-radius: 2px;
+    margin-bottom: 2rem;
+    position: relative;
+  }
+  .cover h1 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(2.2rem, 6vw, 4rem);
+    font-weight: 900;
+    color: var(--text-bright);
+    line-height: 1.15;
+    max-width: 800px;
+    position: relative;
+  }
+  .cover h1 span { color: var(--accent); }
+  .cover-sub {
+    font-size: 1.1rem;
+    color: var(--text-dim);
+    margin-top: 1.2rem;
+    position: relative;
+    font-style: italic;
+  }
+  .cover-meta {
+    display: flex;
+    gap: 2rem;
+    margin-top: 3rem;
+    position: relative;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .cover-meta-item {
+    text-align: center;
+  }
+  .cover-meta-item .val {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent);
+    display: block;
+  }
+  .cover-meta-item .lbl {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .7rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+
+  /* ── NAV ──────────────────────────────────────────────── */
+  .toc {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 2.5rem 2rem;
+  }
+  .toc-inner { max-width: 900px; margin: 0 auto; }
+  .toc h2 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .8rem;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+  }
+  .toc-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: .5rem;
+  }
+  .toc-item {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    padding: .6rem .9rem;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    text-decoration: none;
+    color: var(--text);
+    transition: border-color .2s, color .2s;
+    font-size: .9rem;
+  }
+  .toc-item:hover { border-color: var(--accent); color: var(--accent); }
+  .toc-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .75rem;
+    color: var(--text-dim);
+    min-width: 1.5rem;
+  }
+
+  /* ── CONTENT WRAPPER ──────────────────────────────────── */
+  .content { max-width: 900px; margin: 0 auto; padding: 3rem 2rem 6rem; }
+
+  /* ── SECTION HEADERS ──────────────────────────────────── */
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 4rem 0 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem;
+    font-weight: 900;
+    color: var(--accent);
+    opacity: .35;
+    line-height: 1;
+    min-width: 3rem;
+  }
+  .section-title h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    color: var(--text-bright);
+    font-weight: 700;
+  }
+  .section-title .law-ref {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .75rem;
+    color: var(--accent);
+    letter-spacing: .1em;
+  }
+
+  /* ── TYPOGRAPHY ───────────────────────────────────────── */
+  h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    color: var(--text-bright);
+    margin: 2rem 0 .75rem;
+    padding-left: .75rem;
+    border-left: 3px solid var(--accent);
+  }
+  h4 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .85rem;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--accent2);
+    margin: 1.5rem 0 .5rem;
+  }
+  p { margin-bottom: .9rem; }
+  strong { color: var(--text-bright); font-weight: 600; }
+  em { color: var(--accent); font-style: italic; }
+
+  ul, ol {
+    padding-left: 1.5rem;
+    margin-bottom: .9rem;
+  }
+  li { margin-bottom: .3rem; }
+  li::marker { color: var(--accent); }
+
+  /* ── CALLOUTS ─────────────────────────────────────────── */
+  .callout {
+    border-left: 3px solid;
+    padding: 1rem 1.25rem;
+    border-radius: 0 4px 4px 0;
+    margin: 1.5rem 0;
+    font-size: .95rem;
+  }
+  .callout.danger { border-color: var(--danger); background: rgba(224,92,92,.08); }
+  .callout.tip { border-color: var(--accent3); background: rgba(78,201,160,.08); }
+  .callout.info { border-color: var(--accent2); background: rgba(91,141,238,.08); }
+  .callout.warn { border-color: var(--orange); background: rgba(255,169,77,.08); }
+  .callout-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .7rem;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    margin-bottom: .4rem;
+  }
+  .callout.danger .callout-label { color: var(--danger); }
+  .callout.tip .callout-label { color: var(--accent3); }
+  .callout.info .callout-label { color: var(--accent2); }
+  .callout.warn .callout-label { color: var(--orange); }
+
+  /* ── TABLES ───────────────────────────────────────────── */
+  .table-wrap { overflow-x: auto; margin: 1.5rem 0; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: .9rem;
+  }
+  thead th {
+    background: var(--surface2);
+    color: var(--accent);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .75rem;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    padding: .7rem 1rem;
+    text-align: left;
+    border: 1px solid var(--border);
+  }
+  tbody td {
+    padding: .65rem 1rem;
+    border: 1px solid var(--border);
+    vertical-align: top;
+  }
+  tbody tr:nth-child(even) td { background: rgba(255,255,255,.02); }
+  tbody tr:hover td { background: rgba(232,168,56,.05); }
+
+  /* ── MIND MAP ─────────────────────────────────────────── */
+  .mindmap {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .82rem;
+    line-height: 1.8;
+  }
+  .mindmap .root { color: var(--accent); font-size: 1rem; font-weight: 700; }
+  .mindmap .l1 { color: var(--accent2); padding-left: 1.5rem; }
+  .mindmap .l2 { color: var(--text); padding-left: 3rem; }
+  .mindmap .l3 { color: var(--text-dim); padding-left: 4.5rem; }
+
+  /* ── SIMULADO ─────────────────────────────────────────── */
+  .simulado-header {
+    background: linear-gradient(135deg, #1a2540 0%, #0f1117 100%);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 2rem;
+    margin: 3rem 0 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+  .simulado-icon {
+    font-size: 2.5rem;
+    flex-shrink: 0;
+  }
+  .simulado-info h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    color: var(--text-bright);
+  }
+  .simulado-info p {
+    color: var(--text-dim);
+    font-size: .9rem;
+    margin: 0;
+  }
+
+  .difficulty-band {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: .75rem 1.25rem;
+    border-radius: 4px;
+    margin: 2.5rem 0 1rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .8rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+  }
+  .difficulty-band.easy { background: rgba(105,219,124,.1); border: 1px solid rgba(105,219,124,.3); color: var(--green); }
+  .difficulty-band.medium { background: rgba(255,224,102,.1); border: 1px solid rgba(255,224,102,.3); color: var(--yellow); }
+  .difficulty-band.hard { background: rgba(255,107,107,.1); border: 1px solid rgba(255,107,107,.3); color: var(--red); }
+
+  .question-block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+    transition: border-color .2s;
+  }
+  .question-block:hover { border-color: rgba(232,168,56,.3); }
+
+  .question-head {
+    display: flex;
+    gap: 1rem;
+    padding: 1.25rem 1.5rem;
+    align-items: flex-start;
+  }
+  .q-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .75rem;
+    background: var(--surface2);
+    color: var(--accent);
+    padding: .2rem .55rem;
+    border-radius: 2px;
+    flex-shrink: 0;
+    margin-top: .15rem;
+  }
+  .q-text { font-size: .95rem; line-height: 1.65; }
+
+  .options {
+    padding: 0 1.5rem .75rem 3.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: .35rem;
+  }
+  .option {
+    font-size: .9rem;
+    padding: .35rem .6rem;
+    border-radius: 3px;
+    color: var(--text);
+  }
+  .option.correct {
+    background: rgba(105,219,124,.12);
+    color: var(--green);
+    border-left: 3px solid var(--green);
+    padding-left: .5rem;
+    font-weight: 600;
+  }
+
+  .gabarito {
+    border-top: 1px solid var(--border);
+    padding: 1rem 1.5rem;
+    background: rgba(255,255,255,.02);
+  }
+  .gabarito-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .7rem;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    color: var(--accent3);
+    margin-bottom: .5rem;
+  }
+  .gabarito p {
+    font-size: .88rem;
+    color: var(--text-dim);
+    margin: 0;
+    line-height: 1.6;
+  }
+  .gabarito strong { color: var(--text); }
+
+  /* ── TAG CHIPS ────────────────────────────────────────── */
+  .tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .65rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    padding: .15rem .5rem;
+    border-radius: 2px;
+    margin-right: .3rem;
+    margin-bottom: .2rem;
+  }
+  .tag.cf { background: rgba(91,141,238,.15); color: var(--blue); border: 1px solid rgba(91,141,238,.3); }
+  .tag.rju { background: rgba(232,168,56,.15); color: var(--accent); border: 1px solid rgba(232,168,56,.3); }
+  .tag.tae { background: rgba(78,201,160,.15); color: var(--accent3); border: 1px solid rgba(78,201,160,.3); }
+  .tag.etica { background: rgba(255,169,77,.15); color: var(--orange); border: 1px solid rgba(255,169,77,.3); }
+  .tag.pad { background: rgba(255,107,107,.15); color: var(--red); border: 1px solid rgba(255,107,107,.3); }
+  .tag.lai { background: rgba(152,206,255,.15); color: #a5ccff; border: 1px solid rgba(152,206,255,.3); }
+  .tag.lgpd { background: rgba(198,149,255,.15); color: #c695ff; border: 1px solid rgba(198,149,255,.3); }
+  .tag.impro { background: rgba(255,107,107,.2); color: var(--red); border: 1px solid rgba(255,107,107,.4); }
+
+  /* ── FOOTER ───────────────────────────────────────────── */
+  footer {
+    text-align: center;
+    padding: 2rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .75rem;
+    color: var(--text-dim);
+    border-top: 1px solid var(--border);
+  }
+
+  /* ── KEY CONCEPT BOXES ────────────────────────────────── */
+  .key-concept {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--accent);
+    border-radius: 0 0 4px 4px;
+    padding: 1rem 1.25rem;
+    margin: 1.25rem 0;
+  }
+  .key-concept .kc-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .7rem;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: .5rem;
+  }
+
+  /* ── PRAZO BOXES ──────────────────────────────────────── */
+  .prazo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: .75rem;
+    margin: 1rem 0;
+  }
+  .prazo-card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: .9rem;
+    text-align: center;
+  }
+  .prazo-card .days {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .prazo-card .days small {
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--text-dim);
+  }
+  .prazo-card .event {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .68rem;
+    letter-spacing: .05em;
+    color: var(--text-dim);
+    margin-top: .35rem;
+    text-transform: uppercase;
+  }
+  @media print {
+    body { background: #fff; color: #111; }
+    .cover { background: #f5f5f5; color: #111; min-height: auto; padding: 3rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════ CAPA ══════════════════════ -->
+<div class="cover">
+  <div class="cover-badge">Etapa 3 · Disciplina 1 de 2 · UFMA 2026</div>
+  <h1>Legislação e <span>Normas</span></h1>
+  <p class="cover-sub">Engenheiro — Área: Civil · Concurso Público nº 035 · Banca FSADU</p>
+  <div class="cover-meta">
+    <div class="cover-meta-item"><span class="val">10</span><span class="lbl">Questões na prova</span></div>
+    <div class="cover-meta-item"><span class="val">12,0</span><span class="lbl">Pontos em jogo</span></div>
+    <div class="cover-meta-item"><span class="val">4,8</span><span class="lbl">Mínimo (corte 40%)</span></div>
+    <div class="cover-meta-item"><span class="val">8</span><span class="lbl">Leis e decretos</span></div>
+    <div class="cover-meta-item"><span class="val">50</span><span class="lbl">Questões no simulado</span></div>
+  </div>
+</div>
+
+<!-- ══════════════════════ SUMÁRIO ══════════════════════ -->
+<div class="toc">
+  <div class="toc-inner">
+    <h2>→ Sumário</h2>
+    <div class="toc-grid">
+      <a class="toc-item" href="#bloco1"><span class="toc-num">01</span>Direito Constitucional</a>
+      <a class="toc-item" href="#bloco2"><span class="toc-num">02</span>Lei 8.112/1990 — RJU</a>
+      <a class="toc-item" href="#bloco3"><span class="toc-num">03</span>Lei 11.091/2005 — TAE</a>
+      <a class="toc-item" href="#bloco4"><span class="toc-num">04</span>Decreto 1.171/1994 — Ética</a>
+      <a class="toc-item" href="#bloco5"><span class="toc-num">05</span>Lei 9.784/1999 — PAF</a>
+      <a class="toc-item" href="#bloco6"><span class="toc-num">06</span>Lei 8.429/1992 — Improbidade</a>
+      <a class="toc-item" href="#bloco7"><span class="toc-num">07</span>Lei 12.527/2011 — LAI</a>
+      <a class="toc-item" href="#bloco8"><span class="toc-num">08</span>Lei 13.709/2018 — LGPD</a>
+      <a class="toc-item" href="#mapa"><span class="toc-num">09</span>Esquema de Fixação</a>
+      <a class="toc-item" href="#simulado"><span class="toc-num">10</span>Simulado — 50 Questões</a>
+    </div>
+  </div>
+</div>
+
+<div class="content">
+
+<!-- ══════════════════════ BLOCO 1 ══════════════════════ -->
+<div id="bloco1" class="section-header">
+  <div class="section-number">01</div>
+  <div class="section-title">
+    <div class="law-ref">CF/88 · Arts. 1–5 · Arts. 37–41</div>
+    <h2>Direito Constitucional</h2>
+  </div>
+</div>
+
+<h3>Fundamentos da República (Art. 1)</h3>
+<p>A República Federativa do Brasil é formada pela união indissolúvel dos Estados, Municípios e do Distrito Federal. Seus fundamentos são:</p>
+<ul>
+  <li><strong>I</strong> — Soberania</li>
+  <li><strong>II</strong> — Cidadania</li>
+  <li><strong>III</strong> — Dignidade da pessoa humana</li>
+  <li><strong>IV</strong> — Valores sociais do trabalho e da livre iniciativa</li>
+  <li><strong>V</strong> — Pluralismo político</li>
+</ul>
+<p>Parágrafo único: <em>"Todo poder emana do povo, que o exerce por meio de representantes eleitos ou diretamente, nos termos desta Constituição."</em></p>
+
+<h3>Objetivos Fundamentais (Art. 3)</h3>
+<ul>
+  <li><strong>I</strong> — Construir uma sociedade livre, justa e solidária</li>
+  <li><strong>II</strong> — Garantir o desenvolvimento nacional</li>
+  <li><strong>III</strong> — Erradicar a pobreza e a marginalização e reduzir as desigualdades sociais e regionais</li>
+  <li><strong>IV</strong> — Promover o bem de todos, sem preconceitos de origem, raça, sexo, cor, idade e quaisquer outras formas de discriminação</li>
+</ul>
+
+<div class="callout tip">
+  <div class="callout-label">🎯 Frequência de cobrança — Alta</div>
+  A distinção entre <strong>fundamentos</strong> (Art. 1) e <strong>objetivos</strong> (Art. 3) é uma das pegadinhas mais comuns. Memorize: fundamentos são o "o que somos"; objetivos são o "o que queremos alcançar".
+</div>
+
+<h3>Direitos e Garantias Fundamentais (Art. 5)</h3>
+<p><em>"Todos são iguais perante a lei, sem distinção de qualquer natureza, garantindo-se aos brasileiros e aos estrangeiros residentes no País a inviolabilidade do direito à vida, à liberdade, à igualdade, à segurança e à propriedade."</em></p>
+
+<h4>Remédios Constitucionais</h4>
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Remédio</th><th>Inciso</th><th>Finalidade</th><th>Contra quem</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Habeas Corpus</strong></td><td>LXVIII</td><td>Proteger liberdade de locomoção</td><td>Ato de qualquer autoridade</td></tr>
+    <tr><td><strong>Mandado de Segurança</strong></td><td>LXIX</td><td>Proteger direito líquido e certo não amparado por HC ou HD</td><td>Autoridade pública ou agente no exercício de função pública</td></tr>
+    <tr><td><strong>MS Coletivo</strong></td><td>LXX</td><td>Igual ao MS, mas impetrado por partido, sindicato ou associação</td><td>Idem ao MS</td></tr>
+    <tr><td><strong>Mandado de Injunção</strong></td><td>LXXI</td><td>Suprir omissão legislativa que impede o exercício de direitos constitucionais</td><td>Poder Público ou entidade privada</td></tr>
+    <tr><td><strong>Habeas Data</strong></td><td>LXXII</td><td>Assegurar conhecimento/retificação de informações sobre o próprio requerente</td><td>Entidades governamentais ou de caráter público</td></tr>
+    <tr><td><strong>Ação Popular</strong></td><td>LXXIII</td><td>Anular ato lesivo ao patrimônio público, moralidade, meio ambiente</td><td>Atos de agentes públicos</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3>Administração Pública — Princípios (Art. 37)</h3>
+
+<div class="key-concept">
+  <div class="kc-title">⚡ Os cinco princípios — LIMPE</div>
+  <p><strong>L</strong>egalidade · <strong>I</strong>mpessoalidade · <strong>M</strong>oralidade · <strong>P</strong>ublicidade · <strong>E</strong>ficiência</p>
+  <p>O princípio da <strong>Eficiência</strong> foi inserido pela EC nº 19/1998 (Reforma Administrativa).</p>
+</div>
+
+<h4>Acumulação de Cargos (Art. 37, XVI)</h4>
+<p>Vedada a acumulação remunerada de cargos públicos, <strong>exceto</strong> quando houver <strong>compatibilidade de horários</strong>:</p>
+<ul>
+  <li>a) dois cargos de professor</li>
+  <li>b) um cargo de professor + outro técnico ou científico</li>
+  <li>c) dois cargos ou empregos privativos de profissionais de saúde com profissões regulamentadas</li>
+</ul>
+
+<h4>Estabilidade (Art. 41)</h4>
+<p>São estáveis após <strong>3 anos</strong> de efetivo exercício os servidores nomeados para cargo efetivo por concurso público. O servidor estável só perde o cargo:</p>
+<ul>
+  <li>I — sentença judicial transitada em julgado</li>
+  <li>II — processo administrativo com ampla defesa assegurada</li>
+  <li>III — avaliação periódica de desempenho com ampla defesa</li>
+</ul>
+
+<!-- ══════════════════════ BLOCO 2 ══════════════════════ -->
+<div id="bloco2" class="section-header">
+  <div class="section-number">02</div>
+  <div class="section-title">
+    <div class="law-ref">Lei Federal nº 8.112 · 11 de Dezembro de 1990</div>
+    <h2>Regime Jurídico Único dos Servidores Federais</h2>
+  </div>
+</div>
+
+<h3>Provimento de Cargos (Arts. 5–38)</h3>
+<p><strong>Cargo público:</strong> conjunto de atribuições e responsabilidades cometidas a um servidor, criado por lei com denominação própria e vencimento pago pelos cofres públicos.</p>
+
+<h4>Formas de Provimento (Art. 8)</h4>
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Forma</th><th>Tipo</th><th>Descrição</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Nomeação</strong></td><td>Originária</td><td>Única forma de provimento originário</td></tr>
+    <tr><td>Promoção</td><td>Derivada</td><td>Ascensão dentro da carreira</td></tr>
+    <tr><td>Readaptação</td><td>Derivada</td><td>Investidura em cargo compatível com limitação física ou mental</td></tr>
+    <tr><td>Reversão</td><td>Derivada</td><td>Retorno do aposentado ao cargo</td></tr>
+    <tr><td>Aproveitamento</td><td>Derivada</td><td>Retorno do servidor em disponibilidade</td></tr>
+    <tr><td>Reintegração</td><td>Derivada</td><td>Retorno por decisão judicial; servidor tinha direito ao cargo</td></tr>
+    <tr><td>Recondução</td><td>Derivada</td><td>Retorno ao cargo anterior por inabilitação em estágio probatório ou reintegração do anterior ocupante</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3>Prazos Críticos</h3>
+<div class="prazo-grid">
+  <div class="prazo-card"><div class="days">30<small> dias</small></div><div class="event">Posse após nomeação</div></div>
+  <div class="prazo-card"><div class="days">15<small> dias</small></div><div class="event">Exercício após posse</div></div>
+  <div class="prazo-card"><div class="days">3<small> anos</small></div><div class="event">Estabilidade (efetivo exercício)</div></div>
+  <div class="prazo-card"><div class="days">30<small> dias</small></div><div class="event">Férias anuais</div></div>
+  <div class="prazo-card"><div class="days">30<small> dias</small></div><div class="event">Sindicância (prorrogável por +30)</div></div>
+  <div class="prazo-card"><div class="days">60<small> dias</small></div><div class="event">PAD (prorrogável por +60)</div></div>
+</div>
+
+<h3>Deveres e Proibições (Arts. 116–117)</h3>
+<h4>Deveres fundamentais (Art. 116)</h4>
+<ul>
+  <li>Exercer com <strong>zelo e dedicação</strong> as atribuições</li>
+  <li>Ser <strong>leal</strong> às instituições</li>
+  <li>Cumprir ordens superiores, <strong>exceto quando manifestamente ilegais</strong></li>
+  <li>Atender com <strong>presteza</strong> ao público</li>
+  <li>Levar ao conhecimento da autoridade superior as <strong>irregularidades</strong> de que tiver ciência</li>
+  <li>Guardar <strong>sigilo</strong> sobre assunto da repartição</li>
+  <li>Ser <strong>assíduo e pontual</strong></li>
+  <li>Tratar com <strong>urbanidade</strong> as pessoas</li>
+</ul>
+
+<h4>Proibições fundamentais (Art. 117)</h4>
+<ul>
+  <li>Ausentar-se sem prévia autorização (inc. I)</li>
+  <li>Retirar documentos da repartição sem autorização (inc. II)</li>
+  <li>Valer-se do cargo para obter vantagem pessoal (inc. IX)</li>
+  <li>Receber propina, comissão ou presente (inc. XII)</li>
+  <li>Proceder de forma <strong>desidiosa</strong> (negligente) (inc. XV)</li>
+  <li>Utilizar recursos materiais da repartição em serviços particulares (inc. XVI)</li>
+</ul>
+
+<h3>Responsabilidades (Arts. 121–126)</h3>
+<div class="callout info">
+  <div class="callout-label">📌 Ponto crítico</div>
+  As responsabilidades <strong>civil, administrativa e penal</strong> são <strong>independentes entre si</strong>. A absolvição criminal <em>somente</em> afasta a responsabilidade administrativa quando negar a existência do fato ou negar sua autoria.
+</div>
+
+<h3>Penalidades Disciplinares (Art. 127)</h3>
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Penalidade</th><th>Prescrição</th><th>Aplicável a</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Advertência</strong></td><td>180 dias</td><td>Infrações leves; descumprimento de deveres quando não se enquadrar em infração mais grave</td></tr>
+    <tr><td><strong>Suspensão</strong> (até 90 dias)</td><td>2 anos</td><td>Reincidência em infração punível com advertência; descumprimento de obrigações mais severo</td></tr>
+    <tr><td><strong>Demissão</strong></td><td>5 anos</td><td>Crime contra administração, improbidade, incontinência pública, insubordinação grave, etc.</td></tr>
+    <tr><td><strong>Cassação de aposentadoria/disponibilidade</strong></td><td>5 anos</td><td>Falta punível com demissão praticada na atividade</td></tr>
+    <tr><td><strong>Destituição de cargo em comissão</strong></td><td>5 anos</td><td>Infração punível com suspensão ou demissão para quem não é efetivo</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3>Processo Administrativo Disciplinar — PAD</h3>
+<h4>Sindicância (Art. 145)</h4>
+<ul>
+  <li>Prazo: <strong>30 dias</strong>, prorrogável por mais 30</li>
+  <li>Resultados possíveis: <strong>(1)</strong> arquivamento do processo, <strong>(2)</strong> aplicação de penalidade de advertência ou suspensão até 30 dias, <strong>(3)</strong> instauração de PAD</li>
+</ul>
+<h4>PAD (Arts. 149–182)</h4>
+<ul>
+  <li>Prazo: <strong>60 dias</strong>, prorrogável por mais 60</li>
+  <li>Comissão: <strong>3 servidores estáveis</strong>, designados em portaria</li>
+  <li><strong>Fases:</strong> Instauração → Inquérito (instrução + defesa + relatório) → Julgamento</li>
+  <li>Prazo de defesa: <strong>10 dias</strong> (prorrogável por mais 10 em casos complexos)</li>
+</ul>
+
+<h3>Licenças Selecionadas</h3>
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Licença</th><th>Prazo</th><th>Remunerada?</th></tr></thead>
+  <tbody>
+    <tr><td>Doença em pessoa da família</td><td>Até 60 dias/ano (máx. 90 dias acumulados)</td><td>Sim</td></tr>
+    <tr><td>Gestante</td><td>120 dias (prorrogável por +60 dias — Decreto 6.690/2008)</td><td>Sim</td></tr>
+    <tr><td>Paternidade</td><td>5 dias (prorrogável por +15 dias — Lei 11.770/2008)</td><td>Sim</td></tr>
+    <tr><td>Para capacitação</td><td>Até 3 meses a cada 5 anos de exercício</td><td>Sim</td></tr>
+    <tr><td>Afastamento do cônjuge</td><td>Até 3 anos (prorrogável)</td><td>Não</td></tr>
+    <tr><td>Interesses particulares</td><td>Até 3 anos (não prorrogável no período)</td><td>Não</td></tr>
+  </tbody>
+</table>
+</div>
+
+<!-- ══════════════════════ BLOCO 3 ══════════════════════ -->
+<div id="bloco3" class="section-header">
+  <div class="section-number">03</div>
+  <div class="section-title">
+    <div class="law-ref">Lei Federal nº 11.091 · 12 de Janeiro de 2005</div>
+    <h2>Plano de Carreira dos Cargos TAE</h2>
+  </div>
+</div>
+
+<h3>Estrutura da Carreira</h3>
+<p>Os cargos são organizados em <strong>níveis de classificação de A a E</strong>, sendo o nível <strong>E</strong> o de nível superior — onde se enquadra o cargo de <strong>Engenheiro Civil</strong>.</p>
+<p>Cada nível de classificação possui <strong>4 níveis de capacitação</strong> (I a IV), com <strong>16 padrões de vencimento</strong> cada.</p>
+
+<h4>Formas de Progressão</h4>
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Tipo</th><th>Critério</th><th>Periodicidade</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Progressão por Mérito</strong></td><td>Aprovação em avaliação de desempenho</td><td>A cada 2 anos de efetivo exercício</td></tr>
+    <tr><td><strong>Progressão por Capacitação</strong></td><td>Qualificação acima do exigido para o cargo</td><td>Mudança de nível de capacitação</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h4>Incentivo à Qualificação</h4>
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Escolaridade (acima da exigida)</th><th>Percentual</th></tr></thead>
+  <tbody>
+    <tr><td>Ensino médio profissionalizante ou médio + técnico completo</td><td>20%</td></tr>
+    <tr><td>Graduação completa</td><td>25%</td></tr>
+    <tr><td>Especialização (≥360h)</td><td>30%</td></tr>
+    <tr><td>Mestrado</td><td>52%</td></tr>
+    <tr><td>Doutorado</td><td>75%</td></tr>
+  </tbody>
+</table>
+</div>
+<div class="callout warn">
+  <div class="callout-label">⚠ Atenção</div>
+  Para o cargo de Engenheiro Civil (nível E — nível superior), a titulação adicional que gera incentivo começa pela especialização (30%), pois a graduação já é o requisito do cargo.
+</div>
+
+<!-- ══════════════════════ BLOCO 4 ══════════════════════ -->
+<div id="bloco4" class="section-header">
+  <div class="section-number">04</div>
+  <div class="section-title">
+    <div class="law-ref">Decreto nº 1.171 · 22 de Junho de 1994</div>
+    <h2>Código de Ética do Servidor Público</h2>
+  </div>
+</div>
+
+<h3>Regras Deontológicas</h3>
+<p>O servidor público é, antes de tudo, um cidadão. O trabalho público é exercido para o bem-estar da coletividade. A função pública exige a moralidade como pressuposto indissociável de legitimidade.</p>
+
+<h3>Deveres do Servidor (Seção XV)</h3>
+<ul>
+  <li>Desempenhar com <strong>eficiência</strong> suas atribuições</li>
+  <li>Ser <strong>probo, reto, leal e justo</strong></li>
+  <li>Ser <strong>cortês, ter urbanidade</strong> e atenção aos usuários</li>
+  <li>Ser <strong>assíduo e frequente</strong> ao serviço</li>
+  <li>Manter-se <strong>atualizado</strong> com as normas e orientações do órgão</li>
+  <li>Comunicar <strong>imediatamente</strong> aos superiores qualquer ato contrário ao interesse público</li>
+</ul>
+
+<h3>Vedações (Seção XVI)</h3>
+<ul>
+  <li>Usar o cargo para obter favorecimento pessoal</li>
+  <li>Usar artifícios para <strong>procrastinar ou dificultar</strong> o exercício de direitos</li>
+  <li>Pleitear, solicitar, sugerir ou receber qualquer <strong>vantagem financeira</strong></li>
+  <li>Retirar da repartição documentos ou bens do patrimônio público <strong>sem autorização legal</strong></li>
+  <li>Alterar ou deturpar o teor de documentos</li>
+  <li>Ser conivente com <strong>erro ou infração</strong> ao código de ética por espírito de solidariedade</li>
+  <li>Deixar de utilizar os <strong>avanços técnicos e científicos</strong> disponíveis no atendimento de seu mister</li>
+</ul>
+
+<h3>Comissões de Ética</h3>
+<div class="key-concept">
+  <div class="kc-title">Composição e Sanção</div>
+  <ul>
+    <li><strong>Composição:</strong> 3 membros titulares + 3 suplentes</li>
+    <li><strong>Mandato:</strong> 3 anos, vedada recondução</li>
+    <li><strong>Punição aplicável:</strong> <em>Censura ética</em> (por escrito, com ciência do servidor, arquivada na ficha funcional)</li>
+    <li><strong>Importante:</strong> A censura ética não substitui as penalidades da Lei 8.112/1990</li>
+  </ul>
+</div>
+
+<!-- ══════════════════════ BLOCO 5 ══════════════════════ -->
+<div id="bloco5" class="section-header">
+  <div class="section-number">05</div>
+  <div class="section-title">
+    <div class="law-ref">Lei Federal nº 9.784 · 29 de Janeiro de 1999</div>
+    <h2>Lei do Processo Administrativo Federal</h2>
+  </div>
+</div>
+
+<h3>Princípios (Art. 2)</h3>
+<p>A Administração Pública obedecerá, dentre outros, aos princípios da: <strong>Legalidade, Finalidade, Motivação, Razoabilidade, Proporcionalidade, Moralidade, Ampla Defesa, Contraditório, Segurança Jurídica, Interesse Público</strong> e <strong>Eficiência</strong>.</p>
+
+<h3>Prazos Fundamentais</h3>
+<div class="prazo-grid">
+  <div class="prazo-card"><div class="days">5<small> dias</small></div><div class="event">Manifestação do interessado (prorrogável +5)</div></div>
+  <div class="prazo-card"><div class="days">10<small> dias</small></div><div class="event">Interposição de recurso</div></div>
+  <div class="prazo-card"><div class="days">30<small> dias</small></div><div class="event">Decisão final após instrução</div></div>
+  <div class="prazo-card"><div class="days">30<small> dias</small></div><div class="event">Decisão em recurso (prorrogável +30)</div></div>
+  <div class="prazo-card"><div class="days">5<small> anos</small></div><div class="event">Decadência para anular ato com efeito favorável ao particular de boa-fé</div></div>
+</div>
+
+<h3>Impedimento vs. Suspeição</h3>
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Hipótese</th><th>Fundamento</th><th>Alegação</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Impedimento</strong> (Art. 18)</td><td>Interesse direto ou indireto na matéria; participou como perito/testemunha; litiga com o interessado</td><td>Obrigatória — o servidor deve se declarar impedido</td></tr>
+    <tr><td><strong>Suspeição</strong> (Art. 20)</td><td>Amizade íntima ou inimizade notória com qualquer dos interessados</td><td>Pode ser alegada pelo interessado</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3>Anulação vs. Revogação</h3>
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Aspecto</th><th>Anulação</th><th>Revogação</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Motivo</strong></td><td>Ilegalidade</td><td>Inconveniência ou inoportunidade</td></tr>
+    <tr><td><strong>Quem pode</strong></td><td>Administração e Judiciário</td><td>Somente a Administração</td></tr>
+    <tr><td><strong>Efeito temporal</strong></td><td>Ex tunc (retroativo)</td><td>Ex nunc (prospectivo)</td></tr>
+    <tr><td><strong>Prazo</strong></td><td>5 anos (para atos favoráveis ao particular de boa-fé)</td><td>Enquanto possível</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3>Recursos Administrativos (Arts. 56–65)</h3>
+<ul>
+  <li>Prazo de interposição: <strong>10 dias</strong> da ciência ou divulgação oficial</li>
+  <li>Efeito: <strong>suspensivo</strong> (salvo interesse público ou risco de ineficácia)</li>
+  <li>Instâncias: até <strong>3 instâncias administrativas</strong></li>
+</ul>
+
+<!-- ══════════════════════ BLOCO 6 ══════════════════════ -->
+<div id="bloco6" class="section-header">
+  <div class="section-number">06</div>
+  <div class="section-title">
+    <div class="law-ref">Lei Federal nº 8.429/1992 · Atualizada pela Lei 14.230/2021</div>
+    <h2>Lei de Improbidade Administrativa</h2>
+  </div>
+</div>
+
+<div class="callout danger">
+  <div class="callout-label">⚡ Atualização crítica</div>
+  A Lei 14.230/2021 alterou substancialmente a Lei 8.429/1992. O principal impacto: <strong>somente atos dolosos</strong> configuram improbidade (excluída a modalidade culposa do Art. 10). O MP passou a ter <strong>legitimidade exclusiva</strong> para a ação de improbidade.
+</div>
+
+<h3>Tipos de Atos de Improbidade</h3>
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Artigo</th><th>Tipo</th><th>Elemento subjetivo</th><th>Exemplo</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Art. 9</strong></td><td>Enriquecimento ilícito</td><td>Dolo</td><td>Receber propina, aceitar vantagem econômica para favorecer licitante</td></tr>
+    <tr><td><strong>Art. 10</strong></td><td>Prejuízo ao erário</td><td>Dolo (culpa excluída pela Lei 14.230/2021)</td><td>Frustrar licitude de licitação, causar perda patrimonial injustificada</td></tr>
+    <tr><td><strong>Art. 11</strong></td><td>Violação de princípios</td><td>Dolo</td><td>Negar publicidade a atos oficiais, revelar segredo funcional</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3>Sanções (Art. 12)</h3>
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Ato</th><th>Suspensão Direitos Políticos</th><th>Multa civil</th><th>Proibição de contratar</th></tr></thead>
+  <tbody>
+    <tr><td>Art. 9 (enriquecimento)</td><td>14 a 16 anos</td><td>Até 3x o valor do acréscimo patrimonial</td><td>14 a 16 anos</td></tr>
+    <tr><td>Art. 10 (prejuízo)</td><td>5 a 8 anos</td><td>Até 3x o valor do dano</td><td>5 a 8 anos</td></tr>
+    <tr><td>Art. 11 (princípios)</td><td>3 a 4 anos</td><td>Até 24x o valor da remuneração</td><td>3 a 4 anos</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="key-concept">
+  <div class="kc-title">Prescrição</div>
+  <p><strong>8 anos</strong> contados da data do fato ou do término do exercício do mandato, cargo ou função (Art. 17-B, após Lei 14.230/2021).</p>
+  <p>A ação é de natureza <strong>cível</strong>, proposta pelo <strong>Ministério Público</strong> (legitimidade exclusiva após 2021).</p>
+</div>
+
+<!-- ══════════════════════ BLOCO 7 ══════════════════════ -->
+<div id="bloco7" class="section-header">
+  <div class="section-number">07</div>
+  <div class="section-title">
+    <div class="law-ref">Lei Federal nº 12.527 · 18 de Novembro de 2011</div>
+    <h2>Lei de Acesso à Informação — LAI</h2>
+  </div>
+</div>
+
+<div class="key-concept">
+  <div class="kc-title">Princípio Fundamental</div>
+  <p><strong>A publicidade é a regra. O sigilo é a exceção.</strong> Toda informação produzida ou custodiada pelo Estado é, em princípio, pública.</p>
+</div>
+
+<h3>Transparência Ativa vs. Passiva</h3>
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Tipo</th><th>Definição</th><th>Instrumento</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Ativa</strong></td><td>Divulgação espontânea, independente de solicitação</td><td>Portais de transparência, sítios eletrônicos</td></tr>
+    <tr><td><strong>Passiva</strong></td><td>Disponibilização mediante requerimento do cidadão</td><td>SIC — Serviço de Informação ao Cidadão</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3>Prazo de Resposta</h3>
+<p>Prazo inicial: <strong>20 dias</strong>, prorrogável por mais <strong>10 dias</strong> mediante justificativa. Total máximo: 30 dias.</p>
+
+<h3>Classificação de Sigilo</h3>
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Grau</th><th>Quem classifica</th><th>Prazo máximo</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Reservada</strong></td><td>Autoridades de direção, chefia ou assessoramento</td><td>5 anos</td></tr>
+    <tr><td><strong>Secreta</strong></td><td>Autoridades de nível superior hierárquico</td><td>15 anos</td></tr>
+    <tr><td><strong>Ultrassecreta</strong></td><td>Presidente, Vice-Presidente, Ministros de Estado, Chefes de Missão Diplomática</td><td>25 anos (prorrogável 1x → máx. 50 anos)</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3>Recursos — Instâncias</h3>
+<ol>
+  <li>Autoridade hierarquicamente superior (prazo: <strong>10 dias</strong>)</li>
+  <li>Autoridade máxima do órgão</li>
+  <li>CGU — Controladoria-Geral da União (para o Poder Executivo Federal)</li>
+  <li>CMRI — Comissão Mista de Reavaliação de Informações (instância última)</li>
+</ol>
+
+<!-- ══════════════════════ BLOCO 8 ══════════════════════ -->
+<div id="bloco8" class="section-header">
+  <div class="section-number">08</div>
+  <div class="section-title">
+    <div class="law-ref">Lei Federal nº 13.709 · 14 de Agosto de 2018</div>
+    <h2>Lei Geral de Proteção de Dados Pessoais — LGPD</h2>
+  </div>
+</div>
+
+<h3>Conceitos Fundamentais</h3>
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Conceito</th><th>Definição</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Dado pessoal</strong></td><td>Informação relacionada a pessoa natural identificada ou identificável</td></tr>
+    <tr><td><strong>Dado pessoal sensível</strong></td><td>Origem racial/étnica, convicção religiosa, opinião política, filiação sindical, saúde, vida sexual, dado genético ou biométrico</td></tr>
+    <tr><td><strong>Dado anonimizado</strong></td><td>Relativo a titular não identificável — não é considerado dado pessoal para fins da lei</td></tr>
+    <tr><td><strong>Tratamento</strong></td><td>Toda operação realizada com dados pessoais: coleta, produção, recepção, classificação, utilização, acesso, reprodução, transmissão, distribuição, processamento, arquivamento, armazenamento, eliminação...</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3>Agentes de Tratamento</h3>
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Agente</th><th>Papel</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Controlador</strong></td><td>Determina as finalidades e os meios do tratamento</td></tr>
+    <tr><td><strong>Operador</strong></td><td>Realiza o tratamento em nome do controlador</td></tr>
+    <tr><td><strong>Encarregado (DPO)</strong></td><td>Canal de comunicação entre controlador, titulares e ANPD</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3>Princípios do Tratamento (Art. 6)</h3>
+<p>Finalidade · Adequação · <strong>Necessidade</strong> · Livre acesso · Qualidade dos dados · Transparência · Segurança · Prevenção · Não discriminação · Responsabilização</p>
+
+<h3>Bases Legais para Tratamento (Art. 7)</h3>
+<ul>
+  <li>Consentimento do titular</li>
+  <li>Cumprimento de <strong>obrigação legal ou regulatória</strong></li>
+  <li>Execução de <strong>políticas públicas</strong> (para órgãos públicos)</li>
+  <li>Realização de estudos por órgão de pesquisa</li>
+  <li>Execução de <strong>contrato</strong> do qual o titular seja parte</li>
+  <li>Exercício regular de <strong>direitos em processo judicial</strong></li>
+  <li>Proteção da <strong>vida ou incolumidade física</strong></li>
+  <li><strong>Legítimo interesse</strong> do controlador</li>
+  <li>Proteção do crédito</li>
+</ul>
+
+<div class="callout tip">
+  <div class="callout-label">💡 Para o setor público</div>
+  Órgãos públicos <strong>não precisam de consentimento</strong> para tratar dados quando o tratamento for necessário para execução de políticas públicas ou cumprimento de obrigação legal. Essa é a principal diferença para o setor privado.
+</div>
+
+<h3>Direitos do Titular (Art. 18)</h3>
+<p>Confirmação · Acesso · Correção · Anonimização/bloqueio/eliminação · Portabilidade · Eliminação (dados tratados com consentimento) · Informação sobre compartilhamento · Revogação do consentimento</p>
+
+<h3>ANPD</h3>
+<p><strong>Natureza jurídica:</strong> Autarquia especial, integrante da Administração Pública Federal indireta, com autonomia técnica, decisória, administrativa, orçamentária e financeira.</p>
+<p><strong>Sanções:</strong> advertência → multa simples (até 2% do faturamento, limitada a R$ 50 milhões por infração) → multa diária → publicização da infração → bloqueio/eliminação dos dados → suspensão/proibição do tratamento.</p>
+
+<!-- ══════════════════════ ESQUEMA DE FIXAÇÃO ══════════════════════ -->
+<div id="mapa" class="section-header">
+  <div class="section-number">09</div>
+  <div class="section-title">
+    <div class="law-ref">Mapa mental + Tabelas comparativas</div>
+    <h2>Esquema de Fixação</h2>
+  </div>
+</div>
+
+<div class="mindmap">
+<div class="root">◉ LEGISLAÇÃO E NORMAS — Engenheiro Civil · UFMA 2026</div>
+<br>
+<div class="l1">├─ 🏛 CF/88</div>
+<div class="l2">├─ Art. 1 → Fundamentos (SCDVP): Soberania · Cidadania · Dignidade · Valores sociais · Pluralismo</div>
+<div class="l2">├─ Art. 3 → Objetivos: sociedade livre/justa · desenvolvimento · erradicar pobreza · bem de todos</div>
+<div class="l2">├─ Art. 5 → Direitos: HC · MS · MI · HD · Ação Popular</div>
+<div class="l2">├─ Art. 37 → LIMPE + acumulação (professor+professor | professor+técnico | saúde+saúde)</div>
+<div class="l2">└─ Art. 41 → Estabilidade: 3 anos | perda: sentença / PAD / avaliação periódica</div>
+<br>
+<div class="l1">├─ 📋 Lei 8.112/1990 — RJU</div>
+<div class="l2">├─ Provimento originário: NOMEAÇÃO (única)</div>
+<div class="l2">├─ Prazos: posse=30d · exercício=15d · férias=30d · sindicância=30d(+30) · PAD=60d(+60)</div>
+<div class="l2">├─ Penalidades: advertência(180d) · suspensão/2a · demissão/5a</div>
+<div class="l2">├─ Responsabilidades: INDEPENDENTES (civil · administrativa · penal)</div>
+<div class="l2">├─ PAD: comissão=3 servidores estáveis | defesa=10 dias</div>
+<div class="l2">└─ Acumulação: vedada, exceto: 2prof | 1prof+1téc | 2saúde</div>
+<br>
+<div class="l1">├─ 🎓 Lei 11.091/2005 — TAE</div>
+<div class="l2">├─ Níveis: A · B · C · D · E(nível superior — Eng. Civil)</div>
+<div class="l2">├─ Progressão mérito: a cada 2 anos · por avaliação de desempenho</div>
+<div class="l2">└─ Incentivo: especializ=30% · mestrado=52% · doutorado=75%</div>
+<br>
+<div class="l1">├─ ⚖ Decreto 1.171/1994 — Código de Ética</div>
+<div class="l2">├─ Comissão: 3 titulares + 3 suplentes | mandato=3 anos | vedada recondução</div>
+<div class="l2">└─ Punição: CENSURA ÉTICA (não substitui Lei 8.112)</div>
+<br>
+<div class="l1">├─ 📁 Lei 9.784/1999 — PAF</div>
+<div class="l2">├─ Princípios: Legalidade · Finalidade · Motivação · Razoabilidade · Proporcionalidade…</div>
+<div class="l2">├─ Recurso: prazo=10d | efeito=suspensivo | 3 instâncias</div>
+<div class="l2">├─ Anulação (ilegalidade)=ex tunc | Revogação (conveniência)=ex nunc</div>
+<div class="l2">└─ Decadência: 5 anos para anular ato favorável a particular de boa-fé</div>
+<br>
+<div class="l1">├─ 🚫 Lei 8.429/1992 — Improbidade (atualizada Lei 14.230/2021)</div>
+<div class="l2">├─ Art. 9: enriquecimento ilícito | suspensão 14-16 anos</div>
+<div class="l2">├─ Art. 10: prejuízo ao erário (SOMENTE DOLO após 2021) | suspensão 5-8 anos</div>
+<div class="l2">├─ Art. 11: violação de princípios | suspensão 3-4 anos</div>
+<div class="l2">└─ MP: legitimidade exclusiva | prescrição=8 anos</div>
+<br>
+<div class="l1">├─ 🔍 Lei 12.527/2011 — LAI</div>
+<div class="l2">├─ Regra=publicidade | Exceção=sigilo</div>
+<div class="l2">├─ Prazo: 20d + 10d (prorrogação) = 30d máx</div>
+<div class="l2">└─ Sigilo: Reservada=5a · Secreta=15a · Ultrassecreta=25a(prorr.→50a)</div>
+<br>
+<div class="l1">└─ 🔐 Lei 13.709/2018 — LGPD</div>
+<div class="l2">├─ Dados sensíveis: raça · religião · política · saúde · vida sexual · genético/biométrico</div>
+<div class="l2">├─ Agentes: Controlador(decide) · Operador(executa) · Encarregado(DPO)</div>
+<div class="l2">├─ Setor público: não precisa consentimento para política pública / obrigação legal</div>
+<div class="l2">└─ ANPD: autarquia especial | multa=até 2% faturamento / R$50mi por infração</div>
+</div>
+
+<h3>Tabela Comparativa — Prazos Prescricionais e Decadenciais</h3>
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Prazo</th><th>Lei</th><th>Hipótese</th></tr></thead>
+  <tbody>
+    <tr><td>180 dias</td><td>Lei 8.112</td><td>Prescrição para advertência</td></tr>
+    <tr><td>2 anos</td><td>Lei 8.112</td><td>Prescrição para suspensão</td></tr>
+    <tr><td>5 anos</td><td>Lei 8.112</td><td>Prescrição para demissão/cassação/destituição</td></tr>
+    <tr><td>5 anos</td><td>Lei 9.784</td><td>Decadência para anular ato favorável ao particular de boa-fé</td></tr>
+    <tr><td>8 anos</td><td>Lei 8.429</td><td>Prescrição para ação de improbidade administrativa</td></tr>
+  </tbody>
+</table>
+</div>
+
+<!-- ══════════════════════ SIMULADO ══════════════════════ -->
+<div id="simulado">
+  <div class="simulado-header">
+    <div class="simulado-icon">📝</div>
+    <div class="simulado-info">
+      <h2>Simulado — 50 Questões</h2>
+      <p>Estilo FSADU · Legislação e Normas · Cargo: Engenheiro Civil · UFMA 2026</p>
+      <p>Dificuldade progressiva: Q1–15 fáceis · Q16–35 médias · Q36–50 difíceis</p>
+    </div>
+  </div>
+
+  <!-- ── FÁCEIS ── -->
+  <div class="difficulty-band easy">🟢 Questões 1–15 — Nível Fácil</div>
+
+  <!-- Q1 -->
+  <div class="question-block">
+    <div class="question-head">
+      <span class="q-num">Q01</span>
+      <div class="q-text">
+        <span class="tag cf">CF/88</span>
+        Segundo o artigo 1º da Constituição Federal de 1988, são fundamentos da República Federativa do Brasil, EXCETO:
+      </div>
+    </div>
+    <div class="options">
+      <div class="option">a) Soberania</div>
+      <div class="option">b) Cidadania</div>
+      <div class="option">c) Dignidade da pessoa humana</div>
+      <div class="option">d) Garantia do desenvolvimento nacional</div>
+      <div class="option correct">e) ✓ d) é a resposta errada — Desenvolvimento nacional é objetivo (Art. 3), não fundamento (Art. 1)</div>
+    </div>
+    <div class="gabarito">
+      <div class="gabarito-label">✦ Gabarito: D</div>
+      <p>O Art. 1º elenca os <strong>fundamentos</strong>: soberania, cidadania, dignidade da pessoa humana, valores sociais do trabalho e da livre iniciativa e pluralismo político. "Garantir o desenvolvimento nacional" é um dos <strong>objetivos</strong> da República, previsto no Art. 3º, II. Essa distinção é clássica em provas.</p>
+    </div>
+  </div>
+
+  <!-- Q2 -->
+  <div class="question-block">
+    <div class="question-head">
+      <span class="q-num">Q02</span>
+      <div class="q-text">
+        <span class="tag rju">Lei 8.112</span>
+        Após ser nomeado para cargo efetivo em concurso público federal, o servidor tem o prazo de _______ para tomar posse e, após a posse, _______ para entrar em exercício.
+      </div>
+    </div>
+    <div class="options">
+      <div class="option">a) 15 dias / 30 dias</div>
+      <div class="option">b) 30 dias / 30 dias</div>
+      <div class="option correct">✓ c) 30 dias / 15 dias</div>
+      <div class="option">d) 15 dias / 15 dias</div>
+      <div class="option">e) 60 dias / 30 dias</div>
+    </div>
+    <div class="gabarito">
+      <div class="gabarito-label">✦ Gabarito: C</div>
+      <p>Arts. 13 e 15 da Lei 8.112/1990: posse em até <strong>30 dias</strong> após a publicação do ato de nomeação; exercício em até <strong>15 dias</strong> após a data da posse. Quem não tomar posse no prazo será <em>exonerado</em>; quem não entrar em exercício, também. A inversão dos prazos é a principal pegadinha dessa questão.</p>
+    </div>
+  </div>
+
+  <!-- Q3 -->
+  <div class="question-block">
+    <div class="question-head">
+      <span class="q-num">Q03</span>
+      <div class="q-text">
+        <span class="tag rju">Lei 8.112</span>
+        Dentre as formas de provimento de cargo público previstas na Lei 8.112/1990, qual é a ÚNICA forma de provimento originário?
+      </div>
+    </div>
+    <div class="options">
+      <div class="option">a) Promoção</div>
+      <div class="option">b) Reintegração</div>
+      <div class="option">c) Readaptação</div>
+      <div class="option">d) Aproveitamento</div>
+      <div class="option correct">✓ e) Nomeação</div>
+    </div>
+    <div class="gabarito">
+      <div class="gabarito-label">✦ Gabarito: E</div>
+      <p>O Art. 8º da Lei 8.112/1990 lista as formas de provimento. Apenas a <strong>nomeação</strong> é forma de provimento originário. Todas as demais (promoção, readaptação, reversão, aproveitamento, reintegração, recondução) são formas <strong>derivadas</strong>, pois pressupõem vínculo anterior com a Administração.</p>
+    </div>
+  </div>
+
+  <!-- Q4 -->
+  <div class="question-block">
+    <div class="question-head">
+      <span class="q-num">Q04</span>
+      <div class="q-text">
+        <span class="tag etica">Decreto 1.171</span>
+        A punição aplicada ao servidor público que viola o Código de Ética Profissional previsto no Decreto nº 1.171/1994 denomina-se:
+      </div>
+    </div>
+    <div class="options">
+      <div class="option">a) Advertência</div>
+      <div class="option">b) Suspensão</div>
+      <div class="option correct">✓ c) Censura ética</div>
+      <div class="option">d) Demissão</div>
+      <div class="option">e) Destituição de cargo em comissão</div>
+    </div>
+    <div class="gabarito">
+      <div class="gabarito-label">✦ Gabarito: C</div>
+      <p>O Decreto 1.171/1994 prevê como punição a <strong>censura ética</strong> — aplicada por escrito, com ciência do servidor, arquivada em sua ficha funcional. As demais opções (advertência, suspensão, demissão, destituição) são penalidades da Lei 8.112/1990, não do Código de Ética. A censura ética <em>não substitui</em> as sanções administrativas da Lei 8.112.</p>
+    </div>
+  </div>
+
+  <!-- Q5 -->
+  <div class="question-block">
+    <div class="question-head">
+      <span class="q-num">Q05</span>
+      <div class="q-text">
+        <span class="tag pad">Lei 9.784</span>
+        Nos termos da Lei nº 9.784/1999, o prazo para interposição de recurso no processo administrativo federal é de:
+      </div>
+    </div>
+    <div class="options">
+      <div class="option">a) 5 dias úteis</div>
+      <div class="option">b) 5 dias corridos</div>
+      <div class="option correct">✓ c) 10 dias</div>
+      <div class="option">d) 15 dias</div>
+      <div class="option">e) 30 dias</div>
+    </div>
+    <div class="gabarito">
+      <div class="gabarito-label">✦ Gabarito: C</div>
+      <p>Art. 59 da Lei 9.784/1999: o recurso é interposto no prazo de <strong>10 dias</strong>, contado a partir da ciência ou da divulgação oficial da decisão recorrida. Atenção: 5 dias é o prazo para manifestação do interessado (art. 44); 30 dias é o prazo para a Administração decidir sobre o recurso (art. 59, §1º).</p>
+    </div>
+  </div>
+
+  <!-- Q6 -->
+  <div class="question-block">
+    <div class="question-head">
+      <span class="q-num">Q06</span>
+      <div class="q-text">
+        <span class="tag cf">CF/88</span>
+        O art. 37 da Constituição Federal estabelece que a Administração Pública direta e indireta obedecerá aos princípios de:
+      </div>
+    </div>
+    <div class="options">
+      <div class="option">a) Legalidade, impessoalidade, moralidade, publicidade e razoabilidade</div>
+      <div class="option correct">✓ b) Legalidade, impessoalidade, moralidade, publicidade e eficiência</div>
+      <div class="option">c) Legalidade, imparcialidade, moralidade, publicidade e eficiência</div>
+      <div class="option">d) Legalidade, impessoalidade, motivação, publicidade e eficiência</div>
+      <div class="option">e) Legalidade, impessoalidade, moralidade, transparência e eficiência</div>
+    </div>
+    <div class="gabarito">
+      <div class="gabarito-label">✦ Gabarito: B</div>
+      <p>O mnemônico é <strong>LIMPE</strong>: Legalidade, Impessoalidade, Moralidade, Publicidade e Eficiência. "Eficiência" foi incluído pela EC 19/1998. As alternativas incorretas trazem termos próximos mas errados: "razoabilidade" é princípio da Lei 9.784, "imparcialidade" e "motivação" não constam no art. 37, "transparência" não substitui "publicidade".</p>
+    </div>
+  </div>
+
+  <!-- Q7 -->
+  <div class="question-block">
+    <div class="question-head">
+      <span class="q-num">Q07</span>
+      <div class="q-text">
+        <span class="tag lgpd">LGPD</span>
+        De acordo com a Lei nº 13.709/2018, são considerados dados pessoais sensíveis aqueles referentes à:
+      </div>
+    </div>
+    <div class="options">
+      <div class="option">a) Nome completo e endereço residencial do titular</div>
+      <div class="option">b) Data de nascimento e número do CPF do titular</div>
+      <div class="option correct">✓ c) Origem racial ou étnica, convicção religiosa e dados referentes à saúde</div>
+      <div class="option">d) Renda mensal e dados bancários do titular</div>
+      <div class="option">e) Histórico de compras e preferências de consumo</div>
+    </div>
+    <div class="gabarito">
+      <div class="gabarito-label">✦ Gabarito: C</div>
+      <p>O Art. 5º, II da LGPD define dados pessoais sensíveis como aqueles sobre: <strong>origem racial ou étnica, convicção religiosa, opinião política, filiação a sindicato, dado referente à saúde ou à vida sexual, dado genético ou biométrico</strong>. Nome, CPF, data de nascimento e endereço são dados pessoais comuns, não sensíveis.</p>
+    </div>
+  </div>
+
+  <!-- Q8 -->
+  <div class="question-block">
+    <div class="question-head">
+      <span class="q-num">Q08</span>
+      <div class="q-text">
+        <span class="tag lai">LAI</span>
+        Segundo a Lei nº 12.527/2011, o órgão ou entidade pública deve fornecer a informação solicitada pelo cidadão no prazo máximo de:
+      </div>
+    </div>
+    <div class="options">
+      <div class="option">a) 10 dias, prorrogáveis por mais 5 dias</div>
+      <div class="option">b) 15 dias, improrrogáveis</div>
+      <div class="option correct">✓ c) 20 dias, prorrogáveis por mais 10 dias mediante justificativa</div>
+      <div class="option">d) 30 dias, prorrogáveis por mais 30 dias mediante justificativa</div>
+      <div class="option">e) 5 dias úteis, prorrogáveis por mais 5 dias úteis</div>
+    </div>
+    <div class="gabarito">
+      <div class="gabarito-label">✦ Gabarito: C</div>
+      <p>Art. 11, §2º da Lei 12.527/2011: o prazo para atendimento do pedido é de <strong>20 dias</strong>, prorrogável por mais <strong>10 dias</strong>, mediante justificativa expressa. Total máximo: 30 dias. Essa combinação 20+10 é um ponto muito frequente em provas.</p>
+    </div>
+  </div>
+
+  <!-- Q9 -->
+  <div class="question-block">
+    <div class="question-head">
+      <span class="q-num">Q09</span>
+      <div class="q-text">
+        <span class="tag rju">Lei 8.112</span>
+        O servidor público federal faz jus a férias anuais de:
+      </div>
+    </div>
+    <div class="options">
+      <div class="option">a) 20 dias corridos por período de 12 meses de exercício</div>
+      <div class="option">b) 25 dias corridos por período de 12 meses de exercício</div>
+      <div class="option correct">✓ c) 30 dias corridos por período de 12 meses de exercício</div>
+      <div class="option">d) 30 dias úteis por período de 12 meses de exercício</div>
+      <div class="option">e) 20 dias úteis por período de 12 meses de exercício</div>
+    </div>
+    <div class="gabarito">
+      <div class="gabarito-label">✦ Gabarito: C</div>
+      <p>Art. 77 da Lei 8.112/1990: o servidor faz jus a férias anuais de <strong>30 dias</strong> (corridos) por período de 12 meses de exercício. As férias podem ser acumuladas até o máximo de 2 períodos e parceladas em até 3 etapas, com anuência do servidor.</p>
+    </div>
+  </div>
+
+  <!-- Q10 -->
+  <div class="question-block">
+    <div class="question-head">
+      <span class="q-num">Q10</span>
+      <div class="q-text">
+        <span class="tag impro">Lei 8.429</span>
+        A Lei nº 8.429/1992 classifica os atos de improbidade administrativa em três categorias. Aqueles que importam enriquecimento ilícito estão previstos no:
+      </div>
+    </div>
+    <div class="options">
+      <div class="option">a) Art. 8º</div>
+      <div class="option correct">✓ b) Art. 9º</div>
+      <div class="option">c) Art. 10</div>
+      <div class="option">d) Art. 11</div>
+      <div class="option">e) Art. 12</div>
+    </div>
+    <div class="gabarito">
+      <div class="gabarito-label">✦ Gabarito: B</div>
+      <p>A estrutura da lei: <strong>Art. 9</strong> = enriquecimento ilícito; <strong>Art. 10</strong> = prejuízo ao erário; <strong>Art. 11</strong> = violação dos princípios da Administração. O Art. 12 traz as <em>sanções</em> correspondentes a cada tipo. Memorize essa sequência — é constantemente cobrada.</p>
+    </div>
+  </div>
+
+  <!-- Q11 -->
+  <div class="question-block">
+    <div class="question-head">
+      <span class="q-num">Q11</span>
+      <div class="q-text">
+        <span class="tag cf">CF/88</span>
+        Qual remédio constitucional é cabível quando alguém sofre ou se acha ameaçado de sofrer violência ou coação em sua liberdade de locomoção, por ilegalidade ou abuso de poder?
+      </div>
+    </div>
+    <div class="options">
+      <div class="option correct">✓ a) Habeas Corpus</div>
+      <div class="option">b) Mandado de Segurança</div>
+      <div class="option">c) Habeas Data</div>
+      <div class="option">d) Mandado de Injunção</div>
+      <div class="option">e) Ação Popular</div>
+    </div>
+    <div class="gabarito">
+      <div class="gabarito-label">✦ Gabarito: A</div>
+      <p>Art. 5º, LXVIII da CF/88: o <strong>Habeas Corpus</strong> protege a liberdade de locomoção. Habeas Data protege dados pessoais. Mandado de Segurança protege direito líquido e certo. Mandado de Injunção supre omissão legislativa. Ação Popular protege o patrimônio público.</p>
+    </div>
+  </div>
+
+  <!-- Q12 -->
+  <div class="question-block">
+    <div class="question-head">
+      <span class="q-num">Q12</span>
+      <div class="q-text">
+        <span class="tag tae">Lei 11.091</span>
+        Na estrutura da carreira dos Cargos Técnico-Administrativos em Educação (Lei nº 11.091/2005), o cargo de Engenheiro Civil integra o nível de classificação:
+      </div>
+    </div>
+    <div class="options">
+      <div class="option">a) A</div>
+      <div class="option">b) B</div>
+      <div class="option">c) C</div>
+      <div class="option">d) D</div>
+      <div class="option correct">✓ e) E</div>
+    </div>
+    <div class="gabarito">
+      <div class="gabarito-label">✦ Gabarito: E</div>
+      <p>A Lei 11.091/2005 organiza os cargos em níveis de classificação de A a E. O <strong>nível E</strong> corresponde aos cargos de nível superior, como Engenheiro, Médico, Psicólogo, Nutricionista etc. O nível D corresponde ao nível médio (ex.: Assistente em Administração).</p>
+    </div>
+  </div>
+
+  <!-- Q13 -->
+  <div class="question-block">
+    <div class="question-head">
+      <span class="q-num">Q13</span>
+      <div class="q-text">
+        <span class="tag etica">Decreto 1.171</span>
+        Segundo o Decreto nº 1.171/1994, a Comissão de Ética em cada órgão público será composta por:
+      </div>
+    </div>
+    <div class="options">
+      <div class="option">a) 5 membros titulares e 5 suplentes, com mandato de 2 anos</div>
+      <div class="option correct">✓ b) 3 membros titulares e 3 suplentes, com mandato de 3 anos, vedada a recondução</div>
+      <div class="option">c) 3 membros titulares e 3 suplentes, com mandato de 2 anos, permitida uma recondução</div>
+      <div class="option">d) 5 membros titulares, sem suplentes, com mandato de 3 anos</div>
+      <div class="option">e) 3 membros titulares e 5 suplentes, com mandato de 2 anos</div>
+    </div>
+    <div class="gabarito">
+      <div class="gabarito-label">✦ Gabarito: B</div>
+      <p>O Decreto 1.171/1994 estabelece que a Comissão de Ética será integrada por <strong>3 membros titulares e 3 suplentes</strong>, com <strong>mandato de 3 anos</strong> e <strong>vedada a recondução</strong>. A recondução vedada é um detalhe frequentemente cobrado.</p>
+    </div>
+  </div>
+
+  <!-- Q14 -->
+  <div class="question-block">
+    <div class="question-head">
+      <span class="q-num">Q14</span>
+      <div class="q-text">
+        <span class="tag lai">LAI</span>
+        De acordo com a Lei nº 12.527/2011, o prazo máximo de sigilo para documentos classificados como "ultrassecretos" é de:
+      </div>
+    </div>
+    <div class="options">
+      <div class="option">a) 5 anos, improrrogável</div>
+      <div class="option">b) 15 anos, prorrogável por igual período</div>
+      <div class="option">c) 25 anos, improrrogável</div>
+      <div class="option correct">✓ d) 25 anos, prorrogável uma vez por igual período (máximo de 50 anos)</div>
+      <div class="option">e) 50 anos, improrrogável</div>
+    </div>
+    <div class="gabarito">
+      <div class="gabarito-label">✦ Gabarito: D</div>
+      <p>Art. 24 da LAI: <strong>Reservada</strong> = 5 anos; <strong>Secreta</strong> = 15 anos; <strong>Ultrassecreta</strong> = 25 anos, prorrogável <strong>uma vez</strong> por igual período (total máximo: 50 anos). A prorrogação do grau ultrassecreto é competência restrita à autoridade máxima do Poder Executivo.</p>
+    </div>
+  </div>
+
+  <!-- Q15 -->
+  <div class="question-block">
+    <div class="question-head">
+      <span class="q-num">Q15</span>
+      <div class="q-text">
+        <span class="tag rju">Lei 8.112</span>
+        Assinale a alternativa que apresenta corretamente a ordem crescente das penalidades previstas no art. 127 da Lei nº 8.112/1990:
+      </div>
+    </div>
+    <div class="options">
+      <div class="option">a) Demissão → Suspensão → Advertência → Cassação de aposentadoria</div>
+      <div class="option correct">✓ b) Advertência → Suspensão → Demissão → Cassação de aposentadoria ou disponibilidade → Destituição de cargo em comissão → Destituição de função comissionada</div>
+      <div class="option">c) Suspensão → Advertência → Demissão → Destituição</div>
+      <div class="option">d) Advertência → Demissão → Suspensão → Cassação</div>
+      <div class="option">e) Advertência → Suspensão → Destituição → Demissão</div>
+    </div>
+    <div class="gabarito">
+      <div class="gabarito-label">✦ Gabarito: B</div>
+      <p>O Art. 127 lista as penalidades em ordem crescente de gravidade: I-Advertência, II-Suspensão (até 90 dias), III-Demissão, IV-Cassação de aposentadoria ou disponibilidade, V-Destituição de cargo em comissão, VI-Destituição de função comissionada.</p>
+    </div>
+  </div>
+
+  <!-- ── MÉDIAS ── -->
+  <div class="difficulty-band medium">🟡 Questões 16–35 — Nível Médio</div>
+
+  <!-- Q16 -->
+  <div class="question-block">
+    <div class="question-head">
+      <span class="q-num">Q16</span>
+      <div class="q-text">
+        <span class="tag cf">CF/88</span>
+        Um servidor público federal é professor de matemática em uma universidade federal e também é médico regularmente inscrito no CRM. Ele pretende acumular seu cargo de professor com o cargo de médico em um hospital público. Com base no art. 37, XVI da CF/88, essa acumulação é:
+      </div>
+    </div>
+    <div class="options">
+      <div class="option">a) Vedada em qualquer hipótese, pois a regra constitucional proíbe toda acumulação</div>
+      <div class="option">b) Permitida apenas se o médico for servidor celetista, não estatutário</div>
+      <div class="option correct">✓ c) Permitida, pois se enquadra na hipótese de um cargo de professor com outro técnico ou científico, havendo compatibilidade de horários</div>
+      <div class="option">d) Vedada, pois médico não é considerado cargo técnico ou científico</div>
+      <div class="option">e) Permitida apenas se ambos os cargos forem em universidades federais</div>
+    </div>
+    <div class="gabarito">
+      <div class="gabarito-label">✦ Gabarito: C</div>
+      <p>O Art. 37, XVI, "b" da CF/88 permite a acumulação de <strong>um cargo de professor com outro técnico ou científico</strong>, havendo compatibilidade de horários. O cargo de médico é inequivocamente um cargo de natureza técnica e científica. Portanto, a acumulação professor + médico é constitucionalmente permitida.</p>
+    </div>
+  </div>
+
+  <!-- Q17 -->
+  <div class="question-block">
+    <div class="question-head">
+      <span class="q-num">Q17</span>
+      <div class="q-text">
+        <span class="tag pad">Lei 9.784</span>
+        No processo administrativo federal, o recurso hierárquico, salvo disposição legal específica, tem efeito:
+      </div>
+    </div>
+    <div class="options">
+      <div class="option">a) Devolutivo apenas, sem suspender a execução do ato recorrido</div>
+      <div class="option correct">✓ b) Suspensivo, salvo razões de relevante interesse público ou risco de ineficácia da medida</div>
+      <div class="option">c) Extensivo, ampliando o objeto do processo além do pedido original</div>
+      <div class="option">d) Sem efeito nenhum, dependendo de tutela judicial para suspender o ato</div>
+      <div class="option">e) Exclusivamente devolutivo, sendo necessário pedido expresso para obter efeito suspensivo</div>
+    </div>
+    <div class="gabarito">
+      <div class="gabarito-label">✦ Gabarito: B</div>
+      <p>Art. 61 da Lei 9.784/1999: o recurso administrativo tem efeito <strong>suspensivo</strong> como regra. As exceções ocorrem quando há razões de relevante interesse público ou quando a execução for necessária para evitar a ineficácia da decisão. Isso é o oposto do processo civil, onde o recurso tem efeito apenas devolutivo como regra — confusão frequente em provas.</p>
+    </div>
+  </div>
+
+  <!-- Q18 -->
+  <div class="question-block">
+    <div class="question-head">
+      <span class="q-num">Q18</span>
+      <div class="q-text">
+        <span class="tag cf">CF/88</span>
+        Conforme o art. 41 da Constituição Federal, o servidor público estável pode perder o cargo em virtude de decisão judicial transitada em julgado, mediante processo administrativo disciplinar com ampla defesa assegurada, ou ainda mediante:
+      </div>
+    </div>
+    <div class="options">
+      <div class="option">a) Ato discricionário do Chefe do Poder Executivo, quando de interesse da Administração</div>
+      <div class="option">b) Relatório de sindicância que conclua pela responsabilização do servidor</div>
+      <div class="option">c) Decisão do Tribunal de Contas competente em processo de tomada de contas</div>
+      <div class="option correct">✓ d) Procedimento de avaliação periódica de desempenho, na forma de lei complementar, assegurada ampla defesa</div>
+      <div class="option">e) Ato de demissão do Ministro de Estado, quando motivado por interesse público</div>
+    </div>
+    <div class="gabarito">
+      <div class="gabarito-label">✦ Gabarito: D</div>
+      <p>Art. 41, §1º da CF/88 elenca três hipóteses de perda do cargo pelo servidor estável: I - sentença judicial transitada em julgado; II - PAD com ampla defesa; III - <strong>procedimento de avaliação periódica de desempenho, na forma de lei complementar, assegurada ampla defesa</strong>. A avaliação de desempenho é hipótese constitucional, não infraconstitucional.</p>
+    </div>
+  </div>
+
+  <!-- Q19 -->
+  <div class="question-block">
+    <div class="question-head">
+      <span class="q-num">Q19</span>
+      <div class="q-text">
+        <span class="tag lgpd">LGPD</span>
+        Uma empresa de software contratada pela UFMA para processar dados acadêmicos dos estudantes atua, no contexto da LGPD, como:
+      </div>
+    </div>
+    <div class="options">
+      <div class="option">a) Controlador, pois determina os dados a serem tratados</div>
+      <div class="option">b) Encarregado, pois gerencia a comunicação com os titulares</div>
+      <div class="option correct">✓ c) Operador, pois realiza o tratamento em nome do controlador (UFMA)</div>
+      <div class="option">d) Titular, pois os dados processados pertencem ao sistema da empresa</div>
+      <div class="option">e) Autoridade, pois define os parâmetros de acesso ao sistema</div>
+    </div>
+    <div class="gabarito">
+      <div class="gabarito-label">✦ Gabarito: C</div>
+      <p>Pela LGPD: <strong>Controlador</strong> = quem decide sobre os dados (UFMA, no caso). <strong>Operador</strong> = quem trata dados em nome do controlador (a empresa de software). O operador age por instrução do controlador. <strong>Encarregado</strong> (DPO) = canal de comunicação. A distinção controlador/operador é fundamental.</p>
+    </div>
+  </div>
+
+  <!-- Q20 -->
+  <div class="question-block">
+    <div class="question-head">
+      <span class="q-num">Q20</span>
+      <div class="q-text">
+        <span class="tag impro">Lei 8.429</span>
+        Após a reforma promovida pela Lei nº 14.230/2021, para que uma conduta seja tipificada como ato de improbidade administrativa causador de prejuízo ao erário (Art. 10), é necessário que o agente tenha agido com:
+      </div>
+    </div>
+    <div class="options">
+      <div class="option">a) Culpa simples (negligência, imprudência ou imperícia)</div>
+      <div class="option">b) Culpa grave ou dolo eventual</div>
+      <div class="option">c) Culpa ou dolo, indistintamente</div>
+      <div class="option correct">✓ d) Dolo específico, configurado pela vontade livre e consciente de atingir a finalidade ilícita</div>
+      <div class="option">e) Mera irregularidade administrativa, independente do elemento subjetivo</div>
+    </div>
+    <div class="gabarito">
+      <div class="gabarito-label">✦ Gabarito: D</div>
+      <p>A Lei 14.230/2021 reformulou profundamente a improbidade. O Art. 1º, §1º exige que o ato seja <strong>doloso</strong>. A modalidade culposa do Art. 10, que antes permitia a punição por negligência/imprudência, foi <strong>eliminada</strong>. Erros causados por incompetência sem intenção não configuram mais improbidade — apenas irregularidade administrativa comum.</p>
+    </div>
+  </div>
+
+  <!-- Q21 -->
+  <div class="question-block">
+    <div class="question-head">
+      <span class="q-num">Q21</span>
+      <div class="q-text">
+        <span class="tag rju">Lei 8.112</span>
+        Conforme a Lei nº 8.112/1990, o servidor poderá afastar-se do exercício do cargo para frequentar curso de capacitação, com remuneração, pelo prazo de até:
+      </div>
+    </div>
+    <div class="options">
+      <div class="option">a) 30 dias a cada 3 anos de efetivo exercício</div>
+      <div class="option correct">✓ b) 3 meses a cada 5 anos de efetivo exercício</div>
+      <div class="option">c) 6 meses a cada 5 anos de efetivo exercício</div>
+      <div class="option">d) 3 meses a cada 3 anos de efetivo exercício</div>
+      <div class="option">e) 1 ano a cada 10 anos de efetivo exercício</div>
+    </div>
+    <div class="gabarito">
+      <div class="gabarito-label">✦ Gabarito: B</div>
+      <p>Art. 87 da Lei 8.112/1990: a licença para capacitação é de até <strong>3 meses</strong>, podendo ser gozada de forma parcelada, desde que em parcelas não inferiores a 30 dias, após cada <strong>quinquênio</strong> (5 anos) de efetivo exercício. É remunerada e não pode ser acumulada com férias.</p>
+    </div>
+  </div>
+
+  <!-- Q22 -->
+  <div class="question-block">
+    <div class="question-head">
+      <span class="q-num">Q22</span>
+      <div class="q-text">
+        <span class="tag lai">LAI</span>
+        A obrigação de divulgar informações de interesse público nos sítios eletrônicos oficiais dos órgãos, independentemente de qualquer solicitação, denomina-se, na Lei de Acesso à Informação:
+      </div>
+    </div>
+    <div class="options">
+      <div class="option">a) Transparência passiva</div>
+      <div class="option">b) Acesso protetivo</div>
+      <div class="option correct">✓ c) Transparência ativa</div>
+      <div class="option">d) Publicidade ex officio</div>
+      <div class="option">e) Acesso irrestrito</div>
+    </div>
+    <div class="gabarito">
+      <div class="gabarito-label">✦ Gabarito: C</div>
+      <p><strong>Transparência ativa</strong> é a divulgação proativa pelo próprio órgão, sem necessidade de pedido. Portais de transparência, dados abertos e sítios eletrônicos são seus instrumentos. <strong>Transparência passiva</strong> é a divulgação mediante solicitação do cidadão ao Serviço de Informação ao Cidadão (SIC).</p>
+    </div>
+  </div>
+
+  <!-- Q23 -->
+  <div class="question-block">
+    <div class="question-head">
+      <span class="q-num">Q23</span>
+      <div class="q-text">
+        <span class="tag etica">Decreto 1.171</span>
+        Constitui vedação expressa ao servidor público civil federal, nos termos do Decreto nº 1.171/1994:
+      </div>
+    </div>
+    <div class="options">
+      <div class="option">a) Publicar trabalhos científicos relativos à área de atuação do órgão, desde que em horário de trabalho</div>
+      <div class="option">b) Participar de cursos de capacitação promovidos por entidades privadas, mediante autorização superior</div>
+      <div class="option correct">✓ c) Usar de artifícios para procrastinar ou dificultar o exercício regular de direito por qualquer pessoa</div>
+      <div class="option">d) Apresentar sugestões de melhoria dos serviços públicos ao superior hierárquico</div>
+      <div class="option">e) Consultar normas internas do órgão durante o expediente para melhor execução das tarefas</div>
+    </div>
+    <div class="gabarito">
+      <div class="gabarito-label">✦ Gabarito: C</div>
+      <p>O Decreto 1.171/1994, Seção XVI, "d", veda expressamente usar artifícios para <strong>procrastinar ou dificultar</strong> o exercício regular de direito por qualquer pessoa. Esse comportamento viola diretamente o princípio da presteza e do interesse público que devem nortear a ação do servidor.</p>
+    </div>
+  </div>
+
+  <!-- Q24 -->
+  <div class="question-block">
+    <div class="question-head">
+      <span class="q-num">Q24</span>
+      <div class="q-text">
+        <span class="tag pad">Lei 9.784</span>
+        Sobre anulação e revogação de atos administrativos na Lei 9.784/1999, é CORRETO afirmar que:
+      </div>
+    </div>
+    <div class="options">
+      <div class="option">a) A revogação retroage à data da edição do ato (efeito ex tunc) por ser mais grave que a anulação</div>
+      <div class="option">b) Tanto anulação quanto revogação podem ser promovidas pelo Poder Judiciário de ofício</div>
+      <div class="option correct">✓ c) A anulação decorre de ilegalidade e retroage à data do ato (ex tunc); a revogação decorre de conveniência ou oportunidade e produz efeitos prospectivos (ex nunc)</div>
+      <div class="option">d) A Administração pode revogar qualquer ato administrativo, inclusive os vinculados, a qualquer tempo</div>
+      <div class="option">e) A revogação produz efeito retroativo apenas nos casos de dolo do servidor que praticou o ato</div>
+    </div>
+    <div class="gabarito">
+      <div class="gabarito-label">✦ Gabarito: C</div>
+      <p>Distinção fundamental: <strong>Anulação</strong> = ilegalidade, ex tunc (desfaz efeitos passados), pode ser promovida pela Administração e pelo Judiciário. <strong>Revogação</strong> = conveniência/oportunidade, ex nunc (vale daqui pra frente), somente pela Administração. Atos vinculados <strong>não podem ser revogados</strong> — apenas os discricionários.</p>
+    </div>
+  </div>
+
+  <!-- Q25 -->
+  <div class="question-block">
+    <div class="question-head">
+      <span class="q-num">Q25</span>
+      <div class="q-text">
+        <span class="tag rju">Lei 8.112</span>
+        Segundo o art. 142 da Lei 8.112/1990, o prazo prescricional para a abertura de processo disciplinar cujo objeto seja infração punível com demissão é de:
+      </div>
+    </div>
+    <div class="options">
+      <div class="option">a) 180 dias</div>
+      <div class="option">b) 1 ano</div>
+      <div class="option">c) 2 anos</div>
+      <div class="option">d) 3 anos</div>
+      <div class="option correct">✓ e) 5 anos</div>
+    </div>
+    <div class="gabarito">
+      <div class="gabarito-label">✦ Gabarito: E</div>
+      <p>Art. 142 da Lei 8.112/1990: prescrição de <strong>5 anos</strong> para infração punível com demissão, cassação de aposentadoria/disponibilidade ou destituição. <strong>2 anos</strong> para suspensão. <strong>180 dias</strong> para advertência. A prescrição começa a correr da data em que o fato se tornou conhecido da autoridade competente para instaurar o processo.</p>
+    </div>
+  </div>
+
+  <!-- Q26 -->
+  <div class="question-block">
+    <div class="question-head">
+      <span class="q-num">Q26</span>
+      <div class="q-text">
+        <span class="tag lgpd">LGPD</span>
+        Um servidor público deseja saber quais dados pessoais sobre ele estão sendo tratados pela instituição em que trabalha. De acordo com a LGPD, ele tem o direito de:
+      </div>
+    </div>
+    <div class="options">
+      <div class="option">a) Solicitar a eliminação imediata de todos os seus dados pessoais, sem qualquer condicionamento</div>
+      <div class="option">b) Apenas visualizar os dados, sem qualquer direito de correção ou portabilidade</div>
+      <div class="option correct">✓ c) Confirmar a existência do tratamento, acessar os dados, corrigir dados incompletos ou inexatos e solicitar a portabilidade dos dados</div>
+      <div class="option">d) Exigir indenização automática por qualquer tratamento de seus dados, mesmo que autorizado por lei</div>
+      <div class="option">e) Revogar o consentimento com efeito retroativo, anulando todo tratamento anteriormente realizado</div>
+    </div>
+    <div class="gabarito">
+      <div class="gabarito-label">✦ Gabarito: C</div>
+      <p>Art. 18 da LGPD garante ao titular os direitos de: confirmação, acesso, correção, anonimização/bloqueio/eliminação, portabilidade, eliminação (dados tratados com consentimento), informação sobre compartilhamento e revogação do consentimento. A eliminação tem condicionamentos (quando fundada em obrigação legal, não pode ser solicitada).</p>
+    </div>
+  </div>
+
+  <!-- Q27 -->
+  <div class="question-block">
+    <div class="question-head">
+      <span class="q-num">Q27</span>
+      <div class="q-text">
+        <span class="tag cf">CF/88</span>
+        A respeito da acumulação de cargos prevista na Constituição Federal, é CORRETO afirmar que:
+      </div>
+    </div>
+    <div class="options">
+      <div class="option">a) É vedada em qualquer hipótese para servidores do Poder Executivo Federal</div>
+      <div class="option">b) É permitida sem restrições para profissionais da área de saúde, desde que ambos os cargos sejam em hospitais públicos</div>
+      <div class="option">c) Um servidor pode acumular três cargos de professor, desde que haja compatibilidade de horários</div>
+      <div class="option correct">✓ d) A vedação à acumulação se aplica a empregos e funções, e abrange as autarquias, fundações, empresas públicas, sociedades de economia mista e subsidiárias</div>
+      <div class="option">e) A regra de compatibilidade de horários é dispensável quando os cargos são em órgãos diferentes</div>
+    </div>
+    <div class="gabarito">
+      <div class="gabarito-label">✦ Gabarito: D</div>
+      <p>Art. 37, XVII da CF/88: a proibição de acumulação abrange cargos, empregos e funções na Administração direta e indireta. Isso inclui autarquias, fundações, empresas públicas, SEM e subsidiárias. Mesmo nas hipóteses permitidas (como dois cargos de professor), a <strong>compatibilidade de horários é sempre exigida</strong>. Três cargos nunca são permitidos.</p>
+    </div>
+  </div>
+
+  <!-- Q28 -->
+  <div class="question-block">
+    <div class="question-head">
+      <span class="q-num">Q28</span>
+      <div class="q-text">
+        <span class="tag impro">Lei 8.429</span>
+        Segundo a Lei nº 8.429/1992, com a redação da Lei 14.230/2021, o servidor que pratica ato de improbidade que importe enriquecimento ilícito (Art. 9) está sujeito à suspensão dos direitos políticos por:
+      </div>
+    </div>
+    <div class="options">
+      <div class="option">a) 3 a 4 anos</div>
+      <div class="option">b) 5 a 8 anos</div>
+      <div class="option">c) 8 a 10 anos</div>
+      <div class="option">d) 10 a 12 anos</div>
+      <div class="option correct">✓ e) 14 a 16 anos</div>
+    </div>
+    <div class="gabarito">
+      <div class="gabarito-label">✦ Gabarito: E</div>
+      <p>Art. 12, I (redação Lei 14.230/2021): atos de enriquecimento ilícito (Art. 9) → suspensão de direitos políticos de <strong>14 a 16 anos</strong>. Art. 10 (erário) → 5 a 8 anos. Art. 11 (princípios) → 3 a 4 anos. A ordem é: quanto mais grave o dano, maior a suspensão.</p>
+    </div>
+  </div>
+
+  <!-- Q29 -->
+  <div class="question-block">
+    <div class="question-head">
+      <span class="q-num">Q29</span>
+      <div class="q-text">
+        <span class="tag rju">Lei 8.112</span>
+        No Processo Administrativo Disciplinar (PAD), após a fase de instrução, o acusado terá prazo de _______ para apresentar defesa escrita, podendo esse prazo ser prorrogado por igual período em caso de maior complexidade.
+      </div>
+    </div>
+    <div class="options">
+      <div class="option">a) 5 dias</div>
+      <div class="option correct">✓ b) 10 dias</div>
+      <div class="option">c) 15 dias</div>
+      <div class="option">d) 20 dias</div>
+      <div class="option">e) 30 dias</div>
+    </div>
+    <div class="gabarito">
+      <div class="gabarito-label">✦ Gabarito: B</div>
+      <p>Art. 161 da Lei 8.112/1990: o indiciado será citado para apresentar defesa escrita no prazo de <strong>10 dias</strong>. Na hipótese de mais de um indiciado, o prazo é de 20 dias. O prazo pode ser prorrogado por mais 10 dias em caso de maior complexidade.</p>
+    </div>
+  </div>
+
+  <!-- Q30 -->
+  <div class="question-block">
+    <div class="question-head">
+      <span class="q-num">Q30</span>
+      <div class="q-text">
+        <span class="tag lai">LAI</span>
+        No âmbito do Poder Executivo Federal, quando o cidadão tem seu pedido de acesso à informação negado pela autoridade máxima do órgão, o próximo recurso deve ser dirigido a:
+      </div>
+    </div>
+    <div class="options">
+      <div class="option">a) Tribunal de Contas da União (TCU)</div>
+      <div class="option">b) Ministério Público Federal (MPF)</div>
+      <div class="option correct">✓ c) Controladoria-Geral da União (CGU)</div>
+      <div class="option">d) Supremo Tribunal Federal (STF)</div>
+      <div class="option">e) Congresso Nacional</div>
+    </div>
+    <div class="gabarito">
+      <div class="gabarito-label">✦ Gabarito: C</div>
+      <p>A LAI prevê instâncias recursais no Executivo Federal: 1ª = autoridade superior; 2ª = autoridade máxima do órgão; 3ª = <strong>CGU</strong> (Controladoria-Geral da União); 4ª = CMRI (Comissão Mista de Reavaliação de Informações). A CGU atua como terceira instância recursal administrativa antes da CMRI.</p>
+    </div>
+  </div>
+
+  <!-- Q31 -->
+  <div class="question-block">
+    <div class="question-head">
+      <span class="q-num">Q31</span>
+      <div class="q-text">
+        <span class="tag tae">Lei 11.091</span>
+        Um Engenheiro Civil servidor da UFMA (nível de classificação E) conclui um curso de mestrado. O percentual de incentivo à qualificação que passará a perceber sobre o vencimento básico é de:
+      </div>
+    </div>
+    <div class="options">
+      <div class="option">a) 25%, pois equivale ao benefício de graduação completa</div>
+      <div class="option">b) 30%, pois o mestrado é equiparado à especialização para fins de incentivo</div>
+      <div class="option correct">✓ c) 52%, percentual específico para o nível de mestrado</div>
+      <div class="option">d) 75%, pois o mestrado é o maior grau de pós-graduação reconhecido</div>
+      <div class="option">e) 40%, valor médio entre especialização e doutorado</div>
+    </div>
+    <div class="gabarito">
+      <div class="gabarito-label">✦ Gabarito: C</div>
+      <p>A tabela da Lei 11.091/2005: especialização = 30%; <strong>mestrado = 52%</strong>; doutorado = 75%. Para o Engenheiro Civil (nível E — superior), a graduação já é o requisito, então o incentivo parte da especialização (30%). O mestrado confere 52% sobre o vencimento básico, que não se acumulam entre os títulos — vale o maior.</p>
+    </div>
+  </div>
+
+  <!-- Q32 -->
+  <div class="question-block">
+    <div class="question-head">
+      <span class="q-num">Q32</span>
+      <div class="q-text">
+        <span class="tag etica">Decreto 1.171</span>
+        A punição prevista no Código de Ética (Decreto 1.171/1994) em relação às demais sanções administrativas da Lei 8.112/1990 pode ser caracterizada como:
+      </div>
+    </div>
+    <div class="options">
+      <div class="option">a) Substitutiva — a censura ética substitui a advertência administrativa</div>
+      <div class="option">b) Absorvente — a aplicação da censura ética absorve as demais penalidades</div>
+      <div class="option correct">✓ c) Autônoma e acumulável — a censura ética não substitui nem exclui as sanções da Lei 8.112/1990</div>
+      <div class="option">d) Subsidiária — a censura ética só é aplicada quando não couber penalidade pela Lei 8.112</div>
+      <div class="option">e) Excludente — a aplicação da Lei 8.112 exclui a aplicação do Código de Ética</div>
+    </div>
+    <div class="gabarito">
+      <div class="gabarito-label">✦ Gabarito: C</div>
+      <p>O Decreto 1.171/1994 é explícito: a censura ética <strong>não substitui</strong> as penalidades previstas na Lei 8.112/1990. As sanções são autônomas e acumuláveis. Um servidor pode sofrer simultaneamente censura ética (pelo Código de Ética) e advertência ou suspensão (pela Lei 8.112) pelo mesmo fato, que viole os dois diplomas.</p>
+    </div>
+  </div>
+
+  <!-- Q33 -->
+  <div class="question-block">
+    <div class="question-head">
+      <span class="q-num">Q33</span>
+      <div class="q-text">
+        <span class="tag pad">Lei 9.784</span>
+        Segundo a Lei 9.784/1999, o direito da Administração de anular ato administrativo de que decorram efeitos favoráveis para o destinatário, que de boa-fé agiu com base no ato, decai em:
+      </div>
+    </div>
+    <div class="options">
+      <div class="option">a) 2 anos contados da data da prática do ato</div>
+      <div class="option">b) 3 anos contados da data do conhecimento do vício</div>
+      <div class="option correct">✓ c) 5 anos contados da data em que foi praticado</div>
+      <div class="option">d) 8 anos contados da data da publicação do ato</div>
+      <div class="option">e) 10 anos contados da data da ciência do vício pela Administração</div>
+    </div>
+    <div class="gabarito">
+      <div class="gabarito-label">✦ Gabarito: C</div>
+      <p>Art. 54 da Lei 9.784/1999: o direito da Administração de anular atos administrativos de que decorram efeitos favoráveis para os destinatários decai em <strong>5 anos</strong>, contados da data em que foram praticados, <strong>salvo comprovada má-fé</strong>. Com má-fé, não há prazo decadencial — a Administração pode anular a qualquer tempo.</p>
+    </div>
+  </div>
+
+  <!-- Q34 -->
+  <div class="question-block">
+    <div class="question-head">
+      <span class="q-num">Q34</span>
+      <div class="q-text">
+        <span class="tag lgpd">LGPD</span>
+        A Autoridade Nacional de Proteção de Dados (ANPD), criada pela Lei 13.709/2018, possui a seguinte natureza jurídica:
+      </div>
+    </div>
+    <div class="options">
+      <div class="option">a) Fundação pública, vinculada ao Ministério da Justiça</div>
+      <div class="option">b) Órgão da Presidência da República, sem personalidade jurídica própria</div>
+      <div class="option">c) Empresa pública, com fins não econômicos</div>
+      <div class="option correct">✓ d) Autarquia especial, integrante da Administração Pública Federal indireta, com autonomia técnica e decisória</div>
+      <div class="option">e) Agência reguladora vinculada ao Ministério da Economia</div>
+    </div>
+    <div class="gabarito">
+      <div class="gabarito-label">✦ Gabarito: D</div>
+      <p>A ANPD foi originalmente criada como órgão da Presidência, mas a Lei 13.853/2019 a transformou em <strong>autarquia especial</strong> da Administração Pública Federal indireta, com autonomia técnica, decisória, administrativa, orçamentária e financeira. A natureza autárquica especial garante independência funcional semelhante às agências reguladoras.</p>
+    </div>
+  </div>
+
+  <!-- Q35 -->
+  <div class="question-block">
+    <div class="question-head">
+      <span class="q-num">Q35</span>
+      <div class="q-text">
+        <span class="tag rju">Lei 8.112</span>
+        Sobre as responsabilidades do servidor público federal, a Lei 8.112/1990 estabelece que:
+      </div>
+    </div>
+    <div class="options">
+      <div class="option">a) A absolvição em processo criminal exclui automaticamente a responsabilidade administrativa, independente da fundamentação da sentença</div>
+      <div class="option">b) A responsabilidade civil exclui a penal quando o dano causado for reparado voluntariamente pelo servidor</div>
+      <div class="option correct">✓ c) As responsabilidades civil, penal e administrativa são independentes entre si, e a absolvição criminal só afasta a responsabilidade administrativa quando negar a existência do fato ou a sua autoria</div>
+      <div class="option">d) A condenação penal não reflete na esfera administrativa, em respeito ao princípio da separação das responsabilidades</div>
+      <div class="option">e) A responsabilidade civil do servidor é sempre objetiva, prescindindo da comprovação de dolo ou culpa</div>
+    </div>
+    <div class="gabarito">
+      <div class="gabarito-label">✦ Gabarito: C</div>
+      <p>Arts. 121-125 da Lei 8.112/1990: as responsabilidades são <strong>independentes</strong>. A absolvição penal afasta a responsabilidade administrativa <strong>apenas quando negar a existência do fato ou a sua autoria</strong>. Se a absolvição for por insuficiência de provas ou falta de dolo, a esfera administrativa prossegue. A responsabilidade civil do servidor exige <strong>dolo ou culpa</strong> (subjetiva).</p>
+    </div>
+  </div>
+
+  <!-- ── DIFÍCEIS ── -->
+  <div class="difficulty-band hard">🔴 Questões 36–50 — Nível Difícil</div>
+
+  <!-- Q36 -->
+  <div class="question-block">
+    <div class="question-head">
+      <span class="q-num">Q36</span>
+      <div class="q-text">
+        <span class="tag rju">Lei 8.112</span>
+        A sindicância instaurada para apurar irregularidade praticada por servidor federal foi concluída no prazo regular, tendo a comissão concluído pela aplicação de suspensão de 45 dias ao servidor. Nesse caso:
+      </div>
+    </div>
+    <div class="options">
+      <div class="option">a) A penalidade pode ser aplicada, pois a sindicância pode aplicar qualquer penalidade disciplinar</div>
+      <div class="option">b) A penalidade pode ser aplicada, pois 45 dias está dentro do limite de 90 dias previsto para suspensão</div>
+      <div class="option correct">✓ c) A penalidade não pode ser aplicada diretamente; a sindicância só pode aplicar suspensão de até 30 dias. Para 45 dias, é necessária a instauração de PAD</div>
+      <div class="option">d) A penalidade pode ser aplicada, desde que o servidor concorde expressamente com a punição</div>
+      <div class="option">e) A sindicância deve ser convertida em PAD e recomeçar do início, com nova comissão</div>
+    </div>
+    <div class="gabarito">
+      <div class="gabarito-label">✦ Gabarito: C</div>
+      <p>Art. 145, II da Lei 8.112/1990: a sindicância pode resultar em aplicação de penalidade de <strong>advertência ou suspensão de até 30 dias</strong>. Para penalidades mais graves, ou suspensão acima de 30 dias, é <strong>obrigatória a instauração de PAD</strong>. No caso, 45 dias ultrapassa o limite da sindicância — deve ser instaurado PAD, aproveitando os atos da sindicância como peças informativas.</p>
+    </div>
+  </div>
+
+  <!-- Q37 -->
+  <div class="question-block">
+    <div class="question-head">
+      <span class="q-num">Q37</span>
+      <div class="q-text">
+        <span class="tag impro">Lei 8.429</span>
+        Um servidor público, durante processo licitatório, celebra contrato por preço superior ao de mercado em benefício de empresa da qual é sócio oculto, obtendo lucro pessoal. Essa conduta se enquadra, primariamente, em qual categoria de ato de improbidade?
+      </div>
+    </div>
+    <div class="options">
+      <div class="option">a) Exclusivamente no Art. 10 (prejuízo ao erário), pois houve dano ao patrimônio público</div>
+      <div class="option">b) Exclusivamente no Art. 11 (violação de princípios), pois houve violação da moralidade administrativa</div>
+      <div class="option">c) No Art. 10 e no Art. 11 concomitantemente, pois houve dano ao erário e violação de princípios</div>
+      <div class="option correct">✓ d) No Art. 9 (enriquecimento ilícito), pois o servidor auferiu vantagem patrimonial indevida em razão do exercício do cargo</div>
+      <div class="option">e) Não configura improbidade, pois a conduta culposa foi eliminada pela Lei 14.230/2021</div>
+    </div>
+    <div class="gabarito">
+      <div class="gabarito-label">✦ Gabarito: D</div>
+      <p>O Art. 9 da Lei 8.429/1992 tipifica os atos que importam em <strong>enriquecimento ilícito</strong>: auferir vantagem patrimonial indevida em razão do exercício do cargo. O servidor beneficiou empresa da qual é sócio oculto — obtendo enriquecimento pessoal pelo uso do cargo. Embora também cause prejuízo ao erário, a qualificação primária é o enriquecimento ilícito, que tem as sanções mais graves.</p>
+    </div>
+  </div>
+
+  <!-- Q38 -->
+  <div class="question-block">
+    <div class="question-head">
+      <span class="q-num">Q38</span>
+      <div class="q-text">
+        <span class="tag cf">CF/88</span>
+        Considerando os remédios constitucionais, analise a situação: um cidadão quer conhecer informações sobre si mesmo constantes em banco de dados de órgão público, e as autoridades se recusam a fornecê-las. O instrumento constitucional adequado para sanar essa situação é:
+      </div>
+    </div>
+    <div class="options">
+      <div class="option">a) Habeas Corpus, pois envolve restrição a direito do cidadão</div>
+      <div class="option">b) Mandado de Segurança, por ser direito líquido e certo não amparado por outros remédios</div>
+      <div class="option">c) Ação Popular, pois o órgão público lesou interesse do cidadão</div>
+      <div class="option correct">✓ d) Habeas Data, pois é o remédio específico para assegurar o conhecimento de informações relativas ao próprio requerente em registros de entidades governamentais</div>
+      <div class="option">e) Mandado de Injunção, pois há omissão do Poder Público em regulamentar o acesso</div>
+    </div>
+    <div class="gabarito">
+      <div class="gabarito-label">✦ Gabarito: D</div>
+      <p>Art. 5º, LXXII da CF/88: o <strong>Habeas Data</strong> é cabível para assegurar o conhecimento de informações relativas à pessoa do impetrante constantes de registros ou bancos de dados de entidades governamentais ou de caráter público, e para a retificação de dados. O Mandado de Segurança, embora também proteja direito líquido e certo, não é cabível quando há remédio específico (HD).</p>
+    </div>
+  </div>
+
+  <!-- Q39 -->
+  <div class="question-block">
+    <div class="question-head">
+      <span class="q-num">Q39</span>
+      <div class="q-text">
+        <span class="tag lgpd">LGPD</span>
+        A UFMA trata dados pessoais de seus servidores para fins de gestão de folha de pagamento, sem solicitar consentimento individual de cada servidor. Com base na LGPD, esse tratamento:
+      </div>
+    </div>
+    <div class="options">
+      <div class="option">a) É ilegal, pois o consentimento do titular é sempre obrigatório</div>
+      <div class="option">b) É ilegal, pois órgãos públicos não podem tratar dados pessoais de seus servidores</div>
+      <div class="option">c) É tolerado, mas o servidor pode exigir que cesse o tratamento a qualquer momento</div>
+      <div class="option correct">✓ d) É legal, com base na hipótese de cumprimento de obrigação legal ou regulatória, que não exige consentimento</div>
+      <div class="option">e) É legal apenas se o servidor assinar termo de autorização no ato da posse</div>
+    </div>
+    <div class="gabarito">
+      <div class="gabarito-label">✦ Gabarito: D</div>
+      <p>Art. 7º, II da LGPD: o tratamento é permitido para o <strong>cumprimento de obrigação legal ou regulatória</strong>, sem necessidade de consentimento. Pagar servidores é obrigação legal da Administração — requer tratamento de dados. O setor público tem bases legais próprias que dispensam consentimento. O servidor não pode exigir cessação de tratamento fundado em obrigação legal.</p>
+    </div>
+  </div>
+
+  <!-- Q40 -->
+  <div class="question-block">
+    <div class="question-head">
+      <span class="q-num">Q40</span>
+      <div class="q-text">
+        <span class="tag pad">Lei 9.784</span>
+        Em processo administrativo, o servidor que deve decidir sobre requerimento de servidor que é seu cunhado (irmão da esposa) deve:
+      </div>
+    </div>
+    <div class="options">
+      <div class="option">a) Decidir normalmente, pois parentesco por afinidade não gera impedimento legal</div>
+      <div class="option">b) Declarar impedimento com base no art. 18 da Lei 9.784/1999, pois tem interesse direto no resultado</div>
+      <div class="option correct">✓ c) Alegar suspeição com base no art. 20 da Lei 9.784/1999, por amizade íntima ou relação de parentesco próximo</div>
+      <div class="option">d) Solicitar substituição apenas se o cunhado for servidor do mesmo departamento</div>
+      <div class="option">e) Permanecer no processo, mas registrar a relação de parentesco nos autos para garantir transparência</div>
+    </div>
+    <div class="gabarito">
+      <div class="gabarito-label">✦ Gabarito: C</div>
+      <p><strong>Impedimento</strong> (Art. 18) = interesse direto na matéria, participação anterior no processo ou litígio com o interessado. <strong>Suspeição</strong> (Art. 20) = amizade íntima ou inimizade notória. Relação de cunhadio (parentesco por afinidade em 2º grau) pode configurar suspeição por proximidade. O impedimento exige relação mais direta e objetiva com o objeto do processo — no caso, a suspeição é a hipótese mais adequada.</p>
+    </div>
+  </div>
+
+  <!-- Q41 -->
+  <div class="question-block">
+    <div class="question-head">
+      <span class="q-num">Q41</span>
+      <div class="q-text">
+        <span class="tag lai">LAI</span>
+        De acordo com a Lei 12.527/2011, a competência para classificar informações no mais alto grau de sigilo (ultrassecreta) é atribuída, no Poder Executivo, a:
+      </div>
+    </div>
+    <div class="options">
+      <div class="option">a) Qualquer servidor público que tenha acesso privilegiado à informação</div>
+      <div class="option">b) Diretores e gerentes de órgãos públicos, mediante portaria</div>
+      <div class="option">c) Secretários de Estado, diretores de autarquias e presidentes de fundações públicas</div>
+      <div class="option correct">✓ d) Presidente da República, Vice-Presidente, Ministros de Estado, Comandantes das Forças Armadas e Chefes de Missões Diplomáticas permanentes no exterior</div>
+      <div class="option">e) Apenas o Presidente da República, por ser informação estratégica de Estado</div>
+    </div>
+    <div class="gabarito">
+      <div class="gabarito-label">✦ Gabarito: D</div>
+      <p>Art. 27, I da Lei 12.527/2011: a competência para classificar no grau ultrassecreto é restrita a: <strong>Presidente e Vice-Presidente, Ministros de Estado e equiparados, Comandantes das Forças Armadas e Chefes de Missões Diplomáticas</strong>. É o grau mais elevado e, portanto, com a classificação mais restrita. Autoridades de menor hierarquia só podem classificar como Reservada ou Secreta.</p>
+    </div>
+  </div>
+
+  <!-- Q42 -->
+  <div class="question-block">
+    <div class="question-head">
+      <span class="q-num">Q42</span>
+      <div class="q-text">
+        <span class="tag rju">Lei 8.112</span>
+        Um servidor foi demitido, mas obteve decisão judicial reconhecendo a ilegalidade da demissão. A consequência legal é a sua:
+      </div>
+    </div>
+    <div class="options">
+      <div class="option">a) Readaptação, ao cargo de natureza similar ao anterior</div>
+      <div class="option">b) Recondução, ao cargo anterior, se ainda existente</div>
+      <div class="option correct">✓ c) Reintegração, com ressarcimento de todas as vantagens a que faria jus no período, inclusive promoções</div>
+      <div class="option">d) Aproveitamento, em cargo disponível compatível com o anterior</div>
+      <div class="option">e) Reversão, mediante requerimento ao órgão de origem</div>
+    </div>
+    <div class="gabarito">
+      <div class="gabarito-label">✦ Gabarito: C</div>
+      <p>Art. 28 da Lei 8.112/1990: a <strong>reintegração</strong> é o retorno do servidor estável ao cargo anteriormente ocupado, ou ao cargo resultante de sua transformação, quando invalidada por sentença judicial a sua demissão. O servidor faz jus ao ressarcimento de todas as vantagens a que teria direito. Se o cargo tiver sido extinto, o servidor ficará em disponibilidade.</p>
+    </div>
+  </div>
+
+  <!-- Q43 -->
+  <div class="question-block">
+    <div class="question-head">
+      <span class="q-num">Q43</span>
+      <div class="q-text">
+        <span class="tag tae">Lei 11.091</span>
+        Na carreira TAE, a diferença entre a progressão por mérito e a progressão por capacitação é que:
+      </div>
+    </div>
+    <div class="options">
+      <div class="option">a) A progressão por mérito muda o nível de capacitação; a progressão por capacitação muda o padrão de vencimento</div>
+      <div class="option correct">✓ b) A progressão por mérito muda o padrão de vencimento (dentro do mesmo nível de capacitação), ocorrendo a cada 2 anos por avaliação de desempenho; a progressão por capacitação muda o nível de capacitação, por qualificação acima do exigido para o cargo</div>
+      <div class="option">c) São sinônimas, pois ambas resultam no mesmo efeito remuneratório</div>
+      <div class="option">d) A progressão por capacitação ocorre a cada 3 anos; a por mérito, a cada 5 anos</div>
+      <div class="option">e) A progressão por mérito é para servidores do nível médio; a por capacitação, para nível superior</div>
+    </div>
+    <div class="gabarito">
+      <div class="gabarito-label">✦ Gabarito: B</div>
+      <p>A distinção é estrutural: <strong>Progressão por mérito profissional</strong> = mudança de padrão de vencimento dentro do mesmo nível de capacitação, por avaliação de desempenho, a cada 2 anos. <strong>Progressão por capacitação profissional</strong> = mudança de nível de capacitação em razão de educação formal superior ao exigido para o cargo atual. São movimentos diferentes na tabela de carreira.</p>
+    </div>
+  </div>
+
+  <!-- Q44 -->
+  <div class="question-block">
+    <div class="question-head">
+      <span class="q-num">Q44</span>
+      <div class="q-text">
+        <span class="tag impro">Lei 8.429</span>
+        Em relação à prescrição da ação de improbidade administrativa, após a Lei 14.230/2021, é CORRETO afirmar que:
+      </div>
+    </div>
+    <div class="options">
+      <div class="option">a) O prazo prescricional é de 5 anos, igual ao da ação popular</div>
+      <div class="option">b) O prazo é de 10 anos para enriquecimento ilícito e 5 anos para os demais casos</div>
+      <div class="option correct">✓ c) O prazo é de 8 anos, contados da data da ocorrência do fato ou do término do exercício do mandato, cargo ou função</div>
+      <div class="option">d) A ação de improbidade é imprescritível, por envolver proteção do patrimônio público</div>
+      <div class="option">e) O prazo de prescrição é de 5 anos para o ressarcimento ao erário, mas a sanção de suspensão de direitos políticos é imprescritível</div>
+    </div>
+    <div class="gabarito">
+      <div class="gabarito-label">✦ Gabarito: C</div>
+      <p>Art. 17-B (incluído pela Lei 14.230/2021): o prazo prescricional para a ação de improbidade é de <strong>8 anos</strong>, contados da data do fato ou do término do exercício do mandato, cargo ou função. Atenção: o STF consolidou que o <strong>ressarcimento ao erário</strong> decorrente de atos dolosos é <strong>imprescritível</strong> (tema 897). Mas a ação de improbidade em si prescreve em 8 anos.</p>
+    </div>
+  </div>
+
+  <!-- Q45 -->
+  <div class="question-block">
+    <div class="question-head">
+      <span class="q-num">Q45</span>
+      <div class="q-text">
+        <span class="tag etica">Decreto 1.171</span>
+        O Código de Ética do Decreto 1.171/1994 veda que o servidor seja "conivente com erro ou infração a este Código de Ética ou às normas regulamentares da instituição, por espírito de solidariedade". Isso significa que o servidor:
+      </div>
+    </div>
+    <div class="options">
+      <div class="option">a) Deve denunciar qualquer colega que cometa irregularidade, mesmo que não tenha certeza</div>
+      <div class="option correct">✓ b) Não pode deixar de comunicar à autoridade superior irregularidades que tenha conhecimento, mesmo quando envolva colega de trabalho, pois o silêncio cumplice viola o código</div>
+      <div class="option">c) Pode permanecer em silêncio quando a irregularidade for cometida por superior hierárquico, pois a vedação se aplica apenas a colegas de mesmo nível</div>
+      <div class="option">d) Deve registrar a irregularidade apenas em seu diário pessoal, preservando o colega</div>
+      <div class="option">e) Tem o dever ético de encobrir erros menores de colegas para manter o ambiente de trabalho harmonioso</div>
+    </div>
+    <div class="gabarito">
+      <div class="gabarito-label">✦ Gabarito: B</div>
+      <p>O Código de Ética (XV, "g") impõe ao servidor o dever de comunicar imediatamente à autoridade competente qualquer ato ou fato contrário ao interesse público. A vedação da cumplicidade por solidariedade reforça que o servidor <strong>não pode silenciar</strong> diante de irregularidades de colegas — independente de hierarquia. O silêncio deliberado é, ele próprio, uma infração ao Código de Ética.</p>
+    </div>
+  </div>
+
+  <!-- Q46 -->
+  <div class="question-block">
+    <div class="question-head">
+      <span class="q-num">Q46</span>
+      <div class="q-text">
+        <span class="tag lgpd">LGPD</span>
+        Um banco de dados que antes continha dados pessoais foi submetido a processo de anonimização irreversível, de modo que não é mais possível identificar os titulares. Segundo a LGPD, esse banco de dados:
+      </div>
+    </div>
+    <div class="options">
+      <div class="option">a) Continua sendo protegido pela LGPD, pois dados anonimizados são espécie de dados pessoais</div>
+      <div class="option">b) É protegido pela LGPD apenas se ainda for possível reverter a anonimização com uso de meios razoáveis</div>
+      <div class="option correct">✓ c) Não está sujeito à LGPD, pois dados anonimizados não são considerados dados pessoais para fins da lei</div>
+      <div class="option">d) Está sujeito à LGPD somente quando utilizado para finalidades comerciais</div>
+      <div class="option">e) Deve receber o mesmo tratamento de dados sensíveis, por precaução</div>
+    </div>
+    <div class="gabarito">
+      <div class="gabarito-label">✦ Gabarito: C</div>
+      <p>Art. 12 da LGPD: os dados anonimizados não são considerados dados pessoais. <strong>Mas há uma ressalva importante</strong>: se o processo de anonimização puder ser revertido com uso de meios técnicos razoáveis, os dados continuam sendo considerados pessoais e se submetem à lei. A anonimização deve ser verdadeiramente irreversível para excluir a incidência da LGPD.</p>
+    </div>
+  </div>
+
+  <!-- Q47 -->
+  <div class="question-block">
+    <div class="question-head">
+      <span class="q-num">Q47</span>
+      <div class="q-text">
+        <span class="tag pad">Lei 9.784</span>
+        Sobre o dever de motivação dos atos administrativos na Lei 9.784/1999, é CORRETO afirmar que:
+      </div>
+    </div>
+    <div class="options">
+      <div class="option">a) Todos os atos administrativos devem, obrigatoriamente, ser motivados, sem qualquer exceção</div>
+      <div class="option">b) Apenas os atos que onerem o administrado precisam ser motivados</div>
+      <div class="option correct">✓ c) Os atos administrativos devem ser motivados, com indicação dos fatos e dos fundamentos jurídicos, inclusive os de indeferimento e os que decidam recursos</div>
+      <div class="option">d) A motivação pode ser realizada após a prática do ato, em até 30 dias, sem nulidade</div>
+      <div class="option">e) Atos vinculados dispensam sempre a motivação, pois a lei já estabelece os fundamentos</div>
+    </div>
+    <div class="gabarito">
+      <div class="gabarito-label">✦ Gabarito: C</div>
+      <p>Art. 50 da Lei 9.784/1999 exige motivação expressa para uma série de atos, incluindo os que neguem, limitem ou afetem direitos ou interesses, imponham deveres, ônus, sanções, decidam recursos, decorram de reexame, ou sejam discricionários. A motivação pode ser feita por referência (remissão) a fundamentos de anterior manifestação constante do processo. O art. 50, §1º permite motivação <em>aliunde</em> (por referência), mas não dispensa a motivação em si.</p>
+    </div>
+  </div>
+
+  <!-- Q48 -->
+  <div class="question-block">
+    <div class="question-head">
+      <span class="q-num">Q48</span>
+      <div class="q-text">
+        <span class="tag cf">CF/88</span><span class="tag rju">Lei 8.112</span>
+        Um servidor público federal efetivo é também professor universitário em outra instituição federal, acumulando licitamente os dois cargos. Se ele for aprovado em concurso para um terceiro cargo público, em cargo de nível médio:
+      </div>
+    </div>
+    <div class="options">
+      <div class="option">a) Pode aceitar a nomeação, pois o limite é de 3 cargos quando há compatibilidade de horários</div>
+      <div class="option">b) Pode aceitar, desde que resigne um dos dois cargos atuais dentro de 30 dias</div>
+      <div class="option correct">✓ c) Não pode acumular o terceiro cargo, pois a Constituição Federal veda a acumulação de mais de dois cargos em qualquer hipótese, ressalvados apenas os casos expressos</div>
+      <div class="option">d) Pode acumular, pois a restrição só se aplica quando os cargos pertencem ao mesmo órgão</div>
+      <div class="option">e) Pode acumular se os três cargos forem em universidades federais diferentes</div>
+    </div>
+    <div class="gabarito">
+      <div class="gabarito-label">✦ Gabarito: C</div>
+      <p>A CF/88 permite acumulação de <strong>dois</strong> cargos nas hipóteses específicas — jamais três. O Art. 37, XVI é taxativo. A acumulação lícita de dois cargos já é a exceção; o terceiro cargo é absolutamente vedado, sem qualquer exceção constitucional. Para assumir o terceiro cargo, o servidor deveria obrigatoriamente exonerar-se de um dos dois atuais.</p>
+    </div>
+  </div>
+
+  <!-- Q49 -->
+  <div class="question-block">
+    <div class="question-head">
+      <span class="q-num">Q49</span>
+      <div class="q-text">
+        <span class="tag lai">LAI</span>
+        Assinale a alternativa que corresponde a uma hipótese em que o órgão público NÃO pode negar acesso à informação, mesmo que invoque o sigilo:
+      </div>
+    </div>
+    <div class="options">
+      <div class="option">a) Informações sobre investigação policial em curso, cujo sigilo foi determinado judicialmente</div>
+      <div class="option">b) Dados relativos à vida privada de terceiros, cuja divulgação poderia causar dano à sua privacidade</div>
+      <div class="option">c) Informações sobre operações militares em andamento, classificadas como secretas</div>
+      <div class="option correct">✓ d) Informações sobre repasses de recursos públicos a entidades privadas realizados pelo órgão</div>
+      <div class="option">e) Segredos comerciais e industriais de empresas contratadas, nos termos dos contratos</div>
+    </div>
+    <div class="gabarito">
+      <div class="gabarito-label">✦ Gabarito: D</div>
+      <p>Art. 7º, §3º e Art. 8º da LAI: são obrigatoriamente públicas, independente de solicitação, as <strong>informações sobre repasses de recursos públicos</strong>. Essa hipótese nunca pode ser negada com fundamento em sigilo. O princípio da transparência dos gastos públicos é absoluto para essa categoria. A LAI também garante acesso a licitações, contratos e resultados de inspeções — informações que não podem ser classificadas como sigilosas.</p>
+    </div>
+  </div>
+
+  <!-- Q50 -->
+  <div class="question-block">
+    <div class="question-head">
+      <span class="q-num">Q50</span>
+      <div class="q-text">
+        <span class="tag impro">Lei 8.429</span><span class="tag cf">CF/88</span>
+        Analise as afirmações sobre a Lei de Improbidade Administrativa (Lei 8.429/1992, na redação da Lei 14.230/2021) e assinale a alternativa CORRETA:
+        <br><br>
+        I. Atos de improbidade podem ser praticados por qualquer pessoa, servidor ou não, desde que em concurso com agente público.<br>
+        II. A ação de improbidade tem natureza penal, sendo proposta pelo Ministério Público perante o juízo criminal.<br>
+        III. A suspensão dos direitos políticos é sanção que pode ser aplicada cumulativamente com a multa civil.<br>
+        IV. A pessoa jurídica de direito público pode propor a ação de improbidade em litisconsórcio ativo com o Ministério Público.
+      </div>
+    </div>
+    <div class="options">
+      <div class="option">a) Apenas I e II estão corretas</div>
+      <div class="option">b) Apenas II e IV estão corretas</div>
+      <div class="option">c) Apenas I e IV estão corretas</div>
+      <div class="option correct">✓ d) Apenas I e III estão corretas</div>
+      <div class="option">e) Todas estão corretas</div>
+    </div>
+    <div class="gabarito">
+      <div class="gabarito-label">✦ Gabarito: D</div>
+      <p><strong>I — CORRETA</strong>: Art. 3º da Lei 8.429/1992: terceiros que induzam ou concorram para a prática do ato também respondem pela improbidade. <strong>II — INCORRETA</strong>: a ação de improbidade tem natureza <em>civil</em>, proposta pelo MP perante o juízo cível. <strong>III — CORRETA</strong>: as sanções do Art. 12 são cumulativas — suspensão de direitos políticos + multa civil + ressarcimento + proibição de contratar. <strong>IV — INCORRETA</strong>: após a Lei 14.230/2021, o MP tem <em>legitimidade exclusiva</em> — a pessoa jurídica lesada não pode mais propor nem integrar a ação como litisconsorte ativo.</p>
+    </div>
+  </div>
+
+</div><!-- /simulado -->
+</div><!-- /content -->
+
+<footer>
+  Apostila gerada para o Concurso Público UFMA nº 035/2026 · Cargo: Engenheiro — Área: Civil · Banca: FSADU<br>
+  Disciplina 1 de 2 · Legislação e Normas · Etapa 3 do Plano de Estudos<br>
+  Conteúdo baseado estritamente no Anexo IV do Edital retificado em 04/03/2026
+</footer>
+
+</body>
+</html>

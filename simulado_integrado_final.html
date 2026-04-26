@@ -1,0 +1,1519 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulado Integrado Final | Engenheiro Civil · UFMA 2026</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300;1,400&family=JetBrains+Mono:wght@400;600&display=swap');
+
+  :root {
+    --bg: #0d0f1a;
+    --surface: #131625;
+    --surface2: #191d2e;
+    --border: #252a40;
+    --accent: #c8a84b;
+    --accent2: #5b8dee;
+    --accent3: #4ec9a0;
+    --text: #cdd2e8;
+    --text-dim: #7a82a0;
+    --text-bright: #eef0fb;
+    --red: #ff6b6b;
+    --green: #69db7c;
+    --blue: #74c0fc;
+    --orange: #ffa94d;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Source Serif 4', Georgia, serif; background: var(--bg); color: var(--text); line-height: 1.75; font-size: 16px; }
+
+  /* ─── CAPA ─── */
+  .cover {
+    min-height: 100vh; display: flex; flex-direction: column;
+    justify-content: center; align-items: center; text-align: center;
+    padding: 4rem 2rem;
+    background: radial-gradient(ellipse 70% 50% at 50% 35%, #1a1f38 0%, #0d0f1a 70%);
+    border-bottom: 1px solid var(--border); position: relative; overflow: hidden;
+  }
+  .cover::before {
+    content: ''; position: absolute; inset: 0;
+    background: repeating-linear-gradient(90deg,transparent,transparent 79px,rgba(200,168,75,.04) 80px),
+                repeating-linear-gradient(0deg,transparent,transparent 79px,rgba(200,168,75,.04) 80px);
+  }
+  .etapa-badge {
+    font-family: 'JetBrains Mono', monospace; font-size: .72rem; letter-spacing: .2em;
+    text-transform: uppercase; color: var(--accent);
+    background: rgba(200,168,75,.1); border: 1px solid rgba(200,168,75,.3);
+    padding: .35rem 1.2rem; border-radius: 2px; margin-bottom: 2rem; position: relative;
+  }
+  .cover h1 {
+    font-family: 'Playfair Display', serif; font-size: clamp(2rem,5.5vw,3.6rem);
+    font-weight: 900; color: var(--text-bright); line-height: 1.15; max-width: 820px; position: relative;
+  }
+  .cover h1 span { color: var(--accent); }
+  .cover-sub { font-size: 1rem; color: var(--text-dim); margin-top: 1rem; position: relative; font-style: italic; }
+
+  .stats-row {
+    display: flex; gap: 1.5rem; margin-top: 3rem; flex-wrap: wrap;
+    justify-content: center; position: relative;
+  }
+  .stat-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 6px; padding: 1.1rem 1.6rem; text-align: center; min-width: 120px;
+  }
+  .stat-card .val {
+    font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 700;
+    color: var(--accent); display: block; line-height: 1;
+  }
+  .stat-card .lbl {
+    font-family: 'JetBrains Mono', monospace; font-size: .65rem;
+    letter-spacing: .1em; text-transform: uppercase; color: var(--text-dim); margin-top: .3rem;
+  }
+
+  /* ─── INSTRUÇÕES ─── */
+  .instrucoes {
+    background: var(--surface); border-bottom: 1px solid var(--border); padding: 2.5rem 2rem;
+  }
+  .instrucoes-inner { max-width: 900px; margin: 0 auto; }
+  .instrucoes h2 {
+    font-family: 'JetBrains Mono', monospace; font-size: .78rem; letter-spacing: .2em;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 1.25rem;
+  }
+  .instrucoes ul { padding-left: 1.5rem; }
+  .instrucoes li { margin-bottom: .5rem; font-size: .93rem; color: var(--text-dim); }
+  .instrucoes li strong { color: var(--text-bright); }
+
+  /* ─── PONTUAÇÃO CARD ─── */
+  .score-table {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 6px; padding: 1.25rem 1.5rem; margin-top: 1.25rem;
+    display: flex; gap: 2rem; flex-wrap: wrap;
+  }
+  .score-item { text-align: center; }
+  .score-item .sv {
+    font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 700;
+    color: var(--accent2); display: block;
+  }
+  .score-item .sl {
+    font-family: 'JetBrains Mono', monospace; font-size: .65rem;
+    text-transform: uppercase; letter-spacing: .1em; color: var(--text-dim);
+  }
+
+  /* ─── CONTENT ─── */
+  .content { max-width: 900px; margin: 0 auto; padding: 3rem 2rem 2rem; }
+
+  /* ─── BLOCO DISCIPLINA ─── */
+  .disciplina-header {
+    display: flex; align-items: center; gap: 1rem;
+    margin: 3.5rem 0 2rem; padding-bottom: 1rem;
+    border-bottom: 2px solid var(--border);
+  }
+  .disc-num {
+    font-family: 'Playfair Display', serif; font-size: 2.8rem; font-weight: 900;
+    color: var(--accent); opacity: .3; line-height: 1; min-width: 2.5rem;
+  }
+  .disc-info h2 {
+    font-family: 'Playfair Display', serif; font-size: 1.45rem;
+    color: var(--text-bright); font-weight: 700;
+  }
+  .disc-info .disc-meta {
+    font-family: 'JetBrains Mono', monospace; font-size: .7rem;
+    letter-spacing: .1em; color: var(--accent); margin-top: .15rem;
+  }
+
+  /* ─── QUESTÃO ─── */
+  .question-block {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 6px; margin-bottom: 1.5rem; overflow: hidden;
+  }
+  .question-meta {
+    display: flex; align-items: center; gap: .75rem;
+    padding: .7rem 1.25rem; background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+  }
+  .q-num-badge {
+    font-family: 'JetBrains Mono', monospace; font-size: .72rem;
+    background: var(--accent); color: #0d0f1a;
+    padding: .2rem .6rem; border-radius: 2px; font-weight: 600; flex-shrink: 0;
+  }
+  .q-discipline {
+    font-family: 'JetBrains Mono', monospace; font-size: .65rem;
+    letter-spacing: .08em; text-transform: uppercase;
+    color: var(--text-dim); flex: 1;
+  }
+  .q-points {
+    font-family: 'JetBrains Mono', monospace; font-size: .68rem;
+    color: var(--accent); background: rgba(200,168,75,.1);
+    padding: .15rem .5rem; border-radius: 2px; border: 1px solid rgba(200,168,75,.2);
+  }
+  .question-body { padding: 1.25rem 1.5rem .5rem; }
+  .question-text { font-size: .95rem; line-height: 1.7; margin-bottom: 1rem; }
+  .question-text strong { color: var(--text-bright); }
+  .question-options { padding: 0 1.5rem 1.25rem; display: flex; flex-direction: column; gap: .3rem; }
+  .option-item {
+    font-size: .88rem; padding: .45rem .75rem;
+    border-radius: 3px; border: 1px solid transparent;
+    color: var(--text); cursor: default;
+    transition: background .15s;
+  }
+  .option-item:hover { background: rgba(200,168,75,.05); border-color: rgba(200,168,75,.15); }
+  .opt-letter { font-family: 'JetBrains Mono', monospace; color: var(--accent); margin-right: .5rem; font-size: .8rem; }
+
+  /* ─── SEPARADOR ─── */
+  .page-break-hint {
+    text-align: center; padding: 2rem 0; color: var(--text-dim);
+    font-family: 'JetBrains Mono', monospace; font-size: .75rem;
+    letter-spacing: .2em; text-transform: uppercase;
+    border-top: 1px dashed var(--border); border-bottom: 1px dashed var(--border);
+    margin: 2.5rem 0;
+  }
+
+  /* ─── GABARITO ─── */
+  .gabarito-section {
+    background: var(--surface); border-top: 3px solid var(--accent);
+    padding: 3rem 2rem 5rem;
+  }
+  .gabarito-inner { max-width: 900px; margin: 0 auto; }
+  .gabarito-header {
+    display: flex; align-items: center; gap: 1rem; margin-bottom: 2.5rem;
+  }
+  .gabarito-header h2 {
+    font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--text-bright); font-weight: 700;
+  }
+  .gabarito-header .gh-sub {
+    font-family: 'JetBrains Mono', monospace; font-size: .72rem;
+    color: var(--text-dim); letter-spacing: .1em; text-transform: uppercase; margin-top: .3rem;
+  }
+
+  /* Grid de respostas rápidas */
+  .resposta-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: .5rem; margin-bottom: 3rem;
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 6px; padding: 1.25rem;
+  }
+  .resposta-item {
+    display: flex; align-items: center; gap: .5rem;
+    font-family: 'JetBrains Mono', monospace; font-size: .78rem;
+  }
+  .resposta-num { color: var(--text-dim); min-width: 2rem; }
+  .resposta-letra {
+    background: var(--accent); color: #0d0f1a;
+    width: 1.6rem; height: 1.6rem; border-radius: 3px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: .8rem;
+  }
+
+  /* Comentários do gabarito */
+  .gab-item {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 6px; margin-bottom: 1.25rem; overflow: hidden;
+  }
+  .gab-head {
+    display: flex; align-items: center; gap: 1rem;
+    padding: .8rem 1.25rem; background: rgba(255,255,255,.02);
+    border-bottom: 1px solid var(--border);
+  }
+  .gab-num {
+    font-family: 'JetBrains Mono', monospace; font-size: .72rem;
+    color: #0d0f1a; background: var(--accent);
+    padding: .2rem .55rem; border-radius: 2px; font-weight: 600; flex-shrink: 0;
+  }
+  .gab-letra {
+    font-family: 'JetBrains Mono', monospace; font-size: .85rem;
+    color: var(--green); font-weight: 700;
+  }
+  .gab-topic {
+    font-family: 'JetBrains Mono', monospace; font-size: .65rem;
+    color: var(--text-dim); letter-spacing: .06em; text-transform: uppercase; flex: 1;
+  }
+  .gab-pts {
+    font-family: 'JetBrains Mono', monospace; font-size: .65rem;
+    color: var(--accent); background: rgba(200,168,75,.1);
+    padding: .12rem .45rem; border-radius: 2px; border: 1px solid rgba(200,168,75,.2);
+  }
+  .gab-body { padding: .9rem 1.25rem; font-size: .88rem; line-height: 1.65; color: var(--text-dim); }
+  .gab-body strong { color: var(--text-bright); }
+  .gab-body em { color: var(--accent); font-style: normal; }
+
+  /* Score tracker */
+  .score-tracker {
+    background: linear-gradient(135deg, #1a1f38 0%, #0d0f1a 100%);
+    border: 1px solid var(--border); border-radius: 8px;
+    padding: 2rem; margin-bottom: 3rem;
+  }
+  .score-tracker h3 {
+    font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--text-bright);
+    margin-bottom: 1.25rem;
+  }
+  .score-tracker-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+  }
+  .tracker-field {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 4px; padding: .9rem 1rem;
+  }
+  .tracker-field .tf-label {
+    font-family: 'JetBrains Mono', monospace; font-size: .65rem;
+    text-transform: uppercase; letter-spacing: .1em; color: var(--text-dim); margin-bottom: .35rem;
+  }
+  .tracker-field .tf-val {
+    font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700; color: var(--accent2);
+  }
+  .tracker-field .tf-sub { font-size: .8rem; color: var(--text-dim); }
+
+  footer {
+    text-align: center; padding: 2rem;
+    font-family: 'JetBrains Mono', monospace; font-size: .72rem; color: var(--text-dim);
+    border-top: 1px solid var(--border);
+  }
+
+  @media print {
+    .cover { min-height: auto; padding: 2rem; }
+    .question-block { break-inside: avoid; }
+    .gab-item { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════ CAPA ══════════ -->
+<div class="cover">
+  <div class="etapa-badge">Etapa 4 · Simulado Integrado Final</div>
+  <h1>Simulado <span>Integrado</span> Final<br>Engenheiro Civil</h1>
+  <p class="cover-sub">Concurso Público UFMA nº 035/2026 · Banca FSADU · Distribuição real da prova</p>
+  <div class="stats-row">
+    <div class="stat-card"><span class="val">40</span><span class="lbl">Questões</span></div>
+    <div class="stat-card"><span class="val">84</span><span class="lbl">Pontos possíveis</span></div>
+    <div class="stat-card"><span class="val">10</span><span class="lbl">Legislação</span></div>
+    <div class="stat-card"><span class="val">30</span><span class="lbl">Específicos</span></div>
+    <div class="stat-card"><span class="val">4h</span><span class="lbl">Duração da prova real</span></div>
+    <div class="stat-card"><span class="val">26/04</span><span class="lbl">Data da prova</span></div>
+  </div>
+</div>
+
+<!-- ══════════ INSTRUÇÕES ══════════ -->
+<div class="instrucoes">
+  <div class="instrucoes-inner">
+    <h2>→ Instruções do Simulado</h2>
+    <ul>
+      <li><strong>Distribuição:</strong> 10 questões de Legislação e Normas (1,20 pt cada = 12,0 pts) + 30 questões de Conhecimentos Específicos (2,40 pt cada = 72,0 pts). Língua Portuguesa e Informática estão excluídas conforme o plano de estudos.</li>
+      <li><strong>Gabarito:</strong> agrupado ao final do documento — não há resposta junto às questões. Resolva antes de consultar.</li>
+      <li><strong>Critério de eliminação real:</strong> nota total &lt; 50% da prova completa (50 pts) OU &lt; 40% em qualquer bloco. Neste simulado: mínimo 4,8 pts em Legislação (4 acertos) e 28,8 pts em Específicos (12 acertos).</li>
+      <li><strong>Cronômetro sugerido:</strong> 2h30min para simular o tempo proporcional (excluindo Português e Informática).</li>
+      <li><strong>Identificação:</strong> cada questão traz seu bloco de origem e tópico do edital.</li>
+    </ul>
+    <div class="score-table">
+      <div class="score-item"><span class="sv">4,8</span><span class="sl">Mín. Legislação (40%)</span></div>
+      <div class="score-item"><span class="sv">28,8</span><span class="sl">Mín. Específicos (40%)</span></div>
+      <div class="score-item"><span class="sv">84,0</span><span class="sl">Pontuação máxima (simulado)</span></div>
+      <div class="score-item"><span class="sv">63,0+</span><span class="sl">Meta de aprovação competitiva (75%)</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="content">
+
+<!-- ══════════════════════════════════
+     PARTE I — LEGISLAÇÃO E NORMAS
+════════════════════════════════════ -->
+<div class="disciplina-header">
+  <div class="disc-num">I</div>
+  <div class="disc-info">
+    <h2>Legislação e Normas</h2>
+    <div class="disc-meta">10 questões · 1,20 ponto cada · total: 12,0 pontos · corte mínimo: 4,8 pts</div>
+  </div>
+</div>
+
+<!-- Q01 -->
+<div class="question-block">
+  <div class="question-meta">
+    <span class="q-num-badge">01</span>
+    <span class="q-discipline">Legislação e Normas · CF/88 — Organização do Estado e Adm. Pública</span>
+    <span class="q-points">1,20 pt</span>
+  </div>
+  <div class="question-body">
+    <div class="question-text">
+      Segundo o art. 37 da Constituição Federal de 1988, a Administração Pública direta e indireta de qualquer dos Poderes da União, dos Estados, do Distrito Federal e dos Municípios obedecerá, entre outros, ao princípio da eficiência, que foi incluído por emenda constitucional. Essa inclusão ocorreu por meio da:
+    </div>
+  </div>
+  <div class="question-options">
+    <div class="option-item"><span class="opt-letter">A)</span> EC nº 45/2004 (Reforma do Judiciário)</div>
+    <div class="option-item"><span class="opt-letter">B)</span> EC nº 19/1998 (Reforma Administrativa)</div>
+    <div class="option-item"><span class="opt-letter">C)</span> EC nº 32/2001 (Medidas Provisórias)</div>
+    <div class="option-item"><span class="opt-letter">D)</span> EC nº 8/1995 (Telecomunicações)</div>
+    <div class="option-item"><span class="opt-letter">E)</span> EC nº 41/2003 (Reforma da Previdência)</div>
+  </div>
+</div>
+
+<!-- Q02 -->
+<div class="question-block">
+  <div class="question-meta">
+    <span class="q-num-badge">02</span>
+    <span class="q-discipline">Legislação e Normas · Lei 8.112/1990 — Provimento e vacância</span>
+    <span class="q-points">1,20 pt</span>
+  </div>
+  <div class="question-body">
+    <div class="question-text">
+      Um servidor federal efetivo, após 8 anos de exercício, obteve decisão judicial que reconheceu a ilegalidade da demissão de seu cargo. Nesse caso, o servidor deverá retornar ao serviço mediante o instituto denominado:
+    </div>
+  </div>
+  <div class="question-options">
+    <div class="option-item"><span class="opt-letter">A)</span> Reversão, com aprovação do órgão de lotação</div>
+    <div class="option-item"><span class="opt-letter">B)</span> Aproveitamento, desde que haja cargo vago disponível</div>
+    <div class="option-item"><span class="opt-letter">C)</span> Reintegração, com direito ao ressarcimento de todas as vantagens do período</div>
+    <div class="option-item"><span class="opt-letter">D)</span> Recondução, ao cargo anterior mediante solicitação</div>
+    <div class="option-item"><span class="opt-letter">E)</span> Readaptação, em cargo compatível com sua situação atual</div>
+  </div>
+</div>
+
+<!-- Q03 -->
+<div class="question-block">
+  <div class="question-meta">
+    <span class="q-num-badge">03</span>
+    <span class="q-discipline">Legislação e Normas · Lei 8.112/1990 — Deveres e proibições</span>
+    <span class="q-points">1,20 pt</span>
+  </div>
+  <div class="question-body">
+    <div class="question-text">
+      A Lei nº 8.112/1990 estabelece que o servidor público federal é obrigado a atender com presteza ao público em geral, prestar informações requeridas e a tratar com urbanidade as pessoas. Essas obrigações integram o rol de:
+    </div>
+  </div>
+  <div class="question-options">
+    <div class="option-item"><span class="opt-letter">A)</span> Vedações do servidor, sujeitas a pena de advertência</div>
+    <div class="option-item"><span class="opt-letter">B)</span> Deveres do servidor previstos no art. 116, que podem gerar punição em caso de descumprimento</div>
+    <div class="option-item"><span class="opt-letter">C)</span> Direitos do servidor, cuja violação acarreta apenas responsabilidade civil</div>
+    <div class="option-item"><span class="opt-letter">D)</span> Orientações do Código de Ética (Decreto 1.171/1994), sem previsão na Lei 8.112</div>
+    <div class="option-item"><span class="opt-letter">E)</span> Recomendações administrativas sem força normativa vinculante</div>
+  </div>
+</div>
+
+<!-- Q04 -->
+<div class="question-block">
+  <div class="question-meta">
+    <span class="q-num-badge">04</span>
+    <span class="q-discipline">Legislação e Normas · Lei 8.112/1990 — PAD e penalidades</span>
+    <span class="q-points">1,20 pt</span>
+  </div>
+  <div class="question-body">
+    <div class="question-text">
+      Em um Processo Administrativo Disciplinar instaurado contra servidor federal, a comissão processante é composta por servidores estáveis designados em portaria. O prazo para conclusão dos trabalhos é de 60 dias, prorrogável por igual período. Ao final, a comissão indicia o servidor e este deve apresentar defesa escrita. Nesse momento, o prazo conferido ao indiciado é de:
+    </div>
+  </div>
+  <div class="question-options">
+    <div class="option-item"><span class="opt-letter">A)</span> 5 dias corridos, improrrogáveis</div>
+    <div class="option-item"><span class="opt-letter">B)</span> 10 dias, prorrogáveis por mais 10 dias em casos de maior complexidade</div>
+    <div class="option-item"><span class="opt-letter">C)</span> 15 dias, com possibilidade de prorrogação por 15 dias mediante requerimento</div>
+    <div class="option-item"><span class="opt-letter">D)</span> 20 dias corridos improrrogáveis, em qualquer hipótese</div>
+    <div class="option-item"><span class="opt-letter">E)</span> 30 dias, contados da data do indiciamento formal</div>
+  </div>
+</div>
+
+<!-- Q05 -->
+<div class="question-block">
+  <div class="question-meta">
+    <span class="q-num-badge">05</span>
+    <span class="q-discipline">Legislação e Normas · Lei 11.091/2005 — Carreira TAE</span>
+    <span class="q-points">1,20 pt</span>
+  </div>
+  <div class="question-body">
+    <div class="question-text">
+      Um servidor ocupante do cargo de Engenheiro Civil na UFMA (nível de classificação E) obteve aprovação em curso de doutorado e pretende solicitar o incentivo à qualificação previsto na Lei nº 11.091/2005. Considerando que o cargo já exige nível superior (graduação), o percentual de incentivo à qualificação ao qual o servidor fará jus, com base no doutorado, é de:
+    </div>
+  </div>
+  <div class="question-options">
+    <div class="option-item"><span class="opt-letter">A)</span> 25%, relativo ao nível de graduação completa</div>
+    <div class="option-item"><span class="opt-letter">B)</span> 30%, relativo ao nível de especialização</div>
+    <div class="option-item"><span class="opt-letter">C)</span> 52%, relativo ao nível de mestrado</div>
+    <div class="option-item"><span class="opt-letter">D)</span> 75%, relativo ao nível de doutorado</div>
+    <div class="option-item"><span class="opt-letter">E)</span> 100%, pois o doutorado é o grau máximo reconhecido pela lei</div>
+  </div>
+</div>
+
+<!-- Q06 -->
+<div class="question-block">
+  <div class="question-meta">
+    <span class="q-num-badge">06</span>
+    <span class="q-discipline">Legislação e Normas · Decreto 1.171/1994 — Código de Ética</span>
+    <span class="q-points">1,20 pt</span>
+  </div>
+  <div class="question-body">
+    <div class="question-text">
+      O Decreto nº 1.171/1994 (Código de Ética do Servidor Público Civil Federal) veda expressamente que o servidor utilize-se de cargo ou função para obter qualquer favorecimento, mas também define deveres afirmativos. Analise as afirmativas:
+      <br><br>
+      <strong>I.</strong> O servidor deve ser assíduo e frequente ao serviço, sendo a sua ausência sem comunicação ao superior hierárquico infração ao Código de Ética.<br>
+      <strong>II.</strong> A punição prevista no Código de Ética é a censura ética, que se aplica cumulativamente e não substitui as penalidades da Lei 8.112/1990.<br>
+      <strong>III.</strong> A Comissão de Ética é composta por 5 membros, com mandato de 2 anos, permitida uma recondução.
+      <br><br>
+      Estão corretas:
+    </div>
+  </div>
+  <div class="question-options">
+    <div class="option-item"><span class="opt-letter">A)</span> Apenas I</div>
+    <div class="option-item"><span class="opt-letter">B)</span> Apenas II</div>
+    <div class="option-item"><span class="opt-letter">C)</span> Apenas I e II</div>
+    <div class="option-item"><span class="opt-letter">D)</span> Apenas II e III</div>
+    <div class="option-item"><span class="opt-letter">E)</span> I, II e III</div>
+  </div>
+</div>
+
+<!-- Q07 -->
+<div class="question-block">
+  <div class="question-meta">
+    <span class="q-num-badge">07</span>
+    <span class="q-discipline">Legislação e Normas · Lei 9.784/1999 — Processo Administrativo Federal</span>
+    <span class="q-points">1,20 pt</span>
+  </div>
+  <div class="question-body">
+    <div class="question-text">
+      No âmbito do processo administrativo federal (Lei nº 9.784/1999), a Administração Pública concedeu benefício a um particular que estava de boa-fé. Posteriormente, descobriu-se que o ato concessivo era ilegal. Sobre o direito da Administração de anular esse ato, é correto afirmar que:
+    </div>
+  </div>
+  <div class="question-options">
+    <div class="option-item"><span class="opt-letter">A)</span> A Administração pode anular o ato a qualquer tempo, pois a ilegalidade não prescreve</div>
+    <div class="option-item"><span class="opt-letter">B)</span> O direito de anulação decai em 2 anos contados da data do conhecimento do vício</div>
+    <div class="option-item"><span class="opt-letter">C)</span> O direito de anulação decai em 5 anos contados da data em que o ato foi praticado, salvo comprovada má-fé do beneficiário</div>
+    <div class="option-item"><span class="opt-letter">D)</span> O ato não pode ser anulado se o particular estava de boa-fé, pois o princípio da segurança jurídica é absoluto nessa hipótese</div>
+    <div class="option-item"><span class="opt-letter">E)</span> O direito de anulação decai em 10 anos, conforme o Código Civil aplicado subsidiariamente</div>
+  </div>
+</div>
+
+<!-- Q08 -->
+<div class="question-block">
+  <div class="question-meta">
+    <span class="q-num-badge">08</span>
+    <span class="q-discipline">Legislação e Normas · Lei 8.429/1992 — Improbidade Administrativa</span>
+    <span class="q-points">1,20 pt</span>
+  </div>
+  <div class="question-body">
+    <div class="question-text">
+      Após a reforma promovida pela Lei nº 14.230/2021, sobre o sujeito ativo dos atos de improbidade administrativa previstos na Lei nº 8.429/1992, é CORRETO afirmar:
+    </div>
+  </div>
+  <div class="question-options">
+    <div class="option-item"><span class="opt-letter">A)</span> Somente agentes públicos podem ser sujeitos ativos; terceiros particulares foram excluídos pela Lei 14.230/2021</div>
+    <div class="option-item"><span class="opt-letter">B)</span> Apenas servidores efetivos do quadro permanente estão sujeitos à lei</div>
+    <div class="option-item"><span class="opt-letter">C)</span> Agentes públicos de qualquer natureza e terceiros que induzam, concorram ou se beneficiem com o ato podem responder por improbidade</div>
+    <div class="option-item"><span class="opt-letter">D)</span> A Lei 14.230/2021 restringiu a aplicação somente a agentes políticos (ministros e secretários)</div>
+    <div class="option-item"><span class="opt-letter">E)</span> Pessoas jurídicas não podem ser responsabilizadas como sujeito ativo, mas apenas como beneficiárias sem sanção própria</div>
+  </div>
+</div>
+
+<!-- Q09 -->
+<div class="question-block">
+  <div class="question-meta">
+    <span class="q-num-badge">09</span>
+    <span class="q-discipline">Legislação e Normas · Lei 12.527/2011 — LAI</span>
+    <span class="q-points">1,20 pt</span>
+  </div>
+  <div class="question-body">
+    <div class="question-text">
+      A Lei nº 12.527/2011 (Lei de Acesso à Informação — LAI) estabelece que o direito de acesso à informação é a regra e o sigilo, a exceção. Sobre os documentos classificados como sigilosos no âmbito da LAI, analise:
+      <br><br>
+      <strong>I.</strong> A competência para classificar documentos no grau "reservado" é das autoridades de nível de direção, chefia ou assessoramento.<br>
+      <strong>II.</strong> O prazo máximo de sigilo para documentos ultrassecretos é de 50 anos (25 anos prorrogáveis por igual período uma vez).<br>
+      <strong>III.</strong> Informações sobre repasses de recursos públicos a entidades privadas não podem ser sigilosas, devendo ser publicadas independentemente de solicitação.
+      <br><br>
+      Estão corretas:
+    </div>
+  </div>
+  <div class="question-options">
+    <div class="option-item"><span class="opt-letter">A)</span> Apenas I</div>
+    <div class="option-item"><span class="opt-letter">B)</span> Apenas III</div>
+    <div class="option-item"><span class="opt-letter">C)</span> Apenas I e II</div>
+    <div class="option-item"><span class="opt-letter">D)</span> Apenas II e III</div>
+    <div class="option-item"><span class="opt-letter">E)</span> I, II e III</div>
+  </div>
+</div>
+
+<!-- Q10 -->
+<div class="question-block">
+  <div class="question-meta">
+    <span class="q-num-badge">10</span>
+    <span class="q-discipline">Legislação e Normas · Lei 13.709/2018 — LGPD</span>
+    <span class="q-points">1,20 pt</span>
+  </div>
+  <div class="question-body">
+    <div class="question-text">
+      A UFMA contrata empresa de tecnologia para desenvolver sistema de gestão de projetos. O contrato prevê que a empresa terá acesso a dados pessoais de servidores e alunos para fins de operação do sistema. Nesse contexto, a UFMA é o __________ e a empresa de tecnologia é o __________, nos termos da Lei nº 13.709/2018.
+    </div>
+  </div>
+  <div class="question-options">
+    <div class="option-item"><span class="opt-letter">A)</span> Operador / Controlador</div>
+    <div class="option-item"><span class="opt-letter">B)</span> Encarregado / Operador</div>
+    <div class="option-item"><span class="opt-letter">C)</span> Controlador / Encarregado</div>
+    <div class="option-item"><span class="opt-letter">D)</span> Controlador / Operador</div>
+    <div class="option-item"><span class="opt-letter">E)</span> Titular / Controlador</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     PARTE II — CONHECIMENTOS ESPECÍFICOS
+════════════════════════════════════ -->
+<div class="page-break-hint">✦ &nbsp; Fim da Parte I — Legislação e Normas &nbsp; ✦ &nbsp; Início da Parte II — Conhecimentos Específicos &nbsp; ✦</div>
+
+<div class="disciplina-header">
+  <div class="disc-num">II</div>
+  <div class="disc-info">
+    <h2>Conhecimentos Específicos — Engenharia Civil</h2>
+    <div class="disc-meta">30 questões · 2,40 pontos cada · total: 72,0 pontos · corte mínimo: 28,8 pts</div>
+  </div>
+</div>
+
+<!-- Q11 -->
+<div class="question-block">
+  <div class="question-meta">
+    <span class="q-num-badge">11</span>
+    <span class="q-discipline">Esp. Civil · Licitações e Contratos — Lei 14.133/2021</span>
+    <span class="q-points">2,40 pt</span>
+  </div>
+  <div class="question-body">
+    <div class="question-text">
+      A Lei nº 14.133/2021 revogou as Leis 8.666/1993, 10.520/2002 e 12.462/2012. Em relação às modalidades de licitação, é CORRETO afirmar que:
+    </div>
+  </div>
+  <div class="question-options">
+    <div class="option-item"><span class="opt-letter">A)</span> O Convite e a Tomada de Preços foram mantidos com novos limites de valores</div>
+    <div class="option-item"><span class="opt-letter">B)</span> O Pregão passou a ser modalidade exclusiva para obras de engenharia de qualquer natureza</div>
+    <div class="option-item"><span class="opt-letter">C)</span> A Concorrência é a modalidade adequada para obras de engenharia, podendo ser realizada com critério de julgamento por menor preço, maior desconto, melhor técnica ou melhor técnica e preço</div>
+    <div class="option-item"><span class="opt-letter">D)</span> O Diálogo Competitivo pode ser usado em qualquer obra pública, independentemente da complexidade do objeto</div>
+    <div class="option-item"><span class="opt-letter">E)</span> O Leilão passou a ser o procedimento padrão para contratação de serviços de engenharia de grande porte</div>
+  </div>
+</div>
+
+<!-- Q12 -->
+<div class="question-block">
+  <div class="question-meta">
+    <span class="q-num-badge">12</span>
+    <span class="q-discipline">Esp. Civil · Licitações — Gestão e fiscalização de contratos de obras</span>
+    <span class="q-points">2,40 pt</span>
+  </div>
+  <div class="question-body">
+    <div class="question-text">
+      Engenheiro recém-nomeado na UFMA recebe designação para atuar como fiscal técnico de contrato de reforma de edificação. Sobre as atribuições do fiscal técnico nos termos da Lei 14.133/2021, assinale a alternativa CORRETA:
+    </div>
+  </div>
+  <div class="question-options">
+    <div class="option-item"><span class="opt-letter">A)</span> O fiscal técnico pode autorizar aditivos contratuais de ofício, sem aprovação da autoridade competente</div>
+    <div class="option-item"><span class="opt-letter">B)</span> O fiscal técnico responde solidariamente pelas irregularidades do contratado, independente de sua conduta</div>
+    <div class="option-item"><span class="opt-letter">C)</span> O fiscal técnico acompanha os aspectos técnicos da execução, atestar medições e comunicar ao gestor do contrato qualquer irregularidade ou descumprimento</div>
+    <div class="option-item"><span class="opt-letter">D)</span> O fiscal técnico e o gestor do contrato exercem a mesma função, sendo designações diferentes para o mesmo papel</div>
+    <div class="option-item"><span class="opt-letter">E)</span> O fiscal técnico não tem legitimidade para lavrar auto de infração ou aplicar multa ao contratado — apenas recomendar</div>
+  </div>
+</div>
+
+<!-- Q13 -->
+<div class="question-block">
+  <div class="question-meta">
+    <span class="q-num-badge">13</span>
+    <span class="q-discipline">Esp. Civil · Orçamento — SINAPI, SICRO e sistemas de custo</span>
+    <span class="q-points">2,40 pt</span>
+  </div>
+  <div class="question-body">
+    <div class="question-text">
+      Um Engenheiro Civil da UFMA está elaborando orçamento para reforma de laboratório com recursos do FNDE. Ao pesquisar os preços dos insumos e composições de custo, deverá consultar prioritariamente:
+    </div>
+  </div>
+  <div class="question-options">
+    <div class="option-item"><span class="opt-letter">A)</span> SICRO, por ser o sistema oficial de custos para obras da União</div>
+    <div class="option-item"><span class="opt-letter">B)</span> SINAPI, por ser o sistema de referência obrigatório para obras financiadas com recursos federais, salvo ausência de composição específica</div>
+    <div class="option-item"><span class="opt-letter">C)</span> Tabela da PINI, que é mais atualizada que os sistemas governamentais</div>
+    <div class="option-item"><span class="opt-letter">D)</span> Cotação direta com fornecedores, dispensando qualquer sistema de referência</div>
+    <div class="option-item"><span class="opt-letter">E)</span> SINAPI somente para obras acima de R$ 1,5 milhão; abaixo disso, qualquer referência de mercado</div>
+  </div>
+</div>
+
+<!-- Q14 -->
+<div class="question-block">
+  <div class="question-meta">
+    <span class="q-num-badge">14</span>
+    <span class="q-discipline">Esp. Civil · Orçamento — BDI e encargos sociais</span>
+    <span class="q-points">2,40 pt</span>
+  </div>
+  <div class="question-body">
+    <div class="question-text">
+      Sobre a composição do BDI (Bonificação e Despesas Indiretas) em obras públicas, conforme consolidado pelo Acórdão TCU 2622/2013, analise as afirmações:
+      <br><br>
+      <strong>I.</strong> O lucro do contratado deve integrar o BDI, sendo vedado seu lançamento nos custos diretos.<br>
+      <strong>II.</strong> O IRPJ (Imposto de Renda Pessoa Jurídica) e a CSLL podem ser incluídos no BDI, pois são custos tributários do contrato.<br>
+      <strong>III.</strong> Os encargos sociais (INSS, FGTS, etc.) integram o custo da mão de obra nas composições unitárias e não devem ser incluídos no BDI.
+      <br><br>
+      Estão corretas:
+    </div>
+  </div>
+  <div class="question-options">
+    <div class="option-item"><span class="opt-letter">A)</span> Apenas I</div>
+    <div class="option-item"><span class="opt-letter">B)</span> Apenas II</div>
+    <div class="option-item"><span class="opt-letter">C)</span> Apenas I e III</div>
+    <div class="option-item"><span class="opt-letter">D)</span> Apenas II e III</div>
+    <div class="option-item"><span class="opt-letter">E)</span> I, II e III</div>
+  </div>
+</div>
+
+<!-- Q15 -->
+<div class="question-block">
+  <div class="question-meta">
+    <span class="q-num-badge">15</span>
+    <span class="q-discipline">Esp. Civil · Planejamento — Métodos PERT-CPM e cronograma</span>
+    <span class="q-points">2,40 pt</span>
+  </div>
+  <div class="question-body">
+    <div class="question-text">
+      Em um cronograma PERT-CPM de uma obra, a atividade "Concretagem das fundações" tem estimativas de duração: otimista = 8 dias; mais provável = 12 dias; pessimista = 22 dias. A duração esperada (média ponderada PERT) para essa atividade é:
+    </div>
+  </div>
+  <div class="question-options">
+    <div class="option-item"><span class="opt-letter">A)</span> 12,0 dias</div>
+    <div class="option-item"><span class="opt-letter">B)</span> 13,0 dias</div>
+    <div class="option-item"><span class="opt-letter">C)</span> 13,3 dias</div>
+    <div class="option-item"><span class="opt-letter">D)</span> 14,0 dias</div>
+    <div class="option-item"><span class="opt-letter">E)</span> 15,2 dias</div>
+  </div>
+</div>
+
+<!-- Q16 -->
+<div class="question-block">
+  <div class="question-meta">
+    <span class="q-num-badge">16</span>
+    <span class="q-discipline">Esp. Civil · Orçamento — Curva ABC e controle de serviços</span>
+    <span class="q-points">2,40 pt</span>
+  </div>
+  <div class="question-body">
+    <div class="question-text">
+      Na gestão de uma obra, o engenheiro responsável identificou que dos 150 itens do orçamento, apenas 28 itens (cerca de 19%) respondem por 74% do custo total. Os demais 75 itens (50%) representam apenas 7% do custo. Com base na Curva ABC, a estratégia correta é:
+    </div>
+  </div>
+  <div class="question-options">
+    <div class="option-item"><span class="opt-letter">A)</span> Controlar com igual rigor todos os 150 itens, independentemente de seu valor</div>
+    <div class="option-item"><span class="opt-letter">B)</span> Priorizar o controle dos 75 itens de menor valor, pois representam maior risco de desperdício unitário</div>
+    <div class="option-item"><span class="opt-letter">C)</span> Aplicar controle rigoroso e sistemático aos 28 itens do Grupo A (74% do custo) e controle simplificado aos do Grupo C</div>
+    <div class="option-item"><span class="opt-letter">D)</span> Eliminar os itens do Grupo C do orçamento, pois representam apenas 7% do custo e não impactam o resultado</div>
+    <div class="option-item"><span class="opt-letter">E)</span> Controlar apenas os itens do Grupo C, pois o Grupo A gerencia-se automaticamente por seu alto valor</div>
+  </div>
+</div>
+
+<!-- Q17 -->
+<div class="question-block">
+  <div class="question-meta">
+    <span class="q-num-badge">17</span>
+    <span class="q-discipline">Esp. Civil · Projetos — BIM e compatibilização de projetos</span>
+    <span class="q-points">2,40 pt</span>
+  </div>
+  <div class="question-body">
+    <div class="question-text">
+      No contexto da metodologia BIM (Building Information Modeling), a detecção de uma interferência física real entre uma tubulação hidráulica e uma viga de concreto no modelo integrado é denominada:
+    </div>
+  </div>
+  <div class="question-options">
+    <div class="option-item"><span class="opt-letter">A)</span> Clash soft — conflito de espaço operacional</div>
+    <div class="option-item"><span class="opt-letter">B)</span> Clash 4D — conflito de sequenciamento construtivo</div>
+    <div class="option-item"><span class="opt-letter">C)</span> Clash hard — sobreposição física real entre dois elementos distintos</div>
+    <div class="option-item"><span class="opt-letter">D)</span> LOD conflict — discrepância de nível de desenvolvimento entre disciplinas</div>
+    <div class="option-item"><span class="opt-letter">E)</span> IFC mismatch — incompatibilidade de formatos entre softwares</div>
+  </div>
+</div>
+
+<!-- Q18 -->
+<div class="question-block">
+  <div class="question-meta">
+    <span class="q-num-badge">18</span>
+    <span class="q-discipline">Esp. Civil · Movimentos de terra — Terraplenagem e sondagem</span>
+    <span class="q-points">2,40 pt</span>
+  </div>
+  <div class="question-body">
+    <div class="question-text">
+      No ensaio SPT (Standard Penetration Test), regulado pela NBR 6484, os golpes são contabilizados em três segmentos de 15 cm cada. A resistência do solo (N_SPT) corresponde ao número de golpes necessários para:
+    </div>
+  </div>
+  <div class="question-options">
+    <div class="option-item"><span class="opt-letter">A)</span> Os três segmentos completos (total de 45 cm de penetração)</div>
+    <div class="option-item"><span class="opt-letter">B)</span> Os dois primeiros segmentos (primeiros 30 cm — "assentamento" e início)</div>
+    <div class="option-item"><span class="opt-letter">C)</span> Apenas o primeiro segmento de 15 cm</div>
+    <div class="option-item"><span class="opt-letter">D)</span> Os dois últimos segmentos (de 15 a 45 cm, descartando o primeiro como assentamento)</div>
+    <div class="option-item"><span class="opt-letter">E)</span> 60 cm completos de penetração, somando-se todos os golpes</div>
+  </div>
+</div>
+
+<!-- Q19 -->
+<div class="question-block">
+  <div class="question-meta">
+    <span class="q-num-badge">19</span>
+    <span class="q-discipline">Esp. Civil · Fundações — Tipos e critérios de escolha (NBR 6122)</span>
+    <span class="q-points">2,40 pt</span>
+  </div>
+  <div class="question-body">
+    <div class="question-text">
+      Um edifício de 12 pavimentos será construído em terreno com perfil geotécnico composto por: 0 a 5m — aterro heterogêneo; 5 a 14m — argila mole (N_SPT = 1 a 3); 14 a 18m — argila média (N_SPT = 8 a 12); abaixo de 18m — areia compacta (N_SPT = 25 a 40). A fundação tecnicamente mais indicada é:
+    </div>
+  </div>
+  <div class="question-options">
+    <div class="option-item"><span class="opt-letter">A)</span> Radier apoiado na camada de aterro superficial, com brocas de distribuição</div>
+    <div class="option-item"><span class="opt-letter">B)</span> Sapatas isoladas sobre a camada de argila mole (5 a 14m) com reforço geotêxtil</div>
+    <div class="option-item"><span class="opt-letter">C)</span> Estacas que atravessem as camadas fracas e se apoiem na areia compacta abaixo de 18m</div>
+    <div class="option-item"><span class="opt-letter">D)</span> Sapatas associadas a drenos verticais para acelerar o adensamento da argila mole</div>
+    <div class="option-item"><span class="opt-letter">E)</span> Tubulões a ar comprimido apoiados na argila média (14 a 18m, N=8 a 12)</div>
+  </div>
+</div>
+
+<!-- Q20 -->
+<div class="question-block">
+  <div class="question-meta">
+    <span class="q-num-badge">20</span>
+    <span class="q-discipline">Esp. Civil · Muros de contenção — Tipos e empuxos</span>
+    <span class="q-points">2,40 pt</span>
+  </div>
+  <div class="question-body">
+    <div class="question-text">
+      Um muro de arrimo em solo grampeado (soil nailing) tem como princípio de funcionamento:
+    </div>
+  </div>
+  <div class="question-options">
+    <div class="option-item"><span class="opt-letter">A)</span> O peso próprio da estrutura de concreto ciclópico resistindo ao empuxo ativo do terreno</div>
+    <div class="option-item"><span class="opt-letter">B)</span> O engastamento de pranchas metálicas no solo abaixo da escavação, resistindo por atrito e passividade</div>
+    <div class="option-item"><span class="opt-letter">C)</span> A inserção de barras de aço passivas no maciço natural, conectadas a uma face de concreto projetado, trabalhando por atrito e tração</div>
+    <div class="option-item"><span class="opt-letter">D)</span> A presença de ancoragens ativas (tirantes protendidos) que comprimem o maciço contra a face de contenção</div>
+    <div class="option-item"><span class="opt-letter">E)</span> A resistência passiva de caixas metálicas preenchidas com pedras (gabiões) ao empuxo do terreno</div>
+  </div>
+</div>
+
+<!-- Q21 -->
+<div class="question-block">
+  <div class="question-meta">
+    <span class="q-num-badge">21</span>
+    <span class="q-discipline">Esp. Civil · Estruturas — Concreto armado NBR 6118, cobrimentos</span>
+    <span class="q-points">2,40 pt</span>
+  </div>
+  <div class="question-body">
+    <div class="question-text">
+      Uma passarela de concreto armado será construída em região costeira com presença de maresia intensa (classe de agressividade ambiental III — forte). De acordo com a NBR 6118:2023, o cobrimento nominal mínimo para as vigas da passarela deve ser de:
+    </div>
+  </div>
+  <div class="question-options">
+    <div class="option-item"><span class="opt-letter">A)</span> 20 mm</div>
+    <div class="option-item"><span class="opt-letter">B)</span> 25 mm</div>
+    <div class="option-item"><span class="opt-letter">C)</span> 30 mm</div>
+    <div class="option-item"><span class="opt-letter">D)</span> 40 mm</div>
+    <div class="option-item"><span class="opt-letter">E)</span> 50 mm</div>
+  </div>
+</div>
+
+<!-- Q22 -->
+<div class="question-block">
+  <div class="question-meta">
+    <span class="q-num-badge">22</span>
+    <span class="q-discipline">Esp. Civil · Estruturas — Estados limites (ELU e ELS)</span>
+    <span class="q-points">2,40 pt</span>
+  </div>
+  <div class="question-body">
+    <div class="question-text">
+      Analise os seguintes fenômenos em estruturas de concreto armado:
+      <br><br>
+      <strong>I.</strong> Ruptura por esmagamento do concreto comprimido em viga sob sobrecarga excessiva.<br>
+      <strong>II.</strong> Fissuração visível em viga de piso de escritório, com abertura de fissuras de 0,3 mm, sem risco de colapso.<br>
+      <strong>III.</strong> Flecha excessiva em laje de cobertura que provoca acúmulo de água da chuva.<br>
+      <strong>IV.</strong> Instabilidade de pilar por flambagem sob carregamento de compressão.
+      <br><br>
+      São casos de Estado Limite Último (ELU):
+    </div>
+  </div>
+  <div class="question-options">
+    <div class="option-item"><span class="opt-letter">A)</span> Apenas I</div>
+    <div class="option-item"><span class="opt-letter">B)</span> Apenas I e IV</div>
+    <div class="option-item"><span class="opt-letter">C)</span> I, II e IV</div>
+    <div class="option-item"><span class="opt-letter">D)</span> II e III apenas</div>
+    <div class="option-item"><span class="opt-letter">E)</span> I, II, III e IV</div>
+  </div>
+</div>
+
+<!-- Q23 -->
+<div class="question-block">
+  <div class="question-meta">
+    <span class="q-num-badge">23</span>
+    <span class="q-discipline">Esp. Civil · Estruturas de aço — NBR 8800 e tipos de perfis</span>
+    <span class="q-points">2,40 pt</span>
+  </div>
+  <div class="question-body">
+    <div class="question-text">
+      No sistema construtivo steel framing (light steel framing), os perfis utilizados diferem dos utilizados em estruturas convencionais de aço. A principal distinção é que o steel framing utiliza:
+    </div>
+  </div>
+  <div class="question-options">
+    <div class="option-item"><span class="opt-letter">A)</span> Perfis W (wide flange) laminados a quente, de grande porte</div>
+    <div class="option-item"><span class="opt-letter">B)</span> Tubos estruturais circulares (CHS) de aço inoxidável</div>
+    <div class="option-item"><span class="opt-letter">C)</span> Perfis de aço galvanizado formados a frio (PFF) de pequena espessura, como U enrijecido e U duplo</div>
+    <div class="option-item"><span class="opt-letter">D)</span> Perfis soldados de chapa grossa com seção variável ao longo do comprimento</div>
+    <div class="option-item"><span class="opt-letter">E)</span> Treliças espaciais de alumínio com nós parafusados</div>
+  </div>
+</div>
+
+<!-- Q24 -->
+<div class="question-block">
+  <div class="question-meta">
+    <span class="q-num-badge">24</span>
+    <span class="q-discipline">Esp. Civil · Materiais — Tecnologia do concreto e cimento</span>
+    <span class="q-points">2,40 pt</span>
+  </div>
+  <div class="question-body">
+    <div class="question-text">
+      Uma estrutura de concreto está sendo executada em um piso industrial que estará em contato com efluentes ácidos e com presença de sulfatos. O tipo de cimento mais adequado para essa situação, visando maior resistência ao ataque químico, é:
+    </div>
+  </div>
+  <div class="question-options">
+    <div class="option-item"><span class="opt-letter">A)</span> CP V-ARI (alta resistência inicial), por ter menor permeabilidade inicial</div>
+    <div class="option-item"><span class="opt-letter">B)</span> CP I (cimento Portland comum), por ser o mais puro e de menor reatividade</div>
+    <div class="option-item"><span class="opt-letter">C)</span> CP II-F (com fíler), por ter menor consumo de cimento por m³</div>
+    <div class="option-item"><span class="opt-letter">D)</span> CP III (alto-forno) ou CP IV (pozolânico), por terem menor teor de C₃A e maior resistência a sulfatos</div>
+    <div class="option-item"><span class="opt-letter">E)</span> CP II-Z (com pozolana), por ser o cimento de menor custo com resistência adequada</div>
+  </div>
+</div>
+
+<!-- Q25 -->
+<div class="question-block">
+  <div class="question-meta">
+    <span class="q-num-badge">25</span>
+    <span class="q-discipline">Esp. Civil · Materiais — Alvenaria estrutural NBR 16868</span>
+    <span class="q-points">2,40 pt</span>
+  </div>
+  <div class="question-body">
+    <div class="question-text">
+      Em relação à alvenaria estrutural em blocos de concreto, normativa pela NBR 16868, o material denominado graute é:
+    </div>
+  </div>
+  <div class="question-options">
+    <div class="option-item"><span class="opt-letter">A)</span> Argamassa utilizada para assentamento dos blocos nas fiadas horizontais</div>
+    <div class="option-item"><span class="opt-letter">B)</span> Revestimento de argamassa projetada nas faces externas das paredes</div>
+    <div class="option-item"><span class="opt-letter">C)</span> Mistura fluida de cimento, areia, água e aditivos, injetada nos furos dos blocos para aumentar a capacidade resistente e ancorar as armaduras</div>
+    <div class="option-item"><span class="opt-letter">D)</span> Concreto de alta resistência usado exclusivamente nas fundações da alvenaria estrutural</div>
+    <div class="option-item"><span class="opt-letter">E)</span> Impermeabilizante líquido aplicado nos blocos para proteção contra umidade ascendente</div>
+  </div>
+</div>
+
+<!-- Q26 -->
+<div class="question-block">
+  <div class="question-meta">
+    <span class="q-num-badge">26</span>
+    <span class="q-discipline">Esp. Civil · Patologia — Diagnóstico e ensaios não destrutivos</span>
+    <span class="q-points">2,40 pt</span>
+  </div>
+  <div class="question-body">
+    <div class="question-text">
+      Durante inspeção de viaduto de concreto armado, o engenheiro identifica fissuras distribuídas em padrão de "mapa" por toda a superfície, com aspecto de teia de aranha, associadas à presença de gel esbranquiçado nas fissuras. Esse quadro patológico é característico de:
+    </div>
+  </div>
+  <div class="question-options">
+    <div class="option-item"><span class="opt-letter">A)</span> Carbonatação avançada com despassivação da armadura</div>
+    <div class="option-item"><span class="opt-letter">B)</span> Fissuração por retração plástica do concreto no lançamento</div>
+    <div class="option-item"><span class="opt-letter">C)</span> Reação álcali-sílica (RAS) com formação de gel expansivo</div>
+    <div class="option-item"><span class="opt-letter">D)</span> Ataque por cloretos com formação de estringita</div>
+    <div class="option-item"><span class="opt-letter">E)</span> Bichamento (ninhos de concretagem) por segregação do concreto</div>
+  </div>
+</div>
+
+<!-- Q27 -->
+<div class="question-block">
+  <div class="question-meta">
+    <span class="q-num-badge">27</span>
+    <span class="q-discipline">Esp. Civil · Patologia — Manutenção predial e NBR 15575</span>
+    <span class="q-points">2,40 pt</span>
+  </div>
+  <div class="question-body">
+    <div class="question-text">
+      A NBR 15575:2013 (Desempenho das Edificações Habitacionais) estabelece vida útil de projeto (VUP) mínima para cada sistema. A sequência em ordem CRESCENTE de VUP mínima está corretamente representada em:
+    </div>
+  </div>
+  <div class="question-options">
+    <div class="option-item"><span class="opt-letter">A)</span> Estrutura (50a) &gt; Vedação externa (40a) &gt; Instalações hidro (20-25a) &gt; Instalações elétricas (15a)</div>
+    <div class="option-item"><span class="opt-letter">B)</span> Instalações elétricas (15a) &lt; Instalações hidro (20-25a) &lt; Revestimento fachada (20a) &lt; Vedação externa (40a) &lt; Estrutura (50a)</div>
+    <div class="option-item"><span class="opt-letter">C)</span> Instalações elétricas &lt; Instalações hidro &lt; Vedação externa &lt; Estrutura</div>
+    <div class="option-item"><span class="opt-letter">D)</span> Estrutura &lt; Vedação externa &lt; Instalações hidro &lt; Instalações elétricas</div>
+    <div class="option-item"><span class="opt-letter">E)</span> Todos os sistemas têm VUP igual a 50 anos, conforme a NBR 15575</div>
+  </div>
+</div>
+
+<!-- Q28 -->
+<div class="question-block">
+  <div class="question-meta">
+    <span class="q-num-badge">28</span>
+    <span class="q-discipline">Esp. Civil · Instalações — Hidráulica predial NBR 5626</span>
+    <span class="q-points">2,40 pt</span>
+  </div>
+  <div class="question-body">
+    <div class="question-text">
+      No dimensionamento do sistema de abastecimento de água de um edifício residencial com consumo diário de 12.000 litros, os volumes mínimos exigidos pela NBR 5626 para os reservatórios são:
+    </div>
+  </div>
+  <div class="question-options">
+    <div class="option-item"><span class="opt-letter">A)</span> Inferior: 12.000 L / Superior: 24.000 L</div>
+    <div class="option-item"><span class="opt-letter">B)</span> Inferior: 24.000 L / Superior: 6.000 L</div>
+    <div class="option-item"><span class="opt-letter">C)</span> Inferior: 12.000 L / Superior: 12.000 L</div>
+    <div class="option-item"><span class="opt-letter">D)</span> Inferior: 36.000 L / Superior: 12.000 L</div>
+    <div class="option-item"><span class="opt-letter">E)</span> Inferior: 24.000 L / Superior: 12.000 L</div>
+  </div>
+</div>
+
+<!-- Q29 -->
+<div class="question-block">
+  <div class="question-meta">
+    <span class="q-num-badge">29</span>
+    <span class="q-discipline">Esp. Civil · Instalações — Prevenção e combate a incêndio</span>
+    <span class="q-points">2,40 pt</span>
+  </div>
+  <div class="question-body">
+    <div class="question-text">
+      Uma edificação universitária com 3.500 m² de área, contendo laboratórios com produtos inflamáveis, está sendo projetada. O engenheiro responsável deve prever sistema de chuveiros automáticos (sprinklers). A norma ABNT que regulamenta o dimensionamento desse sistema é:
+    </div>
+  </div>
+  <div class="question-options">
+    <div class="option-item"><span class="opt-letter">A)</span> NBR 9077 — Saídas de emergência</div>
+    <div class="option-item"><span class="opt-letter">B)</span> NBR 13714 — Sistemas de hidrantes</div>
+    <div class="option-item"><span class="opt-letter">C)</span> NBR 10898 — Iluminação de emergência</div>
+    <div class="option-item"><span class="opt-letter">D)</span> NBR 10897 — Sistemas de chuveiros automáticos (sprinklers)</div>
+    <div class="option-item"><span class="opt-letter">E)</span> NBR 12693 — Sistemas de extintores de incêndio</div>
+  </div>
+</div>
+
+<!-- Q30 -->
+<div class="question-block">
+  <div class="question-meta">
+    <span class="q-num-badge">30</span>
+    <span class="q-discipline">Esp. Civil · Infraestrutura — Pavimentação e CBR</span>
+    <span class="q-points">2,40 pt</span>
+  </div>
+  <div class="question-body">
+    <div class="question-text">
+      No projeto de pavimentação de via urbana, o ensaio de CBR (California Bearing Ratio) do subleito apresentou valor de 3%. Com base nos parâmetros geotécnicos, esse resultado indica que o subleito é:
+    </div>
+  </div>
+  <div class="question-options">
+    <div class="option-item"><span class="opt-letter">A)</span> Excelente — não requer regularização especial</div>
+    <div class="option-item"><span class="opt-letter">B)</span> Bom — adequado para via de tráfego pesado sem reforço</div>
+    <div class="option-item"><span class="opt-letter">C)</span> Regular — adequado para vias locais com tráfego leve</div>
+    <div class="option-item"><span class="opt-letter">D)</span> Fraco — requer espessura maior de pavimento ou melhoria do subleito</div>
+    <div class="option-item"><span class="opt-letter">E)</span> Muito fraco — inadequado para qualquer tipo de pavimentação sem substituição</div>
+  </div>
+</div>
+
+<!-- Q31 -->
+<div class="question-block">
+  <div class="question-meta">
+    <span class="q-num-badge">31</span>
+    <span class="q-discipline">Esp. Civil · Infraestrutura — Drenagem urbana e fórmula racional</span>
+    <span class="q-points">2,40 pt</span>
+  </div>
+  <div class="question-body">
+    <div class="question-text">
+      Para dimensionar uma galeria de drenagem pluvial em bairro urbano consolidado, com área de contribuição de 2 ha, coeficiente de escoamento C = 0,80 e intensidade de chuva de projeto i = 90 mm/h, a vazão de projeto calculada pela Fórmula Racional é:
+    </div>
+  </div>
+  <div class="question-options">
+    <div class="option-item"><span class="opt-letter">A)</span> 0,28 m³/s</div>
+    <div class="option-item"><span class="opt-letter">B)</span> 0,40 m³/s</div>
+    <div class="option-item"><span class="opt-letter">C)</span> 0,50 m³/s</div>
+    <div class="option-item"><span class="opt-letter">D)</span> 1,44 m³/s</div>
+    <div class="option-item"><span class="opt-letter">E)</span> 2,80 m³/s</div>
+  </div>
+</div>
+
+<!-- Q32 -->
+<div class="question-block">
+  <div class="question-meta">
+    <span class="q-num-badge">32</span>
+    <span class="q-discipline">Esp. Civil · Sustentabilidade — RCC e gestão de resíduos</span>
+    <span class="q-points">2,40 pt</span>
+  </div>
+  <div class="question-body">
+    <div class="question-text">
+      Durante demolição de edificação na UFMA, são gerados os seguintes resíduos: (A) restos de concreto e blocos cerâmicos; (B) embalagens de tinta e restos de solventes; (C) barras de aço e perfis metálicos; (D) telhas de fibrocimento (sem amianto). Segundo a Resolução CONAMA 307/2002, a classificação correta é:
+    </div>
+  </div>
+  <div class="question-options">
+    <div class="option-item"><span class="opt-letter">A)</span> A = Classe B; B = Classe D; C = Classe A; D = Classe C</div>
+    <div class="option-item"><span class="opt-letter">B)</span> A = Classe A; B = Classe D; C = Classe B; D = Classe C</div>
+    <div class="option-item"><span class="opt-letter">C)</span> A = Classe A; B = Classe B; C = Classe A; D = Classe D</div>
+    <div class="option-item"><span class="opt-letter">D)</span> A = Classe C; B = Classe D; C = Classe B; D = Classe A</div>
+    <div class="option-item"><span class="opt-letter">E)</span> A = Classe A; B = Classe C; C = Classe B; D = Classe B</div>
+  </div>
+</div>
+
+<!-- Q33 -->
+<div class="question-block">
+  <div class="question-meta">
+    <span class="q-num-badge">33</span>
+    <span class="q-discipline">Esp. Civil · Tecnologia — BIM, Decreto 10.306/2020 e AutoCAD</span>
+    <span class="q-points">2,40 pt</span>
+  </div>
+  <div class="question-body">
+    <div class="question-text">
+      Sobre a implementação do BIM (Building Information Modeling) no setor público federal brasileiro, é CORRETO afirmar que:
+    </div>
+  </div>
+  <div class="question-options">
+    <div class="option-item"><span class="opt-letter">A)</span> O BIM é apenas recomendado pelo TCU, sem obrigatoriedade legal para órgãos federais</div>
+    <div class="option-item"><span class="opt-letter">B)</span> O Decreto 10.306/2020 tornou obrigatório o uso do BIM em obras e serviços de engenharia da Administração Pública Federal, com implementação gradual em fases</div>
+    <div class="option-item"><span class="opt-letter">C)</span> A obrigatoriedade do BIM aplica-se exclusivamente a obras acima de R$ 50 milhões</div>
+    <div class="option-item"><span class="opt-letter">D)</span> O BIM é obrigatório apenas para projetos de edificações, sendo dispensado para obras de infraestrutura</div>
+    <div class="option-item"><span class="opt-letter">E)</span> O formato proprietário DWG do AutoCAD foi definido como padrão de entrega BIM no Brasil</div>
+  </div>
+</div>
+
+<!-- Q34 -->
+<div class="question-block">
+  <div class="question-meta">
+    <span class="q-num-badge">34</span>
+    <span class="q-discipline">Esp. Civil · Normas — NBR 6122 fundações, FS e recalques</span>
+    <span class="q-points">2,40 pt</span>
+  </div>
+  <div class="question-body">
+    <div class="question-text">
+      Em projeto de fundações, o fator de segurança (FS) mínimo exigido para verificação da estabilidade ao tombamento de muros de contenção e ao deslizamento de fundações, segundo as práticas geotécnicas normativas, é:
+    </div>
+  </div>
+  <div class="question-options">
+    <div class="option-item"><span class="opt-letter">A)</span> FS ≥ 1,0 — o equilíbrio exato é suficiente</div>
+    <div class="option-item"><span class="opt-letter">B)</span> FS ≥ 1,2 — margem mínima de segurança para carregamentos permanentes</div>
+    <div class="option-item"><span class="opt-letter">C)</span> FS ≥ 1,5 — valor consolidado na prática geotécnica para tombamento e deslizamento</div>
+    <div class="option-item"><span class="opt-letter">D)</span> FS ≥ 2,0 — mínimo obrigatório pela NBR 6118 para todas as verificações</div>
+    <div class="option-item"><span class="opt-letter">E)</span> FS ≥ 3,0 — exigido para fundações próximas a linhas de transmissão e dutos</div>
+  </div>
+</div>
+
+<!-- Q35 -->
+<div class="question-block">
+  <div class="question-meta">
+    <span class="q-num-badge">35</span>
+    <span class="q-discipline">Esp. Civil · Orçamento — Cálculo de preço de venda com BDI</span>
+    <span class="q-points">2,40 pt</span>
+  </div>
+  <div class="question-body">
+    <div class="question-text">
+      O orçamento de uma obra de reforma na UFMA apresenta custo direto total (materiais + mão de obra + equipamentos) de R$ 850.000,00. Aplicando o BDI de 28% sobre o custo direto, qual deve ser o valor total constante na planilha orçamentária para fins de licitação?
+    </div>
+  </div>
+  <div class="question-options">
+    <div class="option-item"><span class="opt-letter">A)</span> R$ 878.000,00</div>
+    <div class="option-item"><span class="opt-letter">B)</span> R$ 1.000.000,00</div>
+    <div class="option-item"><span class="opt-letter">C)</span> R$ 1.080.000,00</div>
+    <div class="option-item"><span class="opt-letter">D)</span> R$ 1.088.000,00</div>
+    <div class="option-item"><span class="opt-letter">E)</span> R$ 1.200.000,00</div>
+  </div>
+</div>
+
+<!-- Q36 -->
+<div class="question-block">
+  <div class="question-meta">
+    <span class="q-num-badge">36</span>
+    <span class="q-discipline">Esp. Civil · Estruturas — Concreto: fcd e dimensionamento</span>
+    <span class="q-points">2,40 pt</span>
+  </div>
+  <div class="question-body">
+    <div class="question-text">
+      Na verificação ao ELU de uma seção de concreto armado com fck = 30 MPa, o valor de cálculo da resistência à compressão do concreto (fcd), utilizando γc = 1,4, é:
+    </div>
+  </div>
+  <div class="question-options">
+    <div class="option-item"><span class="opt-letter">A)</span> 30,0 MPa</div>
+    <div class="option-item"><span class="opt-letter">B)</span> 25,5 MPa</div>
+    <div class="option-item"><span class="opt-letter">C)</span> 21,43 MPa</div>
+    <div class="option-item"><span class="opt-letter">D)</span> 20,0 MPa</div>
+    <div class="option-item"><span class="opt-letter">E)</span> 18,0 MPa</div>
+  </div>
+</div>
+
+<!-- Q37 -->
+<div class="question-block">
+  <div class="question-meta">
+    <span class="q-num-badge">37</span>
+    <span class="q-discipline">Esp. Civil · Licitações — Planejamento das contratações públicas</span>
+    <span class="q-points">2,40 pt</span>
+  </div>
+  <div class="question-body">
+    <div class="question-text">
+      A Lei nº 14.133/2021 exige que obras de grande vulto contenham, obrigatoriamente, Matriz de Riscos no instrumento convocatório e no contrato. Para esse fim, define-se como obra de grande vulto aquela cujo valor estimado ultrapasse:
+    </div>
+  </div>
+  <div class="question-options">
+    <div class="option-item"><span class="opt-letter">A)</span> R$ 10 milhões</div>
+    <div class="option-item"><span class="opt-letter">B)</span> R$ 50 milhões</div>
+    <div class="option-item"><span class="opt-letter">C)</span> R$ 100 milhões</div>
+    <div class="option-item"><span class="opt-letter">D)</span> R$ 200 milhões</div>
+    <div class="option-item"><span class="opt-letter">E)</span> R$ 500 milhões</div>
+  </div>
+</div>
+
+<!-- Q38 -->
+<div class="question-block">
+  <div class="question-meta">
+    <span class="q-num-badge">38</span>
+    <span class="q-discipline">Esp. Civil · Instalações — Esgoto predial e declividade NBR 8160</span>
+    <span class="q-points">2,40 pt</span>
+  </div>
+  <div class="question-body">
+    <div class="question-text">
+      No projeto de instalações de esgoto de um edifício, o ramal que serve a uma bacia sanitária utiliza tubo de DN 100 mm. Segundo a NBR 8160, a declividade mínima exigida para esse ramal é de:
+    </div>
+  </div>
+  <div class="question-options">
+    <div class="option-item"><span class="opt-letter">A)</span> 0,5%</div>
+    <div class="option-item"><span class="opt-letter">B)</span> 1%</div>
+    <div class="option-item"><span class="opt-letter">C)</span> 2%</div>
+    <div class="option-item"><span class="opt-letter">D)</span> 3%</div>
+    <div class="option-item"><span class="opt-letter">E)</span> 5%</div>
+  </div>
+</div>
+
+<!-- Q39 -->
+<div class="question-block">
+  <div class="question-meta">
+    <span class="q-num-badge">39</span>
+    <span class="q-discipline">Esp. Civil · Normas — NBRs integradas: escopo e aplicação</span>
+    <span class="q-points">2,40 pt</span>
+  </div>
+  <div class="question-body">
+    <div class="question-text">
+      Relacione as normas ABNT com seus respectivos objetos de regulamentação:
+      <br><br>
+      (1) NBR 6118 &nbsp;&nbsp;&nbsp; (2) NBR 6122 &nbsp;&nbsp;&nbsp; (3) NBR 8800 &nbsp;&nbsp;&nbsp; (4) NBR 16868
+      <br><br>
+      (a) Projeto e execução de fundações<br>
+      (b) Estruturas de concreto armado e protendido<br>
+      (c) Alvenaria estrutural<br>
+      (d) Estruturas de aço e mistas de aço e concreto
+      <br><br>
+      A associação correta é:
+    </div>
+  </div>
+  <div class="question-options">
+    <div class="option-item"><span class="opt-letter">A)</span> 1-b, 2-a, 3-d, 4-c</div>
+    <div class="option-item"><span class="opt-letter">B)</span> 1-a, 2-b, 3-c, 4-d</div>
+    <div class="option-item"><span class="opt-letter">C)</span> 1-d, 2-c, 3-a, 4-b</div>
+    <div class="option-item"><span class="opt-letter">D)</span> 1-b, 2-d, 3-a, 4-c</div>
+    <div class="option-item"><span class="opt-letter">E)</span> 1-c, 2-a, 3-b, 4-d</div>
+  </div>
+</div>
+
+<!-- Q40 -->
+<div class="question-block">
+  <div class="question-meta">
+    <span class="q-num-badge">40</span>
+    <span class="q-discipline">Esp. Civil · Integrado — Orçamento, licitação e execução de obras</span>
+    <span class="q-points">2,40 pt</span>
+  </div>
+  <div class="question-body">
+    <div class="question-text">
+      Um engenheiro civil da UFMA fiscaliza contrato de obras e detecta que o contratado está utilizando brita de granulometria diferente da especificada no projeto, o que pode comprometer a resistência do concreto estrutural. Sobre a conduta adequada do fiscal, analise:
+      <br><br>
+      <strong>I.</strong> O fiscal deve registrar o fato no diário de obras e comunicar formalmente ao gestor do contrato para as providências cabíveis.<br>
+      <strong>II.</strong> O fiscal pode, de ofício, paralisar os serviços imediatamente sem qualquer comunicação ao gestor ou à autoridade competente.<br>
+      <strong>III.</strong> A manutenção de concretagem com material fora de especificação caracteriza descumprimento contratual e pode ensejar aplicação de sanções ao contratado após devido processo.<br>
+      <strong>IV.</strong> O fiscal deve ignorar a irregularidade se o contratado alegar que a brita utilizada é equivalente, para não atrasar a obra.
+      <br><br>
+      Estão corretas:
+    </div>
+  </div>
+  <div class="question-options">
+    <div class="option-item"><span class="opt-letter">A)</span> Apenas I e II</div>
+    <div class="option-item"><span class="opt-letter">B)</span> Apenas II e III</div>
+    <div class="option-item"><span class="opt-letter">C)</span> Apenas I e III</div>
+    <div class="option-item"><span class="opt-letter">D)</span> Apenas III e IV</div>
+    <div class="option-item"><span class="opt-letter">E)</span> I, II, III e IV</div>
+  </div>
+</div>
+
+</div><!-- /content -->
+
+<!-- ══════════════════════════════════
+     GABARITO COMENTADO
+════════════════════════════════════ -->
+<div class="gabarito-section">
+  <div class="gabarito-inner">
+
+    <div class="gabarito-header">
+      <div>
+        <h2>Gabarito Comentado</h2>
+        <div class="gh-sub">Respostas · Disciplinas · Tópicos de origem · Comentários explicativos</div>
+      </div>
+    </div>
+
+    <!-- GRADE RÁPIDA -->
+    <div class="resposta-grid">
+      <div class="resposta-item"><span class="resposta-num">01</span><span class="resposta-letra">B</span></div>
+      <div class="resposta-item"><span class="resposta-num">02</span><span class="resposta-letra">C</span></div>
+      <div class="resposta-item"><span class="resposta-num">03</span><span class="resposta-letra">B</span></div>
+      <div class="resposta-item"><span class="resposta-num">04</span><span class="resposta-letra">B</span></div>
+      <div class="resposta-item"><span class="resposta-num">05</span><span class="resposta-letra">D</span></div>
+      <div class="resposta-item"><span class="resposta-num">06</span><span class="resposta-letra">C</span></div>
+      <div class="resposta-item"><span class="resposta-num">07</span><span class="resposta-letra">C</span></div>
+      <div class="resposta-item"><span class="resposta-num">08</span><span class="resposta-letra">C</span></div>
+      <div class="resposta-item"><span class="resposta-num">09</span><span class="resposta-letra">E</span></div>
+      <div class="resposta-item"><span class="resposta-num">10</span><span class="resposta-letra">D</span></div>
+      <div class="resposta-item"><span class="resposta-num">11</span><span class="resposta-letra">C</span></div>
+      <div class="resposta-item"><span class="resposta-num">12</span><span class="resposta-letra">C</span></div>
+      <div class="resposta-item"><span class="resposta-num">13</span><span class="resposta-letra">B</span></div>
+      <div class="resposta-item"><span class="resposta-num">14</span><span class="resposta-letra">C</span></div>
+      <div class="resposta-item"><span class="resposta-num">15</span><span class="resposta-letra">B</span></div>
+      <div class="resposta-item"><span class="resposta-num">16</span><span class="resposta-letra">C</span></div>
+      <div class="resposta-item"><span class="resposta-num">17</span><span class="resposta-letra">C</span></div>
+      <div class="resposta-item"><span class="resposta-num">18</span><span class="resposta-letra">D</span></div>
+      <div class="resposta-item"><span class="resposta-num">19</span><span class="resposta-letra">C</span></div>
+      <div class="resposta-item"><span class="resposta-num">20</span><span class="resposta-letra">C</span></div>
+      <div class="resposta-item"><span class="resposta-num">21</span><span class="resposta-letra">D</span></div>
+      <div class="resposta-item"><span class="resposta-num">22</span><span class="resposta-letra">B</span></div>
+      <div class="resposta-item"><span class="resposta-num">23</span><span class="resposta-letra">C</span></div>
+      <div class="resposta-item"><span class="resposta-num">24</span><span class="resposta-letra">D</span></div>
+      <div class="resposta-item"><span class="resposta-num">25</span><span class="resposta-letra">C</span></div>
+      <div class="resposta-item"><span class="resposta-num">26</span><span class="resposta-letra">C</span></div>
+      <div class="resposta-item"><span class="resposta-num">27</span><span class="resposta-letra">B</span></div>
+      <div class="resposta-item"><span class="resposta-num">28</span><span class="resposta-letra">D</span></div>
+      <div class="resposta-item"><span class="resposta-num">29</span><span class="resposta-letra">D</span></div>
+      <div class="resposta-item"><span class="resposta-num">30</span><span class="resposta-letra">D</span></div>
+      <div class="resposta-item"><span class="resposta-num">31</span><span class="resposta-letra">B</span></div>
+      <div class="resposta-item"><span class="resposta-num">32</span><span class="resposta-letra">B</span></div>
+      <div class="resposta-item"><span class="resposta-num">33</span><span class="resposta-letra">B</span></div>
+      <div class="resposta-item"><span class="resposta-num">34</span><span class="resposta-letra">C</span></div>
+      <div class="resposta-item"><span class="resposta-num">35</span><span class="resposta-letra">D</span></div>
+      <div class="resposta-item"><span class="resposta-num">36</span><span class="resposta-letra">C</span></div>
+      <div class="resposta-item"><span class="resposta-num">37</span><span class="resposta-letra">D</span></div>
+      <div class="resposta-item"><span class="resposta-num">38</span><span class="resposta-letra">B</span></div>
+      <div class="resposta-item"><span class="resposta-num">39</span><span class="resposta-letra">A</span></div>
+      <div class="resposta-item"><span class="resposta-num">40</span><span class="resposta-letra">C</span></div>
+    </div>
+
+    <!-- SCORE TRACKER -->
+    <div class="score-tracker">
+      <h3>📊 Calcule seu desempenho</h3>
+      <div class="score-tracker-grid">
+        <div class="tracker-field">
+          <div class="tf-label">Acertos em Legislação (Q01–Q10)</div>
+          <div class="tf-val">____ / 10</div>
+          <div class="tf-sub">× 1,20 = ______ pts &nbsp;|&nbsp; Mínimo: 4 acertos (4,8 pts)</div>
+        </div>
+        <div class="tracker-field">
+          <div class="tf-label">Acertos em Específicos (Q11–Q40)</div>
+          <div class="tf-val">____ / 30</div>
+          <div class="tf-sub">× 2,40 = ______ pts &nbsp;|&nbsp; Mínimo: 12 acertos (28,8 pts)</div>
+        </div>
+        <div class="tracker-field">
+          <div class="tf-label">Pontuação total no simulado</div>
+          <div class="tf-val">______ pts</div>
+          <div class="tf-sub">Máximo: 84,0 pts &nbsp;|&nbsp; Meta competitiva: 63+ pts (75%)</div>
+        </div>
+        <div class="tracker-field">
+          <div class="tf-label">Aprovado no simulado?</div>
+          <div class="tf-val">SIM / NÃO</div>
+          <div class="tf-sub">Cond.: ≥ 4,8 em Leg. E ≥ 28,8 em Esp. E total proporcional ≥ 50 pts</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- COMENTÁRIOS -->
+    <div class="gab-item">
+      <div class="gab-head"><span class="gab-num">01</span><span class="gab-letra">→ B</span><span class="gab-topic">Legislação · CF/88 — Princípio da Eficiência</span><span class="gab-pts">1,20 pt</span></div>
+      <div class="gab-body">O princípio da <strong>Eficiência</strong> foi inserido no caput do Art. 37 da CF/88 pela <em>EC nº 19/1998</em>, conhecida como Reforma Administrativa. Os cinco princípios originais do LIMPE eram: Legalidade, Impessoalidade, Moralidade e Publicidade. A Eficiência completou o acrônimo com a EC 19. A EC 45/2004 trata da reforma do Judiciário; a EC 41/2003 é a Reforma da Previdência.</div>
+    </div>
+
+    <div class="gab-item">
+      <div class="gab-head"><span class="gab-num">02</span><span class="gab-letra">→ C</span><span class="gab-topic">Legislação · Lei 8.112/1990 — Reintegração</span><span class="gab-pts">1,20 pt</span></div>
+      <div class="gab-body">A <strong>Reintegração</strong> (Art. 28, Lei 8.112/1990) é o retorno do servidor ao cargo mediante anulação judicial da demissão. O servidor faz jus ao ressarcimento de <strong>todas as vantagens</strong> a que teria direito no período, incluindo promoções. Reversão = retorno do aposentado; Aproveitamento = retorno do servidor em disponibilidade; Recondução = retorno ao cargo anterior por inabilitação em estágio probatório ou para acomodar reintegração de outro servidor.</div>
+    </div>
+
+    <div class="gab-item">
+      <div class="gab-head"><span class="gab-num">03</span><span class="gab-letra">→ B</span><span class="gab-topic">Legislação · Lei 8.112/1990 — Deveres do servidor (Art. 116)</span><span class="gab-pts">1,20 pt</span></div>
+      <div class="gab-body">O Art. 116 da Lei 8.112/1990 lista os <strong>deveres</strong> do servidor federal, incluindo: ser assíduo e pontual, tratar com urbanidade as pessoas, atender com presteza ao público, levar ao conhecimento da chefia irregularidades que tiver ciência, cumprir as ordens superiores (exceto as manifestamente ilegais). O descumprimento dos deveres pode ensejar sindicância e PAD com aplicação de penalidades.</div>
+    </div>
+
+    <div class="gab-item">
+      <div class="gab-head"><span class="gab-num">04</span><span class="gab-letra">→ B</span><span class="gab-topic">Legislação · Lei 8.112/1990 — PAD, prazo de defesa</span><span class="gab-pts">1,20 pt</span></div>
+      <div class="gab-body">Art. 161 da Lei 8.112/1990: após o indiciamento, o servidor tem <strong>10 dias</strong> para apresentar defesa escrita. Esse prazo pode ser prorrogado por mais 10 dias em caso de maior complexidade. Quando há mais de um indiciado, o prazo é de 20 dias. O prazo de 30 dias para o PAD refere-se ao período de instrução da fase de inquérito — não ao prazo de defesa do indiciado.</div>
+    </div>
+
+    <div class="gab-item">
+      <div class="gab-head"><span class="gab-num">05</span><span class="gab-letra">→ D</span><span class="gab-topic">Legislação · Lei 11.091/2005 — Incentivo à qualificação</span><span class="gab-pts">1,20 pt</span></div>
+      <div class="gab-body">A Lei 11.091/2005 estabelece percentuais de incentivo à qualificação acima do exigido para o cargo. Para o Engenheiro Civil (nível E — nível superior), a graduação já é o requisito mínimo. O incentivo pertinente começa na especialização (30%). O <strong>doutorado</strong> confere o maior percentual: <strong>75%</strong> sobre o vencimento básico. Os percentuais não se acumulam — aplica-se o maior título obtido.</div>
+    </div>
+
+    <div class="gab-item">
+      <div class="gab-head"><span class="gab-num">06</span><span class="gab-letra">→ C</span><span class="gab-topic">Legislação · Decreto 1.171/1994 — Código de Ética (análise de afirmativas)</span><span class="gab-pts">1,20 pt</span></div>
+      <div class="gab-body"><strong>I — CORRETA:</strong> assiduidade e frequência são deveres expressos no Código de Ética. <strong>II — CORRETA:</strong> a censura ética é autônoma e acumulável com as penalidades da Lei 8.112 — não as substitui. <strong>III — INCORRETA:</strong> a Comissão de Ética tem <strong>3</strong> membros (não 5), com mandato de <strong>3 anos</strong> (não 2), sendo <strong>vedada</strong> a recondução (não permitida). Portanto, apenas I e II estão corretas.</div>
+    </div>
+
+    <div class="gab-item">
+      <div class="gab-head"><span class="gab-num">07</span><span class="gab-letra">→ C</span><span class="gab-topic">Legislação · Lei 9.784/1999 — Decadência administrativa</span><span class="gab-pts">1,20 pt</span></div>
+      <div class="gab-body">Art. 54 da Lei 9.784/1999: o direito da Administração de anular atos de que decorram efeitos favoráveis ao destinatário de <strong>boa-fé</strong> decai em <strong>5 anos</strong>, contados da data em que foram praticados. <strong>Exceção crucial:</strong> se houver má-fé do beneficiário, não há prazo — a Administração pode anular a qualquer tempo. A decadência de 5 anos protege a segurança jurídica de quem agiu de boa-fé confiando no ato administrativo.</div>
+    </div>
+
+    <div class="gab-item">
+      <div class="gab-head"><span class="gab-num">08</span><span class="gab-letra">→ C</span><span class="gab-topic">Legislação · Lei 8.429/1992 — Sujeito ativo (Lei 14.230/2021)</span><span class="gab-pts">1,20 pt</span></div>
+      <div class="gab-body">O Art. 3º da Lei 8.429/1992 (mantido pela Lei 14.230/2021) prevê que também respondem por improbidade os <strong>terceiros</strong> que induzam ou concorram para a prática do ato ou dele se beneficiem. Portanto, tanto agentes públicos quanto particulares podem ser sujeitos ativos. A Lei 14.230/2021 não restringiu o rol de sujeitos — apenas exigiu o elemento doloso e concentrou a legitimidade ativa no Ministério Público.</div>
+    </div>
+
+    <div class="gab-item">
+      <div class="gab-head"><span class="gab-num">09</span><span class="gab-letra">→ E</span><span class="gab-topic">Legislação · LAI 12.527/2011 — Sigilo e transparência ativa</span><span class="gab-pts">1,20 pt</span></div>
+      <div class="gab-body"><strong>I — CORRETA:</strong> autoridades de direção, chefia ou assessoramento têm competência para classificar como "Reservado" (prazo de 5 anos). <strong>II — CORRETA:</strong> o prazo máximo de sigilo para "Ultrassecreto" é 25 anos, prorrogável uma vez por igual período = máximo 50 anos. <strong>III — CORRETA:</strong> informações sobre repasses de recursos públicos são de transparência ativa obrigatória — nunca podem ser sigilosas. Todas as três afirmativas estão corretas.</div>
+    </div>
+
+    <div class="gab-item">
+      <div class="gab-head"><span class="gab-num">10</span><span class="gab-letra">→ D</span><span class="gab-topic">Legislação · LGPD 13.709/2018 — Agentes de tratamento</span><span class="gab-pts">1,20 pt</span></div>
+      <div class="gab-body">Na LGPD: <strong>Controlador</strong> = quem decide sobre as finalidades e os meios do tratamento — no caso, a <strong>UFMA</strong> (decide quais dados coletar e para que fins). <strong>Operador</strong> = quem trata os dados em nome e por instrução do controlador — no caso, a <strong>empresa de tecnologia</strong> (processa os dados conforme contratada). O Encarregado (DPO) seria o canal de comunicação, que pode ser da UFMA ou indicado por ela.</div>
+    </div>
+
+    <div class="gab-item">
+      <div class="gab-head"><span class="gab-num">11</span><span class="gab-letra">→ C</span><span class="gab-topic">Específicos · Lei 14.133/2021 — Modalidades de licitação</span><span class="gab-pts">2,40 pt</span></div>
+      <div class="gab-body">A <strong>Concorrência</strong> é a modalidade adequada para obras de engenharia. Ela admite todos os critérios de julgamento previstos na Lei 14.133/2021. O Convite e a Tomada de Preços foram extintos. O Pregão é restrito a bens e serviços comuns (incluindo serviços comuns de engenharia, mas não obras complexas). O Diálogo Competitivo é restrito a contratações inovadoras sem solução disponível no mercado.</div>
+    </div>
+
+    <div class="gab-item">
+      <div class="gab-head"><span class="gab-num">12</span><span class="gab-letra">→ C</span><span class="gab-topic">Específicos · Lei 14.133/2021 — Atribuições do fiscal técnico</span><span class="gab-pts">2,40 pt</span></div>
+      <div class="gab-body">O fiscal técnico (Art. 117, Lei 14.133/2021) tem como atribuição principal: <strong>acompanhar os aspectos técnicos da execução, atestar medições e comunicar ao gestor do contrato irregularidades</strong>. Não pode autorizar aditivos de ofício (isso é da autoridade competente), não responde solidariamente por atos do contratado sem culpa própria, e não tem poder autônomo de paralisação — deve comunicar ao gestor que tem essa prerrogativa.</div>
+    </div>
+
+    <div class="gab-item">
+      <div class="gab-head"><span class="gab-num">13</span><span class="gab-letra">→ B</span><span class="gab-topic">Específicos · SINAPI — Sistema de referência para obras federais</span><span class="gab-pts">2,40 pt</span></div>
+      <div class="gab-body">O <strong>SINAPI</strong> (Caixa Econômica Federal + IBGE) é o sistema de referência <strong>obrigatório</strong> para obras e serviços de engenharia financiados com recursos da União (Lei 12.309/2010 e LOA). O SICRO é do DNIT e se aplica a obras rodoviárias. A consulta ao SINAPI é mandatória, e o orçamento público deve demonstrar compatibilidade com os preços do sistema — cotações diretas sem referência ao SINAPI são irregulares.</div>
+    </div>
+
+    <div class="gab-item">
+      <div class="gab-head"><span class="gab-num">14</span><span class="gab-letra">→ C</span><span class="gab-topic">Específicos · BDI — Composição e vedações (Acórdão TCU 2622/2013)</span><span class="gab-pts">2,40 pt</span></div>
+      <div class="gab-body"><strong>I — CORRETA:</strong> o lucro deve estar no BDI, não nos custos diretos. <strong>II — INCORRETA:</strong> IRPJ e CSLL são tributos sobre o lucro da empresa (não do contrato específico) e são <strong>vedados</strong> no BDI pelo TCU. <strong>III — CORRETA:</strong> encargos sociais (INSS, FGTS, RAT, Sistema S) integram o custo da mão de obra nas composições unitárias, não o BDI. Portanto, corretas I e III.</div>
+    </div>
+
+    <div class="gab-item">
+      <div class="gab-head"><span class="gab-num">15</span><span class="gab-letra">→ B</span><span class="gab-topic">Específicos · PERT-CPM — Duração esperada</span><span class="gab-pts">2,40 pt</span></div>
+      <div class="gab-body">Fórmula PERT: D = (O + 4M + P) / 6 = (8 + 4×12 + 22) / 6 = (8 + 48 + 22) / 6 = <strong>78 / 6 = 13,0 dias</strong>. Atenção: a alternativa A apresenta 12 dias (apenas a estimativa mais provável M, sem aplicar a fórmula). A alternativa C (13,3) seria a média aritmética simples (8+12+22)/3 = 14 — também errada. A fórmula PERT pondera a estimativa mais provável com peso 4.</div>
+    </div>
+
+    <div class="gab-item">
+      <div class="gab-head"><span class="gab-num">16</span><span class="gab-letra">→ C</span><span class="gab-topic">Específicos · Curva ABC — Gestão de serviços e materiais</span><span class="gab-pts">2,40 pt</span></div>
+      <div class="gab-body">A Curva ABC aplica o Princípio de Pareto: itens do <strong>Grupo A</strong> (≈20% dos itens / ≈70-80% do custo) merecem controle rigoroso e sistemático. Itens do Grupo C (≈50% dos itens / ≈5-10% do custo) têm controle simplificado. A lógica é focar recursos de gestão onde o impacto financeiro é maior. Eliminar itens do Grupo C seria erro — todos os serviços devem ser executados; a Curva ABC disciplina a intensidade do controle, não a execução.</div>
+    </div>
+
+    <div class="gab-item">
+      <div class="gab-head"><span class="gab-num">17</span><span class="gab-letra">→ C</span><span class="gab-topic">Específicos · BIM — Tipos de interferência (clash detection)</span><span class="gab-pts">2,40 pt</span></div>
+      <div class="gab-body">Na terminologia BIM de clash detection: <strong>Clash hard</strong> = sobreposição física real entre dois elementos (ex.: tubo dentro de viga). <em>Clash soft</em> = violação de espaço operacional mínimo (ex.: tubo muito próximo de uma viga, mas sem sobreposição). <em>Clash 4D</em> = conflito no sequenciamento construtivo ao longo do tempo. O clash hard identificado durante a modelagem BIM é a forma mais valiosa de evitar interferências que só seriam descobertas no canteiro, gerando retrabalho.</div>
+    </div>
+
+    <div class="gab-item">
+      <div class="gab-head"><span class="gab-num">18</span><span class="gab-letra">→ D</span><span class="gab-topic">Específicos · SPT — Contagem de golpes (NBR 6484)</span><span class="gab-pts">2,40 pt</span></div>
+      <div class="gab-body">No SPT (NBR 6484), o amostrador penetra 45 cm em três segmentos de 15 cm. Os golpes do <strong>primeiro segmento de 15 cm</strong> são descartados (assentamento do amostrador). O N_SPT = soma dos golpes dos <strong>segundo e terceiro segmentos</strong> (de 15 a 45 cm = 30 cm finais). Por isso a alternativa D está correta ao dizer "os dois últimos segmentos, descartando o primeiro como assentamento".</div>
+    </div>
+
+    <div class="gab-item">
+      <div class="gab-head"><span class="gab-num">19</span><span class="gab-letra">→ C</span><span class="gab-topic">Específicos · Fundações — Escolha por perfil geotécnico (NBR 6122)</span><span class="gab-pts">2,40 pt</span></div>
+      <div class="gab-body">Com aterro heterogêneo (0-5m), argila mole (5-14m, N=1-3) e argila média (14-18m, N=8-12), não há capacidade de suporte adequada para fundação direta em 12 pavimentos. A solução técnica é <strong>estacas profundas</strong> que atravessem todas as camadas fracas e se apoiem (resistência de ponta) ou desenvolvam atrito lateral na areia compacta abaixo de 18m (N=25-40). Opções como estacas hélice contínua ou estacas raiz são adequadas dependendo do lençol freático.</div>
+    </div>
+
+    <div class="gab-item">
+      <div class="gab-head"><span class="gab-num">20</span><span class="gab-letra">→ C</span><span class="gab-topic">Específicos · Muros de contenção — Solo grampeado (soil nailing)</span><span class="gab-pts">2,40 pt</span></div>
+      <div class="gab-body">O <strong>solo grampeado (soil nailing)</strong> consiste na inserção de barras de aço <strong>passivas</strong> (sem protensão prévia) no maciço natural, conectadas a uma face de concreto projetado (shotcrete). As barras trabalham por atrito com o solo e por tração, estabilizando o talude ou escavação. Difere dos tirantes ativos (que são protendidos). É uma técnica econômica para contenções de médio porte em solos coesos.</div>
+    </div>
+
+    <div class="gab-item">
+      <div class="gab-head"><span class="gab-num">21</span><span class="gab-letra">→ D</span><span class="gab-topic">Específicos · NBR 6118 — Cobrimento CAA III (ambiente marinho)</span><span class="gab-pts">2,40 pt</span></div>
+      <div class="gab-body">NBR 6118:2023, Tabela 7.2: para <strong>Classe de Agressividade Ambiental III</strong> (forte — ambiente marinho, industrial): vigas e pilares = cobrimento nominal mínimo de <strong>40 mm</strong>; lajes = 35 mm; elementos em contato com o solo = 50 mm. Na CAA II (moderada/urbana): vigas = 30mm. Na CAA IV (muito forte): vigas = 50mm. Regiões costeiras com maresia intensa são sempre CAA III ou IV.</div>
+    </div>
+
+    <div class="gab-item">
+      <div class="gab-head"><span class="gab-num">22</span><span class="gab-letra">→ B</span><span class="gab-topic">Específicos · Estruturas — ELU vs ELS (NBR 6118)</span><span class="gab-pts">2,40 pt</span></div>
+      <div class="gab-body"><strong>ELU (Estado Limite Último)</strong> = risco de colapso, ruptura ou instabilidade: <em>I (esmagamento do concreto)</em> = ELU; <em>IV (flambagem)</em> = ELU. <strong>ELS (Estado Limite de Serviço)</strong> = comprometimento da funcionalidade sem colapso: <em>II (fissuração visível)</em> = ELS-CF; <em>III (flecha excessiva)</em> = ELS-DEF. Portanto, os casos ELU são apenas I e IV. Questões que confundem ELU com ELS são clássicas em concursos de engenharia.</div>
+    </div>
+
+    <div class="gab-item">
+      <div class="gab-head"><span class="gab-num">23</span><span class="gab-letra">→ C</span><span class="gab-topic">Específicos · Steel framing — Perfis formados a frio</span><span class="gab-pts">2,40 pt</span></div>
+      <div class="gab-body">O <strong>steel framing</strong> (ou light steel frame) utiliza <strong>perfis de aço galvanizado formados a frio (PFF)</strong>, de pequena espessura (tipicamente 0,80 a 1,25 mm), em perfis U enrijecido (Ue), U simples, omega e outros. O zinco da galvanização protege contra corrosão. Perfis W laminados a quente são para estruturas convencionais de médio e grande porte — muito mais pesados. A NBR 15253 regulamenta o uso de PFF em edificações.</div>
+    </div>
+
+    <div class="gab-item">
+      <div class="gab-head"><span class="gab-num">24</span><span class="gab-letra">→ D</span><span class="gab-topic">Específicos · Materiais — Cimento resistente a sulfatos</span><span class="gab-pts">2,40 pt</span></div>
+      <div class="gab-body"><strong>CP III</strong> (alto-forno, com 35-70% de escória) e <strong>CP IV</strong> (pozolânico, com 15-50% de pozolana) têm menor teor de C₃A (aluminato tricálcico), que é o composto do clínquer mais reativo com sulfatos (forma etringita secundária expansiva). Esses cimentos também produzem concretos mais densos e de menor permeabilidade, dificultando o ingresso de agentes agressivos. CP V-ARI tem alta resistência inicial, mas não é o mais adequado para ambientes com sulfatos.</div>
+    </div>
+
+    <div class="gab-item">
+      <div class="gab-head"><span class="gab-num">25</span><span class="gab-letra">→ C</span><span class="gab-topic">Específicos · Alvenaria estrutural — Graute (NBR 16868)</span><span class="gab-pts">2,40 pt</span></div>
+      <div class="gab-body">O <strong>graute</strong> é uma mistura fluida (concreto de baixa granulometria e alta fluidez) utilizada para preencher os furos dos blocos na alvenaria estrutural. Sua função é: (1) aumentar a resistência à compressão da parede; (2) ancorar as barras de aço vertical; (3) transferir esforços entre blocos e armaduras. Diferencia-se da argamassa de assentamento (que une os blocos nas juntas horizontais e verticais). É normalizado pela NBR 16868 (Alvenaria Estrutural).</div>
+    </div>
+
+    <div class="gab-item">
+      <div class="gab-head"><span class="gab-num">26</span><span class="gab-letra">→ C</span><span class="gab-topic">Específicos · Patologia — Reação álcali-sílica (RAS)</span><span class="gab-pts">2,40 pt</span></div>
+      <div class="gab-body">A <strong>Reação Álcali-Sílica (RAS)</strong> é caracterizada pela formação de gel higroscópico (que absorve água e expande) entre os álcalis do cimento e a sílica reativa dos agregados. A expansão interna causa fissuras aleatórias em padrão de <strong>mapa ou teia de aranha</strong>, com presença de gel esbranquiçado brilhante nas fissuras. A carbonatação causa despassivação; o bichamento é ninhos de concretagem; ataque por cloretos causa corrosão direta das armaduras.</div>
+    </div>
+
+    <div class="gab-item">
+      <div class="gab-head"><span class="gab-num">27</span><span class="gab-letra">→ B</span><span class="gab-topic">Específicos · NBR 15575 — VUP mínima por sistema</span><span class="gab-pts">2,40 pt</span></div>
+      <div class="gab-body">A sequência crescente de VUP mínima segundo a NBR 15575: <strong>Instalações elétricas (15 anos)</strong> &lt; <strong>Instalações hidrossanitárias (20-25 anos)</strong> ≈ Revestimentos de fachada (20 anos) &lt; <strong>Vedações verticais externas (40 anos)</strong> &lt; <strong>Estrutura (50 anos)</strong>. A alternativa A apresenta a ordem decrescente (errada), a B apresenta ordem crescente correta. Isso é perguntado com frequência: a estrutura tem a maior VUP exigida.</div>
+    </div>
+
+    <div class="gab-item">
+      <div class="gab-head"><span class="gab-num">28</span><span class="gab-letra">→ D</span><span class="gab-topic">Específicos · NBR 5626 — Dimensionamento de reservatórios</span><span class="gab-pts">2,40 pt</span></div>
+      <div class="gab-body">NBR 5626: Reservatório <strong>inferior (cisterna)</strong> = mínimo 3 dias de consumo = 3 × 12.000 = <strong>36.000 L</strong>. Reservatório <strong>superior</strong> = mínimo 1 dia de consumo = 1 × 12.000 = <strong>12.000 L</strong>. Portanto a resposta é D (36.000 L inferior / 12.000 L superior). A lógica: a cisterna maior garante autonomia em interrupções de fornecimento; o reservatório superior fornece pressão por gravidade.</div>
+    </div>
+
+    <div class="gab-item">
+      <div class="gab-head"><span class="gab-num">29</span><span class="gab-letra">→ D</span><span class="gab-topic">Específicos · Instalações — Sprinklers: NBR 10897</span><span class="gab-pts">2,40 pt</span></div>
+      <div class="gab-body">A <strong>NBR 10897</strong> regulamenta os sistemas fixos automáticos de extinção de incêndio por chuveiros (sprinklers). NBR 9077 = saídas de emergência; NBR 13714 = hidrantes e mangotinhos; NBR 10898 = iluminação de emergência; NBR 12693 = extintores portáteis. Para edificações com laboratórios contendo inflamáveis, os sprinklers são frequentemente obrigatórios pelas normas estaduais do Corpo de Bombeiros com base na NBR 10897.</div>
+    </div>
+
+    <div class="gab-item">
+      <div class="gab-head"><span class="gab-num">30</span><span class="gab-letra">→ D</span><span class="gab-topic">Específicos · Pavimentação — CBR e classificação do subleito</span><span class="gab-pts">2,40 pt</span></div>
+      <div class="gab-body">Classificação do subleito pelo CBR: CBR ≤ 2% = muito fraco (inadequado); CBR 2-5% = <strong>fraco</strong>; CBR 5-10% = regular; CBR 10-20% = bom; CBR > 20% = ótimo/excelente. Com CBR = 3%, o subleito é <strong>fraco</strong> (D), requerendo espessura maior de pavimento ou melhoria do subleito (estabilização com cal ou cimento, substituição de material). Não há necessidade de substituição completa como no CBR < 2%.</div>
+    </div>
+
+    <div class="gab-item">
+      <div class="gab-head"><span class="gab-num">31</span><span class="gab-letra">→ B</span><span class="gab-topic">Específicos · Drenagem — Fórmula Racional, cálculo de vazão</span><span class="gab-pts">2,40 pt</span></div>
+      <div class="gab-body">Q = C × i × A / 360 = 0,80 × 90 × 2 / 360 = 144 / 360 = <strong>0,40 m³/s</strong>. Detalhamento: C=0,80 (adimensional); i=90 mm/h; A=2 ha. A constante 360 converte para m³/s quando i está em mm/h e A em ha. Resultado: 0,40 m³/s. A Fórmula Racional é válida para bacias com até 2 km² (200 ha) e quando a duração da chuva é igual ao tempo de concentração da bacia.</div>
+    </div>
+
+    <div class="gab-item">
+      <div class="gab-head"><span class="gab-num">32</span><span class="gab-letra">→ B</span><span class="gab-topic">Específicos · CONAMA 307 — Classificação de resíduos da construção</span><span class="gab-pts">2,40 pt</span></div>
+      <div class="gab-body">CONAMA 307/2002: (A) <strong>concreto e blocos cerâmicos = Classe A</strong> (recicláveis como agregado); (B) <strong>tintas e solventes = Classe D</strong> (perigosos — tratamento especial); (C) <strong>metais (aço) = Classe B</strong> (recicláveis para outras destinações); (D) <strong>fibrocimento sem amianto = Classe C</strong> (sem tecnologia de reciclagem econômica viável — aterro de inertes). Atenção: fibrocimento COM amianto seria Classe D por ser material perigoso.</div>
+    </div>
+
+    <div class="gab-item">
+      <div class="gab-head"><span class="gab-num">33</span><span class="gab-letra">→ B</span><span class="gab-topic">Específicos · BIM — Decreto 10.306/2020</span><span class="gab-pts">2,40 pt</span></div>
+      <div class="gab-body">O <strong>Decreto 10.306/2020</strong> tornou obrigatório o uso do BIM em obras e serviços de engenharia da Administração Pública Federal, com implementação gradual (Fase 1 em 2021: projetos em BIM; Fase 2 em 2024: gestão e operação). Não há restrição de valor mínimo — a obrigatoriedade é para todas as obras federais nas fases definidas. O formato de interoperabilidade padrão é o IFC (aberto), não o DWG (proprietário Autodesk).</div>
+    </div>
+
+    <div class="gab-item">
+      <div class="gab-head"><span class="gab-num">34</span><span class="gab-letra">→ C</span><span class="gab-topic">Específicos · NBR 6122 — Fatores de segurança em fundações</span><span class="gab-pts">2,40 pt</span></div>
+      <div class="gab-body">O valor <strong>FS ≥ 1,5</strong> é o mínimo consolidado na prática geotécnica brasileira para verificação ao tombamento e deslizamento de muros e fundações. FS = 1,0 seria situação de equilíbrio sem margem de segurança (inadmissível em projeto). FS = 2,0 é exigido em situações críticas específicas (por exemplo, taludes com potencial de ruptura rápida). A NBR 6122 adota coeficientes parciais no método dos estados limites, mas o FS = 1,5 permanece como referência prática.</div>
+    </div>
+
+    <div class="gab-item">
+      <div class="gab-head"><span class="gab-num">35</span><span class="gab-letra">→ D</span><span class="gab-topic">Específicos · Orçamento — Preço de venda com BDI</span><span class="gab-pts">2,40 pt</span></div>
+      <div class="gab-body">Preço de venda = Custo Direto × (1 + BDI/100) = R$ 850.000 × 1,28 = <strong>R$ 1.088.000,00</strong>. Atenção ao cálculo: 850.000 × 0,28 = R$ 238.000 (valor do BDI). 850.000 + 238.000 = R$ 1.088.000. A alternativa C apresenta R$ 1.080.000 (erro de cálculo: 850.000 × 0,30 arredondado). O valor contratual é o que será licitado — inclui todos os custos indiretos e o lucro do contratado.</div>
+    </div>
+
+    <div class="gab-item">
+      <div class="gab-head"><span class="gab-num">36</span><span class="gab-letra">→ C</span><span class="gab-topic">Específicos · NBR 6118 — fcd e coeficientes de ponderação</span><span class="gab-pts">2,40 pt</span></div>
+      <div class="gab-body">fcd = fck / γc = 30 MPa / 1,4 = <strong>21,43 MPa</strong>. O coeficiente γc = 1,4 é aplicado ao concreto em combinações normais de carregamento. Para cargas de construção ou situações de projeto especiais, pode ser diferente. Para o aço CA-50: fyd = fyk / γs = 500 / 1,15 = 434,8 MPa. A distinção entre fck (característico) e fcd (de cálculo) é fundamental — usa-se sempre o fcd no dimensionamento das seções.</div>
+    </div>
+
+    <div class="gab-item">
+      <div class="gab-head"><span class="gab-num">37</span><span class="gab-letra">→ D</span><span class="gab-topic">Específicos · Lei 14.133/2021 — Obras de grande vulto e Matriz de Riscos</span><span class="gab-pts">2,40 pt</span></div>
+      <div class="gab-body">O Art. 6º, XXII, da Lei 14.133/2021 define obra de grande vulto como aquela cujo valor estimado seja superior a <strong>R$ 200 milhões</strong>. Para essas obras, a Matriz de Riscos é obrigatória (Art. 22). A Matriz distribui os riscos previsíveis entre Administração e contratado, e os riscos alocados ao contratado não geram direito a reequilíbrio contratual. Acima de R$ 200 milhões também é obrigatório o seguro-garantia.</div>
+    </div>
+
+    <div class="gab-item">
+      <div class="gab-head"><span class="gab-num">38</span><span class="gab-letra">→ B</span><span class="gab-topic">Específicos · NBR 8160 — Declividade mínima de ramais de esgoto</span><span class="gab-pts">2,40 pt</span></div>
+      <div class="gab-body">NBR 8160: ramais com DN ≤ 75 mm → declividade mínima de 2%. Ramais com DN ≥ 100 mm → declividade mínima de <strong>1%</strong>. A bacia sanitária padrão usa DN 100 mm, portanto a declividade mínima é 1%. Essa distinção é frequentemente cobrada. A declividade garante a autolimpeza da tubulação — velocidade suficiente para carregar sólidos sem deposição. A distância mínima do fecho hídrico (sifão) é 20 mm.</div>
+    </div>
+
+    <div class="gab-item">
+      <div class="gab-head"><span class="gab-num">39</span><span class="gab-letra">→ A</span><span class="gab-topic">Específicos · Normas ABNT — Associação norma × objeto</span><span class="gab-pts">2,40 pt</span></div>
+      <div class="gab-body">Associação correta: <strong>NBR 6118</strong> → (b) concreto armado e protendido; <strong>NBR 6122</strong> → (a) fundações; <strong>NBR 8800</strong> → (d) estruturas de aço e mistas; <strong>NBR 16868</strong> → (c) alvenaria estrutural. Portanto: 1-b, 2-a, 3-d, 4-c → alternativa <strong>A</strong>. Essas quatro normas são o núcleo estrutural do edital — memorize a relação entre número e objeto de cada uma.</div>
+    </div>
+
+    <div class="gab-item">
+      <div class="gab-head"><span class="gab-num">40</span><span class="gab-letra">→ C</span><span class="gab-topic">Específicos · Fiscalização integrada — Conduta do fiscal em irregularidade</span><span class="gab-pts">2,40 pt</span></div>
+      <div class="gab-body"><strong>I — CORRETA:</strong> registrar em diário de obras e comunicar ao gestor é a conduta correta do fiscal técnico. <strong>II — INCORRETA:</strong> o fiscal técnico não tem poder autônomo de paralisação unilateral sem comunicação ao gestor e à autoridade competente. <strong>III — CORRETA:</strong> uso de material fora de especificação é descumprimento contratual que pode ensejar sanções após due process. <strong>IV — INCORRETA:</strong> ignorar irregularidade, mesmo que o contratado alegue equivalência, é conduta inadequada do fiscal — exige verificação técnica formal. Corretas: I e III.</div>
+    </div>
+
+  </div><!-- /gabarito-inner -->
+</div><!-- /gabarito-section -->
+
+<footer>
+  Simulado Integrado Final · Etapa 4 · Concurso Público UFMA nº 035/2026<br>
+  Cargo: Engenheiro — Área: Civil · Banca: FSADU · Prova prevista: 26/04/2026 · Horário: 8h<br>
+  Conteúdo baseado estritamente no Anexo IV do Edital retificado em 04/03/2026<br>
+  Legislação e Normas: 10 questões (12,0 pts) + Conhecimentos Específicos: 30 questões (72,0 pts) = 84,0 pts (disciplinas do plano de estudos)
+</footer>
+</body>
+</html>

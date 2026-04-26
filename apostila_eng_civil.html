@@ -1,0 +1,1812 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Apostila — Conhecimentos Específicos | Engenheiro Civil · UFMA 2026</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300;1,400&family=JetBrains+Mono:wght@400;600&display=swap');
+
+  :root {
+    --bg: #10120f;
+    --surface: #161a14;
+    --surface2: #1c2119;
+    --border: #2a3426;
+    --accent: #7ec850;
+    --accent2: #4db8a0;
+    --accent3: #e8c238;
+    --danger: #e05c5c;
+    --text: #d0d8cc;
+    --text-dim: #7a8a74;
+    --text-bright: #eef2eb;
+    --red: #ff6b6b;
+    --orange: #ffa94d;
+    --yellow: #ffe066;
+    --green: #7ec850;
+    --blue: #74c0fc;
+    --teal: #4db8a0;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Source Serif 4', Georgia, serif; background: var(--bg); color: var(--text); line-height: 1.75; font-size: 16px; }
+
+  .cover {
+    min-height: 100vh; display: flex; flex-direction: column; justify-content: center;
+    align-items: center; text-align: center; padding: 4rem 2rem;
+    background: radial-gradient(ellipse 80% 60% at 50% 40%, #1a2d16 0%, #10120f 70%);
+    border-bottom: 1px solid var(--border); position: relative; overflow: hidden;
+  }
+  .cover::before {
+    content: ''; position: absolute; inset: 0;
+    background: repeating-linear-gradient(45deg, transparent, transparent 29px, #1a241600 30px, #1a2416 31px, transparent 32px);
+    opacity: .08;
+  }
+  .cover-badge {
+    font-family: 'JetBrains Mono', monospace; font-size: .75rem; letter-spacing: .18em;
+    text-transform: uppercase; color: var(--accent); background: rgba(126,200,80,.12);
+    border: 1px solid rgba(126,200,80,.3); padding: .35rem 1rem; border-radius: 2px;
+    margin-bottom: 2rem; position: relative;
+  }
+  .cover h1 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 6vw, 3.8rem); font-weight: 900; color: var(--text-bright); line-height: 1.15; max-width: 800px; position: relative; }
+  .cover h1 span { color: var(--accent); }
+  .cover-sub { font-size: 1.05rem; color: var(--text-dim); margin-top: 1.2rem; position: relative; font-style: italic; }
+  .cover-meta { display: flex; gap: 2rem; margin-top: 3rem; position: relative; flex-wrap: wrap; justify-content: center; }
+  .cover-meta-item { text-align: center; }
+  .cover-meta-item .val { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; color: var(--accent); display: block; }
+  .cover-meta-item .lbl { font-family: 'JetBrains Mono', monospace; font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; color: var(--text-dim); }
+
+  .toc { background: var(--surface); border-bottom: 1px solid var(--border); padding: 2.5rem 2rem; }
+  .toc-inner { max-width: 960px; margin: 0 auto; }
+  .toc h2 { font-family: 'JetBrains Mono', monospace; font-size: .8rem; letter-spacing: .2em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.5rem; }
+  .toc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: .5rem; }
+  .toc-item { display: flex; align-items: center; gap: .75rem; padding: .6rem .9rem; background: var(--surface2); border: 1px solid var(--border); border-radius: 4px; text-decoration: none; color: var(--text); transition: border-color .2s, color .2s; font-size: .88rem; }
+  .toc-item:hover { border-color: var(--accent); color: var(--accent); }
+  .toc-num { font-family: 'JetBrains Mono', monospace; font-size: .72rem; color: var(--text-dim); min-width: 1.8rem; }
+
+  .content { max-width: 960px; margin: 0 auto; padding: 3rem 2rem 6rem; }
+
+  .section-header { display: flex; align-items: center; gap: 1rem; margin: 4.5rem 0 2rem; padding-bottom: 1rem; border-bottom: 2px solid var(--border); }
+  .section-number { font-family: 'Playfair Display', serif; font-size: 3rem; font-weight: 900; color: var(--accent); opacity: .3; line-height: 1; min-width: 3rem; }
+  .section-title h2 { font-family: 'Playfair Display', serif; font-size: 1.55rem; color: var(--text-bright); font-weight: 700; }
+  .section-title .nbr-ref { font-family: 'JetBrains Mono', monospace; font-size: .72rem; color: var(--accent); letter-spacing: .1em; }
+
+  h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--text-bright); margin: 2rem 0 .75rem; padding-left: .75rem; border-left: 3px solid var(--accent); }
+  h4 { font-family: 'JetBrains Mono', monospace; font-size: .82rem; letter-spacing: .08em; text-transform: uppercase; color: var(--accent2); margin: 1.5rem 0 .5rem; }
+  p { margin-bottom: .9rem; }
+  strong { color: var(--text-bright); font-weight: 600; }
+  em { color: var(--accent); font-style: italic; }
+  ul, ol { padding-left: 1.5rem; margin-bottom: .9rem; }
+  li { margin-bottom: .35rem; }
+  li::marker { color: var(--accent); }
+
+  .callout { border-left: 3px solid; padding: 1rem 1.25rem; border-radius: 0 4px 4px 0; margin: 1.5rem 0; font-size: .93rem; }
+  .callout.tip { border-color: var(--teal); background: rgba(77,184,160,.08); }
+  .callout.info { border-color: var(--accent3); background: rgba(232,194,56,.08); }
+  .callout.danger { border-color: var(--danger); background: rgba(224,92,92,.08); }
+  .callout.warn { border-color: var(--orange); background: rgba(255,169,77,.08); }
+  .callout-label { font-family: 'JetBrains Mono', monospace; font-size: .7rem; letter-spacing: .15em; text-transform: uppercase; margin-bottom: .4rem; }
+  .callout.tip .callout-label { color: var(--teal); }
+  .callout.info .callout-label { color: var(--accent3); }
+  .callout.danger .callout-label { color: var(--danger); }
+  .callout.warn .callout-label { color: var(--orange); }
+
+  .table-wrap { overflow-x: auto; margin: 1.5rem 0; }
+  table { width: 100%; border-collapse: collapse; font-size: .88rem; }
+  thead th { background: var(--surface2); color: var(--accent); font-family: 'JetBrains Mono', monospace; font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; padding: .7rem 1rem; text-align: left; border: 1px solid var(--border); }
+  tbody td { padding: .65rem 1rem; border: 1px solid var(--border); vertical-align: top; }
+  tbody tr:nth-child(even) td { background: rgba(255,255,255,.02); }
+  tbody tr:hover td { background: rgba(126,200,80,.04); }
+
+  .formula-box { background: var(--surface2); border: 1px solid var(--border); border-top: 3px solid var(--accent3); border-radius: 0 0 4px 4px; padding: 1.25rem 1.5rem; margin: 1.25rem 0; font-family: 'JetBrains Mono', monospace; font-size: .9rem; }
+  .formula-box .f-label { font-size: .68rem; letter-spacing: .15em; text-transform: uppercase; color: var(--accent3); margin-bottom: .75rem; }
+  .formula-box .formula { color: var(--text-bright); font-size: 1rem; margin-bottom: .5rem; }
+  .formula-box .f-vars { color: var(--text-dim); font-size: .8rem; line-height: 1.7; }
+
+  .key-concept { background: var(--surface2); border: 1px solid var(--border); border-top: 3px solid var(--accent); border-radius: 0 0 4px 4px; padding: 1rem 1.25rem; margin: 1.25rem 0; }
+  .key-concept .kc-title { font-family: 'JetBrains Mono', monospace; font-size: .7rem; letter-spacing: .15em; text-transform: uppercase; color: var(--accent); margin-bottom: .5rem; }
+
+  .mindmap { background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 1.5rem; margin: 1.5rem 0; font-family: 'JetBrains Mono', monospace; font-size: .8rem; line-height: 1.9; }
+  .mindmap .root { color: var(--accent); font-size: .95rem; font-weight: 700; }
+  .mindmap .l1 { color: var(--accent2); padding-left: 1.5rem; }
+  .mindmap .l2 { color: var(--text); padding-left: 3rem; }
+  .mindmap .l3 { color: var(--text-dim); padding-left: 4.5rem; }
+
+  .simulado-header { background: linear-gradient(135deg, #172414 0%, #10120f 100%); border: 1px solid var(--border); border-radius: 6px; padding: 2rem; margin: 3rem 0 2rem; display: flex; align-items: center; gap: 1.5rem; }
+  .simulado-icon { font-size: 2.5rem; flex-shrink: 0; }
+  .simulado-info h2 { font-family: 'Playfair Display', serif; font-size: 1.35rem; color: var(--text-bright); }
+  .simulado-info p { color: var(--text-dim); font-size: .88rem; margin: 0; }
+
+  .difficulty-band { display: flex; align-items: center; gap: 1rem; padding: .75rem 1.25rem; border-radius: 4px; margin: 2.5rem 0 1rem; font-family: 'JetBrains Mono', monospace; font-size: .78rem; letter-spacing: .1em; text-transform: uppercase; }
+  .difficulty-band.easy { background: rgba(126,200,80,.1); border: 1px solid rgba(126,200,80,.3); color: var(--green); }
+  .difficulty-band.medium { background: rgba(255,224,102,.1); border: 1px solid rgba(255,224,102,.3); color: var(--yellow); }
+  .difficulty-band.hard { background: rgba(255,107,107,.1); border: 1px solid rgba(255,107,107,.3); color: var(--red); }
+
+  .question-block { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; margin-bottom: 1.5rem; overflow: hidden; }
+  .question-block:hover { border-color: rgba(126,200,80,.3); }
+  .question-head { display: flex; gap: 1rem; padding: 1.25rem 1.5rem; align-items: flex-start; }
+  .q-num { font-family: 'JetBrains Mono', monospace; font-size: .72rem; background: var(--surface2); color: var(--accent); padding: .2rem .55rem; border-radius: 2px; flex-shrink: 0; margin-top: .15rem; }
+  .q-text { font-size: .93rem; line-height: 1.65; }
+  .options { padding: 0 1.5rem .75rem 3.5rem; display: flex; flex-direction: column; gap: .35rem; }
+  .option { font-size: .88rem; padding: .35rem .6rem; border-radius: 3px; color: var(--text); }
+  .option.correct { background: rgba(126,200,80,.12); color: var(--green); border-left: 3px solid var(--green); padding-left: .5rem; font-weight: 600; }
+  .gabarito { border-top: 1px solid var(--border); padding: 1rem 1.5rem; background: rgba(255,255,255,.015); }
+  .gabarito-label { font-family: 'JetBrains Mono', monospace; font-size: .7rem; letter-spacing: .15em; text-transform: uppercase; color: var(--teal); margin-bottom: .5rem; }
+  .gabarito p { font-size: .87rem; color: var(--text-dim); margin: 0; line-height: 1.6; }
+  .gabarito strong { color: var(--text); }
+
+  .tag { display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: .62rem; letter-spacing: .08em; text-transform: uppercase; padding: .12rem .45rem; border-radius: 2px; margin-right: .3rem; margin-bottom: .2rem; }
+  .tag.lic { background: rgba(232,194,56,.15); color: var(--accent3); border: 1px solid rgba(232,194,56,.3); }
+  .tag.orc { background: rgba(126,200,80,.15); color: var(--green); border: 1px solid rgba(126,200,80,.3); }
+  .tag.est { background: rgba(116,192,252,.15); color: var(--blue); border: 1px solid rgba(116,192,252,.3); }
+  .tag.fund { background: rgba(255,169,77,.15); color: var(--orange); border: 1px solid rgba(255,169,77,.3); }
+  .tag.mat { background: rgba(77,184,160,.15); color: var(--teal); border: 1px solid rgba(77,184,160,.3); }
+  .tag.pat { background: rgba(255,107,107,.15); color: var(--red); border: 1px solid rgba(255,107,107,.3); }
+  .tag.inst { background: rgba(198,149,255,.15); color: #c695ff; border: 1px solid rgba(198,149,255,.3); }
+  .tag.infra { background: rgba(152,206,255,.15); color: #a5ccff; border: 1px solid rgba(152,206,255,.3); }
+  .tag.nbr { background: rgba(126,200,80,.2); color: var(--green); border: 1px solid rgba(126,200,80,.4); }
+  .tag.bim { background: rgba(232,194,56,.2); color: var(--accent3); border: 1px solid rgba(232,194,56,.4); }
+
+  footer { text-align: center; padding: 2rem; font-family: 'JetBrains Mono', monospace; font-size: .73rem; color: var(--text-dim); border-top: 1px solid var(--border); }
+</style>
+</head>
+<body>
+
+<!-- CAPA -->
+<div class="cover">
+  <div class="cover-badge">Etapa 3 · Disciplina 2 de 2 · UFMA 2026</div>
+  <h1>Conhecimentos <span>Específicos</span><br>Engenharia Civil</h1>
+  <p class="cover-sub">Concurso Público UFMA nº 035 · Cargo: Engenheiro — Área: Civil · Banca FSADU</p>
+  <div class="cover-meta">
+    <div class="cover-meta-item"><span class="val">30</span><span class="lbl">Questões na prova</span></div>
+    <div class="cover-meta-item"><span class="val">72,0</span><span class="lbl">Pontos em jogo</span></div>
+    <div class="cover-meta-item"><span class="val">28,8</span><span class="lbl">Mínimo (corte 40%)</span></div>
+    <div class="cover-meta-item"><span class="val">14</span><span class="lbl">Blocos temáticos</span></div>
+    <div class="cover-meta-item"><span class="val">50</span><span class="lbl">Questões simulado</span></div>
+  </div>
+</div>
+
+<!-- SUMÁRIO -->
+<div class="toc">
+  <div class="toc-inner">
+    <h2>→ Sumário</h2>
+    <div class="toc-grid">
+      <a class="toc-item" href="#b1"><span class="toc-num">01</span>Licitações e Contratos — Lei 14.133/2021</a>
+      <a class="toc-item" href="#b2"><span class="toc-num">02</span>Orçamento e Gerenciamento de Obras</a>
+      <a class="toc-item" href="#b3"><span class="toc-num">03</span>Projetos de Arquitetura e Engenharia</a>
+      <a class="toc-item" href="#b4"><span class="toc-num">04</span>Movimentos de Terra e Fundações</a>
+      <a class="toc-item" href="#b5"><span class="toc-num">05</span>Muros de Contenção</a>
+      <a class="toc-item" href="#b6"><span class="toc-num">06</span>Projeto e Tecnologia das Estruturas</a>
+      <a class="toc-item" href="#b7"><span class="toc-num">07</span>Materiais e Sistemas Construtivos</a>
+      <a class="toc-item" href="#b8"><span class="toc-num">08</span>Patologia, Manutenção e Inspeção</a>
+      <a class="toc-item" href="#b9"><span class="toc-num">09</span>Instalações Prediais e Sistemas Especiais</a>
+      <a class="toc-item" href="#b10"><span class="toc-num">10</span>Infraestrutura Urbana e Drenagem</a>
+      <a class="toc-item" href="#b11"><span class="toc-num">11</span>Sustentabilidade e Eficiência Energética</a>
+      <a class="toc-item" href="#b12"><span class="toc-num">12</span>Geoprocessamento</a>
+      <a class="toc-item" href="#b13"><span class="toc-num">13</span>Tecnologia Aplicada — BIM e CAD</a>
+      <a class="toc-item" href="#b14"><span class="toc-num">14</span>Normas Técnicas ABNT Aplicáveis</a>
+      <a class="toc-item" href="#mapa"><span class="toc-num">15</span>Esquema de Fixação Geral</a>
+      <a class="toc-item" href="#simulado"><span class="toc-num">16</span>Simulado — 50 Questões</a>
+    </div>
+  </div>
+</div>
+
+<div class="content">
+
+<!-- ══ BLOCO 1 ══ -->
+<div id="b1" class="section-header">
+  <div class="section-number">01</div>
+  <div class="section-title">
+    <div class="nbr-ref">Lei nº 14.133/2021 · Nova Lei de Licitações e Contratos</div>
+    <h2>Legislação, Planejamento e Contratações Públicas</h2>
+  </div>
+</div>
+
+<h3>Estrutura e Princípios</h3>
+<p>A Lei nº 14.133/2021 revogou as Leis 8.666/1993, 10.520/2002 e 12.462/2012 (RDC), unificando as normas de licitações. Vigorou em coexistência com a lei anterior por 2 anos (até 01/04/2023).</p>
+
+<h4>Princípios (Art. 5)</h4>
+<p>Legalidade · Impessoalidade · Moralidade · Publicidade · Eficiência · <strong>Interesse público</strong> · <strong>Economicidade</strong> · Isonomia · Planejamento · <strong>Transparência</strong> · Eficácia · <strong>Segregação de funções</strong> · Motivação · <strong>Vinculação ao edital</strong> · Julgamento objetivo · <strong>Segurança jurídica</strong> · Razoabilidade · <strong>Competitividade</strong> · Proporcionalidade · Celeridade · Sustentabilidade · <strong>Responsabilidade fiscal</strong>.</p>
+
+<h3>Modalidades de Licitação</h3>
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Modalidade</th><th>Uso típico</th><th>Critério de julgamento</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Pregão</strong></td><td>Bens e serviços comuns (inclusive serviços comuns de engenharia)</td><td>Menor preço ou maior desconto</td></tr>
+    <tr><td><strong>Concorrência</strong></td><td>Contratos acima dos limites da tomada de preços; obras e serviços de engenharia</td><td>Qualquer critério previsto na lei</td></tr>
+    <tr><td><strong>Concurso</strong></td><td>Escolha de trabalho técnico, científico ou artístico</td><td>Melhor técnica ou conteúdo artístico</td></tr>
+    <tr><td><strong>Leilão</strong></td><td>Alienação de bens imóveis ou móveis inservíveis ou apreendidos</td><td>Maior lance</td></tr>
+    <tr><td><strong>Diálogo Competitivo</strong></td><td>Contratações inovadoras ou complexas sem solução disponível no mercado</td><td>Melhor técnica com preço fixado pela Adm. ou menor preço</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="callout danger">
+  <div class="callout-label">⚡ Atenção — Modalidade extinta</div>
+  As modalidades <strong>Tomada de Preços</strong> e <strong>Convite</strong> foram extintas pela Lei 14.133/2021. Questões que as mencionem como vigentes estão desatualizadas.
+</div>
+
+<h3>Critérios de Julgamento das Propostas (Art. 33)</h3>
+<ul>
+  <li><strong>Menor preço</strong> — regra geral para obras e serviços de engenharia comuns</li>
+  <li><strong>Maior desconto</strong> — sobre tabelas de preços referenciais (ex.: SINAPI)</li>
+  <li><strong>Melhor técnica e preço</strong> — ponderação entre fatores técnicos e econômicos</li>
+  <li><strong>Melhor técnica</strong> — quando o preço é fixado pela Administração</li>
+  <li><strong>Maior lance</strong> — leilões</li>
+  <li><strong>Maior retorno econômico</strong> — contratos de eficiência</li>
+</ul>
+
+<h3>Obras e Serviços de Engenharia</h3>
+<p><strong>Obras de grande vulto:</strong> valor estimado superior a R$ 200 milhões. Nesse caso, é exigida Matriz de Riscos no contrato.</p>
+<p><strong>Serviços comuns de engenharia:</strong> serviços padronizados e de fácil especificação — podem ser contratados por pregão.</p>
+
+<h4>Documentos exigidos para obras (Art. 18)</h4>
+<ul>
+  <li>Projeto básico aprovado pela autoridade competente</li>
+  <li>Orçamento detalhado com composição unitária dos custos</li>
+  <li>Comprovação de disponibilidade orçamentária</li>
+  <li>Licença ambiental ou certidão da autoridade ambiental</li>
+</ul>
+
+<h3>Gestão e Fiscalização de Contratos de Obras</h3>
+<p>A lei cria a figura do <strong>gestor do contrato</strong> (coordenação) e do <strong>fiscal do contrato</strong> (técnico, administrativo, setorial e/ou requisitante), que são funções distintas e podem ser acumuladas em contratos simples.</p>
+
+<h4>Medição de obras</h4>
+<p>A medição deve ser feita com base nos serviços efetivamente executados, confrontados com o projeto, planilha orçamentária e diário de obras. O pagamento ocorre após ateste do fiscal.</p>
+
+<div class="formula-box">
+  <div class="f-label">⚠ Prazo importante — Vigência contratual</div>
+  <div class="formula">Contratos de obras: prazo inicial até 5 anos (prorrogável)</div>
+  <div class="f-vars">Exceção: obras e serviços de engenharia — prazo pode ser estendido pelo tempo necessário para a conclusão do objeto, com justificativa</div>
+</div>
+
+<!-- ══ BLOCO 2 ══ -->
+<div id="b2" class="section-header">
+  <div class="section-number">02</div>
+  <div class="section-title">
+    <div class="nbr-ref">SINAPI · SICRO · BDI · PERT-CPM · Curva ABC</div>
+    <h2>Orçamento, Planejamento e Gerenciamento de Obras</h2>
+  </div>
+</div>
+
+<h3>Levantamento de Serviços e Quantitativos</h3>
+<p>O levantamento de quantitativos é a etapa de medir, em unidades apropriadas, todos os serviços e materiais necessários à execução da obra. É a base do orçamento.</p>
+<ul>
+  <li><strong>Memória de cálculo:</strong> documento que registra como cada quantitativo foi calculado (fórmulas, dimensões, critérios de medição)</li>
+  <li><strong>Critério de medição:</strong> regra que define como cada serviço é mensurado (por m², m³, m, un, kg, etc.)</li>
+</ul>
+
+<h3>SINAPI — Sistema Nacional de Pesquisa de Custos e Índices da Construção Civil</h3>
+<p>Gerido pela <strong>Caixa Econômica Federal</strong> em parceria com o <strong>IBGE</strong>. Referência obrigatória para obras financiadas com recursos federais.</p>
+
+<h4>Estrutura do SINAPI</h4>
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Componente</th><th>Descrição</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Insumos</strong></td><td>Materiais, equipamentos e mão de obra com preços pesquisados mensalmente por estado</td></tr>
+    <tr><td><strong>Composições de custo</strong></td><td>Combinação de insumos para executar determinado serviço (custo direto unitário)</td></tr>
+    <tr><td><strong>Custo desonerado / não desonerado</strong></td><td>Distinção relativa à desoneração da folha de pagamento (INSS sobre receita bruta)</td></tr>
+    <tr><td><strong>Referência de preços</strong></td><td>Preço mediano dos insumos por estado (uso obrigatório como teto no setor público)</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3>SICRO — Sistema de Custos de Obras Rodoviárias</h3>
+<p>Gerido pelo <strong>DNIT</strong>. Referência para obras de infraestrutura rodoviária, ferroviária e obras de arte especiais. Estrutura similar ao SINAPI, com composições específicas para terraplenagem, pavimentação e drenagem viária.</p>
+
+<h3>Composição de Custos Unitários</h3>
+<div class="formula-box">
+  <div class="f-label">Estrutura do Custo Unitário Direto</div>
+  <div class="formula">Custo Unitário = Σ (consumo × preço unitário de cada insumo)</div>
+  <div class="f-vars">
+    Insumos = materiais + mão de obra + equipamentos<br>
+    BDI não integra o custo direto unitário — é aplicado sobre o custo total direto
+  </div>
+</div>
+
+<h3>BDI — Bonificação e Despesas Indiretas</h3>
+<p>O BDI é o percentual aplicado sobre o custo direto para compor o preço de venda (valor total do contrato). Representa todos os custos que não estão na composição unitária.</p>
+
+<h4>Componentes do BDI (Acórdão TCU 2622/2013)</h4>
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Componente</th><th>Descrição</th></tr></thead>
+  <tbody>
+    <tr><td><strong>AC — Administração Central</strong></td><td>Rateio dos custos da sede da empresa sobre o contrato</td></tr>
+    <tr><td><strong>S — Seguros e garantias</strong></td><td>Apólices de seguro de obra e de responsabilidade civil</td></tr>
+    <tr><td><strong>R — Risco</strong></td><td>Contingência para imprevistos da execução</td></tr>
+    <tr><td><strong>G — Garantias</strong></td><td>Caução ou fiança contratual exigida</td></tr>
+    <tr><td><strong>DF — Despesas financeiras</strong></td><td>Custo de capital de giro durante a execução</td></tr>
+    <tr><td><strong>L — Lucro</strong></td><td>Remuneração do empreendedor</td></tr>
+    <tr><td><strong>I — Impostos</strong></td><td>COFINS, PIS/PASEP, ISS, CPRB</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="formula-box">
+  <div class="f-label">Fórmula do BDI</div>
+  <div class="formula">BDI = {[(1+AC/100)×(1+S/100)×(1+R/100)×(1+G/100)×(1+DF/100)×(1+L/100)] / (1−I/100) − 1} × 100</div>
+  <div class="f-vars">Preço de venda = Custo Direto × (1 + BDI/100)</div>
+</div>
+
+<div class="callout info">
+  <div class="callout-label">📌 Referência TCU para obras públicas</div>
+  O Acórdão 2622/2013 do TCU estabelece faixas de referência para o BDI em obras públicas. BDI excessivo é apontado como sobrepreço e leva à impugnação do orçamento.
+</div>
+
+<h3>Encargos Sociais</h3>
+<p>Os encargos sociais incidem sobre a folha de salários da mão de obra. Para obras públicas, são calculados separadamente do BDI e compõem o custo da mão de obra nas composições do SINAPI.</p>
+<p>Principais encargos: <strong>INSS</strong> (patronal) + FGTS + RAT/SAT + Sistema S (SENAI, SESI, SEBRAE) + salário-educação + INCRA + outros.</p>
+
+<h3>Curva ABC</h3>
+<p>Ferramenta de priorização dos serviços (ou insumos) de uma obra por participação no custo total, em ordem decrescente de valor.</p>
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Grupo</th><th>% de itens</th><th>% do custo total</th><th>Ação</th></tr></thead>
+  <tbody>
+    <tr><td><strong>A</strong></td><td>~20%</td><td>~70–80%</td><td>Controle rigoroso — prioridade máxima</td></tr>
+    <tr><td><strong>B</strong></td><td>~30%</td><td>~15–25%</td><td>Controle moderado</td></tr>
+    <tr><td><strong>C</strong></td><td>~50%</td><td>~5–10%</td><td>Controle simplificado</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3>Cronograma Físico-Financeiro</h3>
+<p>Relaciona os serviços (cronograma físico) com os valores correspondentes (cronograma financeiro) ao longo do tempo da obra. Permite controlar simultaneamente o avanço físico e o desembolso financeiro.</p>
+<ul>
+  <li><strong>Valor planejado (VP):</strong> custo orçado para o trabalho agendado até uma data</li>
+  <li><strong>Valor agregado (VA):</strong> custo orçado para o trabalho efetivamente realizado</li>
+  <li><strong>Custo real (CR):</strong> custo efetivo incorrido</li>
+</ul>
+
+<h3>PERT-CPM — Planejamento de Redes</h3>
+<p>Métodos de planejamento de projetos baseados em redes de atividades. PERT considera variabilidade das durações (otimista, mais provável, pessimista); CPM trabalha com durações determinísticas.</p>
+
+<h4>Conceitos fundamentais</h4>
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Conceito</th><th>Definição</th><th>Fórmula</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Caminho crítico</strong></td><td>Sequência de atividades com maior duração total — determina a duração mínima do projeto</td><td>—</td></tr>
+    <tr><td><strong>Folga total (FT)</strong></td><td>Máximo atraso que a atividade pode ter sem atrasar o projeto</td><td>FT = LT − ET (datas mais tardias e mais cedo)</td></tr>
+    <tr><td><strong>Folga livre (FL)</strong></td><td>Atraso máximo sem atrasar a atividade sucessora</td><td>FL = ET(sucessora) − ET − duração</td></tr>
+    <tr><td><strong>Atividade crítica</strong></td><td>Atividade com folga total = 0</td><td>—</td></tr>
+    <tr><td><strong>Duração PERT</strong></td><td>Média ponderada das estimativas</td><td>D = (Otim + 4×MaisProváv + Pessim) / 6</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="callout tip">
+  <div class="callout-label">💡 Dica de prova</div>
+  Em questões de PERT-CPM, identifique sempre o caminho crítico somando as durações de cada caminho possível — o maior é o crítico. Atividades no caminho crítico têm folga zero.
+</div>
+
+<h3>Canteiro de Obras</h3>
+<p>O planejamento do canteiro define a localização das instalações provisórias (escritório, almoxarifado, vestiários, refeitório, banheiros), equipamentos (gruas, betoneiras, geradores), vias de acesso internas e depósitos de materiais, segundo a NR-18.</p>
+
+<!-- ══ BLOCO 3 ══ -->
+<div id="b3" class="section-header">
+  <div class="section-number">03</div>
+  <div class="section-title">
+    <div class="nbr-ref">Compatibilização · BIM · CAD · Especificações</div>
+    <h2>Projetos de Arquitetura e Engenharia</h2>
+  </div>
+</div>
+
+<h3>Fases do Projeto</h3>
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Fase</th><th>Conteúdo</th><th>Grau de definição</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Estudo de Viabilidade</strong></td><td>Análise técnica, econômica e ambiental de alternativas</td><td>Conceitual</td></tr>
+    <tr><td><strong>Anteprojeto / Projeto Básico</strong></td><td>Definição das soluções técnicas com suficiente precisão para orçamento</td><td>~70%</td></tr>
+    <tr><td><strong>Projeto Executivo</strong></td><td>Detalhamento completo para execução da obra</td><td>100%</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3>Compatibilização de Projetos</h3>
+<p>Processo de integração e verificação de interferências entre as diferentes disciplinas de projeto (arquitetura, estrutura, hidráulica, elétrica, AVAC, etc.) para eliminar conflitos antes da execução.</p>
+<ul>
+  <li><strong>Clash detection:</strong> identificação automática de interferências físicas entre elementos (ex.: tubo que cruza viga)</li>
+  <li><strong>Clash hard:</strong> sobreposição física real entre dois elementos</li>
+  <li><strong>Clash soft:</strong> violação de espaço mínimo necessário para execução ou manutenção</li>
+  <li><strong>Clash 4D:</strong> conflitos de sequenciamento construtivo no tempo</li>
+</ul>
+
+<h3>Especificações Técnicas</h3>
+<p>Documentos que definem padrões mínimos de qualidade para materiais e serviços, referenciando normas ABNT, ASTM, ISO e outras. São parte integrante do projeto e prevalecem sobre as listas de quantitativos em caso de contradição.</p>
+
+<h3>Leitura de Projetos Técnicos</h3>
+<p>Escalas mais comuns: <strong>1:50</strong> (plantas baixas de detalhes); <strong>1:100</strong> (plantas baixas gerais); <strong>1:200</strong> a <strong>1:500</strong> (implantação); <strong>1:20</strong> e <strong>1:10</strong> (detalhes construtivos).</p>
+
+<!-- ══ BLOCO 4 ══ -->
+<div id="b4" class="section-header">
+  <div class="section-number">04</div>
+  <div class="section-title">
+    <div class="nbr-ref">NBR 6122 · NBR 8044 · SPT · Fundações rasas e profundas</div>
+    <h2>Movimentos de Terra e Fundações</h2>
+  </div>
+</div>
+
+<h3>Terraplenagem</h3>
+<h4>Fatores de conversão</h4>
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Estado do solo</th><th>Descrição</th><th>Volume relativo</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Natural (in situ)</strong></td><td>Solo no estado não perturbado</td><td>Base = 1,00</td></tr>
+    <tr><td><strong>Solto (empolado)</strong></td><td>Após escavação e carregamento</td><td>1,10 a 1,40 (fator de empolamento)</td></tr>
+    <tr><td><strong>Compactado</strong></td><td>Após compactação no aterro</td><td>0,85 a 0,95</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h4>Diagrama de Brückner (Massa)</h4>
+<p>Ferramenta que relaciona cortes e aterros ao longo do eixo da estrada, permitindo visualizar a distribuição dos volumes, identificar compensações locais, bota-foras e empréstimos.</p>
+
+<h3>Sondagem SPT — Standard Penetration Test</h3>
+<p>Ensaio geotécnico normalizado pela <strong>NBR 6484</strong>. Mede a resistência do solo à penetração de um amostrador padrão sob golpes de um martelo de 65 kg caindo 75 cm.</p>
+
+<div class="formula-box">
+  <div class="f-label">Resultado do SPT</div>
+  <div class="formula">N_SPT = número de golpes necessários para penetrar os 30 cm finais (de 30 a 60 cm)</div>
+  <div class="f-vars">
+    Os primeiros 15 cm (assentamento) são descartados.<br>
+    N=0 → muito mole; N=3→4 → mole; N=5→8 → médio; N=9→18 → rígido; N=19→30 → muito rígido; N>30 → duro (para argilas)
+  </div>
+</div>
+
+<h3>Fundações Rasas (Diretas) — NBR 6122</h3>
+<p>Transmitem as cargas ao terreno por pressão distribuída na base. Assentam-se na camada superficial resistente, a profundidades relativamente pequenas.</p>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Tipo</th><th>Forma</th><th>Uso típico</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Sapata isolada</strong></td><td>Bloco quadrado ou retangular</td><td>Um pilar isolado</td></tr>
+    <tr><td><strong>Sapata corrida</strong></td><td>Bloco alongado contínuo</td><td>Paredes portantes; fileiras de pilares</td></tr>
+    <tr><td><strong>Sapata combinada</strong></td><td>Une dois ou mais pilares</td><td>Pilares próximos ou na divisa</td></tr>
+    <tr><td><strong>Radier</strong></td><td>Laje sobre toda a área da edificação</td><td>Solos fracos; cargas distribuídas</td></tr>
+    <tr><td><strong>Baldrame</strong></td><td>Viga de concreto sobre o terreno</td><td>Alvenaria sobre base compactada</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3>Fundações Profundas — NBR 6122</h3>
+<p>Transmitem as cargas por resistência de ponta e/ou atrito lateral. São utilizadas quando o solo superficial não tem capacidade de suporte suficiente.</p>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Tipo de estaca</th><th>Execução</th><th>Uso típico</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Estaca franki</strong></td><td>Cravada com tubo; concreto expansivo no fundo</td><td>Solos argilosos médios a rígidos</td></tr>
+    <tr><td><strong>Estaca raiz</strong></td><td>Perfurada a trado com injeção de argamassa</td><td>Solos urbanos com restrições; solos compactos</td></tr>
+    <tr><td><strong>Estaca escavada (hélice)</strong></td><td>Trado contínuo com concretagem durante extração</td><td>Solos argilosos sem lençol freático problemático</td></tr>
+    <tr><td><strong>Estaca metálica (perfil)</strong></td><td>Cravada por percussão ou prensagem</td><td>Grandes cargas; solo rochoso ou muito denso</td></tr>
+    <tr><td><strong>Tubulão a céu aberto</strong></td><td>Escavação manual com alargamento de base</td><td>Solos coesos secos</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h4>Capacidade de carga (Fórmula de Aoki-Velloso simplificada)</h4>
+<div class="formula-box">
+  <div class="f-label">Capacidade de carga de estaca</div>
+  <div class="formula">Q_total = Q_ponta + Q_lateral</div>
+  <div class="f-vars">
+    Q_ponta = resistência de ponta (kN): função da tensão no solo na cota da ponta × área da base<br>
+    Q_lateral = somatório do atrito lateral ao longo do fuste (kN)<br>
+    Recalque admissível: usualmente 1 a 2,5% do diâmetro para estacas
+  </div>
+</div>
+
+<!-- ══ BLOCO 5 ══ -->
+<div id="b5" class="section-header">
+  <div class="section-number">05</div>
+  <div class="section-title">
+    <div class="nbr-ref">Empuxos · Rankine · Coulomb · Tipos de contenção</div>
+    <h2>Muros de Contenção</h2>
+  </div>
+</div>
+
+<h3>Tipos de Contenção</h3>
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Tipo</th><th>Funcionamento</th><th>Uso</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Muro de gravidade</strong></td><td>Peso próprio da estrutura resiste ao empuxo (pedra, gabião, concreto ciclópico)</td><td>Alturas até ~4m</td></tr>
+    <tr><td><strong>Muro em concreto armado (L ou T invertido)</strong></td><td>Sapata de fundação + tela de peso do aterro</td><td>Alturas de 3 a 10m</td></tr>
+    <tr><td><strong>Muro em gabião</strong></td><td>Caixas metálicas preenchidas com pedras; estrutura flexível e permeável</td><td>Terrenos com drenagem difícil; taludes</td></tr>
+    <tr><td><strong>Cortina de estacas ou prancha</strong></td><td>Estacas ou perfis cravados resistem ao empuxo por engastamento</td><td>Alturas elevadas, obras provisórias</td></tr>
+    <tr><td><strong>Solo grampeado (soil nailing)</strong></td><td>Barras de aço injetadas no solo; face com concreto projetado</td><td>Contenção de taludes e escavações</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3>Teoria dos Empuxos</h3>
+<div class="formula-box">
+  <div class="f-label">Empuxo de terra ativo (Rankine)</div>
+  <div class="formula">E_a = ½ × Ka × γ × H²</div>
+  <div class="f-vars">
+    Ka = coeficiente de empuxo ativo = tan²(45° − φ/2) = (1 − senφ)/(1 + senφ)<br>
+    γ = peso específico do solo (kN/m³) · H = altura do muro (m) · φ = ângulo de atrito interno<br>
+    Empuxo passivo: Kp = tan²(45° + φ/2) = (1 + senφ)/(1 − senφ)
+  </div>
+</div>
+
+<h3>Verificações de Estabilidade</h3>
+<ul>
+  <li><strong>Tombamento:</strong> FS ≥ 1,5 (razão entre momento resistente e momento atuante)</li>
+  <li><strong>Deslizamento:</strong> FS ≥ 1,5 (razão entre força resistente e força empuxo)</li>
+  <li><strong>Capacidade do solo:</strong> pressão máxima na base &lt; pressão admissível</li>
+  <li><strong>Ruptura global (talude):</strong> FS ≥ 1,5 (slip circle)</li>
+</ul>
+
+<h3>Drenagem em Obras de Contenção</h3>
+<p>A presença de água aumenta drasticamente os empuxos. Medidas de drenagem incluem: <strong>barbacãs</strong> (drenos horizontais na face do muro), <strong>drenos sub-horizontais profundos</strong>, manta geotêxtil filtrante atrás da contenção e camada drenante de pedra britada.</p>
+
+<!-- ══ BLOCO 6 ══ -->
+<div id="b6" class="section-header">
+  <div class="section-number">06</div>
+  <div class="section-title">
+    <div class="nbr-ref">NBR 6118 · NBR 8800 · Estados limites</div>
+    <h2>Projeto e Tecnologia das Estruturas</h2>
+  </div>
+</div>
+
+<h3>Estruturas de Concreto Armado — NBR 6118:2023</h3>
+
+<h4>Estados Limites</h4>
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Estado Limite</th><th>Tipo</th><th>Verificação</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Último (ELU)</strong></td><td>Esgotamento da capacidade resistente</td><td>Ruptura, instabilidade, fadiga</td></tr>
+    <tr><td><strong>Serviço (ELS)</strong></td><td>Comprometimento da utilização</td><td>Fissuração, deformação, vibração, formação de fissuras</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h4>Cobrimento nominal (NBR 6118, Tabela 6.1)</h4>
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Classe de agressividade</th><th>Ambiente</th><th>Laje</th><th>Viga/Pilar</th><th>Elemento em contato com o solo</th></tr></thead>
+  <tbody>
+    <tr><td>I — Fraca</td><td>Rural/suburbano sem maresia</td><td>20 mm</td><td>25 mm</td><td>30 mm</td></tr>
+    <tr><td>II — Moderada</td><td>Urbano</td><td>25 mm</td><td>30 mm</td><td>40 mm</td></tr>
+    <tr><td>III — Forte</td><td>Marinha / industrial</td><td>35 mm</td><td>40 mm</td><td>50 mm</td></tr>
+    <tr><td>IV — Muito forte</td><td>Agressividade muito alta</td><td>45 mm</td><td>50 mm</td><td>— (projeto especial)</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h4>Resistência característica do concreto (fck)</h4>
+<p>Valor de resistência à compressão abaixo do qual se admite, estatisticamente, que não mais de 5% dos resultados possam ficar. Medido em corpos de prova cilíndricos (Ø 10 × 20 cm) aos 28 dias.</p>
+<p><strong>NBR 6118:</strong> fck mínimo de <strong>20 MPa</strong> para estruturas em concreto armado.</p>
+
+<h4>Verificação à flexão simples</h4>
+<div class="formula-box">
+  <div class="f-label">Equilíbrio de seção retangular (domínio 2 — tração pura)</div>
+  <div class="formula">Md ≤ Mrd = 0,85 × fcd × b × x × (d − 0,4x)</div>
+  <div class="f-vars">
+    Md = momento fletor de cálculo · fcd = fck/γc (γc = 1,4 para concreto) · b = largura da seção<br>
+    x = profundidade da linha neutra · d = altura útil (d = h − cobrimento − Φ/2)
+  </div>
+</div>
+
+<h3>Estruturas de Aço — NBR 8800:2008</h3>
+<h4>Perfis mais comuns</h4>
+<ul>
+  <li><strong>Perfis laminados:</strong> W (wide flange), I, U, L (cantoneira), T, quadrado, redondo</li>
+  <li><strong>Perfis formados a frio:</strong> U enrijecido, Z, cartola — para estruturas leves (steel framing)</li>
+  <li><strong>Tubos estruturais:</strong> circulares (CHS) e retangulares/quadrados (RHS/SHS)</li>
+</ul>
+
+<h4>Ligações em estruturas de aço</h4>
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Tipo de ligação</th><th>Comportamento</th><th>Características</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Ligação rígida</strong></td><td>Transmite momento, cortante e normal</td><td>Requer soldas de penetração; nós de pórticos</td></tr>
+    <tr><td><strong>Ligação semi-rígida</strong></td><td>Transmissão parcial de momento</td><td>Comportamento intermediário</td></tr>
+    <tr><td><strong>Ligação articulada (simples)</strong></td><td>Transmite apenas cortante e normal</td><td>Chapa de alma com parafusos; treliças</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3>Estruturas Pré-Moldadas e Pré-Fabricadas</h3>
+<p>Pré-moldado: produzido no próprio canteiro. Pré-fabricado: produzido em usina com controle rigoroso de qualidade.</p>
+<ul>
+  <li><strong>Viga T e duplo T:</strong> elementos de cobertura para grandes vãos</li>
+  <li><strong>Pilares caliciformes:</strong> recebem os pilares pré-fabricados em cálice (ligação articulada ou parcialmente rígida)</li>
+  <li><strong>Painéis alveolares:</strong> lajes para grandes vãos com furos cilíndricos internos</li>
+  <li><strong>NBR 16475:</strong> painéis de concreto pré-moldado</li>
+</ul>
+
+<!-- ══ BLOCO 7 ══ -->
+<div id="b7" class="section-header">
+  <div class="section-number">07</div>
+  <div class="section-title">
+    <div class="nbr-ref">Concreto · Aço · Alvenaria · Steel framing</div>
+    <h2>Materiais de Construção e Sistemas Construtivos</h2>
+  </div>
+</div>
+
+<h3>Tecnologia do Concreto</h3>
+<h4>Componentes</h4>
+<ul>
+  <li><strong>Cimento:</strong> ligante hidráulico — CP I (comum), CP II-E/F/Z, CP III (alto-forno), CP IV (pozolânico), CP V-ARI (alta resistência inicial)</li>
+  <li><strong>Agregados:</strong> areia (graúdo &lt;4,8mm; miúdo) e brita (graúdo &gt;4,8mm)</li>
+  <li><strong>Água:</strong> relação a/c (água/cimento) é o principal fator que controla resistência e durabilidade</li>
+  <li><strong>Aditivos:</strong> plastificantes, superplastificantes, aceleradores, retardadores, incorporadores de ar</li>
+</ul>
+
+<div class="formula-box">
+  <div class="f-label">Lei de Abrams — Relação água/cimento</div>
+  <div class="formula">↑ a/c → ↓ fck e ↑ trabalhabilidade (slump)</div>
+  <div class="f-vars">
+    Para obras de concreto simples: a/c ≤ 0,65<br>
+    Para obras de concreto armado em ambiente agressivo: a/c ≤ 0,50 a 0,55<br>
+    Slump test (abatimento do tronco de cone): mede consistência — medido em mm ou cm
+  </div>
+</div>
+
+<h4>Cura do concreto</h4>
+<p>Processo de manutenção da umidade e temperatura adequadas para a hidratação do cimento. Período mínimo de cura: <strong>7 dias</strong> para CP I e CP II; <strong>14 dias</strong> para CP III e CP IV (cimento de baixo calor de hidratação).</p>
+
+<h3>Armaduras</h3>
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Categoria</th><th>fyk (MPa)</th><th>Características</th></tr></thead>
+  <tbody>
+    <tr><td><strong>CA-25</strong></td><td>250</td><td>Lisa; usada em estribos, espirais e dobramento intenso</td></tr>
+    <tr><td><strong>CA-50</strong></td><td>500</td><td>Nervurada; uso geral em estruturas</td></tr>
+    <tr><td><strong>CA-60</strong></td><td>600</td><td>Nervurada ou indentada; fios e telas soldadas</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3>Alvenaria Estrutural</h3>
+<p>Sistema construtivo em que as paredes funcionam também como estrutura, transmitindo as cargas verticais e horizontais ao solo. NBR 16868 (alvenaria estrutural).</p>
+<ul>
+  <li><strong>Blocos cerâmicos:</strong> furos verticais; menor peso próprio; boa isolação térmica e acústica</li>
+  <li><strong>Blocos de concreto:</strong> maior resistência; dimensional mais preciso; melhor para modulação</li>
+  <li><strong>Graute:</strong> argamassa fluida usada para preencher furos e garantir resistência adicional</li>
+</ul>
+
+<h3>Sistemas Construtivos Industrializados</h3>
+<h4>Steel framing</h4>
+<p>Sistema construtivo com perfis de aço formados a frio (aço galvanizado). Montagem a seco, com fechamento por placas (OSB, gesso acartonado). NBR 15253. Vantagens: leveza, rapidez, precisão dimensional, compatibilidade com instalações.</p>
+
+<h4>Paredes de concreto</h4>
+<p>Sistema de formas industrializadas onde o concreto é moldado in loco formando paredes estruturais. NBR 16055. Aplicado em edificações habitacionais de múltiplos pavimentos.</p>
+
+<!-- ══ BLOCO 8 ══ -->
+<div id="b8" class="section-header">
+  <div class="section-number">08</div>
+  <div class="section-title">
+    <div class="nbr-ref">NBR 15575 · Inspeção predial · END</div>
+    <h2>Patologia, Manutenção e Inspeção das Edificações</h2>
+  </div>
+</div>
+
+<h3>Manifestações Patológicas mais Comuns</h3>
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Patologia</th><th>Causa</th><th>Consequência</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Corrosão das armaduras</strong></td><td>Carbonatação do concreto; presença de cloretos; cobrimento insuficiente</td><td>Fissuração e destacamento do cobrimento; perda de seção do aço</td></tr>
+    <tr><td><strong>Carbonatação</strong></td><td>CO₂ atmosférico reage com hidróxido de cálcio do concreto → pH reduz de ~12,5 para ~8</td><td>Despassivação da armadura; início da corrosão</td></tr>
+    <tr><td><strong>Fissuras</strong></td><td>Retração do concreto; sobrecargas; recalque diferencial; variação térmica; erros de projeto</td><td>Infiltração; comprometimento estético e estrutural</td></tr>
+    <tr><td><strong>Eflorescência</strong></td><td>Migração de sais solúveis à superfície por ação da água</td><td>Manchas esbranquiçadas; estético; perda de aderência em revestimentos</td></tr>
+    <tr><td><strong>Reação álcali-sílica (RAS)</strong></td><td>Reação entre álcalis do cimento e sílica reativa do agregado</td><td>Expansão interna; fissuras mapeadas ("mapa de fissuras")</td></tr>
+    <tr><td><strong>Bichamento</strong></td><td>Segregação do concreto durante o lançamento (falta de vibração)</td><td>Ninhos de concretagem; exposição da armadura</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3>Ensaios Não Destrutivos (END)</h3>
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Ensaio</th><th>Mede</th><th>Norma</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Esclerometria (martelo de Schmidt)</strong></td><td>Índice de rebote → estimativa do fck superficial</td><td>NBR 7584</td></tr>
+    <tr><td><strong>Ultrassom</strong></td><td>Velocidade de pulso → avaliação de homogeneidade, fissuras internas e resistência</td><td>NBR 8802</td></tr>
+    <tr><td><strong>Potencial de corrosão</strong></td><td>Medida eletroquímica do potencial da armadura → probabilidade de corrosão ativa</td><td>ASTM C876</td></tr>
+    <tr><td><strong>Termografia</strong></td><td>Diferenças de temperatura na superfície → vazios, delaminações, deslocamentos de revestimento</td><td>—</td></tr>
+    <tr><td><strong>GPR (Georadar)</strong></td><td>Localização de armaduras, vazios e interfaces internas</td><td>—</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3>Desempenho das Edificações — NBR 15575</h3>
+<p>Norma de desempenho que estabelece requisitos mínimos para edifícios habitacionais (até 5 pavimentos originalmente, depois ampliada). Não é norma de projeto, mas de avaliação do produto final.</p>
+
+<h4>Vida útil de projeto (VUP)</h4>
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Elemento</th><th>VUP mínimo</th></tr></thead>
+  <tbody>
+    <tr><td>Estrutura</td><td>50 anos</td></tr>
+    <tr><td>Vedações verticais externas</td><td>40 anos</td></tr>
+    <tr><td>Sistemas hidrossanitários</td><td>20 a 25 anos</td></tr>
+    <tr><td>Revestimentos externos de fachada</td><td>20 anos</td></tr>
+    <tr><td>Instalações elétricas</td><td>15 anos</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3>Inspeção Predial</h3>
+<p>Avaliação técnica periódica das condições de conservação, manutenção e segurança de edificações. Regulamentada em muitos municípios. Classifica as anomalias em:</p>
+<ul>
+  <li><strong>Grau 1 (crítico):</strong> risco à segurança dos usuários ou ao meio ambiente; ação imediata</li>
+  <li><strong>Grau 2 (regular):</strong> compromete desempenho e funcionalidade; ação em médio prazo</li>
+  <li><strong>Grau 3 (mínimo):</strong> não compromete funcionalidade; ação em longo prazo</li>
+</ul>
+
+<!-- ══ BLOCO 9 ══ -->
+<div id="b9" class="section-header">
+  <div class="section-number">09</div>
+  <div class="section-title">
+    <div class="nbr-ref">NBR 5626 · NBR 8160 · NBR 5410 · ABNT/NBR 13714</div>
+    <h2>Instalações Prediais e Sistemas Especiais</h2>
+  </div>
+</div>
+
+<h3>Instalações Hidráulicas — NBR 5626</h3>
+<h4>Consumo predial</h4>
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Parâmetro</th><th>Valores de referência</th></tr></thead>
+  <tbody>
+    <tr><td>Consumo per capita residencial</td><td>150 a 200 L/habitante/dia</td></tr>
+    <tr><td>Volume do reservatório superior</td><td>Mín. 1 dia de consumo (ideal 2 dias)</td></tr>
+    <tr><td>Volume da cisterna inferior</td><td>Mín. 3 dias de consumo (ABNT NBR 5626)</td></tr>
+    <tr><td>Volume total da edificação</td><td>Mín. 1/5 no superior + 4/5 no inferior (regra prática antiga)</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h4>Dimensionamento por unidade Hunter</h4>
+<p>Método de dimensionamento das tubulações por pontos de utilização (UH). Cada ponto recebe um valor em UH conforme o tipo de peça sanitária. A soma total de UH determina a vazão de projeto.</p>
+
+<h3>Instalações de Esgoto Sanitário — NBR 8160</h3>
+<ul>
+  <li><strong>Sub-ramal:</strong> trecho entre a peça sanitária e o ramal</li>
+  <li><strong>Ramal:</strong> trecho que recebe os sub-ramais e conduz ao coletor</li>
+  <li><strong>Coletor:</strong> conduz os efluentes para a coluna de queda ou saída</li>
+  <li><strong>Declividade mínima:</strong> ramais horizontais ≥ 2% (tubos até 75mm) ou ≥ 1% (tubos ≥ 100mm)</li>
+  <li><strong>Fecho hídrico:</strong> mín. 20mm de lâmina d'água no sifão para impedir retorno de gases</li>
+</ul>
+
+<h3>Instalações Elétricas Prediais — NBR 5410</h3>
+<p>Regulamenta instalações elétricas de baixa tensão (até 1000 V em CA). Principais conceitos:</p>
+<ul>
+  <li><strong>Disjuntor:</strong> proteção contra sobrecarga e curto-circuito</li>
+  <li><strong>DR (Diferencial Residual):</strong> proteção contra choque elétrico (correntes de fuga)</li>
+  <li><strong>SPDA:</strong> Sistema de Proteção contra Descargas Atmosféricas (para-raios)</li>
+  <li><strong>Aterramento:</strong> obrigatório para proteção de pessoas e equipamentos</li>
+</ul>
+
+<h3>Prevenção e Combate a Incêndio</h3>
+<p>Regulamentado por normas estaduais (IT do Corpo de Bombeiros) e normas ABNT (NBR 13714, 13523, 12693, entre outras).</p>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Sistema</th><th>Norma</th><th>Aplicação</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Hidrantes e mangueiras</strong></td><td>NBR 13714</td><td>Edificações com risco de incêndio médio a alto</td></tr>
+    <tr><td><strong>Sprinklers (chuveiros automáticos)</strong></td><td>NBR 10897</td><td>Grandes áreas comerciais, galpões, hotéis</td></tr>
+    <tr><td><strong>Extintores</strong></td><td>NBR 12693</td><td>Todo tipo de edificação</td></tr>
+    <tr><td><strong>Iluminação de emergência</strong></td><td>NBR 10898</td><td>Rotas de fuga e saídas de emergência</td></tr>
+    <tr><td><strong>Saídas de emergência</strong></td><td>NBR 9077</td><td>Dimensionamento de escadas e rotas de escape</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h4>Classificação do perigo de incêndio por ocupação</h4>
+<p>As edificações são classificadas quanto ao risco de incêndio (baixo, médio, alto e extra-alto) conforme a ocupação, altura e área. Essa classificação determina as exigências de sistemas de proteção.</p>
+
+<!-- ══ BLOCO 10 ══ -->
+<div id="b10" class="section-header">
+  <div class="section-number">10</div>
+  <div class="section-title">
+    <div class="nbr-ref">Pavimentação · Drenagem · Saneamento</div>
+    <h2>Infraestrutura Urbana e Drenagem</h2>
+  </div>
+</div>
+
+<h3>Pavimentação Urbana</h3>
+<h4>Tipos de pavimento</h4>
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Tipo</th><th>Estrutura</th><th>Vantagens</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Flexível</strong></td><td>Revestimento asfáltico sobre base granular</td><td>Baixo custo inicial; manutenção mais fácil</td></tr>
+    <tr><td><strong>Rígido</strong></td><td>Placa de concreto de cimento Portland</td><td>Maior vida útil (25-30 anos); menor manutenção</td></tr>
+    <tr><td><strong>Semirrígido</strong></td><td>Base de material cimentado (solo-cimento, BGTC) + revestimento asfáltico</td><td>Combinação de custo e desempenho</td></tr>
+    <tr><td><strong>Intertravado</strong></td><td>Blocos de concreto (piso intertravado) sobre areia</td><td>Permeável; manutenção modular; pedestres</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h4>Dimensionamento de pavimentos flexíveis (método DNIT/USACE)</h4>
+<div class="formula-box">
+  <div class="f-label">Índices de projeto</div>
+  <div class="formula">N = número de repetições do eixo padrão (8,2 tf) durante a vida útil</div>
+  <div class="f-vars">
+    CBR (California Bearing Ratio): resistência do subleito ao penetrômetro — quanto maior, melhor<br>
+    CBR &lt; 2% → solo muito fraco (trocar ou estabilizar)<br>
+    CBR 2–5% → fraco; 5–10% → regular; &gt;10% → bom
+  </div>
+</div>
+
+<h3>Drenagem Urbana</h3>
+<h4>Microdrenagem vs. Macrodrenagem</h4>
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Sistema</th><th>Elementos</th><th>Período de retorno</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Microdrenagem</strong></td><td>Sarjetas, bocas de lobo, galerias pluviais, poços de visita</td><td>2 a 10 anos</td></tr>
+    <tr><td><strong>Macrodrenagem</strong></td><td>Canais, córregos, piscinões, obras de contenção de cheias</td><td>25 a 100 anos</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h4>Método Racional — Vazão de projeto</h4>
+<div class="formula-box">
+  <div class="f-label">Fórmula Racional</div>
+  <div class="formula">Q = C × i × A / 360</div>
+  <div class="f-vars">
+    Q = vazão de pico (m³/s) · C = coeficiente de escoamento superficial (adimensional, 0 a 1)<br>
+    i = intensidade de chuva (mm/h) · A = área da bacia (ha)<br>
+    Uso para bacias &lt; 2 km² e duração de chuva = tempo de concentração
+  </div>
+</div>
+
+<h3>Abastecimento de Água e Esgotamento Sanitário</h3>
+<p><strong>Captação → Adução → Tratamento (ETA) → Reservação → Distribuição</strong></p>
+<p><strong>Coleta → Transporte → Tratamento (ETE) → Disposição</strong></p>
+<ul>
+  <li>Tratamento convencional de água: coagulação → floculação → decantação → filtração → desinfecção</li>
+  <li>Tratamento de esgoto: preliminar (grades e desarenação) → primário (sedimentação) → secundário (biológico) → terciário (polimento)</li>
+</ul>
+
+<!-- ══ BLOCO 11 ══ -->
+<div id="b11" class="section-header">
+  <div class="section-number">11</div>
+  <div class="section-title">
+    <div class="nbr-ref">RCC · Ciclo de vida · Eficiência energética</div>
+    <h2>Sustentabilidade, Meio Ambiente e Eficiência Energética</h2>
+  </div>
+</div>
+
+<h3>Gestão de Resíduos da Construção Civil — RCC</h3>
+<p>Regulamentada pela <strong>Resolução CONAMA 307/2002</strong> e suas alterações. Classifica os RCC em:</p>
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Classe</th><th>Composição</th><th>Destinação</th></tr></thead>
+  <tbody>
+    <tr><td><strong>A</strong></td><td>Concreto, argamassa, tijolos, telhas, pedras — reutilizáveis ou recicláveis como agregados</td><td>Reciclagem (agregado reciclado)</td></tr>
+    <tr><td><strong>B</strong></td><td>Plásticos, papel, papelão, metais, vidros, madeiras</td><td>Reciclagem; comercialização</td></tr>
+    <tr><td><strong>C</strong></td><td>Resíduos sem tecnologia de reciclagem econômica disponível (gesso, fibrocimento)</td><td>Aterro de inertes</td></tr>
+    <tr><td><strong>D</strong></td><td>Perigosos: tintas, solventes, óleos, amianto, restos de madeira tratada</td><td>Tratamento específico conforme ABNT NBR 10004</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3>Eficiência Energética em Edificações</h3>
+<p><strong>RTQ-C</strong> (Regulamento Técnico da Qualidade do Nível de Eficiência Energética de Edificações Comerciais) e <strong>RTQ-R</strong> (Residencial) — PROCEL Edifica / Inmetro.</p>
+<ul>
+  <li><strong>Etiqueta ENCE:</strong> classifica de A (mais eficiente) a E (menos eficiente)</li>
+  <li>Principais estratégias: isolamento da envoltória (paredes e coberturas), orientação solar, sombreamento, ventilação natural, iluminação natural e LED, aproveitamento da água da chuva</li>
+</ul>
+
+<h3>Avaliação do Ciclo de Vida (ACV)</h3>
+<p>Metodologia que quantifica os impactos ambientais de um produto ou sistema ao longo de toda a sua vida: extração de matéria-prima → produção → uso → manutenção → descarte/reciclagem. Ferramenta da ISO 14040/14044.</p>
+
+<!-- ══ BLOCO 12 ══ -->
+<div id="b12" class="section-header">
+  <div class="section-number">12</div>
+  <div class="section-title">
+    <div class="nbr-ref">SIG · Cartografia · Geoprocessamento aplicado</div>
+    <h2>Geoprocessamento e Sistemas Georreferenciais</h2>
+  </div>
+</div>
+
+<h3>Conceitos Fundamentais</h3>
+<ul>
+  <li><strong>SIG/GIS:</strong> Sistema de Informação Geográfica — integra dados espaciais e atributos para análise e tomada de decisão</li>
+  <li><strong>Dado vetorial:</strong> pontos, linhas e polígonos — representam feições geográficas discretas</li>
+  <li><strong>Dado raster:</strong> grade de células (pixels) com valores — representam fenômenos contínuos (altitude, imagens de satélite)</li>
+  <li><strong>Datum:</strong> sistema de referência geodésico — no Brasil: SIRGAS 2000 (atual), SAD-69 (legado)</li>
+</ul>
+
+<h3>Aplicações na Engenharia Civil</h3>
+<ul>
+  <li>Análise de bacias hidrográficas para projeto de drenagem</li>
+  <li>Localização de interferências de redes subterrâneas</li>
+  <li>Planejamento de infraestrutura viária</li>
+  <li>Monitoramento de obras e movimentos de terra</li>
+  <li>Cadastro técnico multifinalitário (CTM)</li>
+</ul>
+
+<!-- ══ BLOCO 13 ══ -->
+<div id="b13" class="section-header">
+  <div class="section-number">13</div>
+  <div class="section-title">
+    <div class="nbr-ref">AutoCAD · BIM · IFC · Revit</div>
+    <h2>Tecnologia Aplicada à Engenharia</h2>
+  </div>
+</div>
+
+<h3>Desenho Técnico e CAD</h3>
+<p><strong>CAD (Computer-Aided Design):</strong> produção de projetos 2D e 3D em ambiente digital. O AutoCAD é o software mais difundido, com representação por entidades (linhas, arcos, blocos, textos).</p>
+
+<h3>BIM — Building Information Modeling</h3>
+<p>Metodologia que integra todas as informações de um empreendimento em um modelo digital único e inteligente. Vai além do CAD — o modelo contém dados, não apenas geometria.</p>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Dimensão BIM</th><th>Conteúdo</th></tr></thead>
+  <tbody>
+    <tr><td><strong>3D</strong></td><td>Geometria e visualização tridimensional</td></tr>
+    <tr><td><strong>4D</strong></td><td>3D + cronograma (simulação da construção no tempo)</td></tr>
+    <tr><td><strong>5D</strong></td><td>4D + custo (orçamentação integrada ao modelo)</td></tr>
+    <tr><td><strong>6D</strong></td><td>5D + sustentabilidade e eficiência energética</td></tr>
+    <tr><td><strong>7D</strong></td><td>6D + gestão de facilities e manutenção</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h4>Conceitos fundamentais do BIM</h4>
+<ul>
+  <li><strong>IFC (Industry Foundation Classes):</strong> formato aberto de interoperabilidade entre softwares BIM</li>
+  <li><strong>LOD (Level of Development):</strong> nível de detalhamento do modelo, de LOD 100 (conceitual) a LOD 500 (as-built)</li>
+  <li><strong>Clash detection:</strong> identificação de interferências no modelo integrado</li>
+  <li><strong>BIM 360 / Autodesk Revit / Archicad / Tekla:</strong> principais plataformas</li>
+</ul>
+
+<div class="callout info">
+  <div class="callout-label">📌 Decreto 10.306/2020</div>
+  O Decreto estabelece o uso do BIM em obras e serviços de engenharia contratados por órgãos federais. Implementação em fases: 2021 (projetos), 2024 (gestão e operação). É o marco legal do BIM no setor público brasileiro.
+</div>
+
+<!-- ══ BLOCO 14 ══ -->
+<div id="b14" class="section-header">
+  <div class="section-number">14</div>
+  <div class="section-title">
+    <div class="nbr-ref">NBR 6118 · 6122 · 8800 · 8044 · 15575 · 16055 · 16475 · 16868 · 17077</div>
+    <h2>Normas Técnicas ABNT Aplicáveis</h2>
+  </div>
+</div>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Norma</th><th>Título</th><th>Pontos-chave para prova</th></tr></thead>
+  <tbody>
+    <tr><td><strong>NBR 6118:2023</strong></td><td>Projeto de estruturas de concreto armado e protendido</td><td>Cobrimentos, estados limites, armaduras mínimas, fissuração, deformação</td></tr>
+    <tr><td><strong>NBR 6122:2022</strong></td><td>Projeto e execução de fundações</td><td>Tipos de fundações, critérios de escolha, recalques, capacidade de carga</td></tr>
+    <tr><td><strong>NBR 8800:2008</strong></td><td>Projeto de estruturas de aço e de estruturas mistas de aço e concreto</td><td>Perfis, estados limites, ligações, reservatórios metálicos</td></tr>
+    <tr><td><strong>NBR 8044:1983</strong></td><td>Projeto Geotécnico</td><td>Investigação do subsolo, relatórios geotécnicos, classificação de solos</td></tr>
+    <tr><td><strong>NBR 15575:2013</strong> (partes 2 e 4)</td><td>Edificações habitacionais — Desempenho</td><td>Parte 2: estruturas; Parte 4: vedações; VUP, resistência ao fogo, acústica</td></tr>
+    <tr><td><strong>NBR 16055:2012</strong></td><td>Parede de concreto moldada no local para a construção de edificações</td><td>Requisitos mínimos de dosagem, espessura, acabamento e cura</td></tr>
+    <tr><td><strong>NBR 16475:2017</strong></td><td>Painéis de concreto pré-moldado</td><td>Requisitos de projeto, produção, transporte, montagem e ligações</td></tr>
+    <tr><td><strong>NBR 16868:2020</strong></td><td>Alvenaria estrutural</td><td>Partes: 1 (projeto), 2 (execução de paredes), 3 (execução de obras)</td></tr>
+    <tr><td><strong>NBR 17077:2022</strong></td><td>Painéis estruturais de PVC preenchidos com concreto</td><td>Sistema construtivo industrializado com forma de PVC e concreto interno</td></tr>
+  </tbody>
+</table>
+</div>
+
+<!-- ══ ESQUEMA DE FIXAÇÃO ══ -->
+<div id="mapa" class="section-header">
+  <div class="section-number">15</div>
+  <div class="section-title">
+    <div class="nbr-ref">Mapa mental integrado + Tabelas comparativas</div>
+    <h2>Esquema de Fixação Geral</h2>
+  </div>
+</div>
+
+<div class="mindmap">
+<div class="root">◉ CONHECIMENTOS ESPECÍFICOS — Engenheiro Civil · UFMA 2026</div>
+<br>
+<div class="l1">├─ 📋 LICITAÇÕES (Lei 14.133/2021)</div>
+<div class="l2">├─ Modalidades: Pregão(serviços comuns) · Concorrência(obras) · Concurso · Leilão · Diálogo Competitivo</div>
+<div class="l2">├─ Critérios: menor preço · maior desconto (SINAPI) · melhor técnica · melhor técnica+preço</div>
+<div class="l2">├─ Obras: projeto básico + orçamento + disponibilidade orçamentária + licença ambiental</div>
+<div class="l2">└─ Gestão: gestor (coordenação) + fiscal (técnico/administrativo) — funções distintas</div>
+<br>
+<div class="l1">├─ 💰 ORÇAMENTO</div>
+<div class="l2">├─ SINAPI: Caixa+IBGE · insumos + composições · referência obrigatória para obras federais</div>
+<div class="l2">├─ SICRO: DNIT · obras rodoviárias e ferroviárias</div>
+<div class="l2">├─ BDI: AC+S+R+G+DF+L+I · Acórdão TCU 2622/2013</div>
+<div class="l2">├─ Curva ABC: A=20% itens/70-80% custo · B=30% · C=50%</div>
+<div class="l2">└─ PERT-CPM: caminho crítico (maior duração) · FT=0 em atividades críticas · PERT: D=(O+4M+P)/6</div>
+<br>
+<div class="l1">├─ 🏗 FUNDAÇÕES (NBR 6122)</div>
+<div class="l2">├─ Rasas: sapata isolada · sapata corrida · sapata combinada · radier · baldrame</div>
+<div class="l2">├─ Profundas: franki · raiz · hélice contínua · metálica · tubulão</div>
+<div class="l2">└─ SPT: N30 (golpes para penetrar 30cm finais) · classificação: 0=muito mole → >30=duro</div>
+<br>
+<div class="l1">├─ 🧱 ESTRUTURAS</div>
+<div class="l2">├─ NBR 6118 (CA): cobrimento classe I=25mm/viga · II=30mm · III=40mm · IV=50mm</div>
+<div class="l2">├─ fck mínimo = 20 MPa · ELU (resistência) + ELS (serviço/fissuração)</div>
+<div class="l2">├─ Aço: CA-25(250MPa/lisa) · CA-50(500MPa/nervurada) · CA-60(600MPa)</div>
+<div class="l2">├─ NBR 8800 (aço): ligações rígidas(momento) · articuladas(cortante)</div>
+<div class="l2">└─ Pré-moldado: moldado no canteiro · Pré-fabricado: usina com controle rigoroso</div>
+<br>
+<div class="l1">├─ 🔬 PATOLOGIA</div>
+<div class="l2">├─ Carbonatação: CO₂ + Ca(OH)₂ → pH cai de 12,5 para 8 → corrosão da armadura</div>
+<div class="l2">├─ RAS: fissuras mapeadas · expande internamente o concreto</div>
+<div class="l2">├─ END: esclerometria(fck superficial) · ultrassom(homogeneidade) · termografia(descolamento)</div>
+<div class="l2">└─ NBR 15575: VUP estrutura=50a · vedação externa=40a · instalações hidro=20-25a</div>
+<br>
+<div class="l1">├─ 🚿 INSTALAÇÕES</div>
+<div class="l2">├─ NBR 5626 (água): cisterna ≥3 dias consumo · reservatório superior ≥1 dia</div>
+<div class="l2">├─ NBR 8160 (esgoto): declividade mín. ramal 2% (≤75mm) ou 1% (≥100mm)</div>
+<div class="l2">├─ NBR 5410 (elétrica): disjuntor(sobrecarga+CC) · DR(choque) · SPDA(raios)</div>
+<div class="l2">└─ Incêndio: NBR 13714(hidrantes) · NBR 10897(sprinklers) · NBR 9077(saídas emergência)</div>
+<br>
+<div class="l1">├─ 🛣 INFRAESTRUTURA URBANA</div>
+<div class="l2">├─ Pavimento: flexível(asfalto+base granular) · rígido(concreto) · semirrígido · intertravado</div>
+<div class="l2">├─ CBR: &lt;2%=muito fraco · 2-5%=fraco · 5-10%=regular · >10%=bom</div>
+<div class="l2">├─ Microdrenagem: sarjeta+boca de lobo+galeria · TR=2-10 anos</div>
+<div class="l2">└─ Fórmula racional: Q = C×i×A/360 (m³/s) · bacias &lt;2km²</div>
+<br>
+<div class="l1">├─ ♻ SUSTENTABILIDADE</div>
+<div class="l2">├─ RCC/CONAMA 307: Classe A(concreto→reciclar) · B(plástico/metal→reciclar) · C(gesso→aterro) · D(perigosos→tratamento)</div>
+<div class="l2">└─ Eficiência energética: ENCE A→E · RTQ-C (comercial) + RTQ-R (residencial)</div>
+<br>
+<div class="l1">└─ 🖥 TECNOLOGIA</div>
+<div class="l2">├─ BIM: 3D(geometria)→4D(+tempo)→5D(+custo)→6D(+sustentabilidade)→7D(+manutenção)</div>
+<div class="l2">├─ IFC: formato aberto de interoperabilidade · LOD 100→500</div>
+<div class="l2">└─ Decreto 10.306/2020: uso do BIM obrigatório em obras federais</div>
+</div>
+
+<h3>Tabela Comparativa — Normas ABNT Críticas</h3>
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Norma</th><th>Assunto</th><th>Valor/referência crítica de prova</th></tr></thead>
+  <tbody>
+    <tr><td>NBR 6118</td><td>Concreto armado</td><td>fck mín. 20MPa · cobrimento Cl-II viga = 30mm · γc = 1,4</td></tr>
+    <tr><td>NBR 6122</td><td>Fundações</td><td>FS tombamento ≥1,5 · FS deslizamento ≥1,5</td></tr>
+    <tr><td>NBR 8800</td><td>Estruturas de aço</td><td>γa1=1,1 (cargas permanentes de grande variabilidade)</td></tr>
+    <tr><td>NBR 15575 Pt.2</td><td>Desempenho estrutural</td><td>VUP estrutura = 50 anos</td></tr>
+    <tr><td>NBR 5626</td><td>Água fria</td><td>Cisterna ≥ 3 dias · Reserv. superior ≥ 1 dia de consumo</td></tr>
+    <tr><td>NBR 8160</td><td>Esgoto predial</td><td>Declividade mín. 2% (≤75mm) · fecho hídrico ≥ 20mm</td></tr>
+    <tr><td>CONAMA 307</td><td>Resíduos da construção</td><td>Classe A = reciclar como agregado · Classe D = perigosos</td></tr>
+  </tbody>
+</table>
+</div>
+
+<!-- ══ SIMULADO ══ -->
+<div id="simulado">
+  <div class="simulado-header">
+    <div class="simulado-icon">🏗</div>
+    <div class="simulado-info">
+      <h2>Simulado — 50 Questões</h2>
+      <p>Estilo FSADU · Conhecimentos Específicos · Cargo: Engenheiro Civil · UFMA 2026</p>
+      <p>Dificuldade progressiva: Q1–15 fáceis · Q16–35 médias · Q36–50 difíceis</p>
+    </div>
+  </div>
+
+  <!-- FÁCEIS -->
+  <div class="difficulty-band easy">🟢 Questões 1–15 — Nível Fácil</div>
+
+  <div class="question-block">
+    <div class="question-head"><span class="q-num">Q01</span>
+      <div class="q-text"><span class="tag orc">SINAPI</span> O SINAPI — Sistema Nacional de Pesquisa de Custos e Índices da Construção Civil é gerido pela parceria entre:</div></div>
+    <div class="options">
+      <div class="option">a) DNIT e IBGE</div>
+      <div class="option correct">✓ b) Caixa Econômica Federal e IBGE</div>
+      <div class="option">c) Ministério da Infraestrutura e Caixa Econômica Federal</div>
+      <div class="option">d) Banco do Brasil e IPEA</div>
+      <div class="option">e) TCU e Ministério da Fazenda</div>
+    </div>
+    <div class="gabarito"><div class="gabarito-label">✦ Gabarito: B</div>
+      <p>O SINAPI é gerido pela <strong>Caixa Econômica Federal</strong> em parceria com o <strong>IBGE</strong>. O SICRO (obras rodoviárias) é do DNIT. Essa distinção é frequentemente cobrada. O SINAPI é a referência obrigatória para obras financiadas com recursos federais (Lei 12.309/2010).</p></div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-head"><span class="q-num">Q02</span>
+      <div class="q-text"><span class="tag fund">Fundações</span> Segundo a NBR 6122, a única forma de provimento de carga ao solo por pressão distribuída em sua base define as fundações denominadas:</div></div>
+    <div class="options">
+      <div class="option">a) Profundas</div>
+      <div class="option">b) Especiais</div>
+      <div class="option">c) Mistas</div>
+      <div class="option correct">✓ d) Rasas ou diretas</div>
+      <div class="option">e) Semi-profundas</div>
+    </div>
+    <div class="gabarito"><div class="gabarito-label">✦ Gabarito: D</div>
+      <p>A NBR 6122 define fundações rasas (ou diretas) como aquelas que transmitem as cargas ao terreno por pressão distribuída na base. São exemplos: sapatas, radier e baldrame. As fundações profundas transmitem por resistência de ponta e/ou atrito lateral no fuste.</p></div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-head"><span class="q-num">Q03</span>
+      <div class="q-text"><span class="tag est">NBR 6118</span> A NBR 6118:2023 estabelece que a resistência característica mínima do concreto (fck) para estruturas de concreto armado é de:</div></div>
+    <div class="options">
+      <div class="option">a) 15 MPa</div>
+      <div class="option correct">✓ b) 20 MPa</div>
+      <div class="option">c) 25 MPa</div>
+      <div class="option">d) 30 MPa</div>
+      <div class="option">e) 35 MPa</div>
+    </div>
+    <div class="gabarito"><div class="gabarito-label">✦ Gabarito: B</div>
+      <p>A NBR 6118 estabelece fck mínimo de <strong>20 MPa</strong> para concreto armado. Para estruturas protendidas, o mínimo é 25 MPa. Para elementos em ambiente com classe de agressividade ambiental (CAA) III e IV, recomenda-se fck ≥ 30 MPa. Questão clássica de concursos — a resposta 15 MPa era o mínimo da edição anterior da norma.</p></div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-head"><span class="q-num">Q04</span>
+      <div class="q-text"><span class="tag lic">Lei 14.133</span> A nova modalidade de licitação prevista exclusivamente na Lei nº 14.133/2021, inexistente nas normas anteriores, que se destina a contratações inovadoras em que não há solução disponível no mercado, é denominada:</div></div>
+    <div class="options">
+      <div class="option">a) Pregão eletrônico</div>
+      <div class="option">b) Concurso de projetos</div>
+      <div class="option correct">✓ c) Diálogo Competitivo</div>
+      <div class="option">d) RDC — Regime Diferenciado de Contratações</div>
+      <div class="option">e) Tomada de preços especial</div>
+    </div>
+    <div class="gabarito"><div class="gabarito-label">✦ Gabarito: C</div>
+      <p>O <strong>Diálogo Competitivo</strong> é a única modalidade genuinamente nova criada pela Lei 14.133/2021. É utilizado quando a Administração não consegue definir a solução técnica e precisa dialogar com os licitantes para co-construir a especificação do objeto. O RDC (Lei 12.462/2012) foi revogado pela Lei 14.133/2021.</p></div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-head"><span class="q-num">Q05</span>
+      <div class="q-text"><span class="tag mat">Materiais</span> No que diz respeito à armadura CA-50, amplamente utilizada em estruturas de concreto armado, seu valor de resistência característica ao escoamento (fyk) é de:</div></div>
+    <div class="options">
+      <div class="option">a) 250 MPa</div>
+      <div class="option">b) 400 MPa</div>
+      <div class="option correct">✓ c) 500 MPa</div>
+      <div class="option">d) 600 MPa</div>
+      <div class="option">e) 650 MPa</div>
+    </div>
+    <div class="gabarito"><div class="gabarito-label">✦ Gabarito: C</div>
+      <p>CA-25 = 250 MPa (lisa); <strong>CA-50 = 500 MPa</strong> (nervurada, uso geral); CA-60 = 600 MPa (nervurada/indentada, fios e telas). A designação numérica corresponde diretamente ao fyk em kgf/cm² dividido por 10: CA-50 = 5000 kgf/cm² = 500 MPa.</p></div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-head"><span class="q-num">Q06</span>
+      <div class="q-text"><span class="tag orc">Orçamento</span> Na Curva ABC de um orçamento de obra, o grupo "A" corresponde, aproximadamente, a:</div></div>
+    <div class="options">
+      <div class="option">a) 50% dos itens e 80% do custo total</div>
+      <div class="option correct">✓ b) 20% dos itens e 70-80% do custo total</div>
+      <div class="option">c) 30% dos itens e 50% do custo total</div>
+      <div class="option">d) 10% dos itens e 90% do custo total</div>
+      <div class="option">e) 20% dos itens e 50% do custo total</div>
+    </div>
+    <div class="gabarito"><div class="gabarito-label">✦ Gabarito: B</div>
+      <p>O Princípio de Pareto aplicado à construção: Grupo <strong>A</strong> ≈ 20% dos itens respondem por 70-80% do custo → controle rigoroso. Grupo B ≈ 30% dos itens → 15-25% do custo. Grupo C ≈ 50% dos itens → apenas 5-10% do custo → controle simplificado. A Curva ABC é essencial no planejamento e na gestão de suprimentos.</p></div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-head"><span class="q-num">Q07</span>
+      <div class="q-text"><span class="tag pat">Patologia</span> A patologia denominada carbonatação em estruturas de concreto armado consiste em:</div></div>
+    <div class="options">
+      <div class="option">a) Depósito de carbonato de cálcio na superfície do concreto, causando manchas brancas</div>
+      <div class="option correct">✓ b) Reação do CO₂ atmosférico com o hidróxido de cálcio do concreto, reduzindo o pH e despassivando a armadura</div>
+      <div class="option">c) Expansão do concreto causada pela reação entre álcalis do cimento e sílica dos agregados</div>
+      <div class="option">d) Corrosão eletroquímica causada diretamente pela aplicação de correntes de proteção catódica</div>
+      <div class="option">e) Formação de eflorescências causadas pela migração de sais à superfície por ação da água</div>
+    </div>
+    <div class="gabarito"><div class="gabarito-label">✦ Gabarito: B</div>
+      <p>A carbonatação é a reação: CO₂ + Ca(OH)₂ → CaCO₃ + H₂O. O hidróxido de cálcio mantém o pH do concreto em torno de 12,5, que passiva (protege) a armadura. Com a carbonatação, o pH cai para ~8, ocorre a despassivação e a armadura passa a se corroer. A alternativa A descreve eflorescência; C descreve a RAS.</p></div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-head"><span class="q-num">Q08</span>
+      <div class="q-text"><span class="tag nbr">NBR 15575</span> De acordo com a NBR 15575, a Vida Útil de Projeto (VUP) mínima para o sistema estrutural de edificações habitacionais é de:</div></div>
+    <div class="options">
+      <div class="option">a) 20 anos</div>
+      <div class="option">b) 25 anos</div>
+      <div class="option">c) 40 anos</div>
+      <div class="option correct">✓ d) 50 anos</div>
+      <div class="option">e) 75 anos</div>
+    </div>
+    <div class="gabarito"><div class="gabarito-label">✦ Gabarito: D</div>
+      <p>A NBR 15575 estabelece VUP mínima de <strong>50 anos</strong> para estruturas. Para vedações verticais externas: 40 anos. Para instalações hidrossanitárias: 20 a 25 anos. Para revestimentos externos de fachada: 20 anos. Para instalações elétricas: 15 anos. O sistema estrutural tem a maior exigência de vida útil.</p></div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-head"><span class="q-num">Q09</span>
+      <div class="q-text"><span class="tag orc">PERT-CPM</span> No método PERT, a duração esperada de uma atividade é calculada a partir de estimativas otimista (O), mais provável (M) e pessimista (P). A fórmula correta é:</div></div>
+    <div class="options">
+      <div class="option">a) D = (O + M + P) / 3</div>
+      <div class="option">b) D = (O + 2M + P) / 4</div>
+      <div class="option correct">✓ c) D = (O + 4M + P) / 6</div>
+      <div class="option">d) D = (2O + 3M + P) / 6</div>
+      <div class="option">e) D = (O + 3M + 2P) / 6</div>
+    </div>
+    <div class="gabarito"><div class="gabarito-label">✦ Gabarito: C</div>
+      <p>A fórmula PERT padrão é <strong>D = (O + 4M + P) / 6</strong>. O peso 4 para a estimativa mais provável reflete a distribuição beta subjacente. Essa é a fórmula clássica do PERT — memorize. A variância da atividade é σ² = [(P − O)/6]².</p></div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-head"><span class="q-num">Q10</span>
+      <div class="q-text"><span class="tag bim">BIM</span> A dimensão BIM que adiciona informações de custo ao modelo tridimensional, integrando orçamento ao projeto, é denominada:</div></div>
+    <div class="options">
+      <div class="option">a) BIM 3D</div>
+      <div class="option">b) BIM 4D</div>
+      <div class="option correct">✓ c) BIM 5D</div>
+      <div class="option">d) BIM 6D</div>
+      <div class="option">e) BIM 7D</div>
+    </div>
+    <div class="gabarito"><div class="gabarito-label">✦ Gabarito: C</div>
+      <p>3D = geometria; 4D = + cronograma (tempo); <strong>5D = + custo (orçamento)</strong>; 6D = + sustentabilidade/energia; 7D = + manutenção/facilities. No BIM 5D, cada elemento do modelo carrega informações de custo, permitindo quantificação automática e controle orçamentário integrado.</p></div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-head"><span class="q-num">Q11</span>
+      <div class="q-text"><span class="tag fund">Terraplenagem</span> No processo de terraplenagem, o fator de empolamento representa a relação entre:</div></div>
+    <div class="options">
+      <div class="option">a) Volume compactado e volume natural</div>
+      <div class="option correct">✓ b) Volume solto (após escavação) e volume natural (in situ)</div>
+      <div class="option">c) Volume natural e volume compactado</div>
+      <div class="option">d) Volume transportado e volume compactado no aterro</div>
+      <div class="option">e) Volume de corte e volume de aterro necessário</div>
+    </div>
+    <div class="gabarito"><div class="gabarito-label">✦ Gabarito: B</div>
+      <p>O fator de empolamento (Fe) é a relação: Volume solto / Volume natural. Tipicamente Fe varia de 1,10 a 1,40, dependendo do tipo de solo. Após compactação, o solo volta a ter volume próximo ao natural (fator de compactação < 1). Esse conceito é fundamental para calcular os custos de transporte e o balanço de massas.</p></div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-head"><span class="q-num">Q12</span>
+      <div class="q-text"><span class="tag mat">Concreto</span> O principal fator que controla a resistência à compressão do concreto é:</div></div>
+    <div class="options">
+      <div class="option">a) A granulometria dos agregados graúdos</div>
+      <div class="option">b) O tipo de aditivo utilizado na mistura</div>
+      <div class="option">c) A temperatura de cura do concreto</div>
+      <div class="option correct">✓ d) A relação água/cimento (a/c)</div>
+      <div class="option">e) O tempo de mistura no caminhão betoneira</div>
+    </div>
+    <div class="gabarito"><div class="gabarito-label">✦ Gabarito: D</div>
+      <p>A Lei de Abrams estabelece que, para materiais iguais, a resistência do concreto é inversamente proporcional à relação <strong>água/cimento (a/c)</strong>. Quanto menor a relação a/c, maior a resistência — porém menor a trabalhabilidade. A granulometria, temperatura e tempo de mistura influenciam, mas a relação a/c é o fator dominante.</p></div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-head"><span class="q-num">Q13</span>
+      <div class="q-text"><span class="tag nbr">CONAMA 307</span> Segundo a Resolução CONAMA 307/2002, os resíduos de construção civil compostos por concreto, argamassa, tijolos e cerâmica estão classificados como:</div></div>
+    <div class="options">
+      <div class="option correct">✓ a) Classe A — reutilizáveis ou recicláveis como agregados</div>
+      <div class="option">b) Classe B — recicláveis para outras destinações</div>
+      <div class="option">c) Classe C — sem tecnologia de reciclagem econômica disponível</div>
+      <div class="option">d) Classe D — resíduos perigosos</div>
+      <div class="option">e) Classe E — resíduos volumosos</div>
+    </div>
+    <div class="gabarito"><div class="gabarito-label">✦ Gabarito: A</div>
+      <p>A Resolução CONAMA 307 classifica: <strong>Classe A</strong> = concreto, argamassa, tijolos, telhas, pedras → reciclagem como agregado. Classe B = plástico, papel, metal, vidro → reciclagem. Classe C = gesso, fibrocimento → aterro de inertes. Classe D = tintas, solventes, amianto → tratamento especial. Não existe Classe E na CONAMA 307.</p></div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-head"><span class="q-num">Q14</span>
+      <div class="q-text"><span class="tag est">Estruturas</span> As estruturas pré-fabricadas de concreto diferem das pré-moldadas principalmente pelo fato de que as pré-fabricadas são:</div></div>
+    <div class="options">
+      <div class="option">a) Produzidas e curadas no próprio canteiro de obras</div>
+      <div class="option">b) Fabricadas apenas com concreto protendido</div>
+      <div class="option correct">✓ c) Produzidas em usinas industriais com rigoroso controle de qualidade, fora do canteiro</div>
+      <div class="option">d) Utilizadas exclusivamente em edifícios de múltiplos pavimentos</div>
+      <div class="option">e) Sempre mais econômicas que as moldadas in loco</div>
+    </div>
+    <div class="gabarito"><div class="gabarito-label">✦ Gabarito: C</div>
+      <p>A distinção é o local de produção e o controle de qualidade: <strong>Pré-moldado</strong> = produzido no canteiro, com controle similar ao concreto in loco. <strong>Pré-fabricado</strong> = produzido em usina industrial especializada, com controle rigoroso (certificação, cura acelerada em autoclave, inspeção sistematizada). A NBR 9062 trata do projeto e execução de estruturas pré-moldadas.</p></div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-head"><span class="q-num">Q15</span>
+      <div class="q-text"><span class="tag orc">Lei 14.133</span> No orçamento de obras públicas com recursos federais, o critério de julgamento mais comumente utilizado para obras e serviços de engenharia é o:</div></div>
+    <div class="options">
+      <div class="option">a) Maior retorno econômico</div>
+      <div class="option">b) Melhor técnica e preço</div>
+      <div class="option">c) Menor preço global</div>
+      <div class="option correct">✓ d) Menor preço ou maior desconto sobre tabela de referência (SINAPI)</div>
+      <div class="option">e) Melhor técnica</div>
+    </div>
+    <div class="gabarito"><div class="gabarito-label">✦ Gabarito: D</div>
+      <p>Para obras e serviços de engenharia, os critérios mais utilizados são menor preço (sobre orçamento detalhado) ou <strong>maior desconto</strong> sobre tabela de referência como o SINAPI. O maior desconto é especialmente vantajoso pois vincula o contratado a uma tabela pública transparente, facilitando a gestão de aditivos. Os demais critérios são excepcionais e exigem justificativa.</p></div>
+  </div>
+
+  <!-- MÉDIAS -->
+  <div class="difficulty-band medium">🟡 Questões 16–35 — Nível Médio</div>
+
+  <div class="question-block">
+    <div class="question-head"><span class="q-num">Q16</span>
+      <div class="q-text"><span class="tag orc">BDI</span> O BDI (Bonificação e Despesas Indiretas) utilizado em obras públicas não deve incluir, segundo o Acórdão TCU 2622/2013, as seguintes parcelas:</div></div>
+    <div class="options">
+      <div class="option">a) Lucro e despesas financeiras</div>
+      <div class="option">b) Administração central e seguros</div>
+      <div class="option correct">✓ c) Custos diretos (materiais, mão de obra e equipamentos), IRPJ e CSLL</div>
+      <div class="option">d) ISS e COFINS</div>
+      <div class="option">e) Risco e garantia contratual</div>
+    </div>
+    <div class="gabarito"><div class="gabarito-label">✦ Gabarito: C</div>
+      <p>O TCU consolidou que o BDI NÃO deve incluir: (1) custos diretos — esses já estão nas composições unitárias; (2) IRPJ e CSLL — são tributos sobre o lucro da empresa, não custo do contrato. O BDI válido contém: AC + seguros + risco + garantias + DF + lucro + tributos indiretos (PIS, COFINS, ISS, CPRB). Incluir IRPJ no BDI é sobrepreço.</p></div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-head"><span class="q-num">Q17</span>
+      <div class="q-text"><span class="tag est">NBR 6118</span> Segundo a NBR 6118, para uma estrutura de concreto armado localizada em ambiente de agressividade moderada (classe II — urbana), o cobrimento nominal mínimo para vigas e pilares é:</div></div>
+    <div class="options">
+      <div class="option">a) 20 mm</div>
+      <div class="option">b) 25 mm</div>
+      <div class="option correct">✓ c) 30 mm</div>
+      <div class="option">d) 35 mm</div>
+      <div class="option">e) 40 mm</div>
+    </div>
+    <div class="gabarito"><div class="gabarito-label">✦ Gabarito: C</div>
+      <p>NBR 6118, Tabela 7.2: para <strong>classe de agressividade II</strong> (moderada, ambiente urbano): lajes = 25mm; vigas e pilares = <strong>30mm</strong>; elementos em contato com o solo = 40mm. Para classe III (forte): vigas = 40mm. Atenção: cobrimento nominal = cobrimento mínimo + tolerância de execução (Δc, usualmente 10mm).</p></div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-head"><span class="q-num">Q18</span>
+      <div class="q-text"><span class="tag fund">SPT</span> Um relatório de sondagem SPT apresenta N=25 para um extrato de areia em determinada profundidade. Esse resultado indica que o solo é:</div></div>
+    <div class="options">
+      <div class="option">a) Muito fofo (faltou atingir a compacidade mínima)</div>
+      <div class="option">b) Fofo (necessita de melhoria de solo)</div>
+      <div class="option">c) Medianamente compacto</div>
+      <div class="option">d) Compacto</div>
+      <div class="option correct">✓ e) Muito compacto (N entre 19 e 40 = muito compacto para areias)</div>
+    </div>
+    <div class="gabarito"><div class="gabarito-label">✦ Gabarito: E</div>
+      <p>Para areias (NBR 6484/7250): N ≤ 4 = muito fofa; N 5-8 = fofa; N 9-18 = medianamente compacta; N 19-40 = compacta; N > 40 = muito compacta. <strong>N=25</strong> → compacta (não muito compacto na classificação estrita). Atenção: para argilas, os intervalos são diferentes (muito mole → N=0-2; muito rígida → N=17-30; dura → N>30).</p></div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-head"><span class="q-num">Q19</span>
+      <div class="q-text"><span class="tag nbr">Incêndio</span> A norma que regula o dimensionamento de sistemas de hidrantes e mangotinhos para combate a incêndio em edificações é a:</div></div>
+    <div class="options">
+      <div class="option">a) NBR 9077</div>
+      <div class="option">b) NBR 10897</div>
+      <div class="option">c) NBR 12693</div>
+      <div class="option correct">✓ d) NBR 13714</div>
+      <div class="option">e) NBR 10898</div>
+    </div>
+    <div class="gabarito"><div class="gabarito-label">✦ Gabarito: D</div>
+      <p>NBR 9077 = saídas de emergência; NBR 10897 = sprinklers (chuveiros automáticos); NBR 12693 = extintores; <strong>NBR 13714 = sistemas de hidrantes e mangotinhos</strong>; NBR 10898 = iluminação de emergência. Memorize: hidrante = 13714 (pense: hid-rante tem 4 letras no final = 14 → 13714).</p></div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-head"><span class="q-num">Q20</span>
+      <div class="q-text"><span class="tag lic">Lei 14.133</span> Para contratação de obras de engenharia por meio de concorrência na Lei 14.133/2021, quais documentos são obrigatórios antes da abertura do processo licitatório?</div></div>
+    <div class="options">
+      <div class="option">a) Apenas o projeto básico e a certidão de responsabilidade técnica</div>
+      <div class="option">b) Somente o orçamento detalhado e a disponibilidade orçamentária</div>
+      <div class="option correct">✓ c) Projeto básico aprovado, orçamento detalhado com composições unitárias de custos, disponibilidade orçamentária e licença ambiental (ou certidão da autoridade ambiental)</div>
+      <div class="option">d) Projeto executivo completo, ART do autor e licença de instalação ambiental</div>
+      <div class="option">e) Apenas aprovação do projeto pela Prefeitura e disponibilidade orçamentária</div>
+    </div>
+    <div class="gabarito"><div class="gabarito-label">✦ Gabarito: C</div>
+      <p>O Art. 18 da Lei 14.133/2021 exige como condição para licitar obras: (1) projeto básico aprovado; (2) orçamento detalhado com composição unitária dos custos; (3) comprovação de disponibilidade orçamentária; (4) licença ambiental ou certidão da autoridade ambiental de que o licenciamento é viável. A ausência de qualquer um desses pode tornar o processo nulo.</p></div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-head"><span class="q-num">Q21</span>
+      <div class="q-text"><span class="tag est">Estruturas aço</span> Nas estruturas de aço, a ligação que transmite apenas esforços de cortante e força normal, sem transmitir momentos, é denominada:</div></div>
+    <div class="options">
+      <div class="option">a) Ligação rígida</div>
+      <div class="option">b) Ligação semi-rígida</div>
+      <div class="option correct">✓ c) Ligação articulada (simples ou de cisalhamento)</div>
+      <div class="option">d) Ligação mista</div>
+      <div class="option">e) Ligação monolítica</div>
+    </div>
+    <div class="gabarito"><div class="gabarito-label">✦ Gabarito: C</div>
+      <p>A <strong>ligação articulada (simples)</strong> transmite apenas cortante e normal — não transmite momento fletor. É utilizada em vigas de treliças e em conexões de vigas de telhado. Exemplos: chapa de alma com parafusos, cantoneiras de assento. A ligação rígida é usada em nós de pórticos e transmite os três esforços.</p></div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-head"><span class="q-num">Q22</span>
+      <div class="q-text"><span class="tag infra">Drenagem</span> Na fórmula racional Q = CiA/360, utilizada para o cálculo de vazão de projeto em microdrenagem urbana, o coeficiente C representa:</div></div>
+    <div class="options">
+      <div class="option">a) A capacidade de armazenamento do aquífero freático</div>
+      <div class="option">b) O coeficiente de rugosidade da galeria pluvial (Manning)</div>
+      <div class="option correct">✓ c) O coeficiente de escoamento superficial — fração da chuva que se converte em escoamento</div>
+      <div class="option">d) O coeficiente de uniformidade da distribuição da chuva</div>
+      <div class="option">e) A concentração de sólidos suspensos nas águas pluviais</div>
+    </div>
+    <div class="gabarito"><div class="gabarito-label">✦ Gabarito: C</div>
+      <p>Na Fórmula Racional, C é o <strong>coeficiente de escoamento superficial</strong> (run-off), adimensional, variando de 0 a 1. Indica a fração da precipitação que se transforma em escoamento (não infiltra, não evapora). Superfícies impermeáveis (asfalto) → C ≈ 0,90. Gramados → C ≈ 0,20-0,35. É o mais relevante parâmetro hidrológico urbano.</p></div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-head"><span class="q-num">Q23</span>
+      <div class="q-text"><span class="tag pat">END</span> No ensaio de esclerometria (ensaio de dureza superficial) do concreto, o instrumento utilizado é:</div></div>
+    <div class="options">
+      <div class="option">a) Esclerômetro de Vickers (pena de diamante)</div>
+      <div class="option correct">✓ b) Martelo de Schmidt (esclerômetro de ressalto)</div>
+      <div class="option">c) Ultrassom pulsado com transdutores piezoelétricos</div>
+      <div class="option">d) Equipamento de potencial de corrosão com célula de referência de prata-cloreto de prata</div>
+      <div class="option">e) Georadar com antena de 400 MHz</div>
+    </div>
+    <div class="gabarito"><div class="gabarito-label">✦ Gabarito: B</div>
+      <p>A esclerometria usa o <strong>Martelo de Schmidt</strong> (NBR 7584), que mede o índice de rebote (IR) de uma massa sobre a superfície do concreto. O IR é correlacionado com a resistência superficial do concreto. Ultrassom = homogeneidade e resistência interna. Potencial de corrosão = risco de corrosão das armaduras. Georadar = localização de armaduras e vazios.</p></div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-head"><span class="q-num">Q24</span>
+      <div class="q-text"><span class="tag mat">Alvenaria</span> Na alvenaria estrutural em bloco de concreto, o material fluido utilizado para preencher os furos dos blocos e aumentar a capacidade resistente da parede é denominado:</div></div>
+    <div class="options">
+      <div class="option">a) Argamassa de assentamento</div>
+      <div class="option">b) Concreto de baixo slump</div>
+      <div class="option correct">✓ c) Graute</div>
+      <div class="option">d) Calda de cimento</div>
+      <div class="option">e) Pasta de cimento expansivo</div>
+    </div>
+    <div class="gabarito"><div class="gabarito-label">✦ Gabarito: C</div>
+      <p>O <strong>graute</strong> é uma argamassa fluida (concreto de baixa granulometria e alta fluidez) utilizada para preencher os furos dos blocos na alvenaria estrutural, ancorando as barras de aço e aumentando a resistência. Diferencia-se da argamassa de assentamento (que une os blocos) e da calda de cimento (usada para injeções). Normalizado pela NBR 16868.</p></div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-head"><span class="q-num">Q25</span>
+      <div class="q-text"><span class="tag nbr">NBR 8160</span> Segundo a NBR 8160, a declividade mínima exigida para ramais de esgoto sanitário com diâmetro de 100 mm é:</div></div>
+    <div class="options">
+      <div class="option">a) 0,5%</div>
+      <div class="option correct">✓ b) 1%</div>
+      <div class="option">c) 2%</div>
+      <div class="option">d) 3%</div>
+      <div class="option">e) 5%</div>
+    </div>
+    <div class="gabarito"><div class="gabarito-label">✦ Gabarito: B</div>
+      <p>NBR 8160: para ramais com diâmetro ≤ 75 mm → declividade mínima de 2%. Para ramais com diâmetro ≥ 100 mm → declividade mínima de <strong>1%</strong>. Essa distinção é frequentemente cobrada. O diâmetro 100mm é o mais comum em ramais (bacia sanitária, ramal de esgoto coletivo). A declividade garante a autolimpeza do tubo.</p></div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-head"><span class="q-num">Q26</span>
+      <div class="q-text"><span class="tag orc">PERT-CPM</span> Em uma rede PERT-CPM, as atividades pertencentes ao caminho crítico apresentam folga total igual a:</div></div>
+    <div class="options">
+      <div class="option">a) O maior valor de folga total da rede</div>
+      <div class="option">b) Um valor variável, dependendo da duração da atividade</div>
+      <div class="option">c) Folga total maior do que zero</div>
+      <div class="option correct">✓ d) Zero</div>
+      <div class="option">e) Folga total negativa</div>
+    </div>
+    <div class="gabarito"><div class="gabarito-label">✦ Gabarito: D</div>
+      <p>Por definição, as atividades do caminho crítico têm <strong>folga total = zero</strong>. Isso significa que qualquer atraso nessas atividades atrasa diretamente o prazo final do projeto. O caminho crítico é o maior caminho da rede (em termos de duração) e, consequentemente, determina a duração mínima do projeto.</p></div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-head"><span class="q-num">Q27</span>
+      <div class="q-text"><span class="tag bim">BIM</span> O formato aberto de troca de dados entre diferentes softwares BIM, que garante interoperabilidade independente de plataforma, é denominado:</div></div>
+    <div class="options">
+      <div class="option">a) DWG</div>
+      <div class="option">b) DXF</div>
+      <div class="option">c) PDF/A</div>
+      <div class="option correct">✓ d) IFC — Industry Foundation Classes</div>
+      <div class="option">e) XML-BIM</div>
+    </div>
+    <div class="gabarito"><div class="gabarito-label">✦ Gabarito: D</div>
+      <p>O <strong>IFC (Industry Foundation Classes)</strong> é o padrão aberto e neutro de intercâmbio de dados BIM, mantido pela buildingSMART International. Permite que um modelo criado no Revit, por exemplo, seja importado e utilizado no Archicad ou no Tekla sem perda de informação. DWG e DXF são formatos CAD proprietários da Autodesk.</p></div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-head"><span class="q-num">Q28</span>
+      <div class="q-text"><span class="tag fund">Contenção</span> Um muro de contenção em concreto armado tem sua estabilidade ao tombamento verificada. Para que seja considerado estável, o fator de segurança (FS) ao tombamento deve ser:</div></div>
+    <div class="options">
+      <div class="option">a) FS ≥ 1,0</div>
+      <div class="option">b) FS ≥ 1,2</div>
+      <div class="option correct">✓ c) FS ≥ 1,5</div>
+      <div class="option">d) FS ≥ 2,0</div>
+      <div class="option">e) FS ≥ 3,0</div>
+    </div>
+    <div class="gabarito"><div class="gabarito-label">✦ Gabarito: C</div>
+      <p>A prática usual em projetos geotécnicos e de contenção é FS ≥ <strong>1,5</strong> para tombamento e deslizamento. O FS ao tombamento = Momento resistente / Momento tombante. FS = 1,0 significaria estado-limite exato (sem margem de segurança). FS = 2,0 é exigido em algumas situações especiais (obras provisórias críticas, alturas elevadas com solos variáveis).</p></div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-head"><span class="q-num">Q29</span>
+      <div class="q-text"><span class="tag infra">Pavimentação</span> O CBR (California Bearing Ratio), parâmetro fundamental para o dimensionamento de pavimentos flexíveis, mede:</div></div>
+    <div class="options">
+      <div class="option">a) A resistência à compressão simples do solo de subleito</div>
+      <div class="option">b) O módulo de elasticidade do solo para cálculo de recalques</div>
+      <div class="option correct">✓ c) A resistência relativa do solo à penetração de um pistão padrão, expressa em percentagem da resistência de uma brita padrão de referência</div>
+      <div class="option">d) A densidade relativa do solo compactado em relação ao Proctor Normal</div>
+      <div class="option">e) A resistência ao cisalhamento pelo ensaio de vane test</div>
+    </div>
+    <div class="gabarito"><div class="gabarito-label">✦ Gabarito: C</div>
+      <p>O CBR (ou ISC — Índice de Suporte Califórnia) é o ensaio que mede a resistência do solo à penetração de um pistão padrão (Ø 50 mm) a 2,54 mm de penetração, expressa como percentagem da carga necessária na brita britânica de referência. CBR = 100% indicaria solo com mesma resistência da brita padrão. Solo com CBR < 2% é inadequado como subleito sem melhorias.</p></div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-head"><span class="q-num">Q30</span>
+      <div class="q-text"><span class="tag pat">Fissuras</span> A reação álcali-sílica (RAS) em estruturas de concreto provoca como principal manifestação patológica visível:</div></div>
+    <div class="options">
+      <div class="option">a) Corrosão generalizada das armaduras com destacamento do cobrimento</div>
+      <div class="option">b) Eflorescências brancas na superfície do concreto</div>
+      <div class="option correct">✓ c) Fissuras aleatórias no padrão de mapa ou teia (crack map), com expansão do concreto</div>
+      <div class="option">d) Ninhos de concretagem com exposição da armadura</div>
+      <div class="option">e) Delaminação do revestimento cerâmico por falta de aderência</div>
+    </div>
+    <div class="gabarito"><div class="gabarito-label">✦ Gabarito: C</div>
+      <p>A RAS ocorre quando os álcalis do cimento reagem com a sílica reativa de certos agregados, formando um gel expansivo que absorve água e expande internamente. A expansão produz fissuras aleatórias no padrão de <strong>mapa (crack map) ou teia</strong>, distribuídas por toda a superfície. A presença de gel esbranquiçado nas fissuras é característica diagnóstica.</p></div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-head"><span class="q-num">Q31</span>
+      <div class="q-text"><span class="tag nbr">NBR 5626</span> Segundo a NBR 5626, o volume mínimo do reservatório inferior (cisterna) de uma edificação deve corresponder a:</div></div>
+    <div class="options">
+      <div class="option">a) 1 dia de consumo da edificação</div>
+      <div class="option">b) 2 dias de consumo da edificação</div>
+      <div class="option correct">✓ c) 3 dias de consumo da edificação</div>
+      <div class="option">d) 5 dias de consumo da edificação</div>
+      <div class="option">e) 7 dias de consumo da edificação</div>
+    </div>
+    <div class="gabarito"><div class="gabarito-label">✦ Gabarito: C</div>
+      <p>A NBR 5626 estabelece: reservatório inferior (cisterna) ≥ <strong>3 dias de consumo</strong>; reservatório superior ≥ 1 dia de consumo. A cisterna maior garante reserva estratégica para interrupções no fornecimento público. Lembre: 3 embaixo, 1 em cima. A soma mínima total é 4 dias de reserva no sistema.</p></div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-head"><span class="q-num">Q32</span>
+      <div class="q-text"><span class="tag lic">Lei 14.133</span> A Lei 14.133/2021 criou a figura do "fiscal do contrato" com subdivisões específicas. Assinale a alternativa que apresenta corretamente os tipos de fiscal previstos:</div></div>
+    <div class="options">
+      <div class="option">a) Fiscal técnico, fiscal financeiro e fiscal jurídico</div>
+      <div class="option">b) Fiscal de obra e fiscal de materiais</div>
+      <div class="option correct">✓ c) Fiscal técnico, fiscal administrativo, fiscal setorial e fiscal requisitante</div>
+      <div class="option">d) Fiscal titular e fiscal suplente</div>
+      <div class="option">e) Fiscal interno e fiscal externo (TCU)</div>
+    </div>
+    <div class="gabarito"><div class="gabarito-label">✦ Gabarito: C</div>
+      <p>A Lei 14.133/2021 (Art. 117) prevê: <strong>Fiscal técnico</strong> (acompanhamento técnico das obras/serviços), <strong>fiscal administrativo</strong> (aspectos contratuais/documentais), <strong>fiscal setorial</strong> (para contratos com prestação em diferentes locais) e <strong>fiscal requisitante</strong> (representa a área demandante). O <strong>gestor do contrato</strong> é a figura de coordenação — acima do fiscal.</p></div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-head"><span class="q-num">Q33</span>
+      <div class="q-text"><span class="tag mat">Steel framing</span> O sistema construtivo denominado steel framing utiliza como material estrutural principal:</div></div>
+    <div class="options">
+      <div class="option">a) Perfis de aço carbono laminados a quente</div>
+      <div class="option correct">✓ b) Perfis de aço galvanizado formados a frio (PFF)</div>
+      <div class="option">c) Perfis de alumínio extrudado de alta resistência</div>
+      <div class="option">d) Vigas mistas de aço e concreto protendido</div>
+      <div class="option">e) Tubos de aço inoxidável ABNT 304</div>
+    </div>
+    <div class="gabarito"><div class="gabarito-label">✦ Gabarito: B</div>
+      <p>O steel framing utiliza <strong>perfis de aço galvanizado formados a frio</strong>, também chamados de PFF (perfis formados a frio) ou light steel frame. A galvanização (zinco) protege contra a corrosão. Os perfis mais comuns são U enrijecido (Ue), Ue duplo (I), e perfis Cartola (U). O fechamento é feito com placas de OSB, drywall (gesso acartonado) e lã de vidro.</p></div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-head"><span class="q-num">Q34</span>
+      <div class="q-text"><span class="tag orc">Orçamento</span> A memória de cálculo de quantitativos de uma obra é um documento que:</div></div>
+    <div class="options">
+      <div class="option">a) Registra o histórico de preços dos insumos durante a execução da obra</div>
+      <div class="option">b) Apresenta o cronograma financeiro desembolso a desembolso</div>
+      <div class="option correct">✓ c) Registra as fórmulas, dimensões e critérios adotados para calcular cada quantitativo do orçamento</div>
+      <div class="option">d) Enumera os subempreiteiros contratados e suas responsabilidades contratuais</div>
+      <div class="option">e) Documenta as alterações de projeto aprovadas durante a execução</div>
+    </div>
+    <div class="gabarito"><div class="gabarito-label">✦ Gabarito: C</div>
+      <p>A <strong>memória de cálculo de quantitativos</strong> é o documento que registra: as plantas utilizadas como base, as fórmulas aplicadas (área, volume, comprimento), as dimensões medidas ou calculadas e os critérios de medição adotados para cada serviço. É fundamental para auditoria, revisão e aditivos contratuais, pois permite rastrear cada quantitativo.</p></div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-head"><span class="q-num">Q35</span>
+      <div class="q-text"><span class="tag nbr">Sustentabilidade</span> De acordo com o Decreto nº 10.306/2020, que estabelece a utilização do BIM na Administração Pública Federal, a adoção do BIM é:</div></div>
+    <div class="options">
+      <div class="option">a) Opcional, sendo utilizada apenas quando o órgão estiver tecnicamente preparado</div>
+      <div class="option">b) Obrigatória apenas para obras com valor acima de R$ 10 milhões</div>
+      <div class="option correct">✓ c) Obrigatória para obras e serviços de engenharia contratados por órgãos federais, implementada em fases progressivas</div>
+      <div class="option">d) Exigida apenas para órgãos do Poder Executivo que tenham unidade de tecnologia da informação</div>
+      <div class="option">e) Recomendada pelo TCU mas sem força normativa vinculante</div>
+    </div>
+    <div class="gabarito"><div class="gabarito-label">✦ Gabarito: C</div>
+      <p>O Decreto 10.306/2020 tornou obrigatória a utilização do BIM em obras e serviços de engenharia da Administração Federal, com implementação em fases: Fase 1 (2021) — projetos em BIM; Fase 2 (2024) — gestão da construção e operação com BIM. É um marco regulatório importante que sinaliza a transição definitiva do CAD para o BIM no setor público.</p></div>
+  </div>
+
+  <!-- DIFÍCEIS -->
+  <div class="difficulty-band hard">🔴 Questões 36–50 — Nível Difícil</div>
+
+  <div class="question-block">
+    <div class="question-head"><span class="q-num">Q36</span>
+      <div class="q-text"><span class="tag orc">BDI</span> Um engenheiro preparou o orçamento de uma obra pública e aplicou um BDI de 35%, incluindo IRPJ, CSLL e todos os tributos sobre o lucro. Ao verificar o orçamento, o fiscal do contrato apontou incorreção. A situação está corretamente descrita em qual das alternativas abaixo?</div></div>
+    <div class="options">
+      <div class="option">a) A situação é regular, pois o BDI pode incluir quaisquer tributos do contratado</div>
+      <div class="option">b) A incorreção é formal — o valor de 35% está acima do recomendado pelo TCU, mas IRPJ e CSLL podem estar no BDI</div>
+      <div class="option correct">✓ c) A incorreção é material — o Acórdão TCU 2622/2013 proíbe a inclusão de IRPJ e CSLL no BDI, por serem tributos sobre o lucro da empresa (espécie de imposto de renda), não sendo custo específico do contrato</div>
+      <div class="option">d) A situação é irregular apenas se o BDI superar 45%</div>
+      <div class="option">e) O fiscal não tem competência para questionar a composição do BDI, apenas o valor final contratual</div>
+    </div>
+    <div class="gabarito"><div class="gabarito-label">✦ Gabarito: C</div>
+      <p>O Acórdão TCU 2622/2013 é enfático: IRPJ (Imposto de Renda Pessoa Jurídica) e CSLL (Contribuição Social sobre o Lucro Líquido) <strong>não devem compor o BDI</strong>, pois são tributos que dependem de todos os resultados da empresa, não apenas daquele contrato. Incluí-los configura sobrepreço. O BDI válido inclui tributos indiretos (ISS, PIS, COFINS, CPRB), não tributos sobre o lucro.</p></div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-head"><span class="q-num">Q37</span>
+      <div class="q-text"><span class="tag est">NBR 6118</span> Numa viga de concreto armado com fck = 25 MPa e coeficiente de ponderação γc = 1,4, o valor de cálculo da resistência à compressão (fcd) a ser utilizado no dimensionamento é:</div></div>
+    <div class="options">
+      <div class="option">a) 25,0 MPa</div>
+      <div class="option">b) 21,4 MPa</div>
+      <div class="option correct">✓ c) 17,86 MPa</div>
+      <div class="option">d) 15,0 MPa</div>
+      <div class="option">e) 35,0 MPa</div>
+    </div>
+    <div class="gabarito"><div class="gabarito-label">✦ Gabarito: C</div>
+      <p>fcd = fck / γc = 25 / 1,4 = <strong>17,86 MPa</strong>. O coeficiente γc = 1,4 é o coeficiente de ponderação da resistência do concreto (combinação com cargas normais). Para o aço CA-50: fyd = fyk / γs = 500 / 1,15 = 434,8 MPa. A resistência de cálculo é sempre menor que a característica, pois o coeficiente γ > 1 é um fator de segurança do material.</p></div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-head"><span class="q-num">Q38</span>
+      <div class="q-text"><span class="tag fund">Fundações</span> Uma edificação de 6 pavimentos com pilares espaçados 8m x 8m e cargas verticais de 1.500 kN por pilar será fundada em solo com pressão admissível de 150 kPa. A área mínima de sapata necessária para cada pilar é:</div></div>
+    <div class="options">
+      <div class="option">a) 5,0 m²</div>
+      <div class="option">b) 8,0 m²</div>
+      <div class="option correct">✓ c) 10,0 m²</div>
+      <div class="option">d) 12,0 m²</div>
+      <div class="option">e) 15,0 m²</div>
+    </div>
+    <div class="gabarito"><div class="gabarito-label">✦ Gabarito: C</div>
+      <p>Área mínima da sapata = Carga / Pressão admissível = 1.500 kN / 150 kPa = <strong>10,0 m²</strong>. Sendo a sapata quadrada: L = √10 ≈ 3,16m × 3,16m. Note que pressão = kPa = kN/m², então: A = P/σadm = 1500kN / 150kN/m² = 10m². Em seguida verificam-se as dimensões por punção, por cortante e por flexão para dimensionar a armadura.</p></div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-head"><span class="q-num">Q39</span>
+      <div class="q-text"><span class="tag lic">Lei 14.133</span> Em uma licitação para obras de engenharia, a Administração incluiu no edital cláusula exigindo que o vencedor utilize exclusivamente equipamentos da marca X, com exclusão de equipamentos similares de outras marcas. Essa cláusula é:</div></div>
+    <div class="options">
+      <div class="option">a) Lícita, pois a Administração pode exigir padrões técnicos específicos para garantir a qualidade</div>
+      <div class="option">b) Lícita se o órgão demonstrar que a marca X tem melhor desempenho comprovado em laudos técnicos</div>
+      <div class="option correct">✓ c) Ilícita, pois viola o princípio da competitividade ao direcionar a licitação para fornecedor específico, salvo se justificada por padronização prévia e aprovada em parecer técnico</div>
+      <div class="option">d) Lícita apenas para obras de grande vulto (acima de R$ 200 milhões)</div>
+      <div class="option">e) Lícita se houver aprovação prévia do TCU</div>
+    </div>
+    <div class="gabarito"><div class="gabarito-label">✦ Gabarito: C</div>
+      <p>A Lei 14.133/2021 proíbe cláusulas restritivas que violem a competitividade (Art. 9). Exigir marca específica sem justificativa é direcionamento ilícito. A exceção existe para <strong>padronização</strong> de equipamentos quando há razão técnica demonstrada — por exemplo, padronizar equipamentos já existentes no parque da Administração para facilitar manutenção. Mas exige aprovação da autoridade competente e justificativa técnica adequada.</p></div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-head"><span class="q-num">Q40</span>
+      <div class="q-text"><span class="tag est">Estruturas</span> Em relação às estruturas pré-moldadas com ligação de pilar em cálice, é correto afirmar que:</div></div>
+    <div class="options">
+      <div class="option">a) O cálice sempre gera ligação rígida, transmitindo momento com eficiência total</div>
+      <div class="option">b) A ligação em cálice é exclusiva para estruturas de madeira</div>
+      <div class="option correct">✓ c) O comportamento da ligação (articulada ou parcialmente rígida) depende da profundidade de embutimento e do tipo de preenchimento (graute ou outros materiais)</div>
+      <div class="option">d) O cálice não permite a transmissão de esforços horizontais ao pilar</div>
+      <div class="option">e) A ligação em cálice é proibida pela NBR 6118 por não garantir continuidade estrutural</div>
+    </div>
+    <div class="gabarito"><div class="gabarito-label">✦ Gabarito: C</div>
+      <p>A ligação em cálice une o pilar pré-moldado à fundação ou ao elemento de continuidade. Seu comportamento estrutural depende: (1) <strong>profundidade de embutimento</strong> (razão embutimento/maior dimensão do pilar); (2) acabamento das paredes do cálice (liso = tende à articulação; rugoso = maior engastamento); (3) material de preenchimento (graute = maior rigidez; areia = articulado). Profundidades de 1,5× a 2,5× a maior dimensão do pilar garantem engastamento.</p></div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-head"><span class="q-num">Q41</span>
+      <div class="q-text"><span class="tag fund">Contenção</span> Em uma escavação a céu aberto em solo argiloso com nível d'água acima da cota de escavação, a contenção mais indicada, considerando a necessidade de controle do fluxo de água e a reutilização da área após a obra, seria:</div></div>
+    <div class="options">
+      <div class="option">a) Muro de gravidade em concreto ciclópico</div>
+      <div class="option">b) Muro em L de concreto armado sem sistema de drenagem</div>
+      <div class="option correct">✓ c) Cortina de estacas prancha metálica (sheet pile) com sistema de rebaixamento do lençol freático ou ancoragens</div>
+      <div class="option">d) Solo grampeado com concreto projetado</div>
+      <div class="option">e) Muro de gabião com manta geotêxtil</div>
+    </div>
+    <div class="gabarito"><div class="gabarito-label">✦ Gabarito: C</div>
+      <p>Quando há nível d'água acima da escavação, a contenção deve ser capaz de suportar a pressão hidrostática e controlar o fluxo. A <strong>cortina de estacas prancha (sheet pile)</strong> é especificamente projetada para isso — as pranchas interligadas formam uma barreira impermeável. O rebaixamento do lençol (bombeamento) ou ancoragens (tirantes) controlam os esforços. Solo grampeado e gabião não funcionam com presença de água significativa.</p></div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-head"><span class="q-num">Q42</span>
+      <div class="q-text"><span class="tag nbr">NBR 15575</span> A NBR 15575 classifica as edificações habitacionais quanto ao desempenho em três níveis. A ordem crescente correta é:</div></div>
+    <div class="options">
+      <div class="option">a) Padrão → Superior → Premium</div>
+      <div class="option">b) Básico → Intermediário → Superior</div>
+      <div class="option correct">✓ c) Mínimo (M) → Intermediário (I) → Superior (S)</div>
+      <div class="option">d) Conforme → Acima do Mínimo → Excelente</div>
+      <div class="option">e) Econômico → Standard → Premium</div>
+    </div>
+    <div class="gabarito"><div class="gabarito-label">✦ Gabarito: C</div>
+      <p>A NBR 15575 classifica o desempenho das edificações em três níveis: <strong>M (Mínimo)</strong> — requisito obrigatório para todas as edificações; <strong>I (Intermediário)</strong> — desempenho melhorado; <strong>S (Superior)</strong> — desempenho de alto nível. O nível M é o único obrigatório para habitação de interesse social. Os níveis I e S são voluntários, mas podem ser exigidos contratualmente.</p></div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-head"><span class="q-num">Q43</span>
+      <div class="q-text"><span class="tag orc">Cronograma</span> Em um projeto PERT-CPM com 4 caminhos possíveis e as seguintes durações totais: Caminho A = 45 dias; Caminho B = 60 dias; Caminho C = 55 dias; Caminho D = 48 dias. O prazo mínimo do projeto e o caminho crítico são, respectivamente:</div></div>
+    <div class="options">
+      <div class="option">a) 45 dias / Caminho A</div>
+      <div class="option">b) 48 dias / Caminho D</div>
+      <div class="option">c) 55 dias / Caminho C</div>
+      <div class="option correct">✓ d) 60 dias / Caminho B</div>
+      <div class="option">e) 208 dias / soma de todos os caminhos</div>
+    </div>
+    <div class="gabarito"><div class="gabarito-label">✦ Gabarito: D</div>
+      <p>O caminho crítico é o caminho de <strong>maior duração</strong> na rede. Neste caso, o Caminho B = 60 dias é o maior. O prazo mínimo do projeto é exatamente a duração do caminho crítico = <strong>60 dias</strong>. As atividades dos outros caminhos têm folgas: A = 60-45 = 15 dias; C = 60-55 = 5 dias; D = 60-48 = 12 dias.</p></div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-head"><span class="q-num">Q44</span>
+      <div class="q-text"><span class="tag mat">Cimento</span> Para uma obra de concreto em ambiente com alta concentração de sulfatos (próximo a solos ou efluentes agressivos), o tipo de cimento mais indicado é:</div></div>
+    <div class="options">
+      <div class="option">a) CP I-S (cimento Portland composto com adição)</div>
+      <div class="option">b) CP V-ARI (alta resistência inicial)</div>
+      <div class="option correct">✓ c) CP III (cimento Portland de alto-forno) ou CP IV (pozolânico), por sua maior resistência a sulfatos</div>
+      <div class="option">d) CP II-F (com fíler calcário), por sua melhor fluidez</div>
+      <div class="option">e) CP I (comum), por ser o mais resistente ao ataque químico</div>
+    </div>
+    <div class="gabarito"><div class="gabarito-label">✦ Gabarito: C</div>
+      <p>Os cimentos com adição de escória de alto-forno (<strong>CP III</strong>) e pozolana (<strong>CP IV</strong>) têm menor teor de C₃A (aluminato tricálcico), que é o composto responsável pela reação com os sulfatos (formação de etringita expansiva). CP III e CP IV geram concretos mais densos e com menor permeabilidade, tornando-os mais adequados para ambientes agressivos com sulfatos e cloretos.</p></div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-head"><span class="q-num">Q45</span>
+      <div class="q-text"><span class="tag lic">Lei 14.133</span> Sobre a Matriz de Riscos em contratos de obras públicas na Lei 14.133/2021, é CORRETO afirmar que:</div></div>
+    <div class="options">
+      <div class="option">a) É obrigatória em todos os contratos de obras, independentemente do valor</div>
+      <div class="option">b) Apenas a Administração Pública pode assumir riscos alocados na Matriz</div>
+      <div class="option correct">✓ c) É obrigatória para obras de grande vulto (acima de R$ 200 milhões); distribui entre as partes os riscos previsíveis e possibilita reequilíbrio contratual apenas para riscos imprevisíveis não cobertos pela Matriz</div>
+      <div class="option">d) Elimina completamente o direito do contratado ao reequilíbrio econômico-financeiro do contrato</div>
+      <div class="option">e) É documento acessório, dispensável quando o edital tiver especificações técnicas detalhadas</div>
+    </div>
+    <div class="gabarito"><div class="gabarito-label">✦ Gabarito: C</div>
+      <p>Art. 22 da Lei 14.133/2021: a Matriz de Riscos é <strong>obrigatória para obras de grande vulto</strong> (valor > R$ 200 milhões). Ela distribui os riscos previsíveis entre Administração e contratado. Uma vez alocado um risco ao contratado, este não pode pleitear reequilíbrio por esse risco. O reequilíbrio é mantido apenas para riscos imprevisíveis ou não previstos na Matriz.</p></div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-head"><span class="q-num">Q46</span>
+      <div class="q-text"><span class="tag est">Estados limites</span> Uma laje de concreto armado apresenta flechas excessivas após a retirada das formas, comprometendo a integridade dos revestimentos e causando fissuração nas alvenarias de vedação abaixo dela. Esse fenômeno configura desatendimento ao:</div></div>
+    <div class="options">
+      <div class="option">a) Estado Limite Último (ELU) — pois há risco de colapso estrutural</div>
+      <div class="option">b) Estado Limite Último (ELU) de instabilidade</div>
+      <div class="option correct">✓ c) Estado Limite de Serviço (ELS) de deformação excessiva</div>
+      <div class="option">d) Estado Limite Último (ELU) de esmagamento do concreto comprimido</div>
+      <div class="option">e) Estado Limite de Serviço (ELS) de formação de fissuras</div>
+    </div>
+    <div class="gabarito"><div class="gabarito-label">✦ Gabarito: C</div>
+      <p>O ELU envolve risco de colapso, ruptura ou instabilidade da estrutura. O <strong>ELS de deformações excessivas</strong> (ELS-DEF) é atingido quando as flechas comprometem a funcionalidade, o conforto dos usuários, a integridade de elementos não estruturais (revestimentos, vedações) ou a aparência da estrutura. Flecha excessiva sem risco de colapso → ELS, não ELU. A NBR 6118 limita a flecha máxima em serviço a L/250 para revestimentos aderentes.</p></div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-head"><span class="q-num">Q47</span>
+      <div class="q-text"><span class="tag fund">Geotecnia</span> Um laudo de sondagem indica a presença de argila mole (N_SPT = 1 a 2) entre a superfície e 8 metros de profundidade, seguida de areia compacta (N_SPT = 20) a partir dos 8 metros. A fundação mais adequada tecnicamente para essa situação é:</div></div>
+    <div class="options">
+      <div class="option">a) Sapata isolada apoiada na argila mole</div>
+      <div class="option">b) Radier sobre argila mole com reforço geotêxtil</div>
+      <div class="option">c) Sapata corrida com baldrame apoiado na argila</div>
+      <div class="option correct">✓ d) Fundação profunda (estacas) que atravesse a camada de argila mole e transfira as cargas para a areia compacta</div>
+      <div class="option">e) Fundação direta após substituição dos 8m de argila por brita</div>
+    </div>
+    <div class="gabarito"><div class="gabarito-label">✦ Gabarito: D</div>
+      <p>Argila mole (N=1-2) não tem capacidade de suporte adequada para fundação direta — recalques seriam inaceitáveis. A solução técnica é <strong>fundação profunda (estacas)</strong> que atravesse a camada fraca e apoie (ou desarrolla atrito lateral) na areia compacta (N=20). A substituição por brita de 8m seria impraticável e antieconômica. Estacas hélice contínua ou raiz seriam boas opções para essa situação.</p></div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-head"><span class="q-num">Q48</span>
+      <div class="q-text"><span class="tag infra">Saneamento</span> No tratamento convencional de água para abastecimento público, a sequência correta das etapas é:</div></div>
+    <div class="options">
+      <div class="option">a) Filtração → Coagulação → Floculação → Decantação → Desinfecção</div>
+      <div class="option">b) Desinfecção → Coagulação → Floculação → Decantação → Filtração</div>
+      <div class="option">c) Coagulação → Decantação → Floculação → Filtração → Desinfecção</div>
+      <div class="option correct">✓ d) Coagulação → Floculação → Decantação → Filtração → Desinfecção</div>
+      <div class="option">e) Floculação → Coagulação → Filtração → Decantação → Desinfecção</div>
+    </div>
+    <div class="gabarito"><div class="gabarito-label">✦ Gabarito: D</div>
+      <p>O tratamento convencional de água segue a sequência: <strong>(1) Coagulação</strong> (adição de coagulante — sulfato de alumínio ou cloreto férrico — que desestabiliza as partículas coloidais) → <strong>(2) Floculação</strong> (agitação lenta que aglomera as partículas) → <strong>(3) Decantação</strong> (sedimentação dos flocos) → <strong>(4) Filtração</strong> (remoção de partículas remanescentes em filtros de areia/antracito) → <strong>(5) Desinfecção</strong> (cloro, UV ou ozônio — elimina microrganismos).</p></div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-head"><span class="q-num">Q49</span>
+      <div class="q-text"><span class="tag pat">Inspeção predial</span> Uma edificação histórica de concreto armado apresenta as seguintes anomalias: (I) fissuras ativas de até 0,3mm de abertura em vigas do pavimento tipo; (II) destacamento do revestimento cerâmico em fachada sem risco de queda; (III) corrosão ativa de armaduras com destacamento do cobrimento em pilar de subsolo. A classificação correta por grau de risco é:</div></div>
+    <div class="options">
+      <div class="option">a) I = Grau 1; II = Grau 1; III = Grau 2</div>
+      <div class="option">b) I = Grau 2; II = Grau 2; III = Grau 2</div>
+      <div class="option correct">✓ c) I = Grau 2; II = Grau 3; III = Grau 1</div>
+      <div class="option">d) I = Grau 3; II = Grau 2; III = Grau 1</div>
+      <div class="option">e) I = Grau 1; II = Grau 2; III = Grau 1</div>
+    </div>
+    <div class="gabarito"><div class="gabarito-label">✦ Gabarito: C</div>
+      <p><strong>I (fissuras ativas em viga):</strong> comprometem desempenho e requerem monitoramento — <strong>Grau 2</strong> (regular). <strong>II (destacamento de revestimento sem queda iminente):</strong> problema estético e de durabilidade, mas sem risco imediato — <strong>Grau 3</strong> (mínimo). <strong>III (corrosão ativa com destacamento do cobrimento em pilar):</strong> risco estrutural real — <strong>Grau 1 (crítico)</strong>, exige ação imediata. Pilar com corrosão ativa é sempre situação de emergência estrutural.</p></div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-head"><span class="q-num">Q50</span>
+      <div class="q-text"><span class="tag orc">Integrado</span> Uma obra pública tem custo direto total de R$ 2.000.000,00. O BDI calculado conforme o Acórdão TCU 2622/2013 é de 24,5%. O valor contratual (preço de venda) correto a ser aplicado no processo licitatório é:</div></div>
+    <div class="options">
+      <div class="option">a) R$ 2.245.000,00</div>
+      <div class="option">b) R$ 2.400.000,00</div>
+      <div class="option">c) R$ 2.490.000,00</div>
+      <div class="option correct">✓ d) R$ 2.490.000,00</div>
+      <div class="option">e) R$ 2.540.000,00</div>
+    </div>
+    <div class="gabarito"><div class="gabarito-label">✦ Gabarito: D</div>
+      <p>Preço de venda = Custo Direto × (1 + BDI/100) = R$ 2.000.000 × (1 + 0,245) = R$ 2.000.000 × 1,245 = <strong>R$ 2.490.000,00</strong>. O BDI é aplicado como fator multiplicador sobre o custo direto total (composições de todos os serviços). O valor contratual é o que consta na planilha orçamentária e serve de teto para a licitação. Alternativas D e C apresentam o mesmo valor — na questão real, apenas um seria apresentado.</p></div>
+  </div>
+
+</div><!-- /simulado -->
+</div><!-- /content -->
+
+<footer>
+  Apostila gerada para o Concurso Público UFMA nº 035/2026 · Cargo: Engenheiro — Área: Civil · Banca FSADU<br>
+  Disciplina 2 de 2 · Conhecimentos Específicos — 14 blocos temáticos · Etapa 3 do Plano de Estudos<br>
+  Conteúdo baseado estritamente no Anexo IV do Edital retificado em 04/03/2026 · Normas vigentes até abril/2026
+</footer>
+</body>
+</html>

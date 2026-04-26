@@ -20,6 +20,7 @@
   --blue:#3d8fd1;--blue2:#5aaee8;
   --green:#3d9e72;--green2:#5ec090;
   --red:#c05050;--red2:#e07070;
+  --purple:#8b5cf6;--purple2:#a78bfa;
 }
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:var(--bg);color:var(--text);font-family:'Lato',sans-serif;font-size:15px;line-height:1.75;min-height:100vh}
@@ -169,6 +170,8 @@ body{background:var(--bg);color:var(--text);font-family:'Lato',sans-serif;font-s
   color:var(--gold);
 }
 .dc-tag.tag-blue{background:rgba(61,143,209,.08);border-color:rgba(61,143,209,.2);color:var(--blue2);}
+.dc-tag.tag-purple{background:rgba(139,92,246,.08);border-color:rgba(139,92,246,.2);color:var(--purple2);}
+.dc-tag.tag-green{background:rgba(61,158,114,.08);border-color:rgba(61,158,114,.2);color:var(--green2);}
 .dc-actions{
   display:flex;gap:8px;flex-wrap:wrap;margin-top:auto;padding-top:16px;
   border-top:1px solid var(--border);
@@ -183,6 +186,69 @@ body{background:var(--bg);color:var(--text);font-family:'Lato',sans-serif;font-s
 .dc-btn-theory:hover{background:var(--bg4);color:var(--text);border-color:var(--border2);}
 .dc-btn-quiz{background:rgba(200,164,74,.14);border:1px solid rgba(200,164,74,.35);color:var(--gold);}
 .dc-btn-quiz:hover{background:rgba(200,164,74,.24);}
+.dc-btn-purple{background:rgba(139,92,246,.14);border:1px solid rgba(139,92,246,.35);color:var(--purple2);}
+.dc-btn-purple:hover{background:rgba(139,92,246,.24);}
+.dc-btn-green{background:rgba(61,158,114,.14);border:1px solid rgba(61,158,114,.35);color:var(--green2);}
+.dc-btn-green:hover{background:rgba(61,158,114,.24);}
+
+/* ── MATERIAIS ADICIONAIS ── */
+.extra-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(320px,1fr));
+  gap:20px;
+}
+.extra-card{
+  background:var(--bg2);border:1px solid var(--border2);
+  border-radius:10px;padding:24px;
+  transition:all .2s;text-decoration:none;color:inherit;
+  display:flex;flex-direction:column;gap:12px;
+  position:relative;overflow:hidden;
+}
+.extra-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+}
+.extra-card.ec-civil::before{background:linear-gradient(90deg,var(--blue),var(--blue2));}
+.extra-card.ec-leg::before{background:linear-gradient(90deg,var(--green),var(--green2));}
+.extra-card.ec-sim::before{background:linear-gradient(90deg,var(--purple),var(--purple2));}
+.extra-card:hover{
+  transform:translateY(-3px);
+  box-shadow:0 12px 32px rgba(0,0,0,.4);
+}
+.extra-card.ec-civil:hover{border-color:var(--blue);}
+.extra-card.ec-leg:hover{border-color:var(--green);}
+.extra-card.ec-sim:hover{border-color:var(--purple);}
+.ec-icon{font-size:28px;line-height:1;}
+.ec-body{}
+.ec-type{
+  font-family:'JetBrains Mono',monospace;font-size:10px;
+  text-transform:uppercase;letter-spacing:1.5px;
+  margin-bottom:4px;
+}
+.ec-civil .ec-type{color:var(--blue2);}
+.ec-leg .ec-type{color:var(--green2);}
+.ec-sim .ec-type{color:var(--purple2);}
+.ec-name{
+  font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;
+  color:var(--text);line-height:1.2;
+}
+.ec-desc{font-size:13px;color:var(--text2);line-height:1.6;}
+.ec-footer{
+  margin-top:auto;padding-top:14px;
+  border-top:1px solid var(--border);
+  display:flex;gap:8px;
+}
+.ec-link{
+  flex:1;padding:9px 14px;border-radius:5px;
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  text-decoration:none;text-align:center;
+  transition:all .15s;
+}
+.ec-civil .ec-link{background:rgba(61,143,209,.14);border:1px solid rgba(61,143,209,.35);color:var(--blue2);}
+.ec-civil .ec-link:hover{background:rgba(61,143,209,.26);}
+.ec-leg .ec-link{background:rgba(61,158,114,.14);border:1px solid rgba(61,158,114,.35);color:var(--green2);}
+.ec-leg .ec-link:hover{background:rgba(61,158,114,.26);}
+.ec-sim .ec-link{background:rgba(139,92,246,.14);border:1px solid rgba(139,92,246,.35);color:var(--purple2);}
+.ec-sim .ec-link:hover{background:rgba(139,92,246,.26);}
 
 /* ── POINTS SUMMARY ── */
 .points-bar{
@@ -270,6 +336,7 @@ body{background:var(--bg);color:var(--text);font-family:'Lato',sans-serif;font-s
   .site-title{font-size:36px}
   .main-wrap{padding:28px 24px 60px;}
   .disc-grid{grid-template-columns:1fr}
+  .extra-grid{grid-template-columns:1fr}
   .tl-item{grid-template-columns:120px 1fr}
   .tl-item::before{left:119px}
   .points-bar{gap:0}
@@ -418,6 +485,52 @@ body{background:var(--bg);color:var(--text);font-family:'Lato',sans-serif;font-s
     <div class="pb-item"><div class="pb-val">10</div><div class="pb-key">D3 · Inclusiva</div></div>
     <div class="pb-item"><div class="pb-val">6</div><div class="pb-key">D4 · Gerais</div></div>
     <div class="pb-item pb-total"><div class="pb-val">84</div><div class="pb-key">Total</div></div>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- MATERIAIS ADICIONAIS -->
+  <p class="sec-label">Engenharia Civil · UFMA</p>
+  <h2 class="sec-title">Materiais Adicionais</h2>
+
+  <div class="extra-grid">
+
+    <a href="apostila_eng_civil.html" class="extra-card ec-civil">
+      <div class="ec-icon">🏗️</div>
+      <div class="ec-body">
+        <div class="ec-type">Apostila · Conhecimentos Específicos</div>
+        <div class="ec-name">Engenharia Civil</div>
+        <div class="ec-desc">Conteúdo técnico estruturado por blocos temáticos — estruturas, materiais, hidráulica, geotecnia, instalações e gestão de obras.</div>
+      </div>
+      <div class="ec-footer">
+        <a href="apostila_eng_civil.html" class="ec-link">📖 Abrir Apostila</a>
+      </div>
+    </a>
+
+    <a href="apostila_legislacao.html" class="extra-card ec-leg">
+      <div class="ec-icon">⚖️</div>
+      <div class="ec-body">
+        <div class="ec-type">Apostila · Legislação e Normas</div>
+        <div class="ec-name">Legislação</div>
+        <div class="ec-desc">Legislação federal, normas ABNT/NBR e regulamentos aplicados à atuação do Engenheiro Civil em instituições públicas federais.</div>
+      </div>
+      <div class="ec-footer">
+        <a href="apostila_legislacao.html" class="ec-link">📖 Abrir Apostila</a>
+      </div>
+    </a>
+
+    <a href="simulado_integrado_final.html" class="extra-card ec-sim">
+      <div class="ec-icon">🎯</div>
+      <div class="ec-body">
+        <div class="ec-type">Simulado · Avaliação Final</div>
+        <div class="ec-name">Simulado Integrado</div>
+        <div class="ec-desc">Simulado completo integrando todos os blocos do edital — questões progressivas com gabarito comentado e marcador de desempenho.</div>
+      </div>
+      <div class="ec-footer">
+        <a href="simulado_integrado_final.html" class="ec-link">🚀 Iniciar Simulado</a>
+      </div>
+    </a>
+
   </div>
 
   <hr class="section-divider">
